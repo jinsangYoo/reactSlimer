@@ -12,7 +12,7 @@ var ACS = (function () {
         var localConfig = {
             url: 'policy',
             method: 'get',
-            baseURL: 'http://127.0.0.1:52274',
+            baseURL: 'http://192.168.0.18:52274',
             headers: {
                 'Content-Type': 'text/plain',
             },
