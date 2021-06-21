@@ -1,4 +1,3 @@
-import { ACParams } from './acparam';
 import axios from 'axios';
 var ACS = (function () {
     function ACS() {
@@ -34,7 +33,7 @@ var ACS = (function () {
     return ACS;
 }());
 export { ACS };
-export function send() {
-    ACS.getInstance().send(ACParams.init(ACParams.TYPE.DEFAULT, '젭알'));
+export function send(value) {
+    ACS.getInstance().send(value);
 }
 //# sourceMappingURL=acs.js.map

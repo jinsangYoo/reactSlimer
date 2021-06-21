@@ -4,5 +4,5 @@ export declare class ACS {
     static getInstance(): ACS;
     send(value: ACParams): void;
 }
-export declare function send(): void;
+export declare function send(value: ACParams): void;
 //# sourceMappingURL=acs.d.ts.map

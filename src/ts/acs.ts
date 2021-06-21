@@ -87,18 +87,6 @@ export class ACS {
     //   timeout: 1000,
     // };
 
-    // let collectorConfig2: AxiosRequestConfig = {
-    //   url:
-    //     "mac/?tp=site&re=0&udf1=0&adeld=1&st=1620722629634435895%7C1620722629634435895%7C0%7C0&dm=375*812&url=com.acecounter.aceappplus/LoginAceCounterViewController&logsource=100&ri=1&sv=ACA02.02.030&udf2=0&sts=1620722629634435895&ag=0&vt=1620722508087038827%7C4%7C1619540480760523362%7C1%7C1619540480427865497&ce=1&patch=rev01&adid=00000000-0000-0000-0000-000000000000&lg=en&udf3=0&tz=20&ref=bookmark&mid=AK3A79964&vk=1",
-    //   method: "get",
-    //   // baseURL: "https://gmb.acecounter.com",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Origin": "*",
-    //   },
-    //   timeout: 1000,
-    // };
-
     axios
       .create()
       .request(localConfig)
@@ -129,6 +117,6 @@ export class ACS {
   }
 }
 
-export function send(): void {
-  ACS.getInstance().send(ACParams.init(ACParams.TYPE.DEFAULT, '젭알'))
+export function send(value: ACParams): void {
+  ACS.getInstance().send(value)
 }
