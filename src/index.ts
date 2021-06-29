@@ -1,5 +1,5 @@
-import {AceConfiguration} from './ts/aceconfiguration'
-import {ACParams} from './ts/acparam'
-import {ACS} from './ts/acs'
+import {AceConfiguration} from './acone/aceconfiguration'
+import {ACParams} from './acone/acparam'
+import {ACS} from './acone/acs'
 
 export {AceConfiguration, ACParams, ACS}
