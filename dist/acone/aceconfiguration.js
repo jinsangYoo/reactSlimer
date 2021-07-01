@@ -1,14 +1,11 @@
-export var AceConfiguration = {
+export const AceConfiguration = {
     PLATFORM: {
         DEFAULT: 'ACONE',
     },
-    init: function (key, platform, debug, enablePrivacyPolicy) {
-        if (platform === void 0) { platform = AceConfiguration.PLATFORM.DEFAULT; }
-        if (debug === void 0) { debug = true; }
-        if (enablePrivacyPolicy === void 0) { enablePrivacyPolicy = false; }
-        return { platform: platform, key: key, debug: debug, enablePrivacyPolicy: enablePrivacyPolicy };
+    init(key, platform = AceConfiguration.PLATFORM.DEFAULT, debug = true, enablePrivacyPolicy = false) {
+        return { platform, key, debug, enablePrivacyPolicy };
     },
-    toJSONString: function () {
+    toJSONString() {
         return JSON.stringify(this);
     },
 };

@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig} from 'axios'
 
 export class ACENetwork {
-  public static request(): void {
+  public static request(res?: (response: object) => void, failed?: (err: object) => void): void {
     // console.log('ACS.send: ' + JSON.stringify(value))
 
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
@@ -88,10 +88,12 @@ export class ACENetwork {
         console.log('success')
         console.log(response)
         console.log(response.data)
+        if (res) res(response)
       })
       .catch(error => {
         console.log('error!!')
         console.log(error)
+        if (failed) failed(error)
       })
   }
 }

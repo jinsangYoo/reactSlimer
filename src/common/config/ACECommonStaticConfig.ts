@@ -14,8 +14,7 @@ export class ACECommonStaticConfig {
     return new Promise((resolve, reject) => {
       const keyName = 'user_id'
       AsyncStorage.getItem(keyName, (err, result) => {
-        //user_id에 담긴 아이디 불러오기
-        console.log(result) // result에 담김 //불러온거 출력
+        console.log('AsyncStorage.getItem: ' + result)
         if (callback) {
           callback(err, {
             getKey: keyName,

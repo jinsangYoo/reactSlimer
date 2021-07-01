@@ -1,13 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-var ACECommonStaticConfig = (function () {
-    function ACECommonStaticConfig() {
-    }
-    ACECommonStaticConfig.configure = function (value, callback) {
+export class ACECommonStaticConfig {
+    static configure(value, callback) {
         console.log('ACECommonStaticConfig.configure: AceConfiguration: ' + JSON.stringify(value));
-        return new Promise(function (resolve, reject) {
-            var keyName = 'user_id';
-            AsyncStorage.getItem(keyName, function (err, result) {
-                console.log(result);
+        return new Promise((resolve, reject) => {
+            const keyName = 'user_id';
+            AsyncStorage.getItem(keyName, (err, result) => {
+                console.log('AsyncStorage.getItem: ' + result);
                 if (callback) {
                     callback(err, {
                         getKey: keyName,
@@ -37,8 +35,6 @@ var ACECommonStaticConfig = (function () {
                 }
             });
         });
-    };
-    return ACECommonStaticConfig;
-}());
-export { ACECommonStaticConfig };
+    }
+}
 //# sourceMappingURL=ACECommonStaticConfig.js.map

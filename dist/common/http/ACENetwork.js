@@ -1,10 +1,8 @@
 import axios from 'axios';
-var ACENetwork = (function () {
-    function ACENetwork() {
-    }
-    ACENetwork.request = function () {
+export class ACENetwork {
+    static request(res, failed) {
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-        var localConfig = {
+        const localConfig = {
             url: 'policy',
             method: 'get',
             baseURL: 'http://192.168.0.18:52274',
@@ -16,17 +14,19 @@ var ACENetwork = (function () {
         axios
             .create()
             .request(localConfig)
-            .then(function (response) {
+            .then(response => {
             console.log('success');
             console.log(response);
             console.log(response.data);
+            if (res)
+                res(response);
         })
-            .catch(function (error) {
+            .catch(error => {
             console.log('error!!');
             console.log(error);
+            if (failed)
+                failed(error);
         });
-    };
-    return ACENetwork;
-}());
-export { ACENetwork };
+    }
+}
 //# sourceMappingURL=ACENetwork.js.map

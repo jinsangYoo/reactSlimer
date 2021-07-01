@@ -1,12 +1,11 @@
-export var ACParams = {
+export const ACParams = {
     TYPE: {
         DEFAULT: 'none',
         EVENT: 'event',
         BUY: 'buy',
     },
-    init: function (type, name) {
-        if (type === void 0) { type = ACParams.TYPE.DEFAULT; }
-        return { type: type, name: name };
+    init(type = ACParams.TYPE.DEFAULT, name) {
+        return { type, name };
     },
 };
 //# sourceMappingURL=acparam.js.map

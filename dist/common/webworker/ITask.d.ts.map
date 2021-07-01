@@ -1,1 +1,0 @@
-{"version":3,"file":"ITask.d.ts","sourceRoot":"","sources":["../../../src/common/webworker/ITask.ts"],"names":[],"mappings":"AAAA,aAAK,KAAK,GAAG;IACX,MAAM,EAAE;QACN,IAAI,EAAE,MAAM,CAAA;QACZ,IAAI,EAAE,MAAM,CAAA;QACZ,SAAS,EAAE,MAAM,CAAA;KAClB,CAAA;CACF,CAAA;AAED,YAAY,EAAC,KAAK,EAAC,CAAA"}

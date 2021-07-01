@@ -1,84 +1,74 @@
-import {ACENetwork} from '../../common/http/ACENetwork'
-import {ITask} from '../../common/webworker/ITask'
-import {ACEWorkerEventsForCallerEmitter} from '../worker/ACEWorkerEventsForCallerEmitter'
-import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
+import {ITaskParams} from '../../common/task/ITaskParams'
+import APIForPL from './APIForPL'
+import APIForBuy from './APIForBuy'
+import TaskAdapter from '../../common/task/TaskAdapter'
+import APIForTypes from '../constant/APIForTypes'
+// import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
 
+// 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
 export class ACEReducerForOne {
   private static instance: ACEReducerForOne
-  private commandEmitter: ACEWorkerEventsForCallerEmitter
-  private eventEmitter: ACEWorkerEventsForWorkerEmitter
-  private worker: Worker
-
-  private constructor() {
-    this.commandEmitter = new ACEWorkerEventsForCallerEmitter()
-    this.eventEmitter = new ACEWorkerEventsForWorkerEmitter()
-
-    this.worker = new Worker('../worker/ACEWorker')
-    this.worker.onmessage = event => this.eventEmitter.emit(event.data.type, ...event.data.data)
-    this.worker.onerror = event => this.eventEmitter.emit('onError', {...event})
-
-    this.eventEmitter.on('started', () => console.log('ACEReducerForOne::eventEmitter::started'))
-    this.eventEmitter.on('onFinish', (message, logsource) => {
-      console.log('ACEReducerForOne::eventEmitter::onFinish')
-      console.log([message, logsource])
-    })
-    this.eventEmitter.on('onError', err => {
-      console.log('ACEReducerForOne::eventEmitter::onError')
-      console.log(JSON.stringify(err))
-    })
-
-    this.commandEmitter.on('onStartForAPI', (task?: ITask) => {
-      console.log('ACEReducerForOne::commandEmitter::onStartForAPI')
-      console.log(JSON.stringify(task))
-      ACEReducerForOne.getWorker().postMessage({type: 'onStartForAPI', task})
-    })
-    this.commandEmitter.on('onFinish', (message, logsource) => {
-      console.log('ACEReducerForOne::commandEmitter::onFinish')
-      console.log([message, logsource])
-    })
-    this.commandEmitter.on('onError', err => {
-      console.log('ACEReducerForOne::commandEmitter::onError')
-      console.log(JSON.stringify(err))
-    })
-  }
+  // private emitter: ACEWorkerEventsForWorkerEmitter
 
   public static getInstance(): ACEReducerForOne {
     return this.instance || (this.instance = new this())
   }
 
-  private static getCallerEmitter(): ACEWorkerEventsForCallerEmitter {
-    return ACEReducerForOne.getInstance().commandEmitter
+  private constructor() {
+    //   this.emitter = new ACEWorkerEventsForWorkerEmitter()
+    //   this.emitter.on('onStartForAPI', params => {
+    //     console.log('ACEReducerForOne::emitter::onStartForAPI')
+    //     console.log(JSON.stringify(params))
+    //   })
+    //   this.emitter.on('started', () => console.log('ACEReducerForOne::emitter::started'))
+    //   this.emitter.on('onFinish', (message, logsource) => {
+    //     console.log('ACEReducerForOne::emitter::onFinish')
+    //     console.log([message, logsource])
+    //   })
+    //   this.emitter.on('onError', err => {
+    //     console.log('ACEReducerForOne::emitter::onError')
+    //     console.log(JSON.stringify(err))
+    //   })
+    // }
+    // private static getEmitter(): ACEWorkerEventsForWorkerEmitter {
+    //   return ACEReducerForOne.getInstance().emitter
   }
 
-  private static getWorker(): Worker {
-    return ACEReducerForOne.getInstance().worker
-  }
-
-  private static mainthreadToWorkerAction(task: ITask) {
-    switch (task.action.type) {
-      case 'plWithPage':
-        ACEReducerForOne.getCallerEmitter().emit('onStartForAPI', task)
+  private static reducer(params: ITaskParams) {
+    const taskAdapter = new TaskAdapter()
+    switch (params.type) {
+      case APIForTypes.buy:
+        taskAdapter.addTask(new APIForBuy(params))
+        break
+      case APIForTypes.plWithPage:
+        // ACEReducerForOne.getEmitter().emit('onStartForAPI', params)
+        taskAdapter.addTask(new APIForPL(params))
         break
       default:
         console.log('not implementation Task.')
         break
     }
-  }
 
-  public static plWithPage(pageName: string): void {
-    console.log('plWithPage: ' + JSON.stringify(pageName))
-    ACEReducerForOne.mainthreadToWorkerAction({
-      action: {
-        type: 'plWithPage',
-        name: 'plWithPage',
-        logsource: 100,
-      },
-    })
+    taskAdapter.run()
   }
 
   public static buy(pageName: string): void {
     console.log('buy: ' + JSON.stringify(pageName))
+    ACEReducerForOne.reducer({
+      type: APIForTypes.buy,
+      payload: {},
+      error: false,
+      debugParams: {},
+    })
+  }
 
-    ACENetwork.request()
+  public static plWithPage(pageName: string): void {
+    console.log('plWithPage: ' + JSON.stringify(pageName))
+    ACEReducerForOne.reducer({
+      type: APIForTypes.plWithPage,
+      payload: {},
+      error: false,
+      debugParams: {},
+    })
   }
 }
