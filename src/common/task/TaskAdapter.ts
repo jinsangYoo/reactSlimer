@@ -15,13 +15,8 @@ export default class TaskAdapter {
     this._task.didWork()
   }
 
-  private doneWork() {
-    this._task.doneWork()
-  }
-
   public run() {
     this.doWork()
     this.didWork()
-    this.doneWork()
   }
 }

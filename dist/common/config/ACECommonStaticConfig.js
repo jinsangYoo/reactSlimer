@@ -7,6 +7,7 @@ export class ACECommonStaticConfig {
             AsyncStorage.getItem(keyName, (err, result) => {
                 console.log('AsyncStorage.getItem: ' + result);
                 if (callback) {
+                    console.log('try call cb!!');
                     callback(err, {
                         getKey: keyName,
                         getValue: result,
@@ -15,6 +16,7 @@ export class ACECommonStaticConfig {
                 else {
                     if (err) {
                         if (global.Promise) {
+                            console.log('try call reject!!');
                             reject(err);
                         }
                         else {
@@ -23,6 +25,7 @@ export class ACECommonStaticConfig {
                     }
                     else {
                         if (global.Promise) {
+                            console.log('try call resolve!!');
                             resolve({
                                 getKey: keyName,
                                 getValue: result,

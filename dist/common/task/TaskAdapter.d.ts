@@ -4,7 +4,6 @@ export default class TaskAdapter {
     addTask(argTask: ITask): void;
     private doWork;
     private didWork;
-    private doneWork;
     run(): void;
 }
 //# sourceMappingURL=TaskAdapter.d.ts.map

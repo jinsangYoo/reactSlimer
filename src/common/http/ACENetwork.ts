@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig} from 'axios'
 
 export class ACENetwork {
-  public static request(res?: (response: object) => void, failed?: (err: object) => void): void {
+  public static request(res?: (response: object) => void, failed?: (err: object) => void): Promise<object> {
     // console.log('ACS.send: ' + JSON.stringify(value))
 
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
@@ -80,20 +80,34 @@ export class ACENetwork {
     //   timeout: 1000,
     // };
 
-    axios
-      .create()
-      .request(localConfig)
-      // .request(collectorConfig)
-      .then(response => {
-        console.log('success')
-        console.log(response)
-        console.log(response.data)
-        if (res) res(response)
-      })
-      .catch(error => {
-        console.log('error!!')
-        console.log(error)
-        if (failed) failed(error)
-      })
+    return new Promise((resolve, reject) => {
+      axios
+        .create()
+        .request(localConfig)
+        // .request(collectorConfig)
+        .then(response => {
+          console.log('success 52')
+          console.log('response: ' + JSON.stringify(response))
+          console.log('response.data: ' + response.data)
+          if (res) {
+            console.log('try call res!!')
+            res(response)
+          } else {
+            console.log('not call res, try call resolve!!')
+            resolve(response)
+          }
+        })
+        .catch(error => {
+          console.log('error 52')
+          console.log('error: ' + JSON.stringify(error))
+          if (failed) {
+            console.log('try call failed!!')
+            failed(error)
+          } else {
+            console.log('not call failed, try call reject!!')
+            reject(error)
+          }
+        })
+    })
   }
 }

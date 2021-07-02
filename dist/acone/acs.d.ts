@@ -6,5 +6,6 @@ export declare class ACS {
     static configure(value: AceConfiguration, callback?: (error?: Error, result?: object) => void): Promise<object>;
     configure(value: AceConfiguration, callback?: (error?: Error, result?: object) => void): Promise<object>;
     static send(value: ACParams): void;
+    static SDKVersion(): string;
 }
 //# sourceMappingURL=acs.d.ts.map

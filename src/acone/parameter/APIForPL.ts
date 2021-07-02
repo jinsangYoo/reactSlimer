@@ -22,12 +22,16 @@ export default class APIForPL extends ITask {
 
     ACENetwork.request(
       response => {
-        console.log('APIForPL::in cb::completed')
+        console.log('APIForPL::in cb::completed!!!')
         this.completed(response)
+        console.log('APIForPL::try doneWork 1')
+        this.doneWork()
       },
       err => {
-        console.log('APIForPL::in cb::failed')
+        console.log('APIForPL::in cb::failed!!!')
         this.failed(err)
+        console.log('APIForPL::try doneWork 2')
+        this.doneWork()
       },
     )
   }
