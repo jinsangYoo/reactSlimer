@@ -9,10 +9,13 @@ export class ACS {
     static configure(value, callback) {
         return ACS.getInstance().configure(value, callback);
     }
+    static configureNonPromise(value, callback) {
+        ACS.getInstance().configure(value, callback);
+    }
     configure(value, callback) {
         return ACECommonStaticConfig.configure(value, callback);
     }
-    static send(value) {
+    static send(value, callback) {
         console.log('APP version: ' + DeviceInfo.getReadableVersion());
         console.log('SDK version: ' + ACS.SDKVersion());
         const keyName = 'user_id';
@@ -20,10 +23,20 @@ export class ACS {
             console.log('유저 id저장');
         });
         console.log('ACS.send: ' + JSON.stringify(value));
-        ACEReducerForOne.plWithPage(value.name);
+        return ACEReducerForOne.plWithPage(value.name, callback);
+    }
+    static sendNonPromise(value, callback) {
+        console.log('APP version: ' + DeviceInfo.getReadableVersion());
+        console.log('SDK version: ' + ACS.SDKVersion());
+        const keyName = 'user_id';
+        AsyncStorage.setItem(keyName, 'jinsang', () => {
+            console.log('유저 id저장');
+        });
+        console.log('ACS.send: ' + JSON.stringify(value));
+        ACEReducerForOne.plWithPage(value.name, callback);
     }
     static SDKVersion() {
-        return '0.0.51';
+        return '0.0.56';
     }
 }
 //# sourceMappingURL=acs.js.map

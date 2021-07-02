@@ -1,9 +1,10 @@
-import ITask from '../../common/task/ITask';
+import Task from './Task';
 export default class TaskAdapter {
     private _task;
-    addTask(argTask: ITask): void;
+    private _callback?;
+    addTask(argTask: Task, callback?: (error?: object, result?: object) => void): void;
     private doWork;
     private didWork;
-    run(): void;
+    run(): Promise<object> | void;
 }
 //# sourceMappingURL=TaskAdapter.d.ts.map

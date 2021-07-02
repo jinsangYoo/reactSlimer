@@ -1,22 +1,24 @@
-import ITask from '../../common/task/ITask'
+import Task from './Task'
 
 export default class TaskAdapter {
-  private _task: ITask
+  private _task: Task
+  private _callback?: (error?: object, result?: object) => void
 
-  public addTask(argTask: ITask) {
+  public addTask(argTask: Task, callback?: (error?: object, result?: object) => void) {
     this._task = argTask
+    this._callback = callback
   }
 
   private doWork() {
     this._task.doWork()
   }
 
-  private didWork() {
-    this._task.didWork()
+  private didWork(): Promise<object> | void {
+    return this._task.didWork(this._callback)
   }
 
-  public run() {
+  public run(): Promise<object> | void {
     this.doWork()
-    this.didWork()
+    return this.didWork()
   }
 }

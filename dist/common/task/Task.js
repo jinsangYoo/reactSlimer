@@ -1,9 +1,9 @@
-export default class ITask {
+export default class Task {
     constructor(params) { }
     doWork() {
         console.log('ITask::doWork');
     }
-    didWork() {
+    didWork(callback) {
         console.log('ITask::didWork');
     }
     doneWork() {
@@ -19,4 +19,4 @@ export default class ITask {
     getCreateTime() { }
     getJSON() { }
 }
-//# sourceMappingURL=ITask.js.map
+//# sourceMappingURL=Task.js.map

@@ -1,13 +1,13 @@
-import ITask from '../../common/task/ITask';
+import Task from '../../common/task/Task';
 import { ACENetwork } from '../../common/http/ACENetwork';
-export default class APIForBuy extends ITask {
+export default class APIForBuy extends Task {
     constructor(params) {
         super(params);
     }
     doWork() {
         super.doWork();
     }
-    didWork() {
+    didWork(callback) {
         super.didWork();
         ACENetwork.request(response => {
             this.completed(response);

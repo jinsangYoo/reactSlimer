@@ -34,41 +34,53 @@ export class ACEReducerForOne {
     //   return ACEReducerForOne.getInstance().emitter
   }
 
-  private static reducer(params: ITaskParams) {
+  private static reducer(
+    params: ITaskParams,
+    callback?: (error?: object, result?: object) => void,
+  ): Promise<object> | void {
     const taskAdapter = new TaskAdapter()
     switch (params.type) {
       case APIForTypes.buy:
-        taskAdapter.addTask(new APIForBuy(params))
+        taskAdapter.addTask(new APIForBuy(params), callback)
         break
       case APIForTypes.plWithPage:
         // ACEReducerForOne.getEmitter().emit('onStartForAPI', params)
-        taskAdapter.addTask(new APIForPL(params))
+        taskAdapter.addTask(new APIForPL(params), callback)
         break
       default:
         console.log('not implementation Task.')
         break
     }
 
-    taskAdapter.run()
+    return taskAdapter.run()
   }
 
-  public static buy(pageName: string): void {
+  public static buy(pageName: string, callback?: (error?: object, result?: object) => void): Promise<object> | void {
     console.log('buy: ' + JSON.stringify(pageName))
-    ACEReducerForOne.reducer({
-      type: APIForTypes.buy,
-      payload: {},
-      error: false,
-      debugParams: {},
-    })
+    return ACEReducerForOne.reducer(
+      {
+        type: APIForTypes.buy,
+        payload: {},
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
   }
 
-  public static plWithPage(pageName: string): void {
+  public static plWithPage(
+    pageName: string,
+    callback?: (error?: object, result?: object) => void,
+  ): Promise<object> | void {
     console.log('plWithPage: ' + JSON.stringify(pageName))
-    ACEReducerForOne.reducer({
-      type: APIForTypes.plWithPage,
-      payload: {},
-      error: false,
-      debugParams: {},
-    })
+    return ACEReducerForOne.reducer(
+      {
+        type: APIForTypes.plWithPage,
+        payload: {},
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
   }
 }

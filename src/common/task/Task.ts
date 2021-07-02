@@ -1,6 +1,6 @@
-import {ITaskParams} from '../../common/task/ITaskParams'
+import {ITaskParams} from './ITaskParams'
 
-export default class ITask {
+export default class Task {
   protected _logSource: number
   protected _name: string
   protected _date: Date
@@ -11,7 +11,7 @@ export default class ITask {
     console.log('ITask::doWork')
   }
 
-  public didWork() {
+  public didWork(callback?: (error?: object, result?: object) => void): Promise<object> | void {
     console.log('ITask::didWork')
   }
 

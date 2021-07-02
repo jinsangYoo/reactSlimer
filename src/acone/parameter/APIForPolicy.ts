@@ -1,8 +1,8 @@
-import ITask from '../../common/task/ITask'
+import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
 
-export default class APIForPolicy extends ITask {
+export default class APIForPolicy extends Task {
   protected _logSource: number
   protected _name: string
   protected _date: Date
@@ -15,7 +15,7 @@ export default class APIForPolicy extends ITask {
     super.doWork()
   }
 
-  public didWork() {
+  public didWork(callback?: (error?: object, result?: object) => void) {
     super.didWork()
 
     ACENetwork.request(

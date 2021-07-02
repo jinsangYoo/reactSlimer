@@ -1,11 +1,11 @@
-import { ITaskParams } from '../../common/task/ITaskParams';
-export default class ITask {
+import { ITaskParams } from './ITaskParams';
+export default class Task {
     protected _logSource: number;
     protected _name: string;
     protected _date: Date;
     protected constructor(params: ITaskParams);
     doWork(): void;
-    didWork(): void;
+    didWork(callback?: (error?: object, result?: object) => void): Promise<object> | void;
     doneWork(): void;
     protected completed(response: object): void;
     protected failed(err: object): void;
@@ -13,4 +13,4 @@ export default class ITask {
     getCreateTime(): void;
     getJSON(): void;
 }
-//# sourceMappingURL=ITask.d.ts.map
+//# sourceMappingURL=Task.d.ts.map

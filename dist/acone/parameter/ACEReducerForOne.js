@@ -8,38 +8,38 @@ export class ACEReducerForOne {
     static getInstance() {
         return this.instance || (this.instance = new this());
     }
-    static reducer(params) {
+    static reducer(params, callback) {
         const taskAdapter = new TaskAdapter();
         switch (params.type) {
             case APIForTypes.buy:
-                taskAdapter.addTask(new APIForBuy(params));
+                taskAdapter.addTask(new APIForBuy(params), callback);
                 break;
             case APIForTypes.plWithPage:
-                taskAdapter.addTask(new APIForPL(params));
+                taskAdapter.addTask(new APIForPL(params), callback);
                 break;
             default:
                 console.log('not implementation Task.');
                 break;
         }
-        taskAdapter.run();
+        return taskAdapter.run();
     }
-    static buy(pageName) {
+    static buy(pageName, callback) {
         console.log('buy: ' + JSON.stringify(pageName));
-        ACEReducerForOne.reducer({
+        return ACEReducerForOne.reducer({
             type: APIForTypes.buy,
             payload: {},
             error: false,
             debugParams: {},
-        });
+        }, callback);
     }
-    static plWithPage(pageName) {
+    static plWithPage(pageName, callback) {
         console.log('plWithPage: ' + JSON.stringify(pageName));
-        ACEReducerForOne.reducer({
+        return ACEReducerForOne.reducer({
             type: APIForTypes.plWithPage,
             payload: {},
             error: false,
             debugParams: {},
-        });
+        }, callback);
     }
 }
 //# sourceMappingURL=ACEReducerForOne.js.map
