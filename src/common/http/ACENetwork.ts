@@ -86,9 +86,7 @@ export class ACENetwork {
         .request(localConfig)
         // .request(collectorConfig)
         .then(response => {
-          console.log('success 52')
-          console.log('response: ' + JSON.stringify(response))
-          console.log('response.data: ' + response.data)
+          console.log('success')
           if (res) {
             console.log('try call res!!')
             res(response)
@@ -98,8 +96,7 @@ export class ACENetwork {
           }
         })
         .catch(error => {
-          console.log('error 52')
-          console.log('error: ' + JSON.stringify(error))
+          console.log('error')
           if (failed) {
             console.log('try call failed!!')
             failed(error)

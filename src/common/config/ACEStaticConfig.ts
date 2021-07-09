@@ -1,10 +1,19 @@
 import {AceConfiguration} from '../../acone/aceconfiguration'
-// import {ACEStaticConfig} from './ACEStaticConfig'
 
-export class ACEStaticConfig {
-  // private static _staticConfigImpl: ACEStaticConfig
+export default interface ACEStaticConfig {
+  _debug: boolean
+  _key: string
+  // ACEControlTower _controlTower;
+  // ACEQueueManagerFactory _queueManagerFactory;
+  // IACEParameterUtil _parameterUtil;
+  // IACECommonAPI _commonAPI;
 
-  public static configure(value: AceConfiguration): void {
-    console.log('ACECommonStaticConfig.configure: AceConfiguration: ' + JSON.stringify(value))
-  }
+  configure(configuration: AceConfiguration): void
+  isDebug(): boolean
+  getEnablePrivacyPolicy(): boolean
+  getKey(): string
+
+  getCommonAPI(configuration: AceConfiguration): void
+  getControlTower(configuration: AceConfiguration): void
+  getParameterUtil(configuration: AceConfiguration): void
 }

@@ -1,4 +1,4 @@
-type ACEPlatform = 'ACONE'
+export type ACEPlatform = 'ACONE'
 
 export type IAceConfiguration = {
   init: (key: string, type?: ACEPlatform, debug?: boolean, enablePrivacyPolicy?: boolean) => AceConfiguration

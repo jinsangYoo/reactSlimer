@@ -1,15 +1,27 @@
-import {AceConfiguration} from '../../acone/aceconfiguration'
-// import {ACEStaticConfig} from './ACEStaticConfig'
+import {ACS} from '../../acone/acs'
+import {AceConfiguration, ACEPlatform} from '../../acone/aceconfiguration'
+import ACEStaticConfig from './ACEStaticConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ACEOneStaticConfig from '../../acone/config/ACEOneStaticConfig'
+import ACECONSTANT from '../constant/ACEConstant'
 
-export class ACECommonStaticConfig {
-  // private static _staticConfigImpl: ACEStaticConfig
+export default class ACECommonStaticConfig {
+  private static _staticConfigImpl: ACEStaticConfig
+  private static _platform: ACEPlatform
 
   public static configure(
-    value: AceConfiguration,
+    configuration: AceConfiguration,
     callback?: (error?: Error, result?: object) => void,
   ): Promise<object> | void {
-    console.log('ACECommonStaticConfig.configure: AceConfiguration: ' + JSON.stringify(value))
+    console.log('NHN ACE SDK version: ' + ACS.SDKVersion())
+    console.log('AceConfiguration information: ' + JSON.stringify(configuration))
+
+    if (configuration.platform) {
+      this._platform = configuration.platform
+    }
+    if (ACECommonStaticConfig._platform === AceConfiguration.PLATFORM.DEFAULT) {
+      this._staticConfigImpl = new ACEOneStaticConfig()
+    }
 
     const keyName = 'user_id'
     if (!global.Promise) {
@@ -53,5 +65,30 @@ export class ACECommonStaticConfig {
         })
       })
     }
+  }
+
+  // private static setPlatform(value: AceConfiguration) {}
+  public static isDebug(): boolean {
+    if (this._staticConfigImpl) {
+      return this._staticConfigImpl.isDebug()
+    }
+
+    return false
+  }
+
+  public static getEnablePrivacyPolicy(): boolean {
+    if (this._staticConfigImpl) {
+      return this._staticConfigImpl.getEnablePrivacyPolicy()
+    }
+
+    return false
+  }
+
+  public static getKey(): string {
+    if (this._staticConfigImpl) {
+      return this._staticConfigImpl.getKey()
+    }
+
+    return ACECONSTANT.EMPTY
   }
 }
