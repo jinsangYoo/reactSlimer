@@ -10,4 +10,9 @@ export default class ACEntityForVT {
   public getAssembleParams(): string {
     return 'empty'
   }
+
+  /**
+   * setPcStampWhenNotStored
+   */
+  public setPcStampWhenNotStored() {}
 }

@@ -12,7 +12,7 @@ import ACOneConstantVt from '../constant/ACOneConstantVt'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
 
-export class ACEParameterUtilForOne implements IACEParameterUtil {
+export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static instance: ACEParameterUtilForOne
 
   public static getInstance(): ACEParameterUtilForOne {
@@ -21,7 +21,7 @@ export class ACEParameterUtilForOne implements IACEParameterUtil {
 
   private constructor() {}
   loadUniqueKeyForSDK(): void {
-    throw new Error('Method not implemented.')
+    ACEParametersForOne.getInstance().setPcStampWhenNotStored()
   }
   setFirstLogParameters(): void {
     throw new Error('Method not implemented.')
@@ -33,7 +33,9 @@ export class ACEParameterUtilForOne implements IACEParameterUtil {
     throw new Error('Method not implemented.')
   }
 
-  public initParameters(callback?: (error?: object, result?: object) => void): Promise<object> | void {
+  public initParameters(callback: ((error?: Error, result?: object) => void) | undefined): void
+  public initParameters(): Promise<object>
+  public initParameters(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
     const _parametersForOne = ACEParametersForOne.getInstance()
     _parametersForOne.getCE()
     _parametersForOne.setDM(ACEParameterUtil.getResolution())
@@ -48,37 +50,29 @@ export class ACEParameterUtilForOne implements IACEParameterUtil {
     _parametersForOne.getUDF2()
     _parametersForOne.getUDF3()
 
-    if (!global.Promise) {
-      console.log('ACEParametersForOne::not support promise.')
+    this.setNewSession()
+    this.loadVT()
 
+    this.setSTS(ACECONSTANT.ZERO)
+    _parametersForOne.setADELD(false)
+    _parametersForOne.setADID(ACECONSTANT.DEFAULT_ADID)
+
+    if (!global.Promise) {
       if (callback) {
-        console.log('try call cb!!')
         callback(undefined, {
-          getKey: 'keyName',
-          getValue: 'result',
+          result: 'done',
         })
       }
     } else {
-      console.log('ACEParametersForOne::support promise.')
-
       return new Promise((resolve, reject) => {
         if (callback) {
-          console.log('try call cb!!')
           callback(undefined, {
-            getKey: 'keyName',
-            getValue: 'result',
+            result: 'done',
           })
         } else {
-          // if (err) {
-          //   console.log('try call reject!!')
-          //   reject(new Error())
-          // } else {
-          console.log('try call resolve!!')
           resolve({
-            getKey: 'keyName',
-            getValue: 'result',
+            result: 'done',
           })
-          // }
         }
       })
     }
@@ -161,6 +155,14 @@ export class ACEParameterUtilForOne implements IACEParameterUtil {
     return ACEParametersForOne.getInstance().saveST_toInStorage(st, callback)
   }
 
+  public getSTS(): string {
+    return ACEParametersForOne.getInstance().getSTS()
+  }
+
+  public setSTS(value: string): void {
+    return ACEParametersForOne.getInstance().setSTS(value)
+  }
+
   public clearSV(): void {
     ACEParametersForOne.getInstance().setSV(ACECONSTANT.EMPTY)
   }
@@ -171,6 +173,12 @@ export class ACEParameterUtilForOne implements IACEParameterUtil {
 
   public makeSV(): string {
     return `${ACOneConstant.DefaultServiceCode}${ACS.SDKVersion()}${ACOneConstant.DefaultNotCustomSDKForCustomer}`
+  }
+
+  public loadVT(callback: (error?: Error, result?: object) => void): void
+  public loadVT(): Promise<object>
+  public loadVT(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
+    return ACEParametersForOne.getInstance().loadVT(callback)
   }
 
   public saveVT_toInStorage(vt: ACEntityForVT, callback: (error?: Error, result?: object) => void): void

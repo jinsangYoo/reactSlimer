@@ -34,9 +34,11 @@ export class ACEReducerForOne {
     //   return ACEReducerForOne.getInstance().emitter
   }
 
+  private static reducer(params: ITaskParams, callback: ((error?: Error, result?: object) => void) | undefined): void
+  private static reducer(params: ITaskParams): Promise<object>
   private static reducer(
     params: ITaskParams,
-    callback?: (error?: object, result?: object) => void,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
     const taskAdapter = new TaskAdapter()
     switch (params.type) {
@@ -55,7 +57,12 @@ export class ACEReducerForOne {
     return taskAdapter.run()
   }
 
-  public static buy(pageName: string, callback?: (error?: object, result?: object) => void): Promise<object> | void {
+  public static buy(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void
+  public static buy(pageName: string): Promise<object>
+  public static buy(
+    pageName: string,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
+  ): Promise<object> | void {
     console.log('buy: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
@@ -68,9 +75,11 @@ export class ACEReducerForOne {
     )
   }
 
+  public static plWithPage(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void
+  public static plWithPage(pageName: string): Promise<object>
   public static plWithPage(
     pageName: string,
-    callback?: (error?: object, result?: object) => void,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
     console.log('plWithPage: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(

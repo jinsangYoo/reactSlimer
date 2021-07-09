@@ -1,5 +1,6 @@
 import {AceConfiguration} from '../../acone/aceconfiguration'
 import ACEStaticConfig from '../../common/config/ACEStaticConfig'
+import ACEParameterUtilForOne from '../parameter/ACEParameterUtilForOne'
 
 export default class ACEOneStaticConfig implements ACEStaticConfig {
   _debug: boolean
@@ -12,10 +13,20 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
     this._key = 'empty'
   }
 
-  public configure(configuration: AceConfiguration): void {
+  public configure(
+    configuration: AceConfiguration,
+    callback: ((error?: Error, result?: object) => void) | undefined,
+  ): void
+  public configure(configuration: AceConfiguration): Promise<object>
+  public configure(
+    configuration: AceConfiguration,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
+  ): Promise<object> | void {
     this._key = configuration.key
     if (configuration.enablePrivacyPolicy) this._enablePrivacyPolicy = configuration.enablePrivacyPolicy
     if (configuration.debug) this._debug = configuration.debug
+
+    return ACEParameterUtilForOne.getInstance().initParameters(callback)
   }
   isDebug(): boolean {
     return this._debug

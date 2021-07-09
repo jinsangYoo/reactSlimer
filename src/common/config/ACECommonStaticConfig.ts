@@ -1,7 +1,6 @@
 import {ACS} from '../../acone/acs'
 import {AceConfiguration, ACEPlatform} from '../../acone/aceconfiguration'
 import ACEStaticConfig from './ACEStaticConfig'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import ACEOneStaticConfig from '../../acone/config/ACEOneStaticConfig'
 import ACECONSTANT from '../constant/ACEConstant'
 
@@ -11,7 +10,12 @@ export default class ACECommonStaticConfig {
 
   public static configure(
     configuration: AceConfiguration,
-    callback?: (error?: Error, result?: object) => void,
+    callback: ((error?: Error, result?: object) => void) | undefined,
+  ): void
+  public static configure(configuration: AceConfiguration): Promise<object>
+  public static configure(
+    configuration: AceConfiguration,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
     console.log('NHN ACE SDK version: ' + ACS.SDKVersion())
     console.log('AceConfiguration information: ' + JSON.stringify(configuration))
@@ -23,47 +27,8 @@ export default class ACECommonStaticConfig {
       this._staticConfigImpl = new ACEOneStaticConfig()
     }
 
-    const keyName = 'user_id'
-    if (!global.Promise) {
-      console.log('ACECommonStaticConfig::not support promise.')
-
-      AsyncStorage.getItem(keyName, (err, result) => {
-        console.log('AsyncStorage.getItem: ' + result)
-        if (callback) {
-          console.log('try call cb!!')
-          callback(err, {
-            getKey: keyName,
-            getValue: result,
-          })
-        }
-      })
-    } else {
-      console.log('ACECommonStaticConfig::support promise.')
-
-      return new Promise((resolve, reject) => {
-        const keyName = 'user_id'
-        AsyncStorage.getItem(keyName, (err, result) => {
-          console.log('AsyncStorage.getItem: ' + result)
-          if (callback) {
-            console.log('try call cb!!')
-            callback(err, {
-              getKey: keyName,
-              getValue: result,
-            })
-          } else {
-            if (err) {
-              console.log('try call reject!!')
-              reject(err)
-            } else {
-              console.log('try call resolve!!')
-              resolve({
-                getKey: keyName,
-                getValue: result,
-              })
-            }
-          }
-        })
-      })
+    if (this._staticConfigImpl) {
+      return this._staticConfigImpl.configure(configuration, callback)
     }
   }
 

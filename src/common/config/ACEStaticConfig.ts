@@ -8,7 +8,12 @@ export default interface ACEStaticConfig {
   // IACEParameterUtil _parameterUtil;
   // IACECommonAPI _commonAPI;
 
-  configure(configuration: AceConfiguration): void
+  configure(configuration: AceConfiguration, callback: ((error?: Error, result?: object) => void) | undefined): void
+  configure(configuration: AceConfiguration): Promise<object>
+  configure(
+    configuration: AceConfiguration,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
+  ): Promise<object> | void
   isDebug(): boolean
   getEnablePrivacyPolicy(): boolean
   getKey(): string

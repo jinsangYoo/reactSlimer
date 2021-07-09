@@ -20,7 +20,12 @@ export class ACS {
     return ACS.getInstance().configure(value, callback)
   }
 
-  configure(value: AceConfiguration, callback?: (error?: Error, result?: object) => void): Promise<object> | void {
+  configure(value: AceConfiguration, callback: ((error?: Error, result?: object) => void) | undefined): void
+  configure(value: AceConfiguration): void
+  configure(
+    value: AceConfiguration,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
+  ): Promise<object> | void {
     return ACECommonStaticConfig.configure(value, callback)
   }
 

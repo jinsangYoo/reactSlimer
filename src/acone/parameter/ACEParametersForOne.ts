@@ -537,7 +537,9 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public loadST(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
+  public loadST(callback: ((error?: Error, result?: object) => void) | undefined): void
+  public loadST(): Promise<object>
+  public loadST(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
     if (!global.Promise) {
       console.log('loadST::not support promise.')
 
@@ -588,9 +590,11 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
+  public saveST_toInStorage(st: ACEntityForST, callback: ((error?: Error, result?: object) => void) | undefined): void
+  public saveST_toInStorage(st: ACEntityForST): Promise<object>
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback?: (error?: Error, result?: object) => void,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
     const _json = JSON.stringify(st)
     if (!global.Promise) {
@@ -772,7 +776,18 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public loadVT(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
+  /**
+   * setPcStampWhenNotStored
+   */
+  public setPcStampWhenNotStored() {
+    if (this.vt) {
+      this.vt.setPcStampWhenNotStored()
+    }
+  }
+
+  public loadVT(callback: ((error?: Error, result?: object) => void) | undefined): void
+  public loadVT(): Promise<object>
+  public loadVT(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
     if (!global.Promise) {
       console.log('loadVT::not support promise.')
 
@@ -823,9 +838,11 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
+  public saveVT_toInStorage(vt: ACEntityForVT, callback: ((error?: Error, result?: object) => void) | undefined): void
+  public saveVT_toInStorage(vt: ACEntityForVT): Promise<object>
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback?: (error?: Error, result?: object) => void,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
     const _json = JSON.stringify(vt)
     if (!global.Promise) {

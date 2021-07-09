@@ -11,7 +11,9 @@ export default class Task {
     console.log('ITask::doWork')
   }
 
-  public didWork(callback?: (error?: object, result?: object) => void): Promise<object> | void {
+  public didWork(callback: ((error?: object, result?: object) => void) | undefined): void
+  public didWork(): Promise<object>
+  public didWork(callback?: ((error?: object, result?: object) => void) | undefined): Promise<object> | void {
     console.log('ITask::didWork')
   }
 
