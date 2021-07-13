@@ -1,50 +1,38 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-export class ACECommonStaticConfig {
-    static configure(value, callback) {
-        console.log('ACECommonStaticConfig.configure: AceConfiguration: ' + JSON.stringify(value));
-        const keyName = 'user_id';
-        if (!global.Promise) {
-            console.log('ACECommonStaticConfig::not support promise.');
-            AsyncStorage.getItem(keyName, (err, result) => {
-                console.log('AsyncStorage.getItem: ' + result);
-                if (callback) {
-                    console.log('try call cb!!');
-                    callback(err, {
-                        getKey: keyName,
-                        getValue: result,
-                    });
-                }
-            });
+import { ACS } from '../../acone/acs';
+import { AceConfiguration } from '../../acone/aceconfiguration';
+import ACEOneStaticConfig from '../../acone/config/ACEOneStaticConfig';
+import ACECONSTANT from '../constant/ACEConstant';
+export default class ACECommonStaticConfig {
+    static configure(configuration, callback) {
+        console.log('NHN ACE SDK version: ' + ACS.SDKVersion());
+        console.log('AceConfiguration information: ' + JSON.stringify(configuration));
+        if (configuration.platform) {
+            this._platform = configuration.platform;
         }
-        else {
-            console.log('ACECommonStaticConfig::support promise.');
-            return new Promise((resolve, reject) => {
-                const keyName = 'user_id';
-                AsyncStorage.getItem(keyName, (err, result) => {
-                    console.log('AsyncStorage.getItem: ' + result);
-                    if (callback) {
-                        console.log('try call cb!!');
-                        callback(err, {
-                            getKey: keyName,
-                            getValue: result,
-                        });
-                    }
-                    else {
-                        if (err) {
-                            console.log('try call reject!!');
-                            reject(err);
-                        }
-                        else {
-                            console.log('try call resolve!!');
-                            resolve({
-                                getKey: keyName,
-                                getValue: result,
-                            });
-                        }
-                    }
-                });
-            });
+        if (ACECommonStaticConfig._platform === AceConfiguration.PLATFORM.DEFAULT) {
+            this._staticConfigImpl = new ACEOneStaticConfig();
         }
+        if (this._staticConfigImpl) {
+            return this._staticConfigImpl.configure(configuration, callback);
+        }
+    }
+    static isDebug() {
+        if (this._staticConfigImpl) {
+            return this._staticConfigImpl.isDebug();
+        }
+        return false;
+    }
+    static getEnablePrivacyPolicy() {
+        if (this._staticConfigImpl) {
+            return this._staticConfigImpl.getEnablePrivacyPolicy();
+        }
+        return false;
+    }
+    static getKey() {
+        if (this._staticConfigImpl) {
+            return this._staticConfigImpl.getKey();
+        }
+        return ACECONSTANT.EMPTY;
     }
 }
 //# sourceMappingURL=ACECommonStaticConfig.js.map

@@ -1,5 +1,6 @@
 import { AceConfiguration } from './acone/aceconfiguration';
 import { ACParams } from './acone/acparam';
 import { ACS } from './acone/acs';
-export { AceConfiguration, ACParams, ACS };
+import ACEMaritalStatus from './common/constant/ACEMaritalStatus';
+export { AceConfiguration, ACParams, ACS, ACEMaritalStatus };
 //# sourceMappingURL=index.js.map

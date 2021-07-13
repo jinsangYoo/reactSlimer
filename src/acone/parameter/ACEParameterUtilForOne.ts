@@ -1,7 +1,6 @@
 import ACEParametersForOne from './ACEParametersForOne'
 import IACEParameterUtil from '../../common/parameter/IACEParameterUtil'
 import ACEParameterUtil from '../../common/parameter/ACEParameterUtil'
-import ACECommonStaticConfig from '../../common/config/ACECommonStaticConfig'
 import ACECONSTANT from '../../common/constant/ACEConstant'
 import ACOneConstantInteger from '../../common/constant/ACOneConstantInteger'
 import ACOneConstant from '../constant/ACOneConstant'
@@ -33,13 +32,16 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     throw new Error('Method not implemented.')
   }
 
-  public initParameters(callback: ((error?: Error, result?: object) => void) | undefined): void
-  public initParameters(): Promise<object>
-  public initParameters(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
+  public initParameters(key: string, callback: ((error?: Error, result?: object) => void) | undefined): void
+  public initParameters(key: string): Promise<object>
+  public initParameters(
+    key: string,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
+  ): Promise<object> | void {
     const _parametersForOne = ACEParametersForOne.getInstance()
     _parametersForOne.getCE()
     _parametersForOne.setDM(ACEParameterUtil.getResolution())
-    _parametersForOne.setMID(ACECommonStaticConfig.getKey())
+    _parametersForOne.setMID(key)
     _parametersForOne.setIsNeedSetNewSession(false)
     _parametersForOne.setPatch(ACECONSTANT.PATCH)
     _parametersForOne.setRE(ACOneConstantInteger.DefaultRE)
@@ -52,6 +54,17 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
     this.setNewSession()
     this.loadVT()
+      .then(result => {
+        console.log(`then loadVT::result: ${JSON.stringify(result)}`)
+      })
+      .catch(err => {
+        console.log(`catch loadVT::err: ${JSON.stringify(err)}`)
+      })
+      .finally(() => {
+        const _vt = this.getVT()
+        console.log(`finally loadVT::_vt: ${JSON.stringify(_vt)}`)
+        this.loadUniqueKeyForSDK()
+      })
 
     this.setSTS(ACECONSTANT.ZERO)
     _parametersForOne.setADELD(false)
@@ -175,6 +188,11 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return `${ACOneConstant.DefaultServiceCode}${ACS.SDKVersion()}${ACOneConstant.DefaultNotCustomSDKForCustomer}`
   }
 
+  // #region VT
+  public getVT(): ACEntityForVT {
+    return ACEParametersForOne.getInstance().getVT()
+  }
+
   public loadVT(callback: (error?: Error, result?: object) => void): void
   public loadVT(): Promise<object>
   public loadVT(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
@@ -189,4 +207,5 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   ): Promise<object> | void {
     return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback)
   }
+  // #endregion
 }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 export class ACENetwork {
-    static request(res, failed) {
+    static request(completed, failed) {
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
         const localConfig = {
             url: 'policy',
@@ -16,27 +16,24 @@ export class ACENetwork {
                 .create()
                 .request(localConfig)
                 .then(response => {
-                console.log('success 52');
-                console.log('response: ' + JSON.stringify(response));
-                console.log('response.data: ' + response.data);
-                if (res) {
-                    console.log('try call res!!');
-                    res(response);
+                console.log('ACENetwork::success');
+                if (completed) {
+                    console.log('ACENetwork::try call completed!!');
+                    completed(response);
                 }
                 else {
-                    console.log('not call res, try call resolve!!');
+                    console.log('ACENetwork::not call res, try call resolve!!');
                     resolve(response);
                 }
             })
                 .catch(error => {
-                console.log('error 52');
-                console.log('error: ' + JSON.stringify(error));
+                console.log('ACENetwork::error');
                 if (failed) {
-                    console.log('try call failed!!');
+                    console.log('ACENetwork::try call failed!!');
                     failed(error);
                 }
                 else {
-                    console.log('not call failed, try call reject!!');
+                    console.log('ACENetwork::not call failed, try call reject!!');
                     reject(error);
                 }
             });

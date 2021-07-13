@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig} from 'axios'
 
 export class ACENetwork {
-  public static request(res?: (response: object) => void, failed?: (err: object) => void): Promise<object> {
+  public static request(completed?: (response: object) => void, failed?: (err: object) => void): Promise<object> {
     // console.log('ACS.send: ' + JSON.stringify(value))
 
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
@@ -86,22 +86,22 @@ export class ACENetwork {
         .request(localConfig)
         // .request(collectorConfig)
         .then(response => {
-          console.log('success')
-          if (res) {
-            console.log('try call res!!')
-            res(response)
+          console.log('ACENetwork::success')
+          if (completed) {
+            console.log('ACENetwork::try call completed!!')
+            completed(response)
           } else {
-            console.log('not call res, try call resolve!!')
+            console.log('ACENetwork::not call res, try call resolve!!')
             resolve(response)
           }
         })
         .catch(error => {
-          console.log('error')
+          console.log('ACENetwork::error')
           if (failed) {
-            console.log('try call failed!!')
+            console.log('ACENetwork::try call failed!!')
             failed(error)
           } else {
-            console.log('not call failed, try call reject!!')
+            console.log('ACENetwork::not call failed, try call reject!!')
             reject(error)
           }
         })

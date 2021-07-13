@@ -1,6 +1,2 @@
-export class ACEStaticConfig {
-    static configure(value) {
-        console.log('ACECommonStaticConfig.configure: AceConfiguration: ' + JSON.stringify(value));
-    }
-}
+export {};
 //# sourceMappingURL=ACEStaticConfig.js.map

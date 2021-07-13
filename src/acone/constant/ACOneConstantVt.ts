@@ -3,18 +3,18 @@ enum ACOneConstantVt {
   KeyInStorage = 'ac1_vt',
   KeyWillUpdateVt = 'ac1_willUpdateVt',
 
-  // KeyBuyCount = 'ac1_buyCount',
+  KeyBuyCount = 'ac1_buyCount',
 
-  // KeyBuyTimeTS = 'ac1_buyTimeTS',
-  // KeyRandom6ForBuyTimeTS = 'ac1_random6BuyTimeTS',
+  KeyBuyTimeTS = 'ac1_buyTimeTS',
+  KeyRandom6ForBuyTimeTS = 'ac1_random6BuyTimeTS',
 
-  // KeyVisitCount = 'ac1_visitCount',
+  KeyVisitCount = 'ac1_visitCount',
 
-  // KeyVTS = 'ac1_vTS',
-  // KeyRandom6ForVTS = 'ac1_random6VTS',
+  KeyVTS = 'ac1_vTS',
+  KeyRandom6ForVTS = 'ac1_random6VTS',
 
-  // KeyPcStamp = 'ac1_pcStamp',
-  // KeyRandom6ForPcStamp = 'ac1_random6pcStamp',
+  KeyPcStamp = 'ac1_pcStamp',
+  KeyRandom6ForPcStamp = 'ac1_random6pcStamp',
 }
 
 export default ACOneConstantVt

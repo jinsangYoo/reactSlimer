@@ -23,7 +23,7 @@ export default class APIForPL extends Task {
     console.log('APIForPL::didWork')
 
     if (!global.Promise) {
-      console.log('ACECommonStaticConfig::not support promise.')
+      console.log('APIForPL::not support promise.')
 
       ACENetwork.request(
         response => {
@@ -48,7 +48,7 @@ export default class APIForPL extends Task {
         },
       )
     } else {
-      console.log('ACECommonStaticConfig::support promise.')
+      console.log('APIForPL::support promise.')
 
       return new Promise((resolve, reject) => {
         ACENetwork.request(
@@ -81,11 +81,6 @@ export default class APIForPL extends Task {
     }
   }
 
-  public doneWork() {
-    super.doneWork()
-    console.log('APIForPL::doneWork')
-  }
-
   public completed(response: object) {
     super.completed(response)
     console.log('APIForPL::completed')
@@ -94,5 +89,10 @@ export default class APIForPL extends Task {
   public failed(err: object) {
     super.failed(err)
     console.log('APIForPL::failed')
+  }
+
+  public doneWork() {
+    super.doneWork()
+    console.log('APIForPL::doneWork')
   }
 }

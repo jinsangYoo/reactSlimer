@@ -10,6 +10,7 @@ import ACEMaritalStatus from '../../common/constant/ACEMaritalStatus'
 import ACOneConstantSt from '../constant/ACOneConstantSt'
 import ACOneConstantVt from '../constant/ACOneConstantVt'
 import SESSION from '../../common/constant/Session'
+import ACEInnerCBResultKey from '../../common/constant/ACEInnerCBResultKey'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -761,6 +762,7 @@ export default class ACEParametersForOne extends ACEParameters {
     this.vk = value
   }
 
+  // #region VT
   public getVT(): ACEntityForVT {
     if (!this.vt) {
       this.vt = new ACEntityForVT()
@@ -772,13 +774,10 @@ export default class ACEParametersForOne extends ACEParameters {
     if (!this.vt) {
       this.vt = new ACEntityForVT()
     } else {
-      this.vt.setVT(value)
+      this.vt.setDeepCopy(value.getMap())
     }
   }
 
-  /**
-   * setPcStampWhenNotStored
-   */
   public setPcStampWhenNotStored() {
     if (this.vt) {
       this.vt.setPcStampWhenNotStored()
@@ -792,14 +791,13 @@ export default class ACEParametersForOne extends ACEParameters {
       console.log('loadVT::not support promise.')
 
       AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
-        console.log(`${ACOneConstantVt.KeyInStorage}: ${result}`)
         if (result) {
           this.setVT(JSON.parse(result))
         }
 
         if (callback) {
           callback(err, {
-            getKey: ACOneConstantVt.KeyInStorage,
+            result: ACOneConstantVt.KeyInStorage,
             getValue: result,
           })
         }
@@ -809,28 +807,35 @@ export default class ACEParametersForOne extends ACEParameters {
 
       return new Promise((resolve, reject) => {
         AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
-          console.log(`${ACOneConstantVt.KeyInStorage}: ${result}`)
           if (callback) {
             if (result) {
               this.setST(JSON.parse(result))
+              callback(err, {
+                code: ACEInnerCBResultKey.Success,
+                result: ACEInnerCBResultKey[ACEInnerCBResultKey.Success],
+              })
+            } else {
+              callback(err, {
+                code: ACEInnerCBResultKey.fail,
+                result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotExistKey],
+              })
             }
-
-            callback(err, {
-              getKey: ACOneConstantVt.KeyInStorage,
-              getValue: result,
-            })
           } else {
             if (err) {
               reject(err)
             } else {
               if (result) {
                 this.setVT(JSON.parse(result))
+                resolve({
+                  code: ACEInnerCBResultKey.Success,
+                  result: ACEInnerCBResultKey[ACEInnerCBResultKey.Success],
+                })
+              } else {
+                reject({
+                  code: ACEInnerCBResultKey.fail,
+                  result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotExistKey],
+                })
               }
-
-              resolve({
-                getKey: ACOneConstantVt.KeyInStorage,
-                getValue: result,
-              })
             }
           }
         })
@@ -882,6 +887,7 @@ export default class ACEParametersForOne extends ACEParameters {
       })
     }
   }
+  // #endregion
 
   protected getParamsToJSONString(): string {
     return JSON.stringify({

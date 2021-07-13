@@ -1,4 +1,4 @@
-declare type ACEPlatform = 'ACONE';
+export declare type ACEPlatform = 'ACONE';
 export declare type IAceConfiguration = {
     init: (key: string, type?: ACEPlatform, debug?: boolean, enablePrivacyPolicy?: boolean) => AceConfiguration;
     PLATFORM: {
@@ -13,5 +13,4 @@ export declare type AceConfiguration = {
     enablePrivacyPolicy?: boolean;
 };
 export declare const AceConfiguration: IAceConfiguration;
-export {};
 //# sourceMappingURL=aceconfiguration.d.ts.map

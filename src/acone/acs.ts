@@ -33,14 +33,12 @@ export class ACS {
   public static send(value: ACParams): Promise<object>
   public static send(value: ACParams, callback?: (error?: object, result?: object) => void): Promise<object> | void {
     console.log('APP version: ' + DeviceInfo.getReadableVersion())
-    console.log('SDK version: ' + ACS.SDKVersion())
-
     console.log('ACS.send: ' + JSON.stringify(value))
 
     return ACEReducerForOne.plWithPage(value.name, callback)
   }
 
   public static SDKVersion(): string {
-    return '0.0.57'
+    return '0.0.59'
   }
 }

@@ -6,7 +6,8 @@ export default class APIForBuy extends Task {
     protected _date: Date;
     constructor(params: ITaskParams);
     doWork(): void;
-    didWork(callback?: (error?: object, result?: object) => void): void;
+    didWork(callback: ((error?: object, result?: object) => void) | undefined): void;
+    didWork(): Promise<object>;
     doneWork(): void;
     completed(response: object): void;
     failed(err: object): void;

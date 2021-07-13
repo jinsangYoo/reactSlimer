@@ -12,7 +12,7 @@ export default class APIForPL extends Task {
         super.didWork();
         console.log('APIForPL::didWork');
         if (!global.Promise) {
-            console.log('ACECommonStaticConfig::not support promise.');
+            console.log('APIForPL::not support promise.');
             ACENetwork.request(response => {
                 console.log('APIForPL::in cb::completed!!!');
                 this.completed(response);
@@ -34,7 +34,7 @@ export default class APIForPL extends Task {
             });
         }
         else {
-            console.log('ACECommonStaticConfig::support promise.');
+            console.log('APIForPL::support promise.');
             return new Promise((resolve, reject) => {
                 ACENetwork.request(response => {
                     console.log('APIForPL::in cb::completed!!!');
@@ -64,10 +64,6 @@ export default class APIForPL extends Task {
             });
         }
     }
-    doneWork() {
-        super.doneWork();
-        console.log('APIForPL::doneWork');
-    }
     completed(response) {
         super.completed(response);
         console.log('APIForPL::completed');
@@ -75,6 +71,10 @@ export default class APIForPL extends Task {
     failed(err) {
         super.failed(err);
         console.log('APIForPL::failed');
+    }
+    doneWork() {
+        super.doneWork();
+        console.log('APIForPL::doneWork');
     }
 }
 //# sourceMappingURL=APIForPL.js.map

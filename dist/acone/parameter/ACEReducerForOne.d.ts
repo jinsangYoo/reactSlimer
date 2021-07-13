@@ -3,7 +3,9 @@ export declare class ACEReducerForOne {
     static getInstance(): ACEReducerForOne;
     private constructor();
     private static reducer;
-    static buy(pageName: string, callback?: (error?: object, result?: object) => void): Promise<object> | void;
-    static plWithPage(pageName: string, callback?: (error?: object, result?: object) => void): Promise<object> | void;
+    static buy(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
+    static buy(pageName: string): Promise<object>;
+    static plWithPage(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
+    static plWithPage(pageName: string): Promise<object>;
 }
 //# sourceMappingURL=ACEReducerForOne.d.ts.map
