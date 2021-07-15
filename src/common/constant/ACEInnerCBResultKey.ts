@@ -1,7 +1,6 @@
 enum ACEInnerCBResultKey {
   // positive
   Success = 200,
-  fail = 500,
 
   // negative
   AlreadyInitialized = 1000,
@@ -15,6 +14,7 @@ enum ACEInnerCBResultKey {
   DoNotGetSDKVersion = 1008,
   NeedToCheckService = 1009,
   NeedToCheckAceConfiguration = 1010,
+  NotSupportPromise = 1024,
   NotExistKey = 4404,
 }
 

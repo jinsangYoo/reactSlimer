@@ -1,16 +1,20 @@
 import {AceConfiguration} from '../../acone/aceconfiguration'
 import ACEStaticConfig from '../../common/config/ACEStaticConfig'
 import ACEParameterUtilForOne from '../parameter/ACEParameterUtilForOne'
+import IACECommonAPI from '../parameter/IACECommonAPI'
+import ACEInternalAPIForOne from '../parameter/ACEInternalAPIForOne'
 
 export default class ACEOneStaticConfig implements ACEStaticConfig {
   _debug: boolean
   _key: string
+  _commonAPI: IACECommonAPI
   private _enablePrivacyPolicy: boolean
 
   public constructor() {
     this._enablePrivacyPolicy = false
     this._debug = true
     this._key = 'empty'
+    this._commonAPI = new ACEInternalAPIForOne()
   }
 
   public configure(
@@ -37,8 +41,12 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
   getKey(): string {
     return this._key
   }
-  getCommonAPI(configuration: AceConfiguration): void {
-    throw new Error('Method not implemented.')
+  getCommonAPI(): IACECommonAPI | undefined {
+    if (this._commonAPI) {
+      return this._commonAPI
+    }
+
+    return undefined
   }
   getControlTower(configuration: AceConfiguration): void {
     throw new Error('Method not implemented.')

@@ -27,6 +27,7 @@ enum ACEResultCode {
   ResponseParamIsNull = 1021,
   FailResponseHeaderToMapType = 1022,
   NeitherDeeplinkAndPush = 1023,
+  NotSupportPromise = 1024,
 }
 
 export default ACEResultCode

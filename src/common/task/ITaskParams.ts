@@ -1,10 +1,12 @@
-import APIForTypes from '../../acone/constant/APIForTypes'
+import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne'
+
+type IDebugParams = {}
 
 type ITaskParams = {
-  type: APIForTypes
+  type: ACEofAPIForOne
   payload: object
   error: boolean
-  debugParams: object
+  debugParams: IDebugParams
 }
 
 export type {ITaskParams}

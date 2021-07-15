@@ -1,11 +1,14 @@
 import {ITaskParams} from './ITaskParams'
+import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne'
 
 export default class Task {
-  protected _logSource: number
-  protected _name: string
+  protected _logSource: ACEofAPIForOne
   protected _date: Date
 
-  protected constructor(params: ITaskParams) {}
+  protected constructor(params: ITaskParams) {
+    this._logSource = params.type
+    this._date = new Date()
+  }
 
   public doWork() {
     console.log('ITask::doWork')
@@ -29,9 +32,13 @@ export default class Task {
     console.log('ITask::failed')
   }
 
-  public getDescription() {}
+  public getDescription(): string {
+    return ACEofAPIForOne[this._logSource]
+  }
 
-  public getCreateTime() {}
+  public getCreateTime(): Date {
+    return this._date
+  }
 
   public getJSON() {}
 }

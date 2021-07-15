@@ -1,12 +1,13 @@
 import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
+import ACECONSTANT from '../../common/constant/ACEConstant'
+import {Platform} from 'react-native'
+import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
+import ACEResultCode from '../../common/constant/ACEResultCode'
+import ACEInnerCBResultKey from '../../common/constant/ACEInnerCBResultKey'
 
 export default class APIForPolicy extends Task {
-  protected _logSource: number
-  protected _name: string
-  protected _date: Date
-
   public constructor(params: ITaskParams) {
     super(params)
   }
@@ -20,14 +21,52 @@ export default class APIForPolicy extends Task {
   public didWork(callback?: ((error?: object, result?: object) => void) | undefined): Promise<object> | void {
     super.didWork()
 
-    ACENetwork.request(
-      response => {
-        this.completed(response)
-      },
-      err => {
-        this.failed(err)
-      },
-    )
+    if (global.Promise) {
+      return new Promise((resolve, reject) => {
+        ACENetwork.requestToPolicy(
+          response => {
+            console.log('APIForPolicy::in cb::completed!!!')
+            this.completed(response)
+            this.doneWork()
+            if (callback) {
+              console.log('try call cb!!')
+              callback(undefined, response)
+            } else {
+              console.log('try call resolve!!')
+              resolve(response)
+            }
+          },
+          err => {
+            console.log('APIForPolicy::in cb::failed!!!')
+            this.failed(err)
+            this.doneWork()
+            if (callback) {
+              console.log('try call cb!!')
+              callback(err, undefined)
+            } else {
+              console.log('try call reject!!')
+              reject(err)
+            }
+          },
+        )
+      })
+    } else {
+      console.log('APIForPolicy::not support promise.')
+      this.failed({
+        code: ACEInnerCBResultKey.NotSupportPromise,
+        result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotSupportPromise],
+      })
+      if (callback) {
+        console.log('try call cb!!')
+        callback(
+          {
+            code: ACEResultCode.NotSupportPromise,
+            result: ACEResultCode[ACEResultCode.NotSupportPromise],
+          },
+          undefined,
+        )
+      }
+    }
   }
 
   public doneWork() {

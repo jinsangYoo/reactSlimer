@@ -1,7 +1,7 @@
 import {ACParams} from './acparam'
 import {AceConfiguration} from './aceconfiguration'
 import ACECommonStaticConfig from '../common/config/ACECommonStaticConfig'
-import {ACEReducerForOne} from './parameter/ACEReducerForOne'
+import ACEReducerForOne from './parameter/ACEReducerForOne'
 import DeviceInfo from 'react-native-device-info'
 
 export class ACS {

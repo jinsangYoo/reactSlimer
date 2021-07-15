@@ -2,11 +2,12 @@ import {ITaskParams} from '../../common/task/ITaskParams'
 import APIForPL from './APIForPL'
 import APIForBuy from './APIForBuy'
 import TaskAdapter from '../../common/task/TaskAdapter'
-import APIForTypes from '../constant/APIForTypes'
+import ACEofAPIForOne from '../constant/ACEofAPIForOne'
+import APIForPolicy from './APIForPolicy'
 // import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
 
 // 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
-export class ACEReducerForOne {
+export default class ACEReducerForOne {
   private static instance: ACEReducerForOne
   // private emitter: ACEWorkerEventsForWorkerEmitter
 
@@ -42,12 +43,15 @@ export class ACEReducerForOne {
   ): Promise<object> | void {
     const taskAdapter = new TaskAdapter()
     switch (params.type) {
-      case APIForTypes.buy:
+      case ACEofAPIForOne.Buy:
         taskAdapter.addTask(new APIForBuy(params), callback)
         break
-      case APIForTypes.plWithPage:
+      case ACEofAPIForOne.PlWithPage:
         // ACEReducerForOne.getEmitter().emit('onStartForAPI', params)
         taskAdapter.addTask(new APIForPL(params), callback)
+        break
+      case ACEofAPIForOne.Policy:
+        taskAdapter.addTask(new APIForPolicy(params), callback)
         break
       default:
         console.log('not implementation Task.')
@@ -66,7 +70,7 @@ export class ACEReducerForOne {
     console.log('buy: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
-        type: APIForTypes.buy,
+        type: ACEofAPIForOne.Buy,
         payload: {},
         error: false,
         debugParams: {},
@@ -84,7 +88,25 @@ export class ACEReducerForOne {
     console.log('plWithPage: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
-        type: APIForTypes.plWithPage,
+        type: ACEofAPIForOne.PlWithPage,
+        payload: {},
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static policy(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void
+  public static policy(pageName: string): Promise<object>
+  public static policy(
+    pageName: string,
+    callback?: ((error?: Error, result?: object) => void) | undefined,
+  ): Promise<object> | void {
+    console.log('policy: ' + JSON.stringify(pageName))
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Policy,
         payload: {},
         error: false,
         debugParams: {},

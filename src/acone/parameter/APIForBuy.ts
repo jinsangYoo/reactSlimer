@@ -3,10 +3,6 @@ import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
 
 export default class APIForBuy extends Task {
-  protected _logSource: number
-  protected _name: string
-  protected _date: Date
-
   public constructor(params: ITaskParams) {
     super(params)
   }
@@ -20,7 +16,7 @@ export default class APIForBuy extends Task {
   public didWork(callback?: ((error?: object, result?: object) => void) | undefined): Promise<object> | void {
     super.didWork()
 
-    ACENetwork.request(
+    ACENetwork.requestToLog(
       response => {
         this.completed(response)
       },

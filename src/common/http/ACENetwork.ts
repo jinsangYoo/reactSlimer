@@ -1,9 +1,153 @@
 import axios, {AxiosRequestConfig} from 'axios'
+import {HTTP_METHOD, BASE_URL, HTTP_URL, NETWORK_MAP_KEY, ACENetworkParams} from '../constant/Network'
+import POLICY from '../constant/Policy'
+import ControlTower from '../controltower/ControlTower'
+import {NetworkMode, NetworkRequestType} from '../constant/SDKMode'
+import {mapToObject} from '../util/MapUtil'
+import ACECommonStaticConfig from '../config/ACECommonStaticConfig'
+import {Platform} from 'react-native'
+import {ACS} from '../../acone/acs'
 
 export class ACENetwork {
-  public static request(completed?: (response: object) => void, failed?: (err: object) => void): Promise<object> {
-    // console.log('ACS.send: ' + JSON.stringify(value))
+  private static networkRequestTypeToParams(requestType: NetworkRequestType): ACENetworkParams {
+    return {
+      baseUrl: this.networkRequestTypeToBaseURLs(requestType),
+      requestHeaders: this.networkRequestTypeToHeaders(requestType),
+      url: this.networkRequestTypeToURLs(requestType),
+    }
+  }
 
+  //#region base url
+  private static logToBaseURL(): string {
+    switch (ControlTower.getInstance().getNetworkMode()) {
+      case NetworkMode.COMPANY_dev:
+        return BASE_URL.COMPANY_LOCAL_LOG
+      case NetworkMode.HOME_dev:
+        return BASE_URL.HOME_LOCAL_LOG
+      case NetworkMode.Pro:
+        return BASE_URL.PRO_LOG
+    }
+  }
+
+  private static policyToBaseURL(): string {
+    switch (ControlTower.getInstance().getNetworkMode()) {
+      case NetworkMode.COMPANY_dev:
+        return BASE_URL.COMPANY_LOCAL_POLICY
+      case NetworkMode.HOME_dev:
+        return BASE_URL.HOME_LOCAL_POLICY
+      case NetworkMode.Pro:
+        return BASE_URL.PRO_POLICY
+    }
+  }
+
+  private static networkRequestTypeToBaseURLs(requestType: NetworkRequestType): string {
+    switch (requestType) {
+      case NetworkRequestType.LOG:
+        return this.logToBaseURL()
+      case NetworkRequestType.POLICY:
+        return this.policyToBaseURL()
+    }
+  }
+  //#endregion
+
+  //#region request headers
+  private static logToRequestHeaders(): Map<string, string> {
+    const _map = new Map<string, string>()
+    switch (ControlTower.getInstance().getNetworkMode()) {
+      case NetworkMode.COMPANY_dev:
+        return _map
+      case NetworkMode.HOME_dev:
+        return _map
+      case NetworkMode.Pro:
+        return _map
+    }
+  }
+
+  private static policyToRequestHeaders(): Map<string, string> {
+    const _map = new Map<string, string>()
+    switch (ControlTower.getInstance().getNetworkMode()) {
+      case NetworkMode.COMPANY_dev:
+      case NetworkMode.HOME_dev:
+      case NetworkMode.Pro:
+        _map.set(POLICY.REQUEST_APPLICATION_ID, '')
+
+        _map.set(POLICY.REQUEST_CID, ACECommonStaticConfig.getKey())
+        _map.set(POLICY.REQUEST_PLATFORM, Platform.OS)
+        _map.set(POLICY.REQUEST_SERVICE_ID, ACECommonStaticConfig.getKey())
+        _map.set(POLICY.REQUEST_TIME, new Date().valueOf().toString())
+        _map.set(POLICY.REQUEST_VERSION, ACS.SDKVersion())
+        break
+    }
+
+    return _map
+  }
+
+  private static networkRequestTypeToHeaders(requestType: NetworkRequestType): object {
+    const _map = new Map<string, object>()
+    switch (requestType) {
+      case NetworkRequestType.LOG:
+        _map.set(NETWORK_MAP_KEY.REQUEST_HEADERS, this.logToRequestHeaders())
+        break
+      case NetworkRequestType.POLICY:
+        _map.set(NETWORK_MAP_KEY.REQUEST_HEADERS, this.policyToRequestHeaders())
+        break
+    }
+
+    return mapToObject(_map)
+  }
+  //#endregion
+
+  //#region url
+  private static logToURL(): string {
+    switch (ControlTower.getInstance().getNetworkMode()) {
+      case NetworkMode.COMPANY_dev:
+        return HTTP_URL.COMPANY_LOCAL_LOG
+      case NetworkMode.HOME_dev:
+        return HTTP_URL.HOME_LOCAL_LOG
+      case NetworkMode.Pro:
+        return HTTP_URL.PRO_LOG
+    }
+  }
+
+  private static policyToURL(): string {
+    switch (ControlTower.getInstance().getNetworkMode()) {
+      case NetworkMode.COMPANY_dev:
+        return HTTP_URL.COMPANY_LOCAL_POLICY
+      case NetworkMode.HOME_dev:
+        return HTTP_URL.HOME_LOCAL_POLICY
+      case NetworkMode.Pro:
+        return HTTP_URL.PRO_POLICY
+    }
+  }
+
+  private static networkRequestTypeToURLs(requestType: NetworkRequestType): string {
+    switch (requestType) {
+      case NetworkRequestType.LOG:
+        return this.logToURL()
+      case NetworkRequestType.POLICY:
+        return this.policyToURL()
+    }
+  }
+  //#endregion
+
+  //#region request
+  public static requestToPolicy(
+    completed?: (response: object) => void,
+    failed?: (err: object) => void,
+  ): Promise<object> {
+    return ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.POLICY), completed, failed)
+  }
+
+  public static requestToLog(completed?: (response: object) => void, failed?: (err: object) => void): Promise<object> {
+    return ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.LOG), completed, failed)
+  }
+
+  private static request(
+    params: ACENetworkParams,
+    completed?: (response: object) => void,
+    failed?: (err: object) => void,
+    method: HTTP_METHOD = HTTP_METHOD.GET,
+  ): Promise<object> {
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 
     // let policyConfig: AxiosRequestConfig = {
@@ -27,17 +171,14 @@ export class ACENetwork {
     //   timeout: 1000,
     // };
 
+    // const headers =
+
     const localConfig: AxiosRequestConfig = {
-      url: 'policy',
-      method: 'get',
-      baseURL: 'http://192.168.0.18:52274',
+      url: params.url,
+      method: method,
+      baseURL: params.baseUrl,
       headers: {
-        // "Access-Control-Allow-Origin": "*",
-        // "Access-Control-Allow-Credentials": false,
-        // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-        // "Access-Control-Max-Age": 3600,
-        // "Access-Control-Allow-Headers":
-        //   "Origin, Content-Type, Authorization, Content-Length, X-Requested-With, Access-Control-Request-Methods, Access-Control-Request-Headers, access-control-allow-headers, access-control-allow-methods, access-control-allow-origin, access-control-max-age",
+        ...params.requestHeaders,
         'Content-Type': 'text/plain',
       },
       timeout: 1000,
@@ -88,23 +229,19 @@ export class ACENetwork {
         .then(response => {
           console.log('ACENetwork::success')
           if (completed) {
-            console.log('ACENetwork::try call completed!!')
             completed(response)
           } else {
-            console.log('ACENetwork::not call res, try call resolve!!')
             resolve(response)
           }
         })
         .catch(error => {
-          console.log('ACENetwork::error')
           if (failed) {
-            console.log('ACENetwork::try call failed!!')
             failed(error)
           } else {
-            console.log('ACENetwork::not call failed, try call reject!!')
             reject(error)
           }
         })
     })
   }
+  //#endregion
 }

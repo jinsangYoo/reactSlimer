@@ -816,7 +816,7 @@ export default class ACEParametersForOne extends ACEParameters {
               })
             } else {
               callback(err, {
-                code: ACEInnerCBResultKey.fail,
+                code: ACEInnerCBResultKey.NotExistKey,
                 result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotExistKey],
               })
             }
@@ -832,7 +832,7 @@ export default class ACEParametersForOne extends ACEParameters {
                 })
               } else {
                 reject({
-                  code: ACEInnerCBResultKey.fail,
+                  code: ACEInnerCBResultKey.NotExistKey,
                   result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotExistKey],
                 })
               }

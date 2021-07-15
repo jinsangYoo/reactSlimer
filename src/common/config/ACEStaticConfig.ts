@@ -1,4 +1,5 @@
 import {AceConfiguration} from '../../acone/aceconfiguration'
+import IACECommonAPI from '../../acone/parameter/IACECommonAPI'
 
 export default interface ACEStaticConfig {
   _debug: boolean
@@ -6,7 +7,7 @@ export default interface ACEStaticConfig {
   // ACEControlTower _controlTower;
   // ACEQueueManagerFactory _queueManagerFactory;
   // IACEParameterUtil _parameterUtil;
-  // IACECommonAPI _commonAPI;
+  _commonAPI: IACECommonAPI
 
   configure(configuration: AceConfiguration, callback: ((error?: Error, result?: object) => void) | undefined): void
   configure(configuration: AceConfiguration): Promise<object>
@@ -18,7 +19,7 @@ export default interface ACEStaticConfig {
   getEnablePrivacyPolicy(): boolean
   getKey(): string
 
-  getCommonAPI(configuration: AceConfiguration): void
+  getCommonAPI(): IACECommonAPI | undefined
   getControlTower(configuration: AceConfiguration): void
   getParameterUtil(configuration: AceConfiguration): void
 }
