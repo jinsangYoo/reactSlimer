@@ -791,23 +791,13 @@ export default class ACEParametersForOne extends ACEParameters {
       console.log('loadVT::not support promise.')
 
       AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
-        if (result) {
-          this.setVT(JSON.parse(result))
-        }
-
         if (callback) {
-          callback(err, {
-            result: ACOneConstantVt.KeyInStorage,
-            getValue: result,
-          })
-        }
-      })
-    } else {
-      console.log('loadVT::support promise.')
-
-      return new Promise((resolve, reject) => {
-        AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
-          if (callback) {
+          if (err) {
+            callback(err, {
+              code: ACEInnerCBResultKey.FailGetVT,
+              result: ACEInnerCBResultKey[ACEInnerCBResultKey.FailGetVT],
+            })
+          } else {
             if (result) {
               this.setST(JSON.parse(result))
               callback(err, {
@@ -820,6 +810,34 @@ export default class ACEParametersForOne extends ACEParameters {
                 result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotExistKey],
               })
             }
+          }
+        }
+      })
+    } else {
+      console.log('loadVT::support promise.')
+
+      return new Promise((resolve, reject) => {
+        AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
+          if (callback) {
+            if (err) {
+              callback(err, {
+                code: ACEInnerCBResultKey.FailGetVT,
+                result: ACEInnerCBResultKey[ACEInnerCBResultKey.FailGetVT],
+              })
+            } else {
+              if (result) {
+                this.setST(JSON.parse(result))
+                callback(err, {
+                  code: ACEInnerCBResultKey.Success,
+                  result: ACEInnerCBResultKey[ACEInnerCBResultKey.Success],
+                })
+              } else {
+                callback(err, {
+                  code: ACEInnerCBResultKey.NotExistKey,
+                  result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotExistKey],
+                })
+              }
+            }
           } else {
             if (err) {
               reject(err)
@@ -831,7 +849,7 @@ export default class ACEParametersForOne extends ACEParameters {
                   result: ACEInnerCBResultKey[ACEInnerCBResultKey.Success],
                 })
               } else {
-                reject({
+                resolve({
                   code: ACEInnerCBResultKey.NotExistKey,
                   result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotExistKey],
                 })

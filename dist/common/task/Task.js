@@ -1,5 +1,9 @@
+import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne';
 export default class Task {
-    constructor(params) { }
+    constructor(params) {
+        this._logSource = params.type;
+        this._date = new Date();
+    }
     doWork() {
         console.log('ITask::doWork');
     }
@@ -15,8 +19,12 @@ export default class Task {
     failed(err) {
         console.log('ITask::failed');
     }
-    getDescription() { }
-    getCreateTime() { }
+    getDescription() {
+        return ACEofAPIForOne[this._logSource];
+    }
+    getCreateTime() {
+        return this._date;
+    }
     getJSON() { }
 }
 //# sourceMappingURL=Task.js.map

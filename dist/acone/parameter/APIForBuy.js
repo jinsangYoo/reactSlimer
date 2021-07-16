@@ -9,7 +9,7 @@ export default class APIForBuy extends Task {
     }
     didWork(callback) {
         super.didWork();
-        ACENetwork.request(response => {
+        ACENetwork.requestToLog(response => {
             this.completed(response);
         }, err => {
             this.failed(err);

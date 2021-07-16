@@ -1,9 +1,8 @@
 import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
-import ACECONSTANT from '../../common/constant/ACEConstant'
-import {Platform} from 'react-native'
-import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
+// import ACECONSTANT from '../../common/constant/ACEConstant'
+// import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
 import ACEResultCode from '../../common/constant/ACEResultCode'
 import ACEInnerCBResultKey from '../../common/constant/ACEInnerCBResultKey'
 

@@ -23,7 +23,8 @@ declare enum ACEResultCode {
     URLParamIsNull = 1020,
     ResponseParamIsNull = 1021,
     FailResponseHeaderToMapType = 1022,
-    NeitherDeeplinkAndPush = 1023
+    NeitherDeeplinkAndPush = 1023,
+    NotSupportPromise = 1024
 }
 export default ACEResultCode;
 //# sourceMappingURL=ACEResultCode.d.ts.map

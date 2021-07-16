@@ -65,11 +65,12 @@ export class ACENetwork {
 
   private static policyToRequestHeaders(): Map<string, string> {
     const _map = new Map<string, string>()
+
     switch (ControlTower.getInstance().getNetworkMode()) {
       case NetworkMode.COMPANY_dev:
       case NetworkMode.HOME_dev:
       case NetworkMode.Pro:
-        _map.set(POLICY.REQUEST_APPLICATION_ID, '')
+        _map.set(POLICY.REQUEST_APPLICATION_ID, ACS.getPackageNameOrBundleID() ?? 'no packageName')
 
         _map.set(POLICY.REQUEST_CID, ACECommonStaticConfig.getKey())
         _map.set(POLICY.REQUEST_PLATFORM, Platform.OS)

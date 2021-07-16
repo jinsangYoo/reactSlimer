@@ -32,14 +32,37 @@ export default class ACECommonStaticConfig {
       this._staticConfigImpl = new ACEOneStaticConfig()
     }
 
-    if (this._staticConfigImpl) {
-      return this._staticConfigImpl.configure(configuration, (error?: Error, result?: object) => {
-        // callback()
+    if (callback) {
+      if (this._staticConfigImpl) {
+        this._staticConfigImpl
+          .configure(configuration)
+          .then(res => {
+            console.log(`then _staticConfigImpl.configure::res: ${JSON.stringify(res)}`)
+            callback(undefined, res)
+          })
+          .catch(err => {
+            console.log(`then _staticConfigImpl.configure::err: ${JSON.stringify(err)}`)
+            callback(err, undefined)
+          })
+      }
+    } else {
+      return new Promise((resolve, reject) => {
+        if (this._staticConfigImpl) {
+          this._staticConfigImpl
+            .configure(configuration)
+            .then(res => {
+              console.log(`then _staticConfigImpl.configure::res: ${JSON.stringify(res)}`)
+              resolve(res)
+            })
+            .catch(err => {
+              console.log(`then _staticConfigImpl.configure::err: ${JSON.stringify(err)}`)
+              reject(err)
+            })
+        }
       })
     }
   }
 
-  // private static setPlatform(value: AceConfiguration) {}
   public static isDebug(): boolean {
     if (this._staticConfigImpl) {
       return this._staticConfigImpl.isDebug()

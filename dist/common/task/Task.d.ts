@@ -1,7 +1,7 @@
 import { ITaskParams } from './ITaskParams';
+import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne';
 export default class Task {
-    protected _logSource: number;
-    protected _name: string;
+    protected _logSource: ACEofAPIForOne;
     protected _date: Date;
     protected constructor(params: ITaskParams);
     doWork(): void;
@@ -10,8 +10,8 @@ export default class Task {
     doneWork(): void;
     protected completed(response: object): void;
     protected failed(err: object): void;
-    getDescription(): void;
-    getCreateTime(): void;
+    getDescription(): string;
+    getCreateTime(): Date;
     getJSON(): void;
 }
 //# sourceMappingURL=Task.d.ts.map

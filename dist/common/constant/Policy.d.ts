@@ -1,4 +1,4 @@
-declare enum POLICY {
+declare const enum POLICY {
     REQUEST_URL = "https://policy.acecounter.com/policy",
     REQUEST_APPLICATION_ID = "CP-Application-Id",
     REQUEST_CID = "CP-Request-Cid",

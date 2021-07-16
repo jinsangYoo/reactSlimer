@@ -1,5 +1,7 @@
 import Task from '../../common/task/Task';
 import { ACENetwork } from '../../common/http/ACENetwork';
+import ACEResultCode from '../../common/constant/ACEResultCode';
+import ACEInnerCBResultKey from '../../common/constant/ACEInnerCBResultKey';
 export default class APIForPL extends Task {
     constructor(params) {
         super(params);
@@ -11,32 +13,9 @@ export default class APIForPL extends Task {
     didWork(callback) {
         super.didWork();
         console.log('APIForPL::didWork');
-        if (!global.Promise) {
-            console.log('APIForPL::not support promise.');
-            ACENetwork.request(response => {
-                console.log('APIForPL::in cb::completed!!!');
-                this.completed(response);
-                console.log('APIForPL::try doneWork 1');
-                this.doneWork();
-                if (callback) {
-                    console.log('try call cb!!');
-                    callback(undefined, response);
-                }
-            }, err => {
-                console.log('APIForPL::in cb::failed!!!');
-                this.failed(err);
-                console.log('APIForPL::try doneWork 2');
-                this.doneWork();
-                if (callback) {
-                    console.log('try call cb!!');
-                    callback(err, undefined);
-                }
-            });
-        }
-        else {
-            console.log('APIForPL::support promise.');
+        if (global.Promise) {
             return new Promise((resolve, reject) => {
-                ACENetwork.request(response => {
+                ACENetwork.requestToLog(response => {
                     console.log('APIForPL::in cb::completed!!!');
                     this.completed(response);
                     this.doneWork();
@@ -62,6 +41,20 @@ export default class APIForPL extends Task {
                     }
                 });
             });
+        }
+        else {
+            console.log('APIForPL::not support promise.');
+            this.failed({
+                code: ACEInnerCBResultKey.NotSupportPromise,
+                result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotSupportPromise],
+            });
+            if (callback) {
+                console.log('try call cb!!');
+                callback({
+                    code: ACEResultCode.NotSupportPromise,
+                    result: ACEResultCode[ACEResultCode.NotSupportPromise],
+                }, undefined);
+            }
         }
     }
     completed(response) {

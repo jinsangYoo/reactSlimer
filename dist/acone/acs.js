@@ -1,6 +1,5 @@
 import ACECommonStaticConfig from '../common/config/ACECommonStaticConfig';
-import { ACEReducerForOne } from './parameter/ACEReducerForOne';
-import DeviceInfo from 'react-native-device-info';
+import ACEReducerForOne from './parameter/ACEReducerForOne';
 export class ACS {
     static getInstance() {
         return this.instance || (this.instance = new this());
@@ -12,12 +11,16 @@ export class ACS {
         return ACECommonStaticConfig.configure(value, callback);
     }
     static send(value, callback) {
-        console.log('APP version: ' + DeviceInfo.getReadableVersion());
-        console.log('ACS.send: ' + JSON.stringify(value));
         return ACEReducerForOne.plWithPage(value.name, callback);
     }
     static SDKVersion() {
-        return '0.0.59';
+        return '0.0.66';
+    }
+    static getPackageNameOrBundleID() {
+        return this._packageNameOrBundleID;
+    }
+    static setPackageNameOrBundleID(packageNameOrBundleID) {
+        this._packageNameOrBundleID = packageNameOrBundleID;
     }
 }
 //# sourceMappingURL=acs.js.map

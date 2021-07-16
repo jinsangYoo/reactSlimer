@@ -25,6 +25,7 @@ var ACEResultCode;
     ACEResultCode[ACEResultCode["ResponseParamIsNull"] = 1021] = "ResponseParamIsNull";
     ACEResultCode[ACEResultCode["FailResponseHeaderToMapType"] = 1022] = "FailResponseHeaderToMapType";
     ACEResultCode[ACEResultCode["NeitherDeeplinkAndPush"] = 1023] = "NeitherDeeplinkAndPush";
+    ACEResultCode[ACEResultCode["NotSupportPromise"] = 1024] = "NotSupportPromise";
 })(ACEResultCode || (ACEResultCode = {}));
 export default ACEResultCode;
 //# sourceMappingURL=ACEResultCode.js.map

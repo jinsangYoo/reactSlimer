@@ -1,9 +1,10 @@
-import APIForTypes from '../../acone/constant/APIForTypes';
+import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne';
+declare type IDebugParams = {};
 declare type ITaskParams = {
-    type: APIForTypes;
+    type: ACEofAPIForOne;
     payload: object;
     error: boolean;
-    debugParams: object;
+    debugParams: IDebugParams;
 };
 export type { ITaskParams };
 //# sourceMappingURL=ITaskParams.d.ts.map

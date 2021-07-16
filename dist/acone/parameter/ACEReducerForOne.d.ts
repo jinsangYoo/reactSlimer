@@ -1,4 +1,4 @@
-export declare class ACEReducerForOne {
+export default class ACEReducerForOne {
     private static instance;
     static getInstance(): ACEReducerForOne;
     private constructor();
@@ -7,5 +7,7 @@ export declare class ACEReducerForOne {
     static buy(pageName: string): Promise<object>;
     static plWithPage(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
     static plWithPage(pageName: string): Promise<object>;
+    static policy(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
+    static policy(pageName: string): Promise<object>;
 }
 //# sourceMappingURL=ACEReducerForOne.d.ts.map

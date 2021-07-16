@@ -52,43 +52,41 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     _parametersForOne.getUDF2()
     _parametersForOne.getUDF3()
 
-    this.setNewSession()
-    this.loadVT()
-      .then(result => {
-        console.log(`then loadVT::result: ${JSON.stringify(result)}`)
-      })
-      .catch(err => {
-        console.log(`catch loadVT::err: ${JSON.stringify(err)}`)
-      })
-      .finally(() => {
-        const _vt = this.getVT()
-        console.log(`finally loadVT::_vt: ${JSON.stringify(_vt)}`)
-        this.loadUniqueKeyForSDK()
-      })
-
     this.setSTS(ACECONSTANT.ZERO)
     _parametersForOne.setADELD(false)
     _parametersForOne.setADID(ACECONSTANT.DEFAULT_ADID)
 
-    if (!global.Promise) {
-      if (callback) {
-        callback(undefined, {
-          result: 'done',
-        })
-      }
-    } else {
-      return new Promise((resolve, reject) => {
-        if (callback) {
-          callback(undefined, {
-            result: 'done',
-          })
-        } else {
+    this.setNewSession()
+    ACS.setPackageNameOrBundleID(ACEParameterUtil.getPackageNameOrBundleID())
+
+    const promiseWorkLoadVT = this.loadVT()
+    return new Promise((resolve, reject) => {
+      Promise.all([promiseWorkLoadVT])
+        .then(res => {
+          console.log(`then Promise.all::res: ${JSON.stringify(res)}`)
+          if (callback) {
+            console.log(`then Promise.all::callback is define.`)
+            callback(undefined, {
+              result: 'done',
+            })
+          }
           resolve({
             result: 'done',
           })
-        }
-      })
-    }
+        })
+        .catch(err => {
+          console.log(`catch Promise.all::err: ${JSON.stringify(err)}`)
+          if (callback) {
+            console.log(`catch Promise.all::callback is define.`)
+            callback(err, {
+              result: 'fail',
+            })
+          }
+          reject({
+            result: 'fail',
+          })
+        })
+    })
   }
 
   public isFirstLog(): boolean {

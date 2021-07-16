@@ -1,9 +1,11 @@
 import ACEParameterUtilForOne from '../parameter/ACEParameterUtilForOne';
+import ACEInternalAPIForOne from '../parameter/ACEInternalAPIForOne';
 export default class ACEOneStaticConfig {
     constructor() {
         this._enablePrivacyPolicy = false;
         this._debug = true;
         this._key = 'empty';
+        this._commonAPI = new ACEInternalAPIForOne();
     }
     configure(configuration, callback) {
         this._key = configuration.key;
@@ -22,8 +24,11 @@ export default class ACEOneStaticConfig {
     getKey() {
         return this._key;
     }
-    getCommonAPI(configuration) {
-        throw new Error('Method not implemented.');
+    getCommonAPI() {
+        if (this._commonAPI) {
+            return this._commonAPI;
+        }
+        return undefined;
     }
     getControlTower(configuration) {
         throw new Error('Method not implemented.');

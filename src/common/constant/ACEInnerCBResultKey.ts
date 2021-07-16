@@ -9,6 +9,7 @@ enum ACEInnerCBResultKey {
   ExecutorWasTerminatedAtPolicy = 1003,
   OccurredExceptionAtPolicy = 1004,
   FailAfterRequest = 1005,
+  FailGetVT = 5404,
   DoNotImplement_to_IACEParameterUtil = 1006,
   DoNotFindMethod = 1007,
   DoNotGetSDKVersion = 1008,
