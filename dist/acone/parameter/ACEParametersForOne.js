@@ -10,7 +10,7 @@ import ACEMaritalStatus from '../../common/constant/ACEMaritalStatus';
 import ACOneConstantSt from '../constant/ACOneConstantSt';
 import ACOneConstantVt from '../constant/ACOneConstantVt';
 import SESSION from '../../common/constant/Session';
-import ACEInnerCBResultKey from '../../common/constant/ACEInnerCBResultKey';
+import { ACEInnerCBResultKey } from '../../common/constant/ACEInnerCBResultKey';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class ACEParametersForOne extends ACEParameters {
     constructor() {

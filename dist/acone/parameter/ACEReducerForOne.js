@@ -45,8 +45,7 @@ export default class ACEReducerForOne {
             debugParams: {},
         }, callback);
     }
-    static policy(pageName, callback) {
-        console.log('policy: ' + JSON.stringify(pageName));
+    static policy(callback) {
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.Policy,
             payload: {},

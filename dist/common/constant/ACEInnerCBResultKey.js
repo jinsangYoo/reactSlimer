@@ -1,4 +1,4 @@
-var ACEInnerCBResultKey;
+export var ACEInnerCBResultKey;
 (function (ACEInnerCBResultKey) {
     ACEInnerCBResultKey[ACEInnerCBResultKey["Success"] = 200] = "Success";
     ACEInnerCBResultKey[ACEInnerCBResultKey["AlreadyInitialized"] = 1000] = "AlreadyInitialized";
@@ -16,5 +16,4 @@ var ACEInnerCBResultKey;
     ACEInnerCBResultKey[ACEInnerCBResultKey["NotSupportPromise"] = 1024] = "NotSupportPromise";
     ACEInnerCBResultKey[ACEInnerCBResultKey["NotExistKey"] = 4404] = "NotExistKey";
 })(ACEInnerCBResultKey || (ACEInnerCBResultKey = {}));
-export default ACEInnerCBResultKey;
 //# sourceMappingURL=ACEInnerCBResultKey.js.map

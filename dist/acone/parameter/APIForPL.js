@@ -1,7 +1,7 @@
 import Task from '../../common/task/Task';
 import { ACENetwork } from '../../common/http/ACENetwork';
 import ACEResultCode from '../../common/constant/ACEResultCode';
-import ACEInnerCBResultKey from '../../common/constant/ACEInnerCBResultKey';
+import { ACEInnerCBResultKey } from '../../common/constant/ACEInnerCBResultKey';
 export default class APIForPL extends Task {
     constructor(params) {
         super(params);

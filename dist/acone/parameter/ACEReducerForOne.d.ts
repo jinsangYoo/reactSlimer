@@ -7,7 +7,7 @@ export default class ACEReducerForOne {
     static buy(pageName: string): Promise<object>;
     static plWithPage(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
     static plWithPage(pageName: string): Promise<object>;
-    static policy(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
-    static policy(pageName: string): Promise<object>;
+    static policy(callback: ((error?: Error, result?: object) => void) | undefined): void;
+    static policy(): Promise<object>;
 }
 //# sourceMappingURL=ACEReducerForOne.d.ts.map

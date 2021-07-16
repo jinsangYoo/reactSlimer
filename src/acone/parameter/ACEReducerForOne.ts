@@ -97,13 +97,9 @@ export default class ACEReducerForOne {
     )
   }
 
-  public static policy(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void
-  public static policy(pageName: string): Promise<object>
-  public static policy(
-    pageName: string,
-    callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
-    console.log('policy: ' + JSON.stringify(pageName))
+  public static policy(callback: ((error?: Error, result?: object) => void) | undefined): void
+  public static policy(): Promise<object>
+  public static policy(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.Policy,

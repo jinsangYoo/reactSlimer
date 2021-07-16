@@ -48,27 +48,31 @@ export default class ACEParameterUtilForOne {
             Promise.all([promiseWorkLoadVT])
                 .then(res => {
                 console.log(`then Promise.all::res: ${JSON.stringify(res)}`);
+                this.getVT();
+                this.loadUniqueKeyForSDK();
                 if (callback) {
-                    console.log(`then Promise.all::callback is define.`);
                     callback(undefined, {
                         result: 'done',
                     });
                 }
-                resolve({
-                    result: 'done',
-                });
+                else {
+                    resolve({
+                        result: 'done',
+                    });
+                }
             })
                 .catch(err => {
                 console.log(`catch Promise.all::err: ${JSON.stringify(err)}`);
                 if (callback) {
-                    console.log(`catch Promise.all::callback is define.`);
                     callback(err, {
                         result: 'fail',
                     });
                 }
-                reject({
-                    result: 'fail',
-                });
+                else {
+                    reject({
+                        result: 'fail',
+                    });
+                }
             });
         });
     }

@@ -4,7 +4,7 @@ import {ACENetwork} from '../../common/http/ACENetwork'
 // import ACECONSTANT from '../../common/constant/ACEConstant'
 // import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
 import ACEResultCode from '../../common/constant/ACEResultCode'
-import ACEInnerCBResultKey from '../../common/constant/ACEInnerCBResultKey'
+import {ACEInnerCBResultKey} from '../../common/constant/ACEInnerCBResultKey'
 
 export default class APIForPolicy extends Task {
   public constructor(params: ITaskParams) {

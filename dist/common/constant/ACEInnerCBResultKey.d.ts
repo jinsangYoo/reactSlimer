@@ -1,4 +1,8 @@
-declare enum ACEInnerCBResultKey {
+export declare type ACEInnerCBResult = {
+    code: number;
+    result: string;
+};
+export declare enum ACEInnerCBResultKey {
     Success = 200,
     AlreadyInitialized = 1000,
     ExecutorNotInitAtPolicy = 1001,
@@ -15,5 +19,4 @@ declare enum ACEInnerCBResultKey {
     NotSupportPromise = 1024,
     NotExistKey = 4404
 }
-export default ACEInnerCBResultKey;
 //# sourceMappingURL=ACEInnerCBResultKey.d.ts.map

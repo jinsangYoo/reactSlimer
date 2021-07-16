@@ -34,11 +34,17 @@ export default class ACECommonStaticConfig {
 
     if (callback) {
       if (this._staticConfigImpl) {
+        const _commonAPI = this._staticConfigImpl.getCommonAPI()
         this._staticConfigImpl
           .configure(configuration)
           .then(res => {
-            console.log(`then _staticConfigImpl.configure::res: ${JSON.stringify(res)}`)
-            callback(undefined, res)
+            console.log(`in cb::then _staticConfigImpl.configure::res: ${JSON.stringify(res)}`)
+            if (_commonAPI) {
+              _commonAPI.requestPolicy().then(resForPolicy => {
+                console.log(`in cb::then _commonAPI.requestPolicy::resForPolicy: ${JSON.stringify(resForPolicy)}`)
+                callback(undefined, res)
+              })
+            }
           })
           .catch(err => {
             console.log(`then _staticConfigImpl.configure::err: ${JSON.stringify(err)}`)
@@ -48,11 +54,17 @@ export default class ACECommonStaticConfig {
     } else {
       return new Promise((resolve, reject) => {
         if (this._staticConfigImpl) {
+          const _commonAPI = this._staticConfigImpl.getCommonAPI()
           this._staticConfigImpl
             .configure(configuration)
             .then(res => {
               console.log(`then _staticConfigImpl.configure::res: ${JSON.stringify(res)}`)
-              resolve(res)
+              if (_commonAPI) {
+                _commonAPI.requestPolicy().then(resForPolicy => {
+                  console.log(`then _commonAPI.requestPolicy::resForPolicy: ${JSON.stringify(resForPolicy)}`)
+                  resolve(resForPolicy)
+                })
+              }
             })
             .catch(err => {
               console.log(`then _staticConfigImpl.configure::err: ${JSON.stringify(err)}`)

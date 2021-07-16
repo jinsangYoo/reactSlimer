@@ -1,4 +1,9 @@
-enum ACEInnerCBResultKey {
+export type ACEInnerCBResult = {
+  code: number
+  result: string
+}
+
+export enum ACEInnerCBResultKey {
   // positive
   Success = 200,
 
@@ -18,5 +23,3 @@ enum ACEInnerCBResultKey {
   NotSupportPromise = 1024,
   NotExistKey = 4404,
 }
-
-export default ACEInnerCBResultKey

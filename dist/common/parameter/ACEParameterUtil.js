@@ -7,8 +7,5 @@ export default class ACEParameterUtil {
     static getPackageNameOrBundleID() {
         return DeviceInfo.getBundleId();
     }
-    static getPackageNameOrBundleID222222() {
-        return DeviceInfo.getInstallerPackageName();
-    }
 }
 //# sourceMappingURL=ACEParameterUtil.js.map
