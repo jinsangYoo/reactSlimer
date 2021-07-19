@@ -3,7 +3,7 @@ import {AxiosResponse} from 'axios'
 export default class ACENetworkResult {
   private _responseCode: number
   private _responseBody: string
-  private _responseHeaders: Map<String, String>
+  private _responseHeaders: Map<string, string>
 
   public constructor(response: AxiosResponse) {
     this._responseCode = response.status
@@ -19,7 +19,7 @@ export default class ACENetworkResult {
     return this._responseBody
   }
 
-  public getHeaders(): Map<String, String> {
+  public getHeaders(): Map<string, string> {
     return this._responseHeaders
   }
 }

@@ -3,11 +3,15 @@ import ACEStaticConfig from '../../common/config/ACEStaticConfig'
 import ACEParameterUtilForOne from '../parameter/ACEParameterUtilForOne'
 import IACECommonAPI from '../parameter/IACECommonAPI'
 import ACEInternalAPIForOne from '../parameter/ACEInternalAPIForOne'
+import IACEParameterUtil from '../../common/parameter/IACEParameterUtil'
+import ControlTower from '../../common/controltower/ControlTower'
+import ACEControlTowerForOne from '../controltower.ts/ACEControlTowerForOne'
 
 export default class ACEOneStaticConfig implements ACEStaticConfig {
   _debug: boolean
   _key: string
   _commonAPI: IACECommonAPI
+  _controlTower: ControlTower
   private _enablePrivacyPolicy: boolean
 
   public constructor() {
@@ -15,6 +19,7 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
     this._debug = true
     this._key = 'empty'
     this._commonAPI = new ACEInternalAPIForOne()
+    this._controlTower = new ACEControlTowerForOne()
   }
 
   public configure(
@@ -48,10 +53,14 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
 
     return undefined
   }
-  getControlTower(configuration: AceConfiguration): void {
-    throw new Error('Method not implemented.')
+  getControlTower(): ControlTower | undefined {
+    if (this._controlTower) {
+      return this._controlTower
+    }
+
+    return undefined
   }
-  getParameterUtil(configuration: AceConfiguration): void {
-    throw new Error('Method not implemented.')
+  getParameterUtil(): IACEParameterUtil | undefined {
+    return ACEParameterUtilForOne.getInstance()
   }
 }

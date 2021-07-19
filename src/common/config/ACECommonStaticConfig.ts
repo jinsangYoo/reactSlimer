@@ -5,6 +5,7 @@ import ACEOneStaticConfig from '../../acone/config/ACEOneStaticConfig'
 import ACECONSTANT from '../constant/ACEConstant'
 import ControlTower from '../controltower/ControlTower'
 import {SDKMode, NetworkMode} from '../constant/SDKMode'
+import IACEParameterUtil from '../parameter/IACEParameterUtil'
 
 export default class ACECommonStaticConfig {
   private static _staticConfigImpl: ACEStaticConfig
@@ -19,9 +20,6 @@ export default class ACECommonStaticConfig {
     configuration: AceConfiguration,
     callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
-    ControlTower.getInstance().setSDKMode(SDKMode.development)
-    ControlTower.getInstance().setNetworkMode(NetworkMode.HOME_dev)
-
     console.log('NHN ACE SDK version: ' + ACS.SDKVersion())
     console.log('AceConfiguration information: ' + JSON.stringify(configuration))
 
@@ -31,6 +29,9 @@ export default class ACECommonStaticConfig {
     if (ACECommonStaticConfig._platform === AceConfiguration.PLATFORM.DEFAULT) {
       this._staticConfigImpl = new ACEOneStaticConfig()
     }
+
+    ControlTower.setDevSDKMode()
+    ControlTower.setHomeDevNetworkMode()
 
     if (callback) {
       if (this._staticConfigImpl) {
@@ -97,5 +98,21 @@ export default class ACECommonStaticConfig {
     }
 
     return ACECONSTANT.EMPTY
+  }
+
+  public static getParameterUtil(): IACEParameterUtil | undefined {
+    if (this._staticConfigImpl) {
+      return this._staticConfigImpl.getParameterUtil()
+    }
+
+    return undefined
+  }
+
+  public static getControlTower(): ControlTower | undefined {
+    if (this._staticConfigImpl) {
+      return this._staticConfigImpl.getControlTower()
+    }
+
+    return undefined
   }
 }

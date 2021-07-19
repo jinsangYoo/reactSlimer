@@ -7,5 +7,7 @@ export default interface IACEParameterUtil {
   setKeepSession(): void
   setNewSession(): void
 
+  setterForString(key: string, value: string): void
+
   getSdkDetails(json: JSON): void
 }

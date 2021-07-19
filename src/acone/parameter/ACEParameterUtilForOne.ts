@@ -208,4 +208,6 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback)
   }
   // #endregion
+
+  public setterForString(key: string, value: string): void {}
 }

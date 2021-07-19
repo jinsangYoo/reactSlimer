@@ -3,7 +3,7 @@ import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
 import {AxiosResponse} from 'axios'
 // import ACECONSTANT from '../../common/constant/ACEConstant'
-// import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
+import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
 import ACEResultCode from '../../common/constant/ACEResultCode'
 import {ACEInnerCBResultKey} from '../../common/constant/ACEInnerCBResultKey'
 
@@ -75,7 +75,7 @@ export default class APIForPolicy extends Task {
 
   public completed(response: AxiosResponse) {
     super.completed(response)
-    console.log(`APIForPolicy::completed::_response: ${JSON.stringify(this._response)}`)
+    ACEPolicyParameterUtil.getInstance().savePolicy(this._response)
   }
 
   public failed(err: object) {

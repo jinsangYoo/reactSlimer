@@ -1,12 +1,13 @@
 import {AceConfiguration} from '../../acone/aceconfiguration'
 import IACECommonAPI from '../../acone/parameter/IACECommonAPI'
+import IACEParameterUtil from '../parameter/IACEParameterUtil'
+import ControlTower from '../controltower/ControlTower'
 
 export default interface ACEStaticConfig {
   _debug: boolean
   _key: string
-  // ACEControlTower _controlTower;
+  _controlTower: ControlTower
   // ACEQueueManagerFactory _queueManagerFactory;
-  // IACEParameterUtil _parameterUtil;
   _commonAPI: IACECommonAPI
 
   configure(configuration: AceConfiguration, callback: ((error?: Error, result?: object) => void) | undefined): void
@@ -19,7 +20,7 @@ export default interface ACEStaticConfig {
   getEnablePrivacyPolicy(): boolean
   getKey(): string
 
+  getParameterUtil(): IACEParameterUtil | undefined
   getCommonAPI(): IACECommonAPI | undefined
-  getControlTower(configuration: AceConfiguration): void
-  getParameterUtil(configuration: AceConfiguration): void
+  getControlTower(): ControlTower | undefined
 }

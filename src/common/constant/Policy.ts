@@ -24,7 +24,6 @@ const enum POLICY {
   RESPONSE_PRIVATE = 'Cp-Private',
   RESPONSE_SDK_ENABLE = 'Cp-Allow',
   RESPONSE_SOURCE_IP = 'Cp-Source-Ip',
-  RESPONSE_TIME_INTERVAL = 'Cp-Time-Interval',
   RESPONSE_TOAST_APPKEY = 'Cp-LNC-Id',
 
   FLAG_ACELOG_GATHERING = '1', // cpDebug

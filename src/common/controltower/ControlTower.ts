@@ -1,17 +1,13 @@
 import {SDKMode, NetworkMode} from '../constant/SDKMode'
+import ACECommonStaticConfig from '../config/ACECommonStaticConfig'
 
 export default class ControlTower {
-  private static instance: ControlTower
-  private _sdk_mode: SDKMode
-  private _network_mode: NetworkMode
+  protected _sdk_mode: SDKMode
+  protected _network_mode: NetworkMode
 
-  private constructor() {
+  public constructor() {
     this._sdk_mode = SDKMode.development
     this._network_mode = NetworkMode.COMPANY_dev
-  }
-
-  public static getInstance(): ControlTower {
-    return this.instance || (this.instance = new this())
   }
 
   public getSDKMode(): SDKMode {
@@ -35,4 +31,49 @@ export default class ControlTower {
   public setNetworkMode(value: NetworkMode): void {
     this._network_mode = value
   }
+
+  public enableForceStop(): void {}
+
+  //#region static
+  public static setDevSDKMode(): void {
+    const _controlTower = ACECommonStaticConfig.getControlTower()
+    if (_controlTower) {
+      _controlTower.setSDKMode(SDKMode.development)
+    }
+  }
+
+  public static setProductionSDKMode(): void {
+    const _controlTower = ACECommonStaticConfig.getControlTower()
+    if (_controlTower) {
+      _controlTower.setSDKMode(SDKMode.production)
+    }
+  }
+
+  public static getDefaultNetworkMode(): NetworkMode {
+    return NetworkMode.COMPANY_dev
+  }
+
+  public static getNetworkMode(): NetworkMode {
+    const _controlTower = ACECommonStaticConfig.getControlTower()
+    if (_controlTower) {
+      return _controlTower.getNetworkMode()
+    } else {
+      return ControlTower.getDefaultNetworkMode()
+    }
+  }
+
+  public static setHomeDevNetworkMode(): void {
+    const _controlTower = ACECommonStaticConfig.getControlTower()
+    if (_controlTower) {
+      _controlTower.setNetworkMode(NetworkMode.HOME_dev)
+    }
+  }
+
+  public static enableForceStop(): void {
+    const _controlTower = ACECommonStaticConfig.getControlTower()
+    if (_controlTower) {
+      _controlTower.enableForceStop()
+    }
+  }
+  //#endregion
 }

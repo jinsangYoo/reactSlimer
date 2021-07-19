@@ -26,3 +26,7 @@ export type ACENetworkParams = {
   requestHeaders: Map<string, string>
   url: string
 }
+
+export enum HttpURLConnection {
+  HTTP_OK = 200,
+}

@@ -1,25 +1,26 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
 import {HTTP_METHOD, BASE_URL, HTTP_URL, ACENetworkParams} from '../constant/Network'
 import POLICY from '../constant/Policy'
-import ControlTower from '../controltower/ControlTower'
 import {NetworkMode, NetworkRequestType} from '../constant/SDKMode'
 import ACECommonStaticConfig from '../config/ACECommonStaticConfig'
 import {Platform} from 'react-native'
 import {ACS} from '../../acone/acs'
 import {mapValueStringToObject} from '../util/MapUtil'
+import ControlTower from '../controltower/ControlTower'
 
 export class ACENetwork {
   private static networkRequestTypeToParams(requestType: NetworkRequestType): ACENetworkParams {
+    const currentNetworkMode = ControlTower.getNetworkMode()
     return {
-      baseUrl: this.networkRequestTypeToBaseURLs(requestType),
-      requestHeaders: this.networkRequestTypeToHeaders(requestType),
-      url: this.networkRequestTypeToURLs(requestType),
+      baseUrl: this.networkRequestTypeToBaseURLs(currentNetworkMode, requestType),
+      requestHeaders: this.networkRequestTypeToHeaders(currentNetworkMode, requestType),
+      url: this.networkRequestTypeToURLs(currentNetworkMode, requestType),
     }
   }
 
   //#region base url
-  private static logToBaseURL(): string {
-    switch (ControlTower.getInstance().getNetworkMode()) {
+  private static logToBaseURL(networkMode: NetworkMode): string {
+    switch (networkMode) {
       case NetworkMode.COMPANY_dev:
         return BASE_URL.COMPANY_LOCAL_LOG
       case NetworkMode.HOME_dev:
@@ -29,8 +30,8 @@ export class ACENetwork {
     }
   }
 
-  private static policyToBaseURL(): string {
-    switch (ControlTower.getInstance().getNetworkMode()) {
+  private static policyToBaseURL(networkMode: NetworkMode): string {
+    switch (networkMode) {
       case NetworkMode.COMPANY_dev:
         return BASE_URL.COMPANY_LOCAL_POLICY
       case NetworkMode.HOME_dev:
@@ -40,20 +41,20 @@ export class ACENetwork {
     }
   }
 
-  private static networkRequestTypeToBaseURLs(requestType: NetworkRequestType): string {
+  private static networkRequestTypeToBaseURLs(networkMode: NetworkMode, requestType: NetworkRequestType): string {
     switch (requestType) {
       case NetworkRequestType.LOG:
-        return this.logToBaseURL()
+        return this.logToBaseURL(networkMode)
       case NetworkRequestType.POLICY:
-        return this.policyToBaseURL()
+        return this.policyToBaseURL(networkMode)
     }
   }
   //#endregion
 
   //#region request headers
-  private static logToRequestHeaders(): Map<string, string> {
+  private static logToRequestHeaders(networkMode: NetworkMode): Map<string, string> {
     const _map = new Map<string, string>()
-    switch (ControlTower.getInstance().getNetworkMode()) {
+    switch (networkMode) {
       case NetworkMode.COMPANY_dev:
         return _map
       case NetworkMode.HOME_dev:
@@ -63,10 +64,10 @@ export class ACENetwork {
     }
   }
 
-  private static policyToRequestHeaders(): Map<string, string> {
+  private static policyToRequestHeaders(networkMode: NetworkMode): Map<string, string> {
     const _map = new Map<string, string>()
 
-    switch (ControlTower.getInstance().getNetworkMode()) {
+    switch (networkMode) {
       case NetworkMode.COMPANY_dev:
       case NetworkMode.HOME_dev:
       case NetworkMode.Pro:
@@ -83,19 +84,22 @@ export class ACENetwork {
     return _map
   }
 
-  private static networkRequestTypeToHeaders(requestType: NetworkRequestType): Map<string, string> {
+  private static networkRequestTypeToHeaders(
+    networkMode: NetworkMode,
+    requestType: NetworkRequestType,
+  ): Map<string, string> {
     switch (requestType) {
       case NetworkRequestType.LOG:
-        return this.logToRequestHeaders()
+        return this.logToRequestHeaders(networkMode)
       case NetworkRequestType.POLICY:
-        return this.policyToRequestHeaders()
+        return this.policyToRequestHeaders(networkMode)
     }
   }
   //#endregion
 
   //#region url
-  private static logToURL(): string {
-    switch (ControlTower.getInstance().getNetworkMode()) {
+  private static logToURL(networkMode: NetworkMode): string {
+    switch (networkMode) {
       case NetworkMode.COMPANY_dev:
         return HTTP_URL.COMPANY_LOCAL_LOG
       case NetworkMode.HOME_dev:
@@ -105,8 +109,8 @@ export class ACENetwork {
     }
   }
 
-  private static policyToURL(): string {
-    switch (ControlTower.getInstance().getNetworkMode()) {
+  private static policyToURL(networkMode: NetworkMode): string {
+    switch (networkMode) {
       case NetworkMode.COMPANY_dev:
         return HTTP_URL.COMPANY_LOCAL_POLICY
       case NetworkMode.HOME_dev:
@@ -116,12 +120,12 @@ export class ACENetwork {
     }
   }
 
-  private static networkRequestTypeToURLs(requestType: NetworkRequestType): string {
+  private static networkRequestTypeToURLs(networkMode: NetworkMode, requestType: NetworkRequestType): string {
     switch (requestType) {
       case NetworkRequestType.LOG:
-        return this.logToURL()
+        return this.logToURL(networkMode)
       case NetworkRequestType.POLICY:
-        return this.policyToURL()
+        return this.policyToURL(networkMode)
     }
   }
   //#endregion
@@ -151,7 +155,6 @@ export class ACENetwork {
     axios.defaults.headers.common['Content-Type'] = 'text/plain'
 
     const requestHeaders = mapValueStringToObject(params.requestHeaders)
-    console.log('params.requestHeaders: ' + JSON.stringify(requestHeaders))
     const requestConfig: AxiosRequestConfig = {
       url: params.url,
       method: method,
