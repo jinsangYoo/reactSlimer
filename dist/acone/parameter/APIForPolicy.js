@@ -60,6 +60,7 @@ export default class APIForPolicy extends Task {
     }
     completed(response) {
         super.completed(response);
+        console.log(`APIForPolicy::completed::_response: ${JSON.stringify(this._response)}`);
     }
     failed(err) {
         super.failed(err);

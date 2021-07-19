@@ -1,6 +1,7 @@
 import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
+import {AxiosResponse} from 'axios'
 import ACEResultCode from '../../common/constant/ACEResultCode'
 import {ACEInnerCBResultKey} from '../../common/constant/ACEInnerCBResultKey'
 
@@ -68,7 +69,7 @@ export default class APIForPL extends Task {
     }
   }
 
-  public completed(response: object) {
+  public completed(response: AxiosResponse) {
     super.completed(response)
     console.log('APIForPL::completed')
   }

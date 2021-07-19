@@ -18,14 +18,9 @@ export declare enum HTTP_URL {
     PRO_LOG = "mac",
     PRO_POLICY = "policy"
 }
-export declare enum NETWORK_MAP_KEY {
-    BASE_URL = "baseUrl",
-    REQUEST_HEADERS = "requestHeaders",
-    URL = "url"
-}
 export declare type ACENetworkParams = {
     baseUrl: string;
-    requestHeaders: object;
+    requestHeaders: Map<string, string>;
     url: string;
 };
 //# sourceMappingURL=Network.d.ts.map

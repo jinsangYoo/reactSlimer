@@ -1,4 +1,5 @@
 import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne';
+import ACENetworkResult from '../http/ACENetworkResult';
 export default class Task {
     constructor(params) {
         this._logSource = params.type;
@@ -14,7 +15,7 @@ export default class Task {
         console.log('ITask::doneWork');
     }
     completed(response) {
-        console.log('ITask::completed');
+        this._response = new ACENetworkResult(response);
     }
     failed(err) {
         console.log('ITask::failed');

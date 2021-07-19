@@ -6,4 +6,6 @@ export default class ACEPolicyParameterUtil {
   }
 
   private constructor() {}
+
+  public savePolicy() {}
 }

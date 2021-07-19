@@ -21,10 +21,4 @@ export var HTTP_URL;
     HTTP_URL["PRO_LOG"] = "mac";
     HTTP_URL["PRO_POLICY"] = "policy";
 })(HTTP_URL || (HTTP_URL = {}));
-export var NETWORK_MAP_KEY;
-(function (NETWORK_MAP_KEY) {
-    NETWORK_MAP_KEY["BASE_URL"] = "baseUrl";
-    NETWORK_MAP_KEY["REQUEST_HEADERS"] = "requestHeaders";
-    NETWORK_MAP_KEY["URL"] = "url";
-})(NETWORK_MAP_KEY || (NETWORK_MAP_KEY = {}));
 //# sourceMappingURL=Network.js.map

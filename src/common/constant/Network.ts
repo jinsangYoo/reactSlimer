@@ -21,14 +21,8 @@ export enum HTTP_URL {
   PRO_POLICY = 'policy',
 }
 
-export enum NETWORK_MAP_KEY {
-  BASE_URL = 'baseUrl',
-  REQUEST_HEADERS = 'requestHeaders',
-  URL = 'url',
-}
-
 export type ACENetworkParams = {
   baseUrl: string
-  requestHeaders: object
+  requestHeaders: Map<string, string>
   url: string
 }

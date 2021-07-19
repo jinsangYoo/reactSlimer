@@ -1,6 +1,7 @@
 import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
+import {AxiosResponse} from 'axios'
 // import ACECONSTANT from '../../common/constant/ACEConstant'
 // import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
 import ACEResultCode from '../../common/constant/ACEResultCode'
@@ -72,8 +73,9 @@ export default class APIForPolicy extends Task {
     super.doneWork()
   }
 
-  public completed(response: object) {
+  public completed(response: AxiosResponse) {
     super.completed(response)
+    console.log(`APIForPolicy::completed::_response: ${JSON.stringify(this._response)}`)
   }
 
   public failed(err: object) {

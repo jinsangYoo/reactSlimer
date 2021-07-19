@@ -1,6 +1,7 @@
 import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
+import {AxiosResponse} from 'axios'
 
 export default class APIForBuy extends Task {
   public constructor(params: ITaskParams) {
@@ -30,7 +31,7 @@ export default class APIForBuy extends Task {
     super.doneWork()
   }
 
-  public completed(response: object) {
+  public completed(response: AxiosResponse) {
     super.completed(response)
   }
 

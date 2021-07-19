@@ -14,7 +14,7 @@ export class ACS {
         return ACEReducerForOne.plWithPage(value.name, callback);
     }
     static SDKVersion() {
-        return '0.0.71';
+        return '0.0.75';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;

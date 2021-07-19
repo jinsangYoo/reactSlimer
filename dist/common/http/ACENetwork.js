@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { HTTP_METHOD, BASE_URL, HTTP_URL, NETWORK_MAP_KEY } from '../constant/Network';
+import { HTTP_METHOD, BASE_URL, HTTP_URL } from '../constant/Network';
 import ControlTower from '../controltower/ControlTower';
 import { NetworkMode, NetworkRequestType } from '../constant/SDKMode';
-import { mapToObject } from '../util/MapUtil';
 import ACECommonStaticConfig from '../config/ACECommonStaticConfig';
 import { Platform } from 'react-native';
 import { ACS } from '../../acone/acs';
+import { mapValueStringToObject } from '../util/MapUtil';
 export class ACENetwork {
     static networkRequestTypeToParams(requestType) {
         return {
@@ -71,16 +71,12 @@ export class ACENetwork {
         return _map;
     }
     static networkRequestTypeToHeaders(requestType) {
-        const _map = new Map();
         switch (requestType) {
             case NetworkRequestType.LOG:
-                _map.set(NETWORK_MAP_KEY.REQUEST_HEADERS, this.logToRequestHeaders());
-                break;
+                return this.logToRequestHeaders();
             case NetworkRequestType.POLICY:
-                _map.set(NETWORK_MAP_KEY.REQUEST_HEADERS, this.policyToRequestHeaders());
-                break;
+                return this.policyToRequestHeaders();
         }
-        return mapToObject(_map);
     }
     static logToURL() {
         switch (ControlTower.getInstance().getNetworkMode()) {
@@ -118,19 +114,21 @@ export class ACENetwork {
     }
     static request(params, completed, failed, method = HTTP_METHOD.GET) {
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-        const localConfig = {
+        axios.defaults.headers.common['Content-Type'] = 'text/plain';
+        const requestHeaders = mapValueStringToObject(params.requestHeaders);
+        console.log('params.requestHeaders: ' + JSON.stringify(requestHeaders));
+        const requestConfig = {
             url: params.url,
             method: method,
             baseURL: params.baseUrl,
-            headers: Object.assign(Object.assign({}, params.requestHeaders), { 'Content-Type': 'text/plain' }),
+            headers: requestHeaders,
             timeout: 1000,
         };
         return new Promise((resolve, reject) => {
             axios
                 .create()
-                .request(localConfig)
+                .request(requestConfig)
                 .then(response => {
-                console.log('ACENetwork::success');
                 if (completed) {
                     completed(response);
                 }

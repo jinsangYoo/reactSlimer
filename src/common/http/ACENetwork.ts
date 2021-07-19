@@ -1,12 +1,12 @@
-import axios, {AxiosRequestConfig} from 'axios'
-import {HTTP_METHOD, BASE_URL, HTTP_URL, NETWORK_MAP_KEY, ACENetworkParams} from '../constant/Network'
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
+import {HTTP_METHOD, BASE_URL, HTTP_URL, ACENetworkParams} from '../constant/Network'
 import POLICY from '../constant/Policy'
 import ControlTower from '../controltower/ControlTower'
 import {NetworkMode, NetworkRequestType} from '../constant/SDKMode'
-import {mapToObject} from '../util/MapUtil'
 import ACECommonStaticConfig from '../config/ACECommonStaticConfig'
 import {Platform} from 'react-native'
 import {ACS} from '../../acone/acs'
+import {mapValueStringToObject} from '../util/MapUtil'
 
 export class ACENetwork {
   private static networkRequestTypeToParams(requestType: NetworkRequestType): ACENetworkParams {
@@ -83,18 +83,13 @@ export class ACENetwork {
     return _map
   }
 
-  private static networkRequestTypeToHeaders(requestType: NetworkRequestType): object {
-    const _map = new Map<string, object>()
+  private static networkRequestTypeToHeaders(requestType: NetworkRequestType): Map<string, string> {
     switch (requestType) {
       case NetworkRequestType.LOG:
-        _map.set(NETWORK_MAP_KEY.REQUEST_HEADERS, this.logToRequestHeaders())
-        break
+        return this.logToRequestHeaders()
       case NetworkRequestType.POLICY:
-        _map.set(NETWORK_MAP_KEY.REQUEST_HEADERS, this.policyToRequestHeaders())
-        break
+        return this.policyToRequestHeaders()
     }
-
-    return mapToObject(_map)
   }
   //#endregion
 
@@ -133,55 +128,35 @@ export class ACENetwork {
 
   //#region request
   public static requestToPolicy(
-    completed?: (response: object) => void,
+    completed?: (response: AxiosResponse) => void,
     failed?: (err: object) => void,
   ): Promise<object> {
     return ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.POLICY), completed, failed)
   }
 
-  public static requestToLog(completed?: (response: object) => void, failed?: (err: object) => void): Promise<object> {
+  public static requestToLog(
+    completed?: (response: AxiosResponse) => void,
+    failed?: (err: object) => void,
+  ): Promise<object> {
     return ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.LOG), completed, failed)
   }
 
   private static request(
     params: ACENetworkParams,
-    completed?: (response: object) => void,
+    completed?: (response: AxiosResponse) => void,
     failed?: (err: object) => void,
     method: HTTP_METHOD = HTTP_METHOD.GET,
   ): Promise<object> {
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+    axios.defaults.headers.common['Content-Type'] = 'text/plain'
 
-    // let policyConfig: AxiosRequestConfig = {
-    //   url: "policy",
-    //   method: "get",
-    //   baseURL: "https://policy.acecounter.com",
-    //   headers: {
-    //     "Access-Control-Allow-Origin": "*",
-    //     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-    //     "Access-Control-Allow-Headers":
-    //       "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With",
-    //     "Content-Type": "application/json",
-    //     crossdomain: true,
-
-    //     "CP-Request-Version": "00.00.01",
-    //     "CP-Request-Cid": "1543932249276699286",
-    //     "CP-Request-Time": "1543933205978",
-    //     "CP-Request-Platform": "ts",
-    //     "CP-Request-ID": "AK2A79936",
-    //   },
-    //   timeout: 1000,
-    // };
-
-    // const headers =
-
-    const localConfig: AxiosRequestConfig = {
+    const requestHeaders = mapValueStringToObject(params.requestHeaders)
+    console.log('params.requestHeaders: ' + JSON.stringify(requestHeaders))
+    const requestConfig: AxiosRequestConfig = {
       url: params.url,
       method: method,
       baseURL: params.baseUrl,
-      headers: {
-        ...params.requestHeaders,
-        'Content-Type': 'text/plain',
-      },
+      headers: requestHeaders,
       timeout: 1000,
     }
 
@@ -225,10 +200,8 @@ export class ACENetwork {
     return new Promise((resolve, reject) => {
       axios
         .create()
-        .request(localConfig)
-        // .request(collectorConfig)
+        .request(requestConfig)
         .then(response => {
-          console.log('ACENetwork::success')
           if (completed) {
             completed(response)
           } else {

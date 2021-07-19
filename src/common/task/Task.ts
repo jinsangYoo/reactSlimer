@@ -1,9 +1,12 @@
 import {ITaskParams} from './ITaskParams'
 import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne'
+import {AxiosResponse} from 'axios'
+import ACENetworkResult from '../http/ACENetworkResult'
 
 export default class Task {
   protected _logSource: ACEofAPIForOne
   protected _date: Date
+  protected _response: ACENetworkResult
 
   protected constructor(params: ITaskParams) {
     this._logSource = params.type
@@ -24,8 +27,8 @@ export default class Task {
     console.log('ITask::doneWork')
   }
 
-  protected completed(response: object) {
-    console.log('ITask::completed')
+  protected completed(response: AxiosResponse) {
+    this._response = new ACENetworkResult(response)
   }
 
   protected failed(err: object) {
