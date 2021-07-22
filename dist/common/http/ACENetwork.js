@@ -1,21 +1,22 @@
 import axios from 'axios';
 import { HTTP_METHOD, BASE_URL, HTTP_URL } from '../constant/Network';
-import ControlTower from '../controltower/ControlTower';
 import { NetworkMode, NetworkRequestType } from '../constant/SDKMode';
 import ACECommonStaticConfig from '../config/ACECommonStaticConfig';
 import { Platform } from 'react-native';
 import { ACS } from '../../acone/acs';
 import { mapValueStringToObject } from '../util/MapUtil';
+import ControlTowerSingleton from '../controltower/ControlTowerSingleton';
 export class ACENetwork {
     static networkRequestTypeToParams(requestType) {
+        const currentNetworkMode = ControlTowerSingleton.getInstance().getNetworkMode();
         return {
-            baseUrl: this.networkRequestTypeToBaseURLs(requestType),
-            requestHeaders: this.networkRequestTypeToHeaders(requestType),
-            url: this.networkRequestTypeToURLs(requestType),
+            baseUrl: this.networkRequestTypeToBaseURLs(currentNetworkMode, requestType),
+            requestHeaders: this.networkRequestTypeToHeaders(currentNetworkMode, requestType),
+            url: this.networkRequestTypeToURLs(currentNetworkMode, requestType),
         };
     }
-    static logToBaseURL() {
-        switch (ControlTower.getInstance().getNetworkMode()) {
+    static logToBaseURL(networkMode) {
+        switch (networkMode) {
             case NetworkMode.COMPANY_dev:
                 return BASE_URL.COMPANY_LOCAL_LOG;
             case NetworkMode.HOME_dev:
@@ -24,8 +25,8 @@ export class ACENetwork {
                 return BASE_URL.PRO_LOG;
         }
     }
-    static policyToBaseURL() {
-        switch (ControlTower.getInstance().getNetworkMode()) {
+    static policyToBaseURL(networkMode) {
+        switch (networkMode) {
             case NetworkMode.COMPANY_dev:
                 return BASE_URL.COMPANY_LOCAL_POLICY;
             case NetworkMode.HOME_dev:
@@ -34,17 +35,17 @@ export class ACENetwork {
                 return BASE_URL.PRO_POLICY;
         }
     }
-    static networkRequestTypeToBaseURLs(requestType) {
+    static networkRequestTypeToBaseURLs(networkMode, requestType) {
         switch (requestType) {
             case NetworkRequestType.LOG:
-                return this.logToBaseURL();
+                return this.logToBaseURL(networkMode);
             case NetworkRequestType.POLICY:
-                return this.policyToBaseURL();
+                return this.policyToBaseURL(networkMode);
         }
     }
-    static logToRequestHeaders() {
+    static logToRequestHeaders(networkMode) {
         const _map = new Map();
-        switch (ControlTower.getInstance().getNetworkMode()) {
+        switch (networkMode) {
             case NetworkMode.COMPANY_dev:
                 return _map;
             case NetworkMode.HOME_dev:
@@ -53,10 +54,10 @@ export class ACENetwork {
                 return _map;
         }
     }
-    static policyToRequestHeaders() {
+    static policyToRequestHeaders(networkMode) {
         var _a;
         const _map = new Map();
-        switch (ControlTower.getInstance().getNetworkMode()) {
+        switch (networkMode) {
             case NetworkMode.COMPANY_dev:
             case NetworkMode.HOME_dev:
             case NetworkMode.Pro:
@@ -70,16 +71,16 @@ export class ACENetwork {
         }
         return _map;
     }
-    static networkRequestTypeToHeaders(requestType) {
+    static networkRequestTypeToHeaders(networkMode, requestType) {
         switch (requestType) {
             case NetworkRequestType.LOG:
-                return this.logToRequestHeaders();
+                return this.logToRequestHeaders(networkMode);
             case NetworkRequestType.POLICY:
-                return this.policyToRequestHeaders();
+                return this.policyToRequestHeaders(networkMode);
         }
     }
-    static logToURL() {
-        switch (ControlTower.getInstance().getNetworkMode()) {
+    static logToURL(networkMode) {
+        switch (networkMode) {
             case NetworkMode.COMPANY_dev:
                 return HTTP_URL.COMPANY_LOCAL_LOG;
             case NetworkMode.HOME_dev:
@@ -88,8 +89,8 @@ export class ACENetwork {
                 return HTTP_URL.PRO_LOG;
         }
     }
-    static policyToURL() {
-        switch (ControlTower.getInstance().getNetworkMode()) {
+    static policyToURL(networkMode) {
+        switch (networkMode) {
             case NetworkMode.COMPANY_dev:
                 return HTTP_URL.COMPANY_LOCAL_POLICY;
             case NetworkMode.HOME_dev:
@@ -98,12 +99,12 @@ export class ACENetwork {
                 return HTTP_URL.PRO_POLICY;
         }
     }
-    static networkRequestTypeToURLs(requestType) {
+    static networkRequestTypeToURLs(networkMode, requestType) {
         switch (requestType) {
             case NetworkRequestType.LOG:
-                return this.logToURL();
+                return this.logToURL(networkMode);
             case NetworkRequestType.POLICY:
-                return this.policyToURL();
+                return this.policyToURL(networkMode);
         }
     }
     static requestToPolicy(completed, failed) {
@@ -116,7 +117,6 @@ export class ACENetwork {
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
         axios.defaults.headers.common['Content-Type'] = 'text/plain';
         const requestHeaders = mapValueStringToObject(params.requestHeaders);
-        console.log('params.requestHeaders: ' + JSON.stringify(requestHeaders));
         const requestConfig = {
             url: params.url,
             method: method,

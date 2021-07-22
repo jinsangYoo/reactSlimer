@@ -35,7 +35,7 @@ export default class APIForBuy extends Task {
     super.completed(response)
   }
 
-  public failed(err: object) {
+  public failed(err: any) {
     super.failed(err)
   }
 }

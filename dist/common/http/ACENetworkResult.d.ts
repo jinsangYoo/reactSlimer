@@ -6,6 +6,6 @@ export default class ACENetworkResult {
     constructor(response: AxiosResponse);
     getCode(): number;
     getBody(): string;
-    getHeaders(): Map<String, String>;
+    getHeaders(): Map<string, string>;
 }
 //# sourceMappingURL=ACENetworkResult.d.ts.map

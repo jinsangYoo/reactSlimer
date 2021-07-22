@@ -1,5 +1,6 @@
 import { AceConfiguration } from '../../acone/aceconfiguration';
 import IACECommonAPI from '../../acone/parameter/IACECommonAPI';
+import IACEParameterUtil from '../parameter/IACEParameterUtil';
 export default interface ACEStaticConfig {
     _debug: boolean;
     _key: string;
@@ -10,8 +11,7 @@ export default interface ACEStaticConfig {
     isDebug(): boolean;
     getEnablePrivacyPolicy(): boolean;
     getKey(): string;
+    getParameterUtil(): IACEParameterUtil | undefined;
     getCommonAPI(): IACECommonAPI | undefined;
-    getControlTower(configuration: AceConfiguration): void;
-    getParameterUtil(configuration: AceConfiguration): void;
 }
 //# sourceMappingURL=ACEStaticConfig.d.ts.map

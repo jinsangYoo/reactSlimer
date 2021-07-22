@@ -1,11 +1,14 @@
 import IACEParameterUtil from '../../common/parameter/IACEParameterUtil';
 import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
+import ACENetworkResult from '../../common/http/ACENetworkResult';
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
     private static instance;
     static getInstance(): ACEParameterUtilForOne;
     private constructor();
     loadUniqueKeyForSDK(): void;
+    getSuccessResponseForCustomer(logSource: number, resultCode: number, res: ACENetworkResult): object;
+    getFailResponseForCustomer(logSource: number, resultCode: number, err: JSON): object;
     setFirstLogParameters(): void;
     setLogSource(value: number): void;
     getSdkDetails(json: JSON): void;
@@ -29,5 +32,6 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     loadVT(): Promise<object>;
     saveVT_toInStorage(vt: ACEntityForVT, callback: (error?: Error, result?: object) => void): void;
     saveVT_toInStorage(vt: ACEntityForVT): Promise<object>;
+    setterForString(key: string, value: string): void;
 }
 //# sourceMappingURL=ACEParameterUtilForOne.d.ts.map

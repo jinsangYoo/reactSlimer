@@ -1,4 +1,5 @@
 import { AceConfiguration } from '../../acone/aceconfiguration';
+import IACEParameterUtil from '../parameter/IACEParameterUtil';
 export default class ACECommonStaticConfig {
     private static _staticConfigImpl;
     private static _platform;
@@ -7,5 +8,6 @@ export default class ACECommonStaticConfig {
     static isDebug(): boolean;
     static getEnablePrivacyPolicy(): boolean;
     static getKey(): string;
+    static getParameterUtil(): IACEParameterUtil | undefined;
 }
 //# sourceMappingURL=ACECommonStaticConfig.d.ts.map

@@ -74,7 +74,7 @@ export default class APIForPL extends Task {
     console.log('APIForPL::completed')
   }
 
-  public failed(err: object) {
+  public failed(err: any) {
     super.failed(err)
     console.log('APIForPL::failed')
   }

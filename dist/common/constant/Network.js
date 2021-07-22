@@ -21,4 +21,8 @@ export var HTTP_URL;
     HTTP_URL["PRO_LOG"] = "mac";
     HTTP_URL["PRO_POLICY"] = "policy";
 })(HTTP_URL || (HTTP_URL = {}));
+export var HttpURLConnection;
+(function (HttpURLConnection) {
+    HttpURLConnection[HttpURLConnection["HTTP_OK"] = 200] = "HTTP_OK";
+})(HttpURLConnection || (HttpURLConnection = {}));
 //# sourceMappingURL=Network.js.map

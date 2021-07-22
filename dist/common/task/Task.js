@@ -18,7 +18,10 @@ export default class Task {
         this._response = new ACENetworkResult(response);
     }
     failed(err) {
-        console.log('ITask::failed');
+        this._error = JSON.parse(JSON.stringify(err));
+    }
+    getLogSource() {
+        return this._logSource;
     }
     getDescription() {
         return ACEofAPIForOne[this._logSource];
@@ -26,6 +29,14 @@ export default class Task {
     getCreateTime() {
         return this._date;
     }
-    getJSON() { }
+    getTaskHash() {
+        return this.getCreateTime().valueOf().toString();
+    }
+    getNetworkResult() {
+        return this._response;
+    }
+    getNetworkError() {
+        return this._error;
+    }
 }
 //# sourceMappingURL=Task.js.map

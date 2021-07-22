@@ -15,6 +15,14 @@ export default class ACEParameterUtilForOne {
     loadUniqueKeyForSDK() {
         ACEParametersForOne.getInstance().setPcStampWhenNotStored();
     }
+    getSuccessResponseForCustomer(logSource, resultCode, res) {
+        console.log(`getSuccessResponseForCustomer::res: ${JSON.stringify(res)}`);
+        return {};
+    }
+    getFailResponseForCustomer(logSource, resultCode, err) {
+        console.log(`getFailResponseForCustomer::err: ${JSON.stringify(err)}`);
+        return {};
+    }
     setFirstLogParameters() {
         throw new Error('Method not implemented.');
     }
@@ -165,5 +173,6 @@ export default class ACEParameterUtilForOne {
     saveVT_toInStorage(vt, callback) {
         return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback);
     }
+    setterForString(key, value) { }
 }
 //# sourceMappingURL=ACEParameterUtilForOne.js.map

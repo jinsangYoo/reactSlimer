@@ -1,4 +1,5 @@
 declare enum ACEResultCode {
+    Default = 0,
     Success = 200,
     AlreadyInitialized = 1000,
     ExecutorNotInitAtPolicy = 1001,

@@ -6,15 +6,19 @@ export default class Task {
     protected _logSource: ACEofAPIForOne;
     protected _date: Date;
     protected _response: ACENetworkResult;
+    protected _error: JSON;
     protected constructor(params: ITaskParams);
     doWork(): void;
     didWork(callback: ((error?: object, result?: object) => void) | undefined): void;
     didWork(): Promise<object>;
     doneWork(): void;
     protected completed(response: AxiosResponse): void;
-    protected failed(err: object): void;
+    protected failed(err: any): void;
+    getLogSource(): number;
     getDescription(): string;
     getCreateTime(): Date;
-    getJSON(): void;
+    getTaskHash(): string;
+    getNetworkResult(): ACENetworkResult | undefined;
+    getNetworkError(): JSON | undefined;
 }
 //# sourceMappingURL=Task.d.ts.map

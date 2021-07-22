@@ -7,6 +7,7 @@ export default class Task {
   protected _logSource: ACEofAPIForOne
   protected _date: Date
   protected _response: ACENetworkResult
+  protected _error: JSON
 
   protected constructor(params: ITaskParams) {
     this._logSource = params.type
@@ -31,8 +32,12 @@ export default class Task {
     this._response = new ACENetworkResult(response)
   }
 
-  protected failed(err: object) {
-    console.log('ITask::failed')
+  protected failed(err: any) {
+    this._error = JSON.parse(JSON.stringify(err))
+  }
+
+  public getLogSource(): number {
+    return this._logSource
   }
 
   public getDescription(): string {
@@ -43,5 +48,15 @@ export default class Task {
     return this._date
   }
 
-  public getJSON() {}
+  public getTaskHash(): string {
+    return this.getCreateTime().valueOf().toString()
+  }
+
+  public getNetworkResult(): ACENetworkResult | undefined {
+    return this._response
+  }
+
+  public getNetworkError(): JSON | undefined {
+    return this._error
+  }
 }

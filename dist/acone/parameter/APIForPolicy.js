@@ -1,7 +1,10 @@
 import Task from '../../common/task/Task';
 import { ACENetwork } from '../../common/http/ACENetwork';
+import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil';
 import ACEResultCode from '../../common/constant/ACEResultCode';
 import { ACEInnerCBResultKey } from '../../common/constant/ACEInnerCBResultKey';
+import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton';
+import { makeSuccessCallback, makeFailCallback } from '../../common/util/MapUtil';
 export default class APIForPolicy extends Task {
     constructor(params) {
         super(params);
@@ -18,24 +21,20 @@ export default class APIForPolicy extends Task {
                     this.completed(response);
                     this.doneWork();
                     if (callback) {
-                        console.log('try call cb!!');
-                        callback(undefined, response);
+                        callback(undefined, makeSuccessCallback(this));
                     }
                     else {
-                        console.log('try call resolve!!');
-                        resolve(response);
+                        resolve(makeSuccessCallback(this));
                     }
                 }, err => {
                     console.log('APIForPolicy::in cb::failed!!!');
                     this.failed(err);
                     this.doneWork();
                     if (callback) {
-                        console.log('try call cb!!');
-                        callback(err, undefined);
+                        callback(makeFailCallback(this));
                     }
                     else {
-                        console.log('try call reject!!');
-                        reject(err);
+                        reject(makeFailCallback(this));
                     }
                 });
             });
@@ -60,10 +59,12 @@ export default class APIForPolicy extends Task {
     }
     completed(response) {
         super.completed(response);
-        console.log(`APIForPolicy::completed::_response: ${JSON.stringify(this._response)}`);
+        ACEPolicyParameterUtil.getInstance().savePolicy(this._response);
+        ControlTowerSingleton.getInstance().succeedRequestPolicy();
     }
     failed(err) {
         super.failed(err);
+        ControlTowerSingleton.getInstance().failedRequestPolicy();
     }
 }
 //# sourceMappingURL=APIForPolicy.js.map

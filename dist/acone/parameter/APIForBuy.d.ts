@@ -8,6 +8,6 @@ export default class APIForBuy extends Task {
     didWork(): Promise<object>;
     doneWork(): void;
     completed(response: AxiosResponse): void;
-    failed(err: object): void;
+    failed(err: any): void;
 }
 //# sourceMappingURL=APIForBuy.d.ts.map

@@ -1,13 +1,83 @@
 import {SDKMode, NetworkMode} from '../constant/SDKMode'
-import ACECommonStaticConfig from '../config/ACECommonStaticConfig'
+import ACEPolicyParameters from '../policy/ACEPolicyParameters'
+import {isEmpty} from '../util/TextUtils'
+import POLICY from '../constant/Policy'
 
 export default class ControlTower {
   protected _sdk_mode: SDKMode
   protected _network_mode: NetworkMode
+  protected _isCompletePolicy: boolean
+  protected _isInstallReferrerDone: boolean
+  protected _isSDKForceStop: boolean
+  protected _isSDKEnabled: boolean
+
+  private static instance: ControlTower
+
+  public static getInstance(): ControlTower {
+    return this.instance || (this.instance = new this())
+  }
 
   public constructor() {
     this._sdk_mode = SDKMode.development
     this._network_mode = NetworkMode.COMPANY_dev
+    this._isCompletePolicy = false
+    this._isInstallReferrerDone = false
+    this._isSDKForceStop = false
+    this._isSDKEnabled = false
+  }
+
+  public getIsCompletePolicy(): boolean {
+    return this._isCompletePolicy
+  }
+
+  public setIsCompletePolicy(isCompletePolicy: boolean, isSucceedRequestPolicy: boolean) {
+    console.log(
+      `setIsCompletePolicy::isCompletePolicy: ${isCompletePolicy}, isSucceedRequestPolicy: ${isSucceedRequestPolicy}`,
+    )
+  }
+
+  protected isDisabled(): boolean {
+    const currentIsCompletePolicy = this.getIsCompletePolicy()
+    const currentIsSDKEnabled = this.getIsSDKEnabled()
+    console.log(
+      `ACEControlTower.getIsCompletePolicy(): ${currentIsCompletePolicy}, ACEControlTower.getIsSDKEnabled(): ${currentIsSDKEnabled}`,
+    )
+
+    if (currentIsCompletePolicy && !currentIsSDKEnabled) {
+      console.log('SDK is disabled.')
+      return true
+    }
+
+    return false
+  }
+
+  public setSDKDisable(): void {
+    console.log('Set SDK disable by policy.')
+    this._isSDKEnabled = false
+  }
+
+  public isEnableByPolicy(): boolean {
+    const result = ACEPolicyParameters.getInstance().getCpAllow()
+    if (isEmpty(result)) {
+      return false
+    } else {
+      return result == POLICY.FLAG_SDK_ENABLE
+    }
+  }
+
+  public getIsSDKEnabled(): boolean {
+    if (this._isSDKForceStop) {
+      console.log('SDK was force stopped.')
+      return false
+    }
+    this._isSDKEnabled = this.isEnableByPolicy()
+    console.log(`isEnabled: ${this._isSDKEnabled}, _isSDKEnabled: ${this._isSDKEnabled}`)
+
+    if (!this._isSDKEnabled) {
+      console.log('not found SDK policy information.')
+    }
+
+    return false
   }
 
   public getSDKMode(): SDKMode {
@@ -34,46 +104,17 @@ export default class ControlTower {
 
   public enableForceStop(): void {}
 
+  public setDevSDKMode(): void {
+    this.setSDKMode(SDKMode.development)
+  }
+
+  public setProductionSDKMode(): void {
+    this.setSDKMode(SDKMode.production)
+  }
+
   //#region static
-  public static setDevSDKMode(): void {
-    const _controlTower = ACECommonStaticConfig.getControlTower()
-    if (_controlTower) {
-      _controlTower.setSDKMode(SDKMode.development)
-    }
-  }
-
-  public static setProductionSDKMode(): void {
-    const _controlTower = ACECommonStaticConfig.getControlTower()
-    if (_controlTower) {
-      _controlTower.setSDKMode(SDKMode.production)
-    }
-  }
-
   public static getDefaultNetworkMode(): NetworkMode {
     return NetworkMode.COMPANY_dev
-  }
-
-  public static getNetworkMode(): NetworkMode {
-    const _controlTower = ACECommonStaticConfig.getControlTower()
-    if (_controlTower) {
-      return _controlTower.getNetworkMode()
-    } else {
-      return ControlTower.getDefaultNetworkMode()
-    }
-  }
-
-  public static setHomeDevNetworkMode(): void {
-    const _controlTower = ACECommonStaticConfig.getControlTower()
-    if (_controlTower) {
-      _controlTower.setNetworkMode(NetworkMode.HOME_dev)
-    }
-  }
-
-  public static enableForceStop(): void {
-    const _controlTower = ACECommonStaticConfig.getControlTower()
-    if (_controlTower) {
-      _controlTower.enableForceStop()
-    }
   }
   //#endregion
 }

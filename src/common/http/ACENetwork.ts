@@ -6,11 +6,12 @@ import ACECommonStaticConfig from '../config/ACECommonStaticConfig'
 import {Platform} from 'react-native'
 import {ACS} from '../../acone/acs'
 import {mapValueStringToObject} from '../util/MapUtil'
-import ControlTower from '../controltower/ControlTower'
+
+import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 
 export class ACENetwork {
   private static networkRequestTypeToParams(requestType: NetworkRequestType): ACENetworkParams {
-    const currentNetworkMode = ControlTower.getNetworkMode()
+    const currentNetworkMode = ControlTowerSingleton.getInstance().getNetworkMode()
     return {
       baseUrl: this.networkRequestTypeToBaseURLs(currentNetworkMode, requestType),
       requestHeaders: this.networkRequestTypeToHeaders(currentNetworkMode, requestType),

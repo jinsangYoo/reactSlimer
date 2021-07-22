@@ -23,4 +23,7 @@ export declare type ACENetworkParams = {
     requestHeaders: Map<string, string>;
     url: string;
 };
+export declare enum HttpURLConnection {
+    HTTP_OK = 200
+}
 //# sourceMappingURL=Network.d.ts.map

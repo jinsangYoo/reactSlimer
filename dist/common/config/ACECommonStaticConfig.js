@@ -2,12 +2,9 @@ import { ACS } from '../../acone/acs';
 import { AceConfiguration } from '../../acone/aceconfiguration';
 import ACEOneStaticConfig from '../../acone/config/ACEOneStaticConfig';
 import ACECONSTANT from '../constant/ACEConstant';
-import ControlTower from '../controltower/ControlTower';
-import { SDKMode, NetworkMode } from '../constant/SDKMode';
+import ControlTowerSingleton from '../controltower/ControlTowerSingleton';
 export default class ACECommonStaticConfig {
     static configure(configuration, callback) {
-        ControlTower.getInstance().setSDKMode(SDKMode.development);
-        ControlTower.getInstance().setNetworkMode(NetworkMode.HOME_dev);
         console.log('NHN ACE SDK version: ' + ACS.SDKVersion());
         console.log('AceConfiguration information: ' + JSON.stringify(configuration));
         if (configuration.platform) {
@@ -16,6 +13,8 @@ export default class ACECommonStaticConfig {
         if (ACECommonStaticConfig._platform === AceConfiguration.PLATFORM.DEFAULT) {
             this._staticConfigImpl = new ACEOneStaticConfig();
         }
+        ControlTowerSingleton.getInstance().setDevSDKMode();
+        ControlTowerSingleton.getInstance().setHomeDevNetworkMode();
         if (callback) {
             if (this._staticConfigImpl) {
                 const _commonAPI = this._staticConfigImpl.getCommonAPI();
@@ -45,9 +44,15 @@ export default class ACECommonStaticConfig {
                         .then(res => {
                         console.log(`then _staticConfigImpl.configure::res: ${JSON.stringify(res)}`);
                         if (_commonAPI) {
-                            _commonAPI.requestPolicy().then(resForPolicy => {
+                            _commonAPI
+                                .requestPolicy()
+                                .then(resForPolicy => {
                                 console.log(`then _commonAPI.requestPolicy::resForPolicy: ${JSON.stringify(resForPolicy)}`);
                                 resolve(resForPolicy);
+                            })
+                                .catch(err => {
+                                console.log(`then _commonAPI.requestPolicy::err: ${JSON.stringify(err)}`);
+                                reject(err);
                             });
                         }
                     })
@@ -76,6 +81,12 @@ export default class ACECommonStaticConfig {
             return this._staticConfigImpl.getKey();
         }
         return ACECONSTANT.EMPTY;
+    }
+    static getParameterUtil() {
+        if (this._staticConfigImpl) {
+            return this._staticConfigImpl.getParameterUtil();
+        }
+        return undefined;
     }
 }
 //# sourceMappingURL=ACECommonStaticConfig.js.map

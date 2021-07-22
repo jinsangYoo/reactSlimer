@@ -7,7 +7,7 @@ export default class APIForPL extends Task {
     didWork(callback: ((error?: object, result?: object) => void) | undefined): void;
     didWork(): Promise<object>;
     completed(response: AxiosResponse): void;
-    failed(err: object): void;
+    failed(err: any): void;
     doneWork(): void;
 }
 //# sourceMappingURL=APIForPL.d.ts.map

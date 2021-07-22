@@ -1,12 +1,10 @@
 import {AceConfiguration} from '../../acone/aceconfiguration'
 import IACECommonAPI from '../../acone/parameter/IACECommonAPI'
 import IACEParameterUtil from '../parameter/IACEParameterUtil'
-import ControlTower from '../controltower/ControlTower'
 
 export default interface ACEStaticConfig {
   _debug: boolean
   _key: string
-  _controlTower: ControlTower
   // ACEQueueManagerFactory _queueManagerFactory;
   _commonAPI: IACECommonAPI
 
@@ -22,5 +20,4 @@ export default interface ACEStaticConfig {
 
   getParameterUtil(): IACEParameterUtil | undefined
   getCommonAPI(): IACECommonAPI | undefined
-  getControlTower(): ControlTower | undefined
 }

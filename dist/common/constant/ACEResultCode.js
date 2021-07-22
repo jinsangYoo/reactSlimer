@@ -1,5 +1,6 @@
 var ACEResultCode;
 (function (ACEResultCode) {
+    ACEResultCode[ACEResultCode["Default"] = 0] = "Default";
     ACEResultCode[ACEResultCode["Success"] = 200] = "Success";
     ACEResultCode[ACEResultCode["AlreadyInitialized"] = 1000] = "AlreadyInitialized";
     ACEResultCode[ACEResultCode["ExecutorNotInitAtPolicy"] = 1001] = "ExecutorNotInitAtPolicy";

@@ -10,6 +10,7 @@ import ACOneConstantSt from '../constant/ACOneConstantSt'
 import ACOneConstantVt from '../constant/ACOneConstantVt'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
+import ACENetworkResult from '../../common/http/ACENetworkResult'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static instance: ACEParameterUtilForOne
@@ -22,6 +23,15 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   loadUniqueKeyForSDK(): void {
     ACEParametersForOne.getInstance().setPcStampWhenNotStored()
   }
+  getSuccessResponseForCustomer(logSource: number, resultCode: number, res: ACENetworkResult): object {
+    console.log(`getSuccessResponseForCustomer::res: ${JSON.stringify(res)}`)
+    return {}
+  }
+  getFailResponseForCustomer(logSource: number, resultCode: number, err: JSON): object {
+    console.log(`getFailResponseForCustomer::err: ${JSON.stringify(err)}`)
+    return {}
+  }
+
   setFirstLogParameters(): void {
     throw new Error('Method not implemented.')
   }

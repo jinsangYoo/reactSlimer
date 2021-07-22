@@ -3,9 +3,8 @@ import {AceConfiguration, ACEPlatform} from '../../acone/aceconfiguration'
 import ACEStaticConfig from './ACEStaticConfig'
 import ACEOneStaticConfig from '../../acone/config/ACEOneStaticConfig'
 import ACECONSTANT from '../constant/ACEConstant'
-import ControlTower from '../controltower/ControlTower'
-import {SDKMode, NetworkMode} from '../constant/SDKMode'
 import IACEParameterUtil from '../parameter/IACEParameterUtil'
+import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 
 export default class ACECommonStaticConfig {
   private static _staticConfigImpl: ACEStaticConfig
@@ -30,8 +29,8 @@ export default class ACECommonStaticConfig {
       this._staticConfigImpl = new ACEOneStaticConfig()
     }
 
-    ControlTower.setDevSDKMode()
-    ControlTower.setHomeDevNetworkMode()
+    ControlTowerSingleton.getInstance().setDevSDKMode()
+    ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
 
     if (callback) {
       if (this._staticConfigImpl) {
@@ -61,10 +60,16 @@ export default class ACECommonStaticConfig {
             .then(res => {
               console.log(`then _staticConfigImpl.configure::res: ${JSON.stringify(res)}`)
               if (_commonAPI) {
-                _commonAPI.requestPolicy().then(resForPolicy => {
-                  console.log(`then _commonAPI.requestPolicy::resForPolicy: ${JSON.stringify(resForPolicy)}`)
-                  resolve(resForPolicy)
-                })
+                _commonAPI
+                  .requestPolicy()
+                  .then(resForPolicy => {
+                    console.log(`then _commonAPI.requestPolicy::resForPolicy: ${JSON.stringify(resForPolicy)}`)
+                    resolve(resForPolicy)
+                  })
+                  .catch(err => {
+                    console.log(`then _commonAPI.requestPolicy::err: ${JSON.stringify(err)}`)
+                    reject(err)
+                  })
               }
             })
             .catch(err => {
@@ -103,14 +108,6 @@ export default class ACECommonStaticConfig {
   public static getParameterUtil(): IACEParameterUtil | undefined {
     if (this._staticConfigImpl) {
       return this._staticConfigImpl.getParameterUtil()
-    }
-
-    return undefined
-  }
-
-  public static getControlTower(): ControlTower | undefined {
-    if (this._staticConfigImpl) {
-      return this._staticConfigImpl.getControlTower()
     }
 
     return undefined

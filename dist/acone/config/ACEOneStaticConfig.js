@@ -30,11 +30,8 @@ export default class ACEOneStaticConfig {
         }
         return undefined;
     }
-    getControlTower(configuration) {
-        throw new Error('Method not implemented.');
-    }
-    getParameterUtil(configuration) {
-        throw new Error('Method not implemented.');
+    getParameterUtil() {
+        return ACEParameterUtilForOne.getInstance();
     }
 }
 //# sourceMappingURL=ACEOneStaticConfig.js.map

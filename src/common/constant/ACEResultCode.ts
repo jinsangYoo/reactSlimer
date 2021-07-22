@@ -1,4 +1,6 @@
 enum ACEResultCode {
+  Default = 0,
+
   // positive
   Success = 200,
 

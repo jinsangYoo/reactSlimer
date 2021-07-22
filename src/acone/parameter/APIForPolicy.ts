@@ -2,10 +2,11 @@ import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
 import {AxiosResponse} from 'axios'
-// import ACECONSTANT from '../../common/constant/ACEConstant'
 import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
 import ACEResultCode from '../../common/constant/ACEResultCode'
 import {ACEInnerCBResultKey} from '../../common/constant/ACEInnerCBResultKey'
+import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
+import {makeSuccessCallback, makeFailCallback} from '../../common/util/MapUtil'
 
 export default class APIForPolicy extends Task {
   public constructor(params: ITaskParams) {
@@ -29,11 +30,9 @@ export default class APIForPolicy extends Task {
             this.completed(response)
             this.doneWork()
             if (callback) {
-              console.log('try call cb!!')
-              callback(undefined, response)
+              callback(undefined, makeSuccessCallback(this))
             } else {
-              console.log('try call resolve!!')
-              resolve(response)
+              resolve(makeSuccessCallback(this))
             }
           },
           err => {
@@ -41,11 +40,9 @@ export default class APIForPolicy extends Task {
             this.failed(err)
             this.doneWork()
             if (callback) {
-              console.log('try call cb!!')
-              callback(err, undefined)
+              callback(makeFailCallback(this))
             } else {
-              console.log('try call reject!!')
-              reject(err)
+              reject(makeFailCallback(this))
             }
           },
         )
@@ -76,9 +73,11 @@ export default class APIForPolicy extends Task {
   public completed(response: AxiosResponse) {
     super.completed(response)
     ACEPolicyParameterUtil.getInstance().savePolicy(this._response)
+    ControlTowerSingleton.getInstance().succeedRequestPolicy()
   }
 
-  public failed(err: object) {
+  public failed(err: any) {
     super.failed(err)
+    ControlTowerSingleton.getInstance().failedRequestPolicy()
   }
 }
