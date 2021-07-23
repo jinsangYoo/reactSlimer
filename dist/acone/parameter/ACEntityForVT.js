@@ -106,7 +106,7 @@ export default class ACEntityForVT {
         return this._map.get(ACOneConstantVt.KeyPcStamp);
     }
     setPcStamp(value) {
-        this._map.set(ACOneConstantVt.KeyPcStamp, value.valueOf().toString());
+        this._map.set(ACOneConstantVt.KeyPcStamp, value.toString());
     }
     getRandom6ForPcStamp() {
         return this._map.get(ACOneConstantVt.KeyRandom6ForPcStamp);
@@ -115,9 +115,9 @@ export default class ACEntityForVT {
         this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, value);
     }
     setPcStampWhenNotStored() {
-        var _pcStamp = this.getPcStamp();
+        const _pcStamp = this.getPcStamp();
         if (!_pcStamp || _pcStamp == ACOneConstantVt.DefaultTS) {
-            this.setPcStamp(new Date());
+            this.setPcStamp(Date.now());
             this.setRandom6ForPcStamp(getRandom6CharForSTVT());
             console.log(`maked pcStamp: ${this.getPcStampGoldMaster()}`);
         }

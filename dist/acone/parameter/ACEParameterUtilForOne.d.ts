@@ -2,6 +2,7 @@ import IACEParameterUtil from '../../common/parameter/IACEParameterUtil';
 import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
 import ACENetworkResult from '../../common/http/ACENetworkResult';
+import { ACECallbackResultForDebug } from '../../common/constant/ACECallbackResultForDebug';
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
     private static instance;
     static getInstance(): ACEParameterUtilForOne;
@@ -13,7 +14,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     setLogSource(value: number): void;
     getSdkDetails(json: JSON): void;
     initParameters(key: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
-    initParameters(key: string): Promise<object>;
+    initParameters(key: string): Promise<ACECallbackResultForDebug>;
     isFirstLog(): boolean;
     resetSessionAndParameterAfterSend(): void;
     resetSessionAndParameterAfterSendWithParams(params?: JSON): void;

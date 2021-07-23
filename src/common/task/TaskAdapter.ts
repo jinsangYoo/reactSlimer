@@ -1,29 +1,50 @@
 import Task from './Task'
+import {ACECallbackResultForDebug} from '../constant/ACECallbackResultForDebug'
 
 export default class TaskAdapter {
   private _task: Task
-  private _callback?: ((error?: object, result?: object) => void) | undefined
+  private _callback?: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined
 
-  public addTask(argTask: Task, callback: ((error?: object, result?: object) => void) | undefined): void
-  public addTask(argTask: Task, callback?: ((error?: object, result?: object) => void) | undefined): void {
+  public addTask(
+    argTask: Task,
+    callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
+  ): void
+  public addTask(
+    argTask: Task,
+    callback?: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
+  ): void {
     this._task = argTask
     this._callback = callback
   }
 
-  private doWork() {
-    this._task.doWork()
+  private doWork(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (this._task) {
+        console.log('TaskAdapter::in doWork')
+        this._task.doWork()
+        resolve(true)
+      } else {
+        console.log('TaskAdapter::in doWork::undefined task')
+        reject(new Error('undefined task'))
+      }
+    })
   }
 
-  private didWork(): void
-  private didWork(): Promise<object>
-  private didWork(): Promise<object> | void {
-    return this._task.didWork(this._callback)
+  private didWork(resultDoWork: boolean): void {
+    console.log(`TaskAdapter::in didWork::resultDoWork: ${resultDoWork}`)
+    if (resultDoWork) {
+      console.log(`TaskAdapter::in didWork::try didWork`)
+      this._task.didWork(this._callback)
+    }
   }
 
-  public run(): void
-  public run(): Promise<object>
-  public run(): Promise<object> | void {
+  public run(): void {
     this.doWork()
-    return this.didWork()
+      .then(resolve => {
+        this.didWork(resolve)
+      })
+      .catch(err => {
+        console.log(`TaskAdapter::run::err:${JSON.stringify(err)}`)
+      })
   }
 }

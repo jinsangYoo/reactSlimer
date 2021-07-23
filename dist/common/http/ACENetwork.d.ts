@@ -10,8 +10,8 @@ export declare class ACENetwork {
     private static logToURL;
     private static policyToURL;
     private static networkRequestTypeToURLs;
-    static requestToPolicy(completed?: (response: AxiosResponse) => void, failed?: (err: object) => void): Promise<object>;
-    static requestToLog(completed?: (response: AxiosResponse) => void, failed?: (err: object) => void): Promise<object>;
+    static requestToPolicy(completed?: (response: AxiosResponse) => void, failed?: (err: object) => void): void;
+    static requestToLog(completed?: (response: AxiosResponse) => void, failed?: (err: object) => void): void;
     private static request;
 }
 //# sourceMappingURL=ACENetwork.d.ts.map

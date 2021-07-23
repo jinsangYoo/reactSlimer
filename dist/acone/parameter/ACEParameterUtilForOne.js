@@ -58,28 +58,39 @@ export default class ACEParameterUtilForOne {
                 console.log(`then Promise.all::res: ${JSON.stringify(res)}`);
                 this.getVT();
                 this.loadUniqueKeyForSDK();
+                const callbackUnit = {
+                    title: 'SDK init step one done',
+                    location: 'ACEParameterUtilForOne::initParameters',
+                    result: true,
+                };
+                const callbackResultForDebug = {
+                    prevResult: true,
+                    history: [callbackUnit],
+                };
                 if (callback) {
-                    callback(undefined, {
-                        result: 'done',
-                    });
+                    callback(undefined, callbackResultForDebug);
                 }
                 else {
-                    resolve({
-                        result: 'done',
-                    });
+                    resolve(callbackResultForDebug);
                 }
             })
                 .catch(err => {
                 console.log(`catch Promise.all::err: ${JSON.stringify(err)}`);
+                const callbackUnit = {
+                    title: 'SDK init step one fail',
+                    reason: `${JSON.stringify(err)}`,
+                    location: 'ACEParameterUtilForOne::initParameters::catch in Promise.all',
+                    result: false,
+                };
+                const callbackResultForDebug = {
+                    prevResult: false,
+                    history: [callbackUnit],
+                };
                 if (callback) {
-                    callback(err, {
-                        result: 'fail',
-                    });
+                    callback(err, callbackResultForDebug);
                 }
                 else {
-                    reject({
-                        result: 'fail',
-                    });
+                    reject(callbackResultForDebug);
                 }
             });
         });

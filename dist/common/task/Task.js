@@ -3,21 +3,24 @@ import ACENetworkResult from '../http/ACENetworkResult';
 export default class Task {
     constructor(params) {
         this._logSource = params.type;
-        this._date = new Date();
+        this._date = Date.now();
     }
     doWork() {
-        console.log('ITask::doWork');
+        console.log(`ITask::doWork: ${ACEofAPIForOne[this._logSource]}`);
     }
     didWork(callback) {
-        console.log('ITask::didWork');
+        console.log(`ITask::didWork: ${ACEofAPIForOne[this._logSource]}`);
     }
     doneWork() {
-        console.log('ITask::doneWork');
+        console.log(`ITask::doneWork: ${ACEofAPIForOne[this._logSource]}`);
     }
     completed(response) {
+        console.log(`ITask::completed: ${ACEofAPIForOne[this._logSource]}`);
         this._response = new ACENetworkResult(response);
     }
     failed(err) {
+        console.log(`ITask::failed: ${ACEofAPIForOne[this._logSource]}`);
+        console.log(JSON.stringify(err));
         this._error = JSON.parse(JSON.stringify(err));
     }
     getLogSource() {

@@ -40,7 +40,7 @@ export default class ControlTower {
     const currentIsCompletePolicy = this.getIsCompletePolicy()
     const currentIsSDKEnabled = this.getIsSDKEnabled()
     console.log(
-      `ACEControlTower.getIsCompletePolicy(): ${currentIsCompletePolicy}, ACEControlTower.getIsSDKEnabled(): ${currentIsSDKEnabled}`,
+      `ControlTower.getIsCompletePolicy: ${currentIsCompletePolicy}, ControlTower.getIsSDKEnabled: ${currentIsSDKEnabled}`,
     )
 
     if (currentIsCompletePolicy && !currentIsSDKEnabled) {

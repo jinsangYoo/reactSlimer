@@ -3,10 +3,10 @@ import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
 import {AxiosResponse} from 'axios'
 import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
-import ACEResultCode from '../../common/constant/ACEResultCode'
-import {ACEInnerCBResultKey} from '../../common/constant/ACEInnerCBResultKey'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 import {makeSuccessCallback, makeFailCallback} from '../../common/util/MapUtil'
+import {ACECallbackUnit} from '../../common/constant/ACECallbackUnit'
+import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
 
 export default class APIForPolicy extends Task {
   public constructor(params: ITaskParams) {
@@ -17,53 +17,45 @@ export default class APIForPolicy extends Task {
     super.doWork()
   }
 
-  public didWork(callback: ((error?: object, result?: object) => void) | undefined): void
-  public didWork(): Promise<object>
-  public didWork(callback?: ((error?: object, result?: object) => void) | undefined): Promise<object> | void {
-    super.didWork()
+  public didWork(callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined): void {
+    super.didWork(callback)
 
-    if (global.Promise) {
-      return new Promise((resolve, reject) => {
-        ACENetwork.requestToPolicy(
-          response => {
-            console.log('APIForPolicy::in cb::completed!!!')
-            this.completed(response)
-            this.doneWork()
-            if (callback) {
-              callback(undefined, makeSuccessCallback(this))
-            } else {
-              resolve(makeSuccessCallback(this))
-            }
-          },
-          err => {
-            console.log('APIForPolicy::in cb::failed!!!')
-            this.failed(err)
-            this.doneWork()
-            if (callback) {
-              callback(makeFailCallback(this))
-            } else {
-              reject(makeFailCallback(this))
-            }
-          },
-        )
-      })
-    } else {
-      console.log('APIForPolicy::not support promise.')
-      this.failed({
-        code: ACEInnerCBResultKey.NotSupportPromise,
-        result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotSupportPromise],
-      })
-      if (callback) {
-        console.log('try call cb!!')
-        callback(
-          {
-            code: ACEResultCode.NotSupportPromise,
-            result: ACEResultCode[ACEResultCode.NotSupportPromise],
-          },
-          undefined,
-        )
-      }
-    }
+    ACENetwork.requestToPolicy(
+      response => {
+        console.log('APIForPolicy::in cb::completed!!!')
+        this.completed(response)
+        this.doneWork()
+        if (callback) {
+          const callbackUnit: ACECallbackUnit = {
+            title: 'normal request policy.',
+            location: 'APIForPolicy::ACENetwork.requestToPolicy::completed',
+            result: true,
+            payload: makeSuccessCallback(this),
+          }
+          callback(undefined, {
+            prevResult: true,
+            history: [callbackUnit],
+          })
+        }
+      },
+      err => {
+        console.log('APIForPolicy::in cb::failed!!!')
+        this.failed(err)
+        this.doneWork()
+        if (callback) {
+          const callbackUnit: ACECallbackUnit = {
+            title: 'fail request policy.',
+            location: 'APIForPolicy::ACENetwork.requestToPolicy::failed',
+            result: false,
+            payload: makeFailCallback(this),
+          }
+          callback(err, {
+            prevResult: false,
+            history: [callbackUnit],
+          })
+        }
+      },
+    )
   }
 
   public doneWork() {
@@ -72,7 +64,9 @@ export default class APIForPolicy extends Task {
 
   public completed(response: AxiosResponse) {
     super.completed(response)
+    console.log('APIForPolicy::completed::before savePolicy')
     ACEPolicyParameterUtil.getInstance().savePolicy(this._response)
+    console.log('APIForPolicy::completed::after savePolicy')
     ControlTowerSingleton.getInstance().succeedRequestPolicy()
   }
 

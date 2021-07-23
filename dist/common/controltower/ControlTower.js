@@ -22,12 +22,16 @@ export default class ControlTower {
     isDisabled() {
         const currentIsCompletePolicy = this.getIsCompletePolicy();
         const currentIsSDKEnabled = this.getIsSDKEnabled();
-        console.log(`ACEControlTower.getIsCompletePolicy(): ${currentIsCompletePolicy}, ACEControlTower.getIsSDKEnabled(): ${currentIsSDKEnabled}`);
+        console.log(`ControlTower.getIsCompletePolicy: ${currentIsCompletePolicy}, ControlTower.getIsSDKEnabled: ${currentIsSDKEnabled}`);
         if (currentIsCompletePolicy && !currentIsSDKEnabled) {
             console.log('SDK is disabled.');
             return true;
         }
         return false;
+    }
+    setSDKDisable() {
+        console.log('Set SDK disable by policy.');
+        this._isSDKEnabled = false;
     }
     isEnableByPolicy() {
         const result = ACEPolicyParameters.getInstance().getCpAllow();

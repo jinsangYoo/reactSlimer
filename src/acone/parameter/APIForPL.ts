@@ -2,8 +2,9 @@ import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
 import {AxiosResponse} from 'axios'
-import ACEResultCode from '../../common/constant/ACEResultCode'
-import {ACEInnerCBResultKey} from '../../common/constant/ACEInnerCBResultKey'
+import {makeSuccessCallback, makeFailCallback} from '../../common/util/MapUtil'
+import {ACECallbackUnit} from '../../common/constant/ACECallbackUnit'
+import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
 
 export default class APIForPL extends Task {
   public constructor(params: ITaskParams) {
@@ -15,58 +16,46 @@ export default class APIForPL extends Task {
     console.log('APIForPL::doWork')
   }
 
-  public didWork(callback: ((error?: object, result?: object) => void) | undefined): void
-  public didWork(): Promise<object>
-  public didWork(callback?: ((error?: object, result?: object) => void) | undefined): Promise<object> | void {
-    super.didWork()
+  public didWork(callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined): void {
+    super.didWork(callback)
     console.log('APIForPL::didWork')
 
-    if (global.Promise) {
-      return new Promise((resolve, reject) => {
-        ACENetwork.requestToLog(
-          response => {
-            console.log('APIForPL::in cb::completed!!!')
-            this.completed(response)
-            this.doneWork()
-            if (callback) {
-              console.log('try call cb!!')
-              callback(undefined, response)
-            } else {
-              console.log('try call resolve!!')
-              resolve(response)
-            }
-          },
-          err => {
-            console.log('APIForPL::in cb::failed!!!')
-            this.failed(err)
-            this.doneWork()
-            if (callback) {
-              console.log('try call cb!!')
-              callback(err, undefined)
-            } else {
-              console.log('try call reject!!')
-              reject(err)
-            }
-          },
-        )
-      })
-    } else {
-      console.log('APIForPL::not support promise.')
-      this.failed({
-        code: ACEInnerCBResultKey.NotSupportPromise,
-        result: ACEInnerCBResultKey[ACEInnerCBResultKey.NotSupportPromise],
-      })
-      if (callback) {
-        console.log('try call cb!!')
-        callback(
-          {
-            code: ACEResultCode.NotSupportPromise,
-            result: ACEResultCode[ACEResultCode.NotSupportPromise],
-          },
-          undefined,
-        )
-      }
-    }
+    ACENetwork.requestToLog(
+      response => {
+        console.log('APIForPL::in cb::completed!!!')
+        this.completed(response)
+        this.doneWork()
+        if (callback) {
+          const callbackUnit: ACECallbackUnit = {
+            title: 'normal send log.',
+            location: 'APIForPL::ACENetwork.requestToLog::completed',
+            result: true,
+            payload: makeSuccessCallback(this),
+          }
+          callback(undefined, {
+            prevResult: true,
+            history: [callbackUnit],
+          })
+        }
+      },
+      err => {
+        console.log('APIForPL::in cb::failed!!!')
+        this.failed(err)
+        this.doneWork()
+        if (callback) {
+          const callbackUnit: ACECallbackUnit = {
+            title: 'fail send log.',
+            location: 'APIForPL::ACENetwork.requestToLog::failed',
+            result: false,
+            payload: makeFailCallback(this),
+          }
+          callback(err, {
+            prevResult: false,
+            history: [callbackUnit],
+          })
+        }
+      },
+    )
   }
 
   public completed(response: AxiosResponse) {

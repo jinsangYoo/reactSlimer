@@ -4,6 +4,7 @@ import ACEParameterUtilForOne from '../parameter/ACEParameterUtilForOne'
 import IACECommonAPI from '../parameter/IACECommonAPI'
 import ACEInternalAPIForOne from '../parameter/ACEInternalAPIForOne'
 import IACEParameterUtil from '../../common/parameter/IACEParameterUtil'
+import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
 
 export default class ACEOneStaticConfig implements ACEStaticConfig {
   _debug: boolean
@@ -22,11 +23,11 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
     configuration: AceConfiguration,
     callback: ((error?: Error, result?: object) => void) | undefined,
   ): void
-  public configure(configuration: AceConfiguration): Promise<object>
+  public configure(configuration: AceConfiguration): Promise<ACECallbackResultForDebug>
   public configure(
     configuration: AceConfiguration,
     callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
+  ): Promise<ACECallbackResultForDebug> | void {
     this._key = configuration.key
     if (configuration.enablePrivacyPolicy) this._enablePrivacyPolicy = configuration.enablePrivacyPolicy
     if (configuration.debug) this._debug = configuration.debug

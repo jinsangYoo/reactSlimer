@@ -9,6 +9,7 @@ import ControlTowerSingleton from '../controltower/ControlTowerSingleton';
 export class ACENetwork {
     static networkRequestTypeToParams(requestType) {
         const currentNetworkMode = ControlTowerSingleton.getInstance().getNetworkMode();
+        console.log(`ACENetwork.networkRequestTypeToParams::requestType: ${NetworkRequestType[requestType]}, currentNetworkMode:${NetworkMode[currentNetworkMode]}`);
         return {
             baseUrl: this.networkRequestTypeToBaseURLs(currentNetworkMode, requestType),
             requestHeaders: this.networkRequestTypeToHeaders(currentNetworkMode, requestType),
@@ -65,7 +66,7 @@ export class ACENetwork {
                 _map.set("CP-Request-Cid", ACECommonStaticConfig.getKey());
                 _map.set("CP-Request-Platform", Platform.OS);
                 _map.set("CP-Request-Id", ACECommonStaticConfig.getKey());
-                _map.set("CP-Request-Time", new Date().valueOf().toString());
+                _map.set("CP-Request-Time", Date.now().toString());
                 _map.set("CP-Request-Version", ACS.SDKVersion());
                 break;
         }
@@ -108,15 +109,16 @@ export class ACENetwork {
         }
     }
     static requestToPolicy(completed, failed) {
-        return ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.POLICY), completed, failed);
+        ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.POLICY), completed, failed);
     }
     static requestToLog(completed, failed) {
-        return ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.LOG), completed, failed);
+        ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.LOG), completed, failed);
     }
     static request(params, completed, failed, method = HTTP_METHOD.GET) {
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
         axios.defaults.headers.common['Content-Type'] = 'text/plain';
         const requestHeaders = mapValueStringToObject(params.requestHeaders);
+        console.log(`ACENetwork.request::requestHeaders:${JSON.stringify(requestHeaders)}`);
         const requestConfig = {
             url: params.url,
             method: method,
@@ -124,26 +126,18 @@ export class ACENetwork {
             headers: requestHeaders,
             timeout: 1000,
         };
-        return new Promise((resolve, reject) => {
-            axios
-                .create()
-                .request(requestConfig)
-                .then(response => {
-                if (completed) {
-                    completed(response);
-                }
-                else {
-                    resolve(response);
-                }
-            })
-                .catch(error => {
-                if (failed) {
-                    failed(error);
-                }
-                else {
-                    reject(error);
-                }
-            });
+        axios
+            .create()
+            .request(requestConfig)
+            .then(response => {
+            if (completed) {
+                completed(response);
+            }
+        })
+            .catch(error => {
+            if (failed) {
+                failed(error);
+            }
         });
     }
 }

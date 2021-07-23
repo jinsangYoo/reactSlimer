@@ -4,6 +4,7 @@ import APIForBuy from './APIForBuy'
 import TaskAdapter from '../../common/task/TaskAdapter'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import APIForPolicy from './APIForPolicy'
+import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
 // import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
 
 // 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
@@ -35,12 +36,15 @@ export default class ACEReducerForOne {
     //   return ACEReducerForOne.getInstance().emitter
   }
 
-  private static reducer(params: ITaskParams, callback: ((error?: Error, result?: object) => void) | undefined): void
-  private static reducer(params: ITaskParams): Promise<object>
   private static reducer(
     params: ITaskParams,
-    callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
+    callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
+  ): void
+  private static reducer(params: ITaskParams): Promise<ACECallbackResultForDebug>
+  private static reducer(
+    params: ITaskParams,
+    callback?: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
+  ): Promise<ACECallbackResultForDebug> | void {
     const taskAdapter = new TaskAdapter()
     switch (params.type) {
       case ACEofAPIForOne.Buy:
@@ -97,9 +101,11 @@ export default class ACEReducerForOne {
     )
   }
 
-  public static policy(callback: ((error?: Error, result?: object) => void) | undefined): void
-  public static policy(): Promise<object>
-  public static policy(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
+  public static policy(callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined): void
+  public static policy(): Promise<ACECallbackResultForDebug>
+  public static policy(
+    callback?: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
+  ): Promise<ACECallbackResultForDebug> | void {
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.Policy,

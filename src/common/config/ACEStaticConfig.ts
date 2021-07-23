@@ -1,6 +1,7 @@
 import {AceConfiguration} from '../../acone/aceconfiguration'
 import IACECommonAPI from '../../acone/parameter/IACECommonAPI'
 import IACEParameterUtil from '../parameter/IACEParameterUtil'
+import {ACECallbackResultForDebug} from '../constant/ACECallbackResultForDebug'
 
 export default interface ACEStaticConfig {
   _debug: boolean
@@ -9,11 +10,12 @@ export default interface ACEStaticConfig {
   _commonAPI: IACECommonAPI
 
   configure(configuration: AceConfiguration, callback: ((error?: Error, result?: object) => void) | undefined): void
-  configure(configuration: AceConfiguration): Promise<object>
+  configure(configuration: AceConfiguration): Promise<ACECallbackResultForDebug>
   configure(
     configuration: AceConfiguration,
     callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void
+  ): Promise<ACECallbackResultForDebug> | void
+
   isDebug(): boolean
   getEnablePrivacyPolicy(): boolean
   getKey(): string

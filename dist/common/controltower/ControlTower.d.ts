@@ -12,7 +12,8 @@ export default class ControlTower {
     getIsCompletePolicy(): boolean;
     setIsCompletePolicy(isCompletePolicy: boolean, isSucceedRequestPolicy: boolean): void;
     protected isDisabled(): boolean;
-    private isEnableByPolicy;
+    setSDKDisable(): void;
+    isEnableByPolicy(): boolean;
     getIsSDKEnabled(): boolean;
     getSDKMode(): SDKMode;
     setSDKMode(value: SDKMode): void;

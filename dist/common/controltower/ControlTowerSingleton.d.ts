@@ -10,6 +10,8 @@ export default class ControlTowerSingleton {
     setIsCompletePolicy(isCompletePolicy: boolean, isSucceedRequestPolicy: boolean): void;
     protected isDisabled(): boolean;
     protected getIsSDKEnabled(): boolean;
+    setSDKDisable(): void;
+    isEnableByPolicy(): boolean;
     getSDKMode(): SDKMode;
     setSDKMode(value: SDKMode): void;
     getNetworkMode(): NetworkMode;

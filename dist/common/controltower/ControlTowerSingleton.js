@@ -35,6 +35,12 @@ export default class ControlTowerSingleton {
     getIsSDKEnabled() {
         return this._controlTower.getIsSDKEnabled();
     }
+    setSDKDisable() {
+        this._controlTower.setSDKDisable();
+    }
+    isEnableByPolicy() {
+        return this._controlTower.isEnableByPolicy();
+    }
     getSDKMode() {
         return this._controlTower.getSDKMode();
     }

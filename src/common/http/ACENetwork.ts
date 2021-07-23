@@ -12,6 +12,9 @@ import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 export class ACENetwork {
   private static networkRequestTypeToParams(requestType: NetworkRequestType): ACENetworkParams {
     const currentNetworkMode = ControlTowerSingleton.getInstance().getNetworkMode()
+    console.log(
+      `ACENetwork.networkRequestTypeToParams::requestType: ${NetworkRequestType[requestType]}, currentNetworkMode:${NetworkMode[currentNetworkMode]}`,
+    )
     return {
       baseUrl: this.networkRequestTypeToBaseURLs(currentNetworkMode, requestType),
       requestHeaders: this.networkRequestTypeToHeaders(currentNetworkMode, requestType),
@@ -77,7 +80,7 @@ export class ACENetwork {
         _map.set(POLICY.REQUEST_CID, ACECommonStaticConfig.getKey())
         _map.set(POLICY.REQUEST_PLATFORM, Platform.OS)
         _map.set(POLICY.REQUEST_SERVICE_ID, ACECommonStaticConfig.getKey())
-        _map.set(POLICY.REQUEST_TIME, new Date().valueOf().toString())
+        _map.set(POLICY.REQUEST_TIME, Date.now().toString())
         _map.set(POLICY.REQUEST_VERSION, ACS.SDKVersion())
         break
     }
@@ -132,18 +135,12 @@ export class ACENetwork {
   //#endregion
 
   //#region request
-  public static requestToPolicy(
-    completed?: (response: AxiosResponse) => void,
-    failed?: (err: object) => void,
-  ): Promise<object> {
-    return ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.POLICY), completed, failed)
+  public static requestToPolicy(completed?: (response: AxiosResponse) => void, failed?: (err: object) => void): void {
+    ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.POLICY), completed, failed)
   }
 
-  public static requestToLog(
-    completed?: (response: AxiosResponse) => void,
-    failed?: (err: object) => void,
-  ): Promise<object> {
-    return ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.LOG), completed, failed)
+  public static requestToLog(completed?: (response: AxiosResponse) => void, failed?: (err: object) => void): void {
+    ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.LOG), completed, failed)
   }
 
   private static request(
@@ -151,11 +148,12 @@ export class ACENetwork {
     completed?: (response: AxiosResponse) => void,
     failed?: (err: object) => void,
     method: HTTP_METHOD = HTTP_METHOD.GET,
-  ): Promise<object> {
+  ): void {
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
     axios.defaults.headers.common['Content-Type'] = 'text/plain'
 
     const requestHeaders = mapValueStringToObject(params.requestHeaders)
+    console.log(`ACENetwork.request::requestHeaders:${JSON.stringify(requestHeaders)}`)
     const requestConfig: AxiosRequestConfig = {
       url: params.url,
       method: method,
@@ -201,25 +199,19 @@ export class ACENetwork {
     //   timeout: 1000,
     // };
 
-    return new Promise((resolve, reject) => {
-      axios
-        .create()
-        .request(requestConfig)
-        .then(response => {
-          if (completed) {
-            completed(response)
-          } else {
-            resolve(response)
-          }
-        })
-        .catch(error => {
-          if (failed) {
-            failed(error)
-          } else {
-            reject(error)
-          }
-        })
-    })
+    axios
+      .create()
+      .request(requestConfig)
+      .then(response => {
+        if (completed) {
+          completed(response)
+        }
+      })
+      .catch(error => {
+        if (failed) {
+          failed(error)
+        }
+      })
   }
   //#endregion
 }

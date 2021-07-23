@@ -20,7 +20,7 @@ export default class ACEntityForVT {
     getBuyCount(): string;
     setBuyCount(value: number): void;
     getPcStamp(): string | undefined;
-    setPcStamp(value: Date): void;
+    setPcStamp(value: number): void;
     getRandom6ForPcStamp(): string | undefined;
     setRandom6ForPcStamp(value: string): void;
     setPcStampWhenNotStored(): void;

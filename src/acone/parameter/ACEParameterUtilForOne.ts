@@ -11,6 +11,8 @@ import ACOneConstantVt from '../constant/ACOneConstantVt'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
 import ACENetworkResult from '../../common/http/ACENetworkResult'
+import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
+import {ACECallbackUnit} from '../../common/constant/ACECallbackUnit'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static instance: ACEParameterUtilForOne
@@ -43,11 +45,11 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   }
 
   public initParameters(key: string, callback: ((error?: Error, result?: object) => void) | undefined): void
-  public initParameters(key: string): Promise<object>
+  public initParameters(key: string): Promise<ACECallbackResultForDebug>
   public initParameters(
     key: string,
     callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
+  ): Promise<ACECallbackResultForDebug> | void {
     const _parametersForOne = ACEParametersForOne.getInstance()
     _parametersForOne.getCE()
     _parametersForOne.setDM(ACEParameterUtil.getResolution())
@@ -76,26 +78,39 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           console.log(`then Promise.all::res: ${JSON.stringify(res)}`)
           this.getVT()
           this.loadUniqueKeyForSDK()
+
+          const callbackUnit: ACECallbackUnit = {
+            title: 'SDK init step one done',
+            location: 'ACEParameterUtilForOne::initParameters',
+            result: true,
+          }
+          const callbackResultForDebug: ACECallbackResultForDebug = {
+            prevResult: true,
+            history: [callbackUnit],
+          }
           if (callback) {
-            callback(undefined, {
-              result: 'done',
-            })
+            callback(undefined, callbackResultForDebug)
           } else {
-            resolve({
-              result: 'done',
-            })
+            resolve(callbackResultForDebug)
           }
         })
         .catch(err => {
           console.log(`catch Promise.all::err: ${JSON.stringify(err)}`)
+
+          const callbackUnit: ACECallbackUnit = {
+            title: 'SDK init step one fail',
+            reason: `${JSON.stringify(err)}`,
+            location: 'ACEParameterUtilForOne::initParameters::catch in Promise.all',
+            result: false,
+          }
+          const callbackResultForDebug: ACECallbackResultForDebug = {
+            prevResult: false,
+            history: [callbackUnit],
+          }
           if (callback) {
-            callback(err, {
-              result: 'fail',
-            })
+            callback(err, callbackResultForDebug)
           } else {
-            reject({
-              result: 'fail',
-            })
+            reject(callbackResultForDebug)
           }
         })
     })

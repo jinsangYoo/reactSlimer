@@ -2,6 +2,7 @@ import { AceConfiguration } from '../../acone/aceconfiguration';
 import ACEStaticConfig from '../../common/config/ACEStaticConfig';
 import IACECommonAPI from '../parameter/IACECommonAPI';
 import IACEParameterUtil from '../../common/parameter/IACEParameterUtil';
+import { ACECallbackResultForDebug } from '../../common/constant/ACECallbackResultForDebug';
 export default class ACEOneStaticConfig implements ACEStaticConfig {
     _debug: boolean;
     _key: string;
@@ -9,7 +10,7 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
     private _enablePrivacyPolicy;
     constructor();
     configure(configuration: AceConfiguration, callback: ((error?: Error, result?: object) => void) | undefined): void;
-    configure(configuration: AceConfiguration): Promise<object>;
+    configure(configuration: AceConfiguration): Promise<ACECallbackResultForDebug>;
     isDebug(): boolean;
     getEnablePrivacyPolicy(): boolean;
     getKey(): string;
