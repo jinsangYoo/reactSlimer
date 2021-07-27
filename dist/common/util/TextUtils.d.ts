@@ -1,2 +1,2 @@
-export declare function isEmpty(value: string | undefined): boolean;
+export declare function isEmpty(value: any): boolean;
 //# sourceMappingURL=TextUtils.d.ts.map

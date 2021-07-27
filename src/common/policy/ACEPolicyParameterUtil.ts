@@ -1,9 +1,9 @@
 import ACENetworkResult from '../http/ACENetworkResult'
 import {HttpURLConnection} from '../constant/Network'
-// import POLICY from '../constant/Policy'
-// import ACEPolicyParameters from './ACEPolicyParameters'
+import POLICY from '../constant/Policy'
+import ACEPolicyParameters from './ACEPolicyParameters'
 // import {isEmpty} from '../util/TextUtils'
-// import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
+import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 // import ACEConstantInteger from '../constant/ACEConstantInteger'
 
 export default class ACEPolicyParameterUtil {
@@ -29,15 +29,23 @@ export default class ACEPolicyParameterUtil {
     console.log('Receive policy.')
     console.log(`ACEPolicyParameterUtil::savePolicy::_response: ${JSON.stringify(result)}`)
 
-    // const _policyParameters = ACEPolicyParameters.getInstance()
-    // const responseHeaders = result.getHeaders()
-    // if (responseHeaders.has(POLICY.RESPONSE_SDK_ENABLE.toLowerCase())) {
-    //   console.log(`in if ${POLICY.RESPONSE_SDK_ENABLE}`)
-    //   _policyParameters.setCpAllow(responseHeaders.get(POLICY.RESPONSE_SDK_ENABLE.toLowerCase()))
-    //   if (!ControlTowerSingleton.getInstance().isEnableByPolicy()) {
-    //     ControlTowerSingleton.getInstance().setSDKDisable()
-    //   }
-    // }
+    const _policyParameters = ACEPolicyParameters.getInstance()
+    const responseHeaders = result.getHeaders()
+    try {
+      if (responseHeaders[POLICY.RESPONSE_SDK_ENABLE.toLowerCase()]) {
+        console.log(
+          `in if key: ${POLICY.RESPONSE_SDK_ENABLE.toLowerCase()}, value: ${
+            responseHeaders[POLICY.RESPONSE_SDK_ENABLE.toLowerCase()]
+          }`,
+        )
+        _policyParameters.setCpAllow(responseHeaders[POLICY.RESPONSE_SDK_ENABLE.toLowerCase()])
+        if (!ControlTowerSingleton.getInstance().isEnableByPolicy()) {
+          ControlTowerSingleton.getInstance().setSDKDisable()
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
 
     // if (responseHeaders.has(POLICY.RESPONSE_CID.toLowerCase())) {
     //   console.log(`in if ${POLICY.RESPONSE_CID}`)

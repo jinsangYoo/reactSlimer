@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { HTTP_METHOD, BASE_URL, HTTP_URL } from '../constant/Network';
+import POLICY from '../constant/Policy';
 import { NetworkMode, NetworkRequestType } from '../constant/SDKMode';
 import ACECommonStaticConfig from '../config/ACECommonStaticConfig';
 import { Platform } from 'react-native';
@@ -62,12 +63,12 @@ export class ACENetwork {
             case NetworkMode.COMPANY_dev:
             case NetworkMode.HOME_dev:
             case NetworkMode.Pro:
-                _map.set("CP-Application-Id", (_a = ACS.getPackageNameOrBundleID()) !== null && _a !== void 0 ? _a : 'no packageName');
-                _map.set("CP-Request-Cid", ACECommonStaticConfig.getKey());
-                _map.set("CP-Request-Platform", Platform.OS);
-                _map.set("CP-Request-Id", ACECommonStaticConfig.getKey());
-                _map.set("CP-Request-Time", Date.now().toString());
-                _map.set("CP-Request-Version", ACS.SDKVersion());
+                _map.set(POLICY.REQUEST_APPLICATION_ID, (_a = ACS.getPackageNameOrBundleID()) !== null && _a !== void 0 ? _a : 'no packageName');
+                _map.set(POLICY.REQUEST_CID, ACECommonStaticConfig.getKey());
+                _map.set(POLICY.REQUEST_PLATFORM, Platform.OS);
+                _map.set(POLICY.REQUEST_SERVICE_ID, ACECommonStaticConfig.getKey());
+                _map.set(POLICY.REQUEST_TIME, Date.now().toString());
+                _map.set(POLICY.REQUEST_VERSION, ACS.SDKVersion());
                 break;
         }
         return _map;

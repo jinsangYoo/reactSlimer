@@ -22,6 +22,31 @@ export default class ACECommonStaticConfig {
     callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
     console.log('NHN ACE SDK version: ' + ACS.SDKVersion())
+
+    if (this._staticConfigImpl) {
+      console.log(`Already init SDK.`)
+      const callbackUnit: ACECallbackUnit = {
+        title: 'Already init SDK.',
+        location: 'ACECommonStaticConfig.configure::failed',
+        result: false,
+      }
+      if (callback) {
+        callback(new Error('Already init SDK.'), {
+          prevResult: false,
+          history: [callbackUnit],
+        })
+      } else {
+        return new Promise((resolveToOut, rejectToOut) => {
+          rejectToOut({
+            prevResult: false,
+            history: [callbackUnit],
+          })
+        })
+      }
+    } else {
+      console.log(`Start init SDK.`)
+    }
+
     console.log('AceConfiguration information: ' + JSON.stringify(configuration))
 
     if (configuration.platform) {
@@ -33,10 +58,6 @@ export default class ACECommonStaticConfig {
 
     ControlTowerSingleton.getInstance().setDevSDKMode()
     ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
-
-    if (!this._staticConfigImpl) {
-      return
-    }
 
     if (callback) {
       const _commonAPI = this._staticConfigImpl.getCommonAPI()
@@ -94,9 +115,6 @@ export default class ACECommonStaticConfig {
               res.history.push(callbackUnit)
               rejectToOut(res)
             }
-
-            console.log(`call stack: ${JSON.stringify(res)}`)
-            resolveToOut(res)
           })
           .catch(err => {
             console.log(`then _staticConfigImpl.configure::err: ${JSON.stringify(err)}`)

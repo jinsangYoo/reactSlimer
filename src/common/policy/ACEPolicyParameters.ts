@@ -34,10 +34,13 @@ export default class ACEPolicyParameters {
   }
 
   public setCpAllow(value: string | undefined): void {
-    if (!value || isEmpty(value)) {
+    // console.log(`setCpAllow::value: >>${value}<<`)
+    if (isEmpty(value)) {
+      // console.log(`setCpAllow::value: setEmpty`)
       this.cpAllow = ACECONSTANT.EMPTY
     } else {
-      this.cpAllow = value
+      // console.log(`setCpAllow::value: value`)
+      if (value) this.cpAllow = value
     }
   }
 

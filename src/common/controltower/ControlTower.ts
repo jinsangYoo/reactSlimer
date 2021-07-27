@@ -61,6 +61,10 @@ export default class ControlTower {
     if (isEmpty(result)) {
       return false
     } else {
+      // console.log(`isEnableByPolicy::result: ${result}, ${POLICY.FLAG_SDK_ENABLE}`)
+      // console.log(
+      //   `isEnableByPolicy::>>${result}<< == >>${POLICY.FLAG_SDK_ENABLE}<<: >>${result == POLICY.FLAG_SDK_ENABLE}<<`,
+      // )
       return result == POLICY.FLAG_SDK_ENABLE
     }
   }

@@ -18,11 +18,12 @@ export default class ACEPolicyParameters {
         return this.cpAllow;
     }
     setCpAllow(value) {
-        if (!value || isEmpty(value)) {
+        if (isEmpty(value)) {
             this.cpAllow = ACECONSTANT.EMPTY;
         }
         else {
-            this.cpAllow = value;
+            if (value)
+                this.cpAllow = value;
         }
     }
     getCpApp() {

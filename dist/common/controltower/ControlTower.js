@@ -1,6 +1,7 @@
 import { SDKMode, NetworkMode } from '../constant/SDKMode';
 import ACEPolicyParameters from '../policy/ACEPolicyParameters';
 import { isEmpty } from '../util/TextUtils';
+import POLICY from '../constant/Policy';
 export default class ControlTower {
     constructor() {
         this._sdk_mode = SDKMode.development;
@@ -39,7 +40,7 @@ export default class ControlTower {
             return false;
         }
         else {
-            return result == "*";
+            return result == POLICY.FLAG_SDK_ENABLE;
         }
     }
     getIsSDKEnabled() {
