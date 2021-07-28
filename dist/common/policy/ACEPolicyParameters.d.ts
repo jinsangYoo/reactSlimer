@@ -29,5 +29,6 @@ export default class ACEPolicyParameters {
     setCpCrashDomain(value: string | undefined): void;
     getToastAppKey(): string;
     setToastAppKey(value: string | undefined): void;
+    toJSON(): string;
 }
 //# sourceMappingURL=ACEPolicyParameters.d.ts.map

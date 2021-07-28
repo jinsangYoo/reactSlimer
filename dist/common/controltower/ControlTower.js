@@ -18,13 +18,13 @@ export default class ControlTower {
         return this._isCompletePolicy;
     }
     setIsCompletePolicy(isCompletePolicy, isSucceedRequestPolicy) {
-        console.log(`setIsCompletePolicy::isCompletePolicy: ${isCompletePolicy}, isSucceedRequestPolicy: ${isSucceedRequestPolicy}`);
+        console.log(`ControlTower.setIsCompletePolicy::isCompletePolicy: ${isCompletePolicy}, isSucceedRequestPolicy: ${isSucceedRequestPolicy}`);
     }
     isDisabled() {
-        const currentIsCompletePolicy = this.getIsCompletePolicy();
-        const currentIsSDKEnabled = this.getIsSDKEnabled();
-        console.log(`ControlTower.getIsCompletePolicy: ${currentIsCompletePolicy}, ControlTower.getIsSDKEnabled: ${currentIsSDKEnabled}`);
-        if (currentIsCompletePolicy && !currentIsSDKEnabled) {
+        const alreadyIsCompletePolicy = this.getIsCompletePolicy();
+        const isSDKEnabled = this.getIsSDKEnabled();
+        console.log(`ControlTower.isDisabled::alreadyIsCompletePolicy: ${alreadyIsCompletePolicy}, isSDKEnabled: ${isSDKEnabled}`);
+        if (alreadyIsCompletePolicy && !isSDKEnabled) {
             console.log('SDK is disabled.');
             return true;
         }
@@ -49,7 +49,7 @@ export default class ControlTower {
             return false;
         }
         this._isSDKEnabled = this.isEnableByPolicy();
-        console.log(`isEnabled: ${this._isSDKEnabled}, _isSDKEnabled: ${this._isSDKEnabled}`);
+        console.log(`isEnable of policy: ${this._isSDKEnabled}`);
         if (!this._isSDKEnabled) {
             console.log('not found SDK policy information.');
         }

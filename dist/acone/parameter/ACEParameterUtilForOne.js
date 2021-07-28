@@ -7,6 +7,7 @@ import { ACS } from '../acs';
 import SESSION from '../../common/constant/Session';
 import ACOneConstantSt from '../constant/ACOneConstantSt';
 import ACOneConstantVt from '../constant/ACOneConstantVt';
+import ACEofAPIForOne from '../constant/ACEofAPIForOne';
 export default class ACEParameterUtilForOne {
     constructor() { }
     static getInstance() {
@@ -17,11 +18,21 @@ export default class ACEParameterUtilForOne {
     }
     getSuccessResponseForCustomer(logSource, resultCode, res) {
         console.log(`getSuccessResponseForCustomer::res: ${JSON.stringify(res)}`);
-        return {};
+        switch (logSource) {
+            case ACEofAPIForOne.Policy:
+                return {};
+            default:
+                return {};
+        }
     }
     getFailResponseForCustomer(logSource, resultCode, err) {
         console.log(`getFailResponseForCustomer::err: ${JSON.stringify(err)}`);
-        return {};
+        switch (logSource) {
+            case ACEofAPIForOne.Policy:
+                return {};
+            default:
+                return {};
+        }
     }
     setFirstLogParameters() {
         throw new Error('Method not implemented.');

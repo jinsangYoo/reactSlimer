@@ -30,7 +30,7 @@ export default class ACEPolicyParameters {
         return this.cpApp;
     }
     setCpApp(value) {
-        if (!value || value < 0) {
+        if (value === undefined || value < 0) {
             value = 0;
         }
         this.cpApp = value;
@@ -39,78 +39,98 @@ export default class ACEPolicyParameters {
         return this.cpCid;
     }
     setCpCid(value) {
-        if (!value || isEmpty(value)) {
+        if (isEmpty(value)) {
             this.cpCid = ACECONSTANT.EMPTY;
         }
         else {
-            this.cpCid = value;
+            if (value)
+                this.cpCid = value;
         }
     }
     getCpDebug() {
         return this.cpDebug;
     }
     setCpDebug(value) {
-        if (!value || isEmpty(value)) {
+        if (isEmpty(value)) {
             this.cpDebug = ACECONSTANT.EMPTY;
         }
         else {
-            this.cpDebug = value;
+            if (value)
+                this.cpDebug = value;
         }
     }
     getCpDomain() {
         return this.cpDomain;
     }
     setCpDomain(value) {
-        if (!value || isEmpty(value)) {
+        if (isEmpty(value)) {
             this.cpDomain = ACECONSTANT.EMPTY;
         }
         else {
-            this.cpDomain = value;
+            if (value)
+                this.cpDomain = value;
         }
     }
     getCpPrivate() {
         return this.cpPrivate;
     }
     setCpPrivate(value) {
-        if (!value || isEmpty(value)) {
+        if (isEmpty(value)) {
             this.cpPrivate = ACECONSTANT.EMPTY;
         }
         else {
-            this.cpPrivate = value;
+            if (value)
+                this.cpPrivate = value;
         }
     }
     getCpSourceIP() {
         return this.cpSourceIP;
     }
     setCpSourceIP(value) {
-        if (!value || isEmpty(value)) {
+        if (isEmpty(value)) {
             this.cpSourceIP = ACECONSTANT.EMPTY;
         }
         else {
-            this.cpSourceIP = value;
+            if (value)
+                this.cpSourceIP = value;
         }
     }
     getCpCrashDomain() {
         return this.cpCrashDomain;
     }
     setCpCrashDomain(value) {
-        if (!value || isEmpty(value)) {
+        if (isEmpty(value)) {
             this.cpCrashDomain = ACECONSTANT.EMPTY;
         }
         else {
-            this.cpCrashDomain = value;
+            if (value)
+                this.cpCrashDomain = value;
         }
     }
     getToastAppKey() {
         return this.toastAppKey;
     }
     setToastAppKey(value) {
-        if (!value || isEmpty(value)) {
+        if (isEmpty(value)) {
             this.toastAppKey = ACECONSTANT.EMPTY;
         }
         else {
-            this.toastAppKey = value;
+            if (value)
+                this.toastAppKey = value;
         }
+    }
+    toJSON() {
+        return JSON.stringify({
+            cpAllow: this.cpAllow,
+            cpApp: this.cpApp,
+            cpCid: this.cpCid,
+            cpDebug: this.cpDebug,
+            cpDomain: this.cpDomain,
+            cpPrivate: this.cpPrivate,
+            cpSourceIP: this.cpSourceIP,
+            cpCrashDomain: this.cpCrashDomain,
+            toastAppKey: this.toastAppKey,
+        }, null, 2);
     }
 }
 //# sourceMappingURL=ACEPolicyParameters.js.map

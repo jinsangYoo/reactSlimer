@@ -49,7 +49,7 @@ export default class ACEPolicyParameters {
   }
 
   public setCpApp(value: number | undefined): void {
-    if (!value || value < 0) {
+    if (value === undefined || value < 0) {
       value = 0
     }
     this.cpApp = value
@@ -60,10 +60,10 @@ export default class ACEPolicyParameters {
   }
 
   public setCpCid(value: string | undefined): void {
-    if (!value || isEmpty(value)) {
+    if (isEmpty(value)) {
       this.cpCid = ACECONSTANT.EMPTY
     } else {
-      this.cpCid = value
+      if (value) this.cpCid = value
     }
   }
 
@@ -72,10 +72,10 @@ export default class ACEPolicyParameters {
   }
 
   public setCpDebug(value: string | undefined): void {
-    if (!value || isEmpty(value)) {
+    if (isEmpty(value)) {
       this.cpDebug = ACECONSTANT.EMPTY
     } else {
-      this.cpDebug = value
+      if (value) this.cpDebug = value
     }
   }
 
@@ -84,10 +84,10 @@ export default class ACEPolicyParameters {
   }
 
   public setCpDomain(value: string | undefined): void {
-    if (!value || isEmpty(value)) {
+    if (isEmpty(value)) {
       this.cpDomain = ACECONSTANT.EMPTY
     } else {
-      this.cpDomain = value
+      if (value) this.cpDomain = value
     }
   }
 
@@ -96,10 +96,10 @@ export default class ACEPolicyParameters {
   }
 
   public setCpPrivate(value: string | undefined): void {
-    if (!value || isEmpty(value)) {
+    if (isEmpty(value)) {
       this.cpPrivate = ACECONSTANT.EMPTY
     } else {
-      this.cpPrivate = value
+      if (value) this.cpPrivate = value
     }
   }
 
@@ -108,10 +108,10 @@ export default class ACEPolicyParameters {
   }
 
   public setCpSourceIP(value: string | undefined): void {
-    if (!value || isEmpty(value)) {
+    if (isEmpty(value)) {
       this.cpSourceIP = ACECONSTANT.EMPTY
     } else {
-      this.cpSourceIP = value
+      if (value) this.cpSourceIP = value
     }
   }
 
@@ -120,10 +120,10 @@ export default class ACEPolicyParameters {
   }
 
   public setCpCrashDomain(value: string | undefined): void {
-    if (!value || isEmpty(value)) {
+    if (isEmpty(value)) {
       this.cpCrashDomain = ACECONSTANT.EMPTY
     } else {
-      this.cpCrashDomain = value
+      if (value) this.cpCrashDomain = value
     }
   }
 
@@ -132,10 +132,28 @@ export default class ACEPolicyParameters {
   }
 
   public setToastAppKey(value: string | undefined): void {
-    if (!value || isEmpty(value)) {
+    if (isEmpty(value)) {
       this.toastAppKey = ACECONSTANT.EMPTY
     } else {
-      this.toastAppKey = value
+      if (value) this.toastAppKey = value
     }
+  }
+
+  public toJSON(): string {
+    return JSON.stringify(
+      {
+        cpAllow: this.cpAllow,
+        cpApp: this.cpApp,
+        cpCid: this.cpCid,
+        cpDebug: this.cpDebug,
+        cpDomain: this.cpDomain,
+        cpPrivate: this.cpPrivate,
+        cpSourceIP: this.cpSourceIP,
+        cpCrashDomain: this.cpCrashDomain,
+        toastAppKey: this.toastAppKey,
+      },
+      null,
+      2,
+    )
   }
 }

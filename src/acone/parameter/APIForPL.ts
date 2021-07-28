@@ -2,7 +2,7 @@ import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
 import {AxiosResponse} from 'axios'
-import {makeSuccessCallback, makeFailCallback} from '../../common/util/MapUtil'
+import {makeSuccessCallbackParams, makeFailCallbackParams} from '../../common/util/MapUtil'
 import {ACECallbackUnit} from '../../common/constant/ACECallbackUnit'
 import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
 
@@ -22,15 +22,15 @@ export default class APIForPL extends Task {
 
     ACENetwork.requestToLog(
       response => {
-        console.log('APIForPL::in cb::completed!!!')
+        console.log('APIForPL::in requestToLog.completed')
         this.completed(response)
         this.doneWork()
         if (callback) {
           const callbackUnit: ACECallbackUnit = {
             title: 'normal send log.',
-            location: 'APIForPL::ACENetwork.requestToLog::completed',
+            location: 'APIForPL::requestToLog.completed',
             result: true,
-            payload: makeSuccessCallback(this),
+            payload: makeSuccessCallbackParams(this),
           }
           callback(undefined, {
             prevResult: true,
@@ -39,15 +39,15 @@ export default class APIForPL extends Task {
         }
       },
       err => {
-        console.log('APIForPL::in cb::failed!!!')
+        console.log('APIForPL::in requestToLog.failed')
         this.failed(err)
         this.doneWork()
         if (callback) {
           const callbackUnit: ACECallbackUnit = {
             title: 'fail send log.',
-            location: 'APIForPL::ACENetwork.requestToLog::failed',
+            location: 'APIForPL::requestToLog.failed',
             result: false,
-            payload: makeFailCallback(this),
+            payload: makeFailCallbackParams(this),
           }
           callback(err, {
             prevResult: false,

@@ -4,7 +4,7 @@ import {ACENetwork} from '../../common/http/ACENetwork'
 import {AxiosResponse} from 'axios'
 import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
-import {makeSuccessCallback, makeFailCallback} from '../../common/util/MapUtil'
+import {makeSuccessCallbackParams, makeFailCallbackParams} from '../../common/util/MapUtil'
 import {ACECallbackUnit} from '../../common/constant/ACECallbackUnit'
 import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
 
@@ -22,16 +22,25 @@ export default class APIForPolicy extends Task {
 
     ACENetwork.requestToPolicy(
       response => {
-        console.log('APIForPolicy::in cb::completed!!!')
+        console.log('APIForPolicy::in requestToPolicy.completed')
         this.completed(response)
         this.doneWork()
+        console.log('this stringfy')
+        console.log(JSON.stringify(this, null, 2))
         if (callback) {
           const callbackUnit: ACECallbackUnit = {
             title: 'normal request policy.',
-            location: 'APIForPolicy::ACENetwork.requestToPolicy::completed',
+            location: 'APIForPolicy::requestToPolicy.completed',
             result: true,
-            payload: makeSuccessCallback(this),
+            payload: makeSuccessCallbackParams(this),
           }
+
+          const resultObject = {
+            prevResult: true,
+            history: [callbackUnit],
+          }
+          console.log('resultObject stringfy')
+          console.log(JSON.stringify(resultObject, null, 2))
           callback(undefined, {
             prevResult: true,
             history: [callbackUnit],
@@ -39,15 +48,15 @@ export default class APIForPolicy extends Task {
         }
       },
       err => {
-        console.log('APIForPolicy::in cb::failed!!!')
+        console.log('APIForPolicy::in requestToPolicy.failed')
         this.failed(err)
         this.doneWork()
         if (callback) {
           const callbackUnit: ACECallbackUnit = {
             title: 'fail request policy.',
-            location: 'APIForPolicy::ACENetwork.requestToPolicy::failed',
+            location: 'APIForPolicy::requestToPolicy.failed',
             result: false,
-            payload: makeFailCallback(this),
+            payload: makeFailCallbackParams(this),
           }
           callback(err, {
             prevResult: false,

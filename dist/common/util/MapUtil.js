@@ -2,6 +2,11 @@ import { ACEConstantCallback } from '../constant/ACEPublicStaticConfig';
 import ACEResultCode from '../constant/ACEResultCode';
 import { isEmpty } from './TextUtils';
 import ACECommonStaticConfig from '../config/ACECommonStaticConfig';
+export function printConsoleMap(map) {
+    for (var i = 0, keys = Object.keys(map), ii = keys.length; i < ii; i++) {
+        console.log(keys[i] + '|' + map[keys[i]].list);
+    }
+}
 export function mapValueObjectToObject(map) {
     return Array.from(map).reduce((obj, [key, value]) => {
         obj[key] = value;
@@ -14,9 +19,9 @@ export function mapValueStringToObject(map) {
         return obj;
     }, {});
 }
-export function makeSuccessCallback(task, message) {
+export function makeSuccessCallbackParams(task, message) {
     var innerMsg = ACEConstantCallback.DefaultMessage;
-    if (message && !isEmpty(message)) {
+    if (!isEmpty(message) && message) {
         innerMsg = message;
     }
     const _response = task.getNetworkResult();
@@ -38,12 +43,17 @@ function makeSuccessResultMap(logSource, resultCode, result, message, taskHash, 
     if (res) {
         const _implementer = ACECommonStaticConfig.getParameterUtil();
         if (_implementer) {
-            _map.set(ACEConstantCallback.Response, _implementer.getSuccessResponseForCustomer(logSource, resultCode, res));
+            const _successResponseForCustomer = _implementer.getSuccessResponseForCustomer(logSource, resultCode, res);
+            console.log('_successResponseForCustomer stringify');
+            console.log(JSON.stringify(_successResponseForCustomer, null, 2));
+            _map.set(ACEConstantCallback.Response, _successResponseForCustomer);
         }
     }
+    console.log('_map printConsoleMap');
+    printConsoleMap(_map);
     return _map;
 }
-export function makeFailCallback(task, message) {
+export function makeFailCallbackParams(task, message) {
     var innerMsg = ACEConstantCallback.DefaultMessage;
     if (message && !isEmpty(message)) {
         innerMsg = message;

@@ -13,6 +13,7 @@ import ACEntityForVT from './ACEntityForVT'
 import ACENetworkResult from '../../common/http/ACENetworkResult'
 import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
 import {ACECallbackUnit} from '../../common/constant/ACECallbackUnit'
+import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static instance: ACEParameterUtilForOne
@@ -27,11 +28,21 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   }
   getSuccessResponseForCustomer(logSource: number, resultCode: number, res: ACENetworkResult): object {
     console.log(`getSuccessResponseForCustomer::res: ${JSON.stringify(res)}`)
-    return {}
+    switch (logSource) {
+      case ACEofAPIForOne.Policy:
+        return {}
+      default:
+        return {}
+    }
   }
   getFailResponseForCustomer(logSource: number, resultCode: number, err: JSON): object {
     console.log(`getFailResponseForCustomer::err: ${JSON.stringify(err)}`)
-    return {}
+    switch (logSource) {
+      case ACEofAPIForOne.Policy:
+        return {}
+      default:
+        return {}
+    }
   }
 
   setFirstLogParameters(): void {

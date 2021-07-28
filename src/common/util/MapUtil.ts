@@ -5,6 +5,12 @@ import ACECommonStaticConfig from '../config/ACECommonStaticConfig'
 import ACENetworkResult from '../http/ACENetworkResult'
 import Task from '../task/Task'
 
+export function printConsoleMap(map: Map<string, string | object>): void {
+  for (var i = 0, keys = Object.keys(map), ii = keys.length; i < ii; i++) {
+    console.log(keys[i] + '|' + map[keys[i]].list)
+  }
+}
+
 export function mapValueObjectToObject(map: Map<string, object>) {
   return Array.from(map).reduce((obj, [key, value]) => {
     obj[key] = value
@@ -19,11 +25,11 @@ export function mapValueStringToObject(map: Map<string, string>) {
   }, {})
 }
 
-export function makeSuccessCallback(task: Task): Map<string, string | object>
-export function makeSuccessCallback(task: Task, message: string): Map<string, string | object>
-export function makeSuccessCallback(task: Task, message?: string): Map<string, string | object> {
+export function makeSuccessCallbackParams(task: Task): Map<string, string | object>
+export function makeSuccessCallbackParams(task: Task, message: string): Map<string, string | object>
+export function makeSuccessCallbackParams(task: Task, message?: string): Map<string, string | object> {
   var innerMsg: string = ACEConstantCallback.DefaultMessage
-  if (message && !isEmpty(message)) {
+  if (!isEmpty(message) && message) {
     innerMsg = message
   }
 
@@ -81,16 +87,22 @@ function makeSuccessResultMap(
   if (res) {
     const _implementer = ACECommonStaticConfig.getParameterUtil()
     if (_implementer) {
-      _map.set(ACEConstantCallback.Response, _implementer.getSuccessResponseForCustomer(logSource, resultCode, res))
+      const _successResponseForCustomer = _implementer.getSuccessResponseForCustomer(logSource, resultCode, res)
+      console.log('_successResponseForCustomer stringify')
+      console.log(JSON.stringify(_successResponseForCustomer, null, 2))
+      _map.set(ACEConstantCallback.Response, _successResponseForCustomer)
     }
   }
+
+  console.log('_map printConsoleMap')
+  printConsoleMap(_map)
 
   return _map
 }
 
-export function makeFailCallback(task: Task): Map<string, string | object>
-export function makeFailCallback(task: Task, message: string): Map<string, string | object>
-export function makeFailCallback(task: Task, message?: string): Map<string, string | object> {
+export function makeFailCallbackParams(task: Task): Map<string, string | object>
+export function makeFailCallbackParams(task: Task, message: string): Map<string, string | object>
+export function makeFailCallbackParams(task: Task, message?: string): Map<string, string | object> {
   var innerMsg: string = ACEConstantCallback.DefaultMessage
   if (message && !isEmpty(message)) {
     innerMsg = message
