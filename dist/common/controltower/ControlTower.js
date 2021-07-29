@@ -55,7 +55,7 @@ export default class ControlTower {
         if (!this._isSDKEnabled) {
             console.log('not found SDK policy information.');
         }
-        return false;
+        return this._isSDKEnabled;
     }
     getSDKMode() {
         return this._sdk_mode;

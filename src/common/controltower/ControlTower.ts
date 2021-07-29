@@ -83,7 +83,7 @@ export default class ControlTower {
       console.log('not found SDK policy information.')
     }
 
-    return false
+    return this._isSDKEnabled
   }
 
   public getSDKMode(): SDKMode {
