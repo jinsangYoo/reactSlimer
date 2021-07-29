@@ -2,7 +2,7 @@ import {ITaskParams} from './ITaskParams'
 import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne'
 import {AxiosResponse} from 'axios'
 import ACENetworkResult from '../http/ACENetworkResult'
-import {ACECallbackResultForDebug} from '../constant/ACECallbackResultForDebug'
+import {ACEResponseToCaller} from '../constant/ACEPublicStaticConfig'
 
 export default class Task {
   protected _logSource: ACEofAPIForOne
@@ -19,7 +19,7 @@ export default class Task {
     console.log(`ITask::doWork: ${ACEofAPIForOne[this._logSource]}`)
   }
 
-  public didWork(callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined): void {
+  public didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {
     console.log(`ITask::didWork: ${ACEofAPIForOne[this._logSource]}`)
   }
 

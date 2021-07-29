@@ -2,6 +2,7 @@ import { SDKMode, NetworkMode } from '../constant/SDKMode';
 import ACEPolicyParameters from '../policy/ACEPolicyParameters';
 import { isEmpty } from '../util/TextUtils';
 import POLICY from '../constant/Policy';
+import ACELog from '../logger/ACELog';
 export default class ControlTower {
     constructor() {
         this._sdk_mode = SDKMode.development;
@@ -10,6 +11,7 @@ export default class ControlTower {
         this._isInstallReferrerDone = false;
         this._isSDKForceStop = false;
         this._isSDKEnabled = false;
+        ACELog.setProductionMode();
     }
     static getInstance() {
         return this.instance || (this.instance = new this());
@@ -76,9 +78,11 @@ export default class ControlTower {
     enableForceStop() { }
     setDevSDKMode() {
         this.setSDKMode(SDKMode.development);
+        ACELog.setDevMode();
     }
     setProductionSDKMode() {
         this.setSDKMode(SDKMode.production);
+        ACELog.setProductionMode();
     }
     static getDefaultNetworkMode() {
         return NetworkMode.COMPANY_dev;

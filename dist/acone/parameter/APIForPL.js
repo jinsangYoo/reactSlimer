@@ -17,32 +17,14 @@ export default class APIForPL extends Task {
             this.completed(response);
             this.doneWork();
             if (callback) {
-                const callbackUnit = {
-                    title: 'normal send log.',
-                    location: 'APIForPL::requestToLog.completed',
-                    result: true,
-                    payload: makeSuccessCallbackParams(this),
-                };
-                callback(undefined, {
-                    prevResult: true,
-                    history: [callbackUnit],
-                });
+                callback(undefined, makeSuccessCallbackParams(this));
             }
         }, err => {
             console.log('APIForPL::in requestToLog.failed');
             this.failed(err);
             this.doneWork();
             if (callback) {
-                const callbackUnit = {
-                    title: 'fail send log.',
-                    location: 'APIForPL::requestToLog.failed',
-                    result: false,
-                    payload: makeFailCallbackParams(this),
-                };
-                callback(err, {
-                    prevResult: false,
-                    history: [callbackUnit],
-                });
+                callback(err, makeFailCallbackParams(this));
             }
         });
     }

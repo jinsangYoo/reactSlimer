@@ -5,8 +5,7 @@ import ACEOneStaticConfig from '../../acone/config/ACEOneStaticConfig'
 import ACECONSTANT from '../constant/ACEConstant'
 import IACEParameterUtil from '../parameter/IACEParameterUtil'
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
-import {ACECallbackUnit} from '../constant/ACECallbackUnit'
-import {ACECallbackResultForDebug} from '../constant/ACECallbackResultForDebug'
+import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../constant/ACEPublicStaticConfig'
 
 export default class ACECommonStaticConfig {
   private static _staticConfigImpl: ACEStaticConfig
@@ -14,33 +13,30 @@ export default class ACECommonStaticConfig {
 
   public static configure(
     configuration: AceConfiguration,
-    callback: ((error?: Error, result?: object) => void) | undefined,
+    callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): void
-  public static configure(configuration: AceConfiguration): Promise<object>
+  public static configure(configuration: AceConfiguration): Promise<ACEResponseToCaller>
   public static configure(
     configuration: AceConfiguration,
-    callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
+    callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
+  ): Promise<ACEResponseToCaller> | void {
     console.log('NHN ACE SDK version: ' + ACS.SDKVersion())
 
     if (this._staticConfigImpl) {
       console.log(`Already init SDK.`)
-      const callbackUnit: ACECallbackUnit = {
-        title: 'Already init SDK.',
-        location: 'ACECommonStaticConfig.configure::failed',
-        result: false,
+
+      const response: ACEResponseToCaller = {
+        taskHash: '0000',
+        code: ACEResultCode.AlreadyInitialized,
+        result: ACEConstantCallback[ACEConstantCallback.Failed],
+        message: 'Already init SDK.',
+        apiName: 'init',
       }
       if (callback) {
-        callback(new Error('Already init SDK.'), {
-          prevResult: false,
-          history: [callbackUnit],
-        })
+        callback(new Error('Already init SDK.'), response)
       } else {
         return new Promise((resolveToOut, rejectToOut) => {
-          rejectToOut({
-            prevResult: false,
-            history: [callbackUnit],
-          })
+          rejectToOut(response)
         })
       }
     } else {
@@ -88,32 +84,22 @@ export default class ACECommonStaticConfig {
             const _commonAPI = this._staticConfigImpl.getCommonAPI()
             if (_commonAPI) {
               console.log('SDK init step two request policy')
-              _commonAPI.requestPolicy((error?: object, result?: ACECallbackResultForDebug) => {
+              _commonAPI.requestPolicy((error?: object, innerResult?: ACEResponseToCaller) => {
                 if (error) {
-                  console.log(`then _commonAPI.requestPolicy::error: ${JSON.stringify(error)}`)
-                  if (result) {
-                    res.prevResult = result.prevResult
-                    result.history.map(node => res.history.push(node))
-                  }
-                  rejectToOut(res)
+                  rejectToOut(error)
                 } else {
-                  if (result) {
-                    res.prevResult = result.prevResult
-                    result.history.map(node => res.history.push(node))
-                    resolveToOut(res)
-                  }
+                  if (innerResult) resolveToOut(innerResult)
                 }
               })
             } else {
-              res.prevResult = false
-              const callbackUnit: ACECallbackUnit = {
-                title: 'can not request policy.',
-                reason: 'this._staticConfigImpl.getCommonAPI() is undefined',
-                location: 'ACECommonStaticConfig::configure::return',
-                result: false,
+              const response: ACEResponseToCaller = {
+                taskHash: '0001',
+                code: ACEResultCode.CanNotRequestToPolicy,
+                result: ACEConstantCallback[ACEConstantCallback.Failed],
+                message: 'Can not request policy.',
+                apiName: 'init',
               }
-              res.history.push(callbackUnit)
-              rejectToOut(res)
+              rejectToOut(response)
             }
           })
           .catch(err => {

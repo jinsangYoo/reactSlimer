@@ -2,6 +2,7 @@ import {SDKMode, NetworkMode} from '../constant/SDKMode'
 import ACEPolicyParameters from '../policy/ACEPolicyParameters'
 import {isEmpty} from '../util/TextUtils'
 import POLICY from '../constant/Policy'
+import ACELog from '../logger/ACELog'
 
 export default class ControlTower {
   protected _sdk_mode: SDKMode
@@ -24,6 +25,7 @@ export default class ControlTower {
     this._isInstallReferrerDone = false
     this._isSDKForceStop = false
     this._isSDKEnabled = false
+    ACELog.setProductionMode()
   }
 
   public getIsCompletePolicy(): boolean {
@@ -110,10 +112,12 @@ export default class ControlTower {
 
   public setDevSDKMode(): void {
     this.setSDKMode(SDKMode.development)
+    ACELog.setDevMode()
   }
 
   public setProductionSDKMode(): void {
     this.setSDKMode(SDKMode.production)
+    ACELog.setProductionMode()
   }
 
   //#region static

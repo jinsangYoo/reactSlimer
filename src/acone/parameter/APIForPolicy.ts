@@ -5,8 +5,7 @@ import {AxiosResponse} from 'axios'
 import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 import {makeSuccessCallbackParams, makeFailCallbackParams} from '../../common/util/MapUtil'
-import {ACECallbackUnit} from '../../common/constant/ACECallbackUnit'
-import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
+import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 
 export default class APIForPolicy extends Task {
   public constructor(params: ITaskParams) {
@@ -17,7 +16,7 @@ export default class APIForPolicy extends Task {
     super.doWork()
   }
 
-  public didWork(callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined): void {
+  public didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {
     super.didWork(callback)
 
     ACENetwork.requestToPolicy(
@@ -25,26 +24,8 @@ export default class APIForPolicy extends Task {
         console.log('APIForPolicy::in requestToPolicy.completed')
         this.completed(response)
         this.doneWork()
-        console.log('this stringfy')
-        console.log(JSON.stringify(this, null, 2))
         if (callback) {
-          const callbackUnit: ACECallbackUnit = {
-            title: 'normal request policy.',
-            location: 'APIForPolicy::requestToPolicy.completed',
-            result: true,
-            payload: makeSuccessCallbackParams(this),
-          }
-
-          const resultObject = {
-            prevResult: true,
-            history: [callbackUnit],
-          }
-          console.log('resultObject stringfy')
-          console.log(JSON.stringify(resultObject, null, 2))
-          callback(undefined, {
-            prevResult: true,
-            history: [callbackUnit],
-          })
+          callback(undefined, makeSuccessCallbackParams(this))
         }
       },
       err => {
@@ -52,16 +33,7 @@ export default class APIForPolicy extends Task {
         this.failed(err)
         this.doneWork()
         if (callback) {
-          const callbackUnit: ACECallbackUnit = {
-            title: 'fail request policy.',
-            location: 'APIForPolicy::requestToPolicy.failed',
-            result: false,
-            payload: makeFailCallbackParams(this),
-          }
-          callback(err, {
-            prevResult: false,
-            history: [callbackUnit],
-          })
+          callback(err, makeFailCallbackParams(this))
         }
       },
     )

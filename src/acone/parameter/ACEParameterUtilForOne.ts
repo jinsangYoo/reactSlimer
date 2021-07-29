@@ -10,10 +10,7 @@ import ACOneConstantSt from '../constant/ACOneConstantSt'
 import ACOneConstantVt from '../constant/ACOneConstantVt'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
-import ACENetworkResult from '../../common/http/ACENetworkResult'
-import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
-import {ACECallbackUnit} from '../../common/constant/ACECallbackUnit'
-import ACEofAPIForOne from '../constant/ACEofAPIForOne'
+import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../../common/constant/ACEPublicStaticConfig'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static instance: ACEParameterUtilForOne
@@ -26,25 +23,6 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   loadUniqueKeyForSDK(): void {
     ACEParametersForOne.getInstance().setPcStampWhenNotStored()
   }
-  getSuccessResponseForCustomer(logSource: number, resultCode: number, res: ACENetworkResult): object {
-    console.log(`getSuccessResponseForCustomer::res: ${JSON.stringify(res)}`)
-    switch (logSource) {
-      case ACEofAPIForOne.Policy:
-        return {}
-      default:
-        return {}
-    }
-  }
-  getFailResponseForCustomer(logSource: number, resultCode: number, err: JSON): object {
-    console.log(`getFailResponseForCustomer::err: ${JSON.stringify(err)}`)
-    switch (logSource) {
-      case ACEofAPIForOne.Policy:
-        return {}
-      default:
-        return {}
-    }
-  }
-
   setFirstLogParameters(): void {
     throw new Error('Method not implemented.')
   }
@@ -55,12 +33,15 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     throw new Error('Method not implemented.')
   }
 
-  public initParameters(key: string, callback: ((error?: Error, result?: object) => void) | undefined): void
-  public initParameters(key: string): Promise<ACECallbackResultForDebug>
   public initParameters(
     key: string,
-    callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<ACECallbackResultForDebug> | void {
+    callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
+  ): void
+  public initParameters(key: string): Promise<ACEResponseToCaller>
+  public initParameters(
+    key: string,
+    callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
+  ): Promise<ACEResponseToCaller> | void {
     const _parametersForOne = ACEParametersForOne.getInstance()
     _parametersForOne.getCE()
     _parametersForOne.setDM(ACEParameterUtil.getResolution())
@@ -90,38 +71,33 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           this.getVT()
           this.loadUniqueKeyForSDK()
 
-          const callbackUnit: ACECallbackUnit = {
-            title: 'SDK init step one done',
-            location: 'ACEParameterUtilForOne::initParameters',
-            result: true,
-          }
-          const callbackResultForDebug: ACECallbackResultForDebug = {
-            prevResult: true,
-            history: [callbackUnit],
+          const response: ACEResponseToCaller = {
+            taskHash: '0002',
+            code: ACEResultCode.Success,
+            result: ACEConstantCallback[ACEConstantCallback.Success],
+            message: 'SDK init step one done',
+            apiName: 'init',
           }
           if (callback) {
-            callback(undefined, callbackResultForDebug)
+            callback(undefined, response)
           } else {
-            resolve(callbackResultForDebug)
+            resolve(response)
           }
         })
         .catch(err => {
           console.log(`catch Promise.all::err: ${JSON.stringify(err)}`)
 
-          const callbackUnit: ACECallbackUnit = {
-            title: 'SDK init step one fail',
-            reason: `${JSON.stringify(err)}`,
-            location: 'ACEParameterUtilForOne::initParameters::catch in Promise.all',
-            result: false,
-          }
-          const callbackResultForDebug: ACECallbackResultForDebug = {
-            prevResult: false,
-            history: [callbackUnit],
+          const response: ACEResponseToCaller = {
+            taskHash: '0002',
+            code: ACEResultCode.FailAfterRequest,
+            result: ACEConstantCallback[ACEConstantCallback.Failed],
+            message: 'SDK init step one fail',
+            apiName: 'init',
           }
           if (callback) {
-            callback(err, callbackResultForDebug)
+            callback(err, response)
           } else {
-            reject(callbackResultForDebug)
+            reject(response)
           }
         })
     })

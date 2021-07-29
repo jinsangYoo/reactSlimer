@@ -1,16 +1,16 @@
 import {ACParams} from '../acparam'
-import IACECommonAPI from '../parameter/IACECommonAPI'
+import IACECommonAPI from '../../common/parameter/IACECommonAPI'
 import ACEReducerForOne from './ACEReducerForOne'
-import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
+import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 
 export default class ACEInternalAPIForOne implements IACECommonAPI {
   public constructor() {}
 
-  requestPolicy(callback: (error?: object, result?: ACECallbackResultForDebug) => void): void
-  requestPolicy(): Promise<ACECallbackResultForDebug>
+  requestPolicy(callback: (error?: object, result?: ACEResponseToCaller) => void): void
+  requestPolicy(): Promise<ACEResponseToCaller>
   requestPolicy(
-    callback?: (error?: object, result?: ACECallbackResultForDebug) => void,
-  ): void | Promise<ACECallbackResultForDebug> {
+    callback?: (error?: object, result?: ACEResponseToCaller) => void,
+  ): void | Promise<ACEResponseToCaller> {
     return ACEReducerForOne.policy(callback)
   }
 

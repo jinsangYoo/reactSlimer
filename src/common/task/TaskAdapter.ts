@@ -1,18 +1,12 @@
 import Task from './Task'
-import {ACECallbackResultForDebug} from '../constant/ACECallbackResultForDebug'
+import {ACEResponseToCaller} from '../constant/ACEPublicStaticConfig'
 
 export default class TaskAdapter {
   private _task: Task
-  private _callback?: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined
+  private _callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined
 
-  public addTask(
-    argTask: Task,
-    callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
-  ): void
-  public addTask(
-    argTask: Task,
-    callback?: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
-  ): void {
+  public addTask(argTask: Task, callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void
+  public addTask(argTask: Task, callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {
     this._task = argTask
     this._callback = callback
   }

@@ -3,28 +3,25 @@ import { AceConfiguration } from '../../acone/aceconfiguration';
 import ACEOneStaticConfig from '../../acone/config/ACEOneStaticConfig';
 import ACECONSTANT from '../constant/ACEConstant';
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton';
+import { ACEConstantCallback, ACEResultCode } from '../constant/ACEPublicStaticConfig';
 export default class ACECommonStaticConfig {
     static configure(configuration, callback) {
         console.log('NHN ACE SDK version: ' + ACS.SDKVersion());
         if (this._staticConfigImpl) {
             console.log(`Already init SDK.`);
-            const callbackUnit = {
-                title: 'Already init SDK.',
-                location: 'ACECommonStaticConfig.configure::failed',
-                result: false,
+            const response = {
+                taskHash: '0000',
+                code: ACEResultCode.AlreadyInitialized,
+                result: ACEConstantCallback[ACEConstantCallback.Failed],
+                message: 'Already init SDK.',
+                apiName: 'init',
             };
             if (callback) {
-                callback(new Error('Already init SDK.'), {
-                    prevResult: false,
-                    history: [callbackUnit],
-                });
+                callback(new Error('Already init SDK.'), response);
             }
             else {
                 return new Promise((resolveToOut, rejectToOut) => {
-                    rejectToOut({
-                        prevResult: false,
-                        history: [callbackUnit],
-                    });
+                    rejectToOut(response);
                 });
             }
         }
@@ -70,34 +67,25 @@ export default class ACECommonStaticConfig {
                     const _commonAPI = this._staticConfigImpl.getCommonAPI();
                     if (_commonAPI) {
                         console.log('SDK init step two request policy');
-                        _commonAPI.requestPolicy((error, result) => {
+                        _commonAPI.requestPolicy((error, innerResult) => {
                             if (error) {
-                                console.log(`then _commonAPI.requestPolicy::error: ${JSON.stringify(error)}`);
-                                if (result) {
-                                    res.prevResult = result.prevResult;
-                                    result.history.map(node => res.history.push(node));
-                                }
-                                rejectToOut(res);
+                                rejectToOut(error);
                             }
                             else {
-                                if (result) {
-                                    res.prevResult = result.prevResult;
-                                    result.history.map(node => res.history.push(node));
-                                    resolveToOut(res);
-                                }
+                                if (innerResult)
+                                    resolveToOut(innerResult);
                             }
                         });
                     }
                     else {
-                        res.prevResult = false;
-                        const callbackUnit = {
-                            title: 'can not request policy.',
-                            reason: 'this._staticConfigImpl.getCommonAPI() is undefined',
-                            location: 'ACECommonStaticConfig::configure::return',
-                            result: false,
+                        const response = {
+                            taskHash: '0001',
+                            code: ACEResultCode.CanNotRequestToPolicy,
+                            result: ACEConstantCallback[ACEConstantCallback.Failed],
+                            message: 'Can not request policy.',
+                            apiName: 'init',
                         };
-                        res.history.push(callbackUnit);
-                        rejectToOut(res);
+                        rejectToOut(response);
                     }
                 })
                     .catch(err => {

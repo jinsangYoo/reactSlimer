@@ -1,20 +1,17 @@
 import IACEParameterUtil from '../../common/parameter/IACEParameterUtil';
 import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
-import ACENetworkResult from '../../common/http/ACENetworkResult';
-import { ACECallbackResultForDebug } from '../../common/constant/ACECallbackResultForDebug';
+import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
     private static instance;
     static getInstance(): ACEParameterUtilForOne;
     private constructor();
     loadUniqueKeyForSDK(): void;
-    getSuccessResponseForCustomer(logSource: number, resultCode: number, res: ACENetworkResult): object;
-    getFailResponseForCustomer(logSource: number, resultCode: number, err: JSON): object;
     setFirstLogParameters(): void;
     setLogSource(value: number): void;
     getSdkDetails(json: JSON): void;
-    initParameters(key: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
-    initParameters(key: string): Promise<ACECallbackResultForDebug>;
+    initParameters(key: string, callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined): void;
+    initParameters(key: string): Promise<ACEResponseToCaller>;
     isFirstLog(): boolean;
     resetSessionAndParameterAfterSend(): void;
     resetSessionAndParameterAfterSendWithParams(params?: JSON): void;

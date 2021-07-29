@@ -1,14 +1,14 @@
 import { AceConfiguration } from '../../acone/aceconfiguration';
-import IACECommonAPI from '../../acone/parameter/IACECommonAPI';
+import IACECommonAPI from '../parameter/IACECommonAPI';
 import IACEParameterUtil from '../parameter/IACEParameterUtil';
-import { ACECallbackResultForDebug } from '../constant/ACECallbackResultForDebug';
+import { ACEResponseToCaller } from '../constant/ACEPublicStaticConfig';
 export default interface ACEStaticConfig {
     _debug: boolean;
     _key: string;
     _commonAPI: IACECommonAPI;
-    configure(configuration: AceConfiguration, callback: ((error?: Error, result?: object) => void) | undefined): void;
-    configure(configuration: AceConfiguration): Promise<ACECallbackResultForDebug>;
-    configure(configuration: AceConfiguration, callback?: ((error?: Error, result?: object) => void) | undefined): Promise<ACECallbackResultForDebug> | void;
+    configure(configuration: AceConfiguration, callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined): void;
+    configure(configuration: AceConfiguration): Promise<ACEResponseToCaller>;
+    configure(configuration: AceConfiguration, callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined): Promise<ACEResponseToCaller> | void;
     isDebug(): boolean;
     getEnablePrivacyPolicy(): boolean;
     getKey(): string;

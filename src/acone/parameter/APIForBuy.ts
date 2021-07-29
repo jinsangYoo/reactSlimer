@@ -2,7 +2,7 @@ import Task from '../../common/task/Task'
 import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
 import {AxiosResponse} from 'axios'
-import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
+import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 
 export default class APIForBuy extends Task {
   public constructor(params: ITaskParams) {
@@ -13,7 +13,7 @@ export default class APIForBuy extends Task {
     super.doWork()
   }
 
-  public didWork(callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined): void {
+  public didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {
     super.didWork(callback)
 
     ACENetwork.requestToLog(

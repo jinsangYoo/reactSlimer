@@ -4,7 +4,7 @@ import APIForBuy from './APIForBuy'
 import TaskAdapter from '../../common/task/TaskAdapter'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import APIForPolicy from './APIForPolicy'
-import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
+import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 // import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
 
 // 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
@@ -38,13 +38,13 @@ export default class ACEReducerForOne {
 
   private static reducer(
     params: ITaskParams,
-    callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
   ): void
-  private static reducer(params: ITaskParams): Promise<ACECallbackResultForDebug>
+  private static reducer(params: ITaskParams): Promise<ACEResponseToCaller>
   private static reducer(
     params: ITaskParams,
-    callback?: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
-  ): Promise<ACECallbackResultForDebug> | void {
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+  ): Promise<ACEResponseToCaller> | void {
     const taskAdapter = new TaskAdapter()
     switch (params.type) {
       case ACEofAPIForOne.Buy:
@@ -101,11 +101,11 @@ export default class ACEReducerForOne {
     )
   }
 
-  public static policy(callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined): void
-  public static policy(): Promise<ACECallbackResultForDebug>
+  public static policy(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void
+  public static policy(): Promise<ACEResponseToCaller>
   public static policy(
-    callback?: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined,
-  ): Promise<ACECallbackResultForDebug> | void {
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+  ): Promise<ACEResponseToCaller> | void {
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.Policy,

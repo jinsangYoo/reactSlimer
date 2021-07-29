@@ -3,8 +3,7 @@ import {ITaskParams} from '../../common/task/ITaskParams'
 import {ACENetwork} from '../../common/http/ACENetwork'
 import {AxiosResponse} from 'axios'
 import {makeSuccessCallbackParams, makeFailCallbackParams} from '../../common/util/MapUtil'
-import {ACECallbackUnit} from '../../common/constant/ACECallbackUnit'
-import {ACECallbackResultForDebug} from '../../common/constant/ACECallbackResultForDebug'
+import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 
 export default class APIForPL extends Task {
   public constructor(params: ITaskParams) {
@@ -16,7 +15,7 @@ export default class APIForPL extends Task {
     console.log('APIForPL::doWork')
   }
 
-  public didWork(callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined): void {
+  public didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {
     super.didWork(callback)
     console.log('APIForPL::didWork')
 
@@ -26,16 +25,7 @@ export default class APIForPL extends Task {
         this.completed(response)
         this.doneWork()
         if (callback) {
-          const callbackUnit: ACECallbackUnit = {
-            title: 'normal send log.',
-            location: 'APIForPL::requestToLog.completed',
-            result: true,
-            payload: makeSuccessCallbackParams(this),
-          }
-          callback(undefined, {
-            prevResult: true,
-            history: [callbackUnit],
-          })
+          callback(undefined, makeSuccessCallbackParams(this))
         }
       },
       err => {
@@ -43,16 +33,7 @@ export default class APIForPL extends Task {
         this.failed(err)
         this.doneWork()
         if (callback) {
-          const callbackUnit: ACECallbackUnit = {
-            title: 'fail send log.',
-            location: 'APIForPL::requestToLog.failed',
-            result: false,
-            payload: makeFailCallbackParams(this),
-          }
-          callback(err, {
-            prevResult: false,
-            history: [callbackUnit],
-          })
+          callback(err, makeFailCallbackParams(this))
         }
       },
     )

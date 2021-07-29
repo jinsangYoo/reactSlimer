@@ -16,41 +16,15 @@ export default class APIForPolicy extends Task {
             console.log('APIForPolicy::in requestToPolicy.completed');
             this.completed(response);
             this.doneWork();
-            console.log('this stringfy');
-            console.log(JSON.stringify(this, null, 2));
             if (callback) {
-                const callbackUnit = {
-                    title: 'normal request policy.',
-                    location: 'APIForPolicy::requestToPolicy.completed',
-                    result: true,
-                    payload: makeSuccessCallbackParams(this),
-                };
-                const resultObject = {
-                    prevResult: true,
-                    history: [callbackUnit],
-                };
-                console.log('resultObject stringfy');
-                console.log(JSON.stringify(resultObject, null, 2));
-                callback(undefined, {
-                    prevResult: true,
-                    history: [callbackUnit],
-                });
+                callback(undefined, makeSuccessCallbackParams(this));
             }
         }, err => {
             console.log('APIForPolicy::in requestToPolicy.failed');
             this.failed(err);
             this.doneWork();
             if (callback) {
-                const callbackUnit = {
-                    title: 'fail request policy.',
-                    location: 'APIForPolicy::requestToPolicy.failed',
-                    result: false,
-                    payload: makeFailCallbackParams(this),
-                };
-                callback(err, {
-                    prevResult: false,
-                    history: [callbackUnit],
-                });
+                callback(err, makeFailCallbackParams(this));
             }
         });
     }

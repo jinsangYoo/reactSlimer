@@ -2,7 +2,7 @@ import { ITaskParams } from './ITaskParams';
 import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne';
 import { AxiosResponse } from 'axios';
 import ACENetworkResult from '../http/ACENetworkResult';
-import { ACECallbackResultForDebug } from '../constant/ACECallbackResultForDebug';
+import { ACEResponseToCaller } from '../constant/ACEPublicStaticConfig';
 export default class Task {
     protected _logSource: ACEofAPIForOne;
     protected _date: number;
@@ -10,7 +10,7 @@ export default class Task {
     protected _error: JSON;
     protected constructor(params: ITaskParams);
     doWork(): void;
-    didWork(callback: ((error?: object, result?: ACECallbackResultForDebug) => void) | undefined): void;
+    didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
     doneWork(): void;
     protected completed(response: AxiosResponse): void;
     protected failed(err: any): void;
