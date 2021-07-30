@@ -9,7 +9,7 @@ import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../consta
 import ACELog from '../logger/ACELog'
 
 export default class ACECommonStaticConfig {
-  private static _TAG = 'init'
+  private static _TAG = 'comInit'
   private static _staticConfigImpl: ACEStaticConfig
   private static _platform: ACEPlatform
 
@@ -49,7 +49,7 @@ export default class ACECommonStaticConfig {
       ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.')
     }
 
-    console.log('AceConfiguration information: ' + JSON.stringify(configuration))
+    ACELog.d(ACECommonStaticConfig._TAG, 'AceConfiguration information: ', configuration)
 
     if (configuration.platform) {
       this._platform = configuration.platform
@@ -63,11 +63,11 @@ export default class ACECommonStaticConfig {
       this._staticConfigImpl
         .configure(configuration)
         .then(res => {
-          console.log(`SDK init step one result: ${JSON.stringify(res)}`)
+          ACELog.d(ACECommonStaticConfig._TAG, 'SDK init step one result: ', res)
           return res
         })
         .then(res => {
-          console.log('SDK init step two request policy')
+          ACELog.d(ACECommonStaticConfig._TAG, 'SDK init step two request policy')
           if (_commonAPI) {
             _commonAPI.requestPolicy((error?: object, innerResult?: ACEResponseToCaller) => {
               if (error) {
@@ -88,7 +88,7 @@ export default class ACECommonStaticConfig {
           }
         })
         .catch(err => {
-          console.log(`0001, Can not request policy. ${JSON.stringify(err)}`)
+          ACELog.d(ACECommonStaticConfig._TAG, '0001, Can not request policy.', err)
           callback(err, undefined)
         })
     } else {
@@ -96,12 +96,12 @@ export default class ACECommonStaticConfig {
         this._staticConfigImpl
           .configure(configuration)
           .then(res => {
-            console.log(`SDK init step one result: ${JSON.stringify(res)}`)
+            ACELog.d(ACECommonStaticConfig._TAG, 'SDK init step one result: ', res)
             return res
           })
           .then(res => {
             if (_commonAPI) {
-              console.log('SDK init step two request policy')
+              ACELog.d(ACECommonStaticConfig._TAG, 'SDK init step two request policy')
               _commonAPI.requestPolicy((error?: object, innerResult?: ACEResponseToCaller) => {
                 if (error) {
                   if (innerResult) {
@@ -125,7 +125,7 @@ export default class ACECommonStaticConfig {
             }
           })
           .catch(err => {
-            console.log(`0002, Can not request policy. ${JSON.stringify(err)}`)
+            ACELog.d(ACECommonStaticConfig._TAG, '0002, Can not request policy.', err)
             rejectToOut(err)
           })
       })

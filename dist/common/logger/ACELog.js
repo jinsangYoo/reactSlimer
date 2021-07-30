@@ -1,6 +1,5 @@
 import ACECONSTANT from '../constant/ACEConstant';
 import { LogLevel } from '../constant/LogConstants';
-import { isEmpty } from '../util/TextUtils';
 export default class ACELog {
     static setProductionMode() {
         this.setLogLevel(LogLevel.INFO);
@@ -17,23 +16,39 @@ export default class ACELog {
     static isLoggable(priority) {
         return priority >= this._logLevel;
     }
-    static println(priority, tag, msg, debugMessage) {
+    static println(priority, tag, msg, info, moreDebugMessage) {
         if (!this.isLoggable(priority)) {
             return;
         }
+        var _location;
         if (priority >= LogLevel.INFO) {
-            tag = ACECONSTANT.OFFICIAL_LOG_TAG;
+            _location = ' [' + tag + '] ';
         }
-        console.log(`[${tag}] [SDK] message: ${msg}`);
-        if (!isEmpty(debugMessage)) {
-            console.log(`[${tag}] [SDK] messageForDebug: ${debugMessage}`);
+        else {
+            _location = '::';
+        }
+        if (ACELog.isLoggable(priority)) {
+            if (info) {
+                console.log(`${ACECONSTANT.OFFICIAL_LOG_TAG}${_location}[SDK] message: ${msg}, debug: >>${moreDebugMessage !== null && moreDebugMessage !== void 0 ? moreDebugMessage : ACECONSTANT.EMPTY}<<, info: ${JSON.stringify(info, null, 2)}`);
+            }
+            else {
+                console.log(`${ACECONSTANT.OFFICIAL_LOG_TAG}${_location}[SDK] message: ${msg}, debug: >>${moreDebugMessage !== null && moreDebugMessage !== void 0 ? moreDebugMessage : ACECONSTANT.EMPTY}<<`);
+            }
+        }
+        else {
+            if (info) {
+                console.log(`${ACECONSTANT.OFFICIAL_LOG_TAG}${_location}[SDK] message: ${msg}, info: ${JSON.stringify(info, null, 2)}`);
+            }
+            else {
+                console.log(`${ACECONSTANT.OFFICIAL_LOG_TAG}${_location}[SDK] message: ${msg}`);
+            }
         }
     }
-    static d(tag, msg, debugMessage) {
-        ACELog.println(LogLevel.DEBUG, tag, msg, debugMessage);
+    static d(tag, msg, debug, moreDebugMessage) {
+        ACELog.println(LogLevel.DEBUG, tag, msg, debug, moreDebugMessage);
     }
-    static i(tag, msg, debugMessage) {
-        ACELog.println(LogLevel.INFO, tag, msg, debugMessage);
+    static i(tag, msg, info, moreDebugMessage) {
+        ACELog.println(LogLevel.INFO, tag, msg, info, moreDebugMessage);
     }
 }
 ACELog._logLevel = LogLevel.INFO;
