@@ -72,7 +72,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           this.loadUniqueKeyForSDK()
 
           const response: ACEResponseToCaller = {
-            taskHash: '0002',
+            taskHash: '0003',
             code: ACEResultCode.Success,
             result: ACEConstantCallback[ACEConstantCallback.Success],
             message: 'SDK init step one done',
@@ -88,7 +88,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           console.log(`catch Promise.all::err: ${JSON.stringify(err)}`)
 
           const response: ACEResponseToCaller = {
-            taskHash: '0002',
+            taskHash: '0004',
             code: ACEResultCode.FailAfterRequest,
             result: ACEConstantCallback[ACEConstantCallback.Failed],
             message: 'SDK init step one fail',

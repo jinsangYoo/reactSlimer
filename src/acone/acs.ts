@@ -2,6 +2,7 @@ import {ACParams} from './acparam'
 import {AceConfiguration} from './aceconfiguration'
 import ACECommonStaticConfig from '../common/config/ACECommonStaticConfig'
 import ACEReducerForOne from './parameter/ACEReducerForOne'
+import {ACEResponseToCaller} from '..'
 
 export class ACS {
   private static instance: ACS
@@ -11,21 +12,27 @@ export class ACS {
     return this.instance || (this.instance = new this())
   }
 
-  public static configure(value: AceConfiguration, callback: (error?: Error, result?: object) => void): void
-  public static configure(value: AceConfiguration): Promise<object>
   public static configure(
     value: AceConfiguration,
-    callback?: (error?: Error, result?: object) => void,
-  ): Promise<object> | void {
+    callback: (error?: Error, result?: ACEResponseToCaller) => void,
+  ): void
+  public static configure(value: AceConfiguration): Promise<ACEResponseToCaller>
+  public static configure(
+    value: AceConfiguration,
+    callback?: (error?: Error, result?: ACEResponseToCaller) => void,
+  ): Promise<ACEResponseToCaller> | void {
     return ACS.getInstance().configure(value, callback)
   }
 
-  configure(value: AceConfiguration, callback: ((error?: Error, result?: object) => void) | undefined): void
-  configure(value: AceConfiguration): void
   configure(
     value: AceConfiguration,
-    callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
+    callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
+  ): void
+  configure(value: AceConfiguration): Promise<ACEResponseToCaller>
+  configure(
+    value: AceConfiguration,
+    callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
+  ): Promise<ACEResponseToCaller> | void {
     return ACECommonStaticConfig.configure(value, callback)
   }
 
@@ -36,7 +43,7 @@ export class ACS {
   }
 
   public static SDKVersion(): string {
-    return '0.0.121'
+    return '0.0.123'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {

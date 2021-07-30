@@ -52,7 +52,7 @@ export default class ACEParameterUtilForOne {
                 this.getVT();
                 this.loadUniqueKeyForSDK();
                 const response = {
-                    taskHash: '0002',
+                    taskHash: '0003',
                     code: ACEResultCode.Success,
                     result: ACEConstantCallback[ACEConstantCallback.Success],
                     message: 'SDK init step one done',
@@ -68,7 +68,7 @@ export default class ACEParameterUtilForOne {
                 .catch(err => {
                 console.log(`catch Promise.all::err: ${JSON.stringify(err)}`);
                 const response = {
-                    taskHash: '0002',
+                    taskHash: '0004',
                     code: ACEResultCode.FailAfterRequest,
                     result: ACEConstantCallback[ACEConstantCallback.Failed],
                     message: 'SDK init step one fail',

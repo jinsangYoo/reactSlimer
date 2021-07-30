@@ -6,8 +6,10 @@ import ACECONSTANT from '../constant/ACEConstant'
 import IACEParameterUtil from '../parameter/IACEParameterUtil'
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../constant/ACEPublicStaticConfig'
+import ACELog from '../logger/ACELog'
 
 export default class ACECommonStaticConfig {
+  private static _TAG = 'init'
   private static _staticConfigImpl: ACEStaticConfig
   private static _platform: ACEPlatform
 
@@ -20,10 +22,13 @@ export default class ACECommonStaticConfig {
     configuration: AceConfiguration,
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
-    console.log('NHN ACE SDK version: ' + ACS.SDKVersion())
+    ControlTowerSingleton.getInstance().setDevSDKMode()
+    ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+
+    ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.SDKVersion()}`)
 
     if (this._staticConfigImpl) {
-      console.log(`Already init SDK.`)
+      ACELog.d(ACECommonStaticConfig._TAG, 'Already init SDK.')
 
       const response: ACEResponseToCaller = {
         taskHash: '0000',
@@ -34,13 +39,14 @@ export default class ACECommonStaticConfig {
       }
       if (callback) {
         callback(new Error('Already init SDK.'), response)
+        return
       } else {
         return new Promise((resolveToOut, rejectToOut) => {
           rejectToOut(response)
         })
       }
     } else {
-      console.log(`Start init SDK.`)
+      ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.')
     }
 
     console.log('AceConfiguration information: ' + JSON.stringify(configuration))
@@ -52,24 +58,37 @@ export default class ACECommonStaticConfig {
       this._staticConfigImpl = new ACEOneStaticConfig()
     }
 
-    ControlTowerSingleton.getInstance().setDevSDKMode()
-    ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
-
+    const _commonAPI = this._staticConfigImpl.getCommonAPI()
     if (callback) {
-      const _commonAPI = this._staticConfigImpl.getCommonAPI()
       this._staticConfigImpl
         .configure(configuration)
         .then(res => {
-          console.log(`in cb::then _staticConfigImpl.configure::res: ${JSON.stringify(res)}`)
+          console.log(`SDK init step one result: ${JSON.stringify(res)}`)
+          return res
+        })
+        .then(res => {
+          console.log('SDK init step two request policy')
           if (_commonAPI) {
-            _commonAPI.requestPolicy().then(resForPolicy => {
-              console.log(`in cb::then _commonAPI.requestPolicy::resForPolicy: ${JSON.stringify(resForPolicy)}`)
-              callback(undefined, res)
+            _commonAPI.requestPolicy((error?: object, innerResult?: ACEResponseToCaller) => {
+              if (error) {
+                callback(new Error('0001, Can not request policy.'), innerResult)
+              } else {
+                callback(undefined, innerResult)
+              }
             })
+          } else {
+            const response: ACEResponseToCaller = {
+              taskHash: '0001',
+              code: ACEResultCode.CanNotRequestToPolicy,
+              result: ACEConstantCallback[ACEConstantCallback.Failed],
+              message: 'Can not request policy.',
+              apiName: 'init',
+            }
+            callback(new Error('0001, Can not request policy.'), response)
           }
         })
         .catch(err => {
-          console.log(`then _staticConfigImpl.configure::err: ${JSON.stringify(err)}`)
+          console.log(`0001, Can not request policy. ${JSON.stringify(err)}`)
           callback(err, undefined)
         })
     } else {
@@ -81,19 +100,22 @@ export default class ACECommonStaticConfig {
             return res
           })
           .then(res => {
-            const _commonAPI = this._staticConfigImpl.getCommonAPI()
             if (_commonAPI) {
               console.log('SDK init step two request policy')
               _commonAPI.requestPolicy((error?: object, innerResult?: ACEResponseToCaller) => {
                 if (error) {
-                  rejectToOut(error)
+                  if (innerResult) {
+                    rejectToOut(innerResult)
+                  } else {
+                    rejectToOut(new Error('0002, Can not request policy.'))
+                  }
                 } else {
                   if (innerResult) resolveToOut(innerResult)
                 }
               })
             } else {
               const response: ACEResponseToCaller = {
-                taskHash: '0001',
+                taskHash: '0002',
                 code: ACEResultCode.CanNotRequestToPolicy,
                 result: ACEConstantCallback[ACEConstantCallback.Failed],
                 message: 'Can not request policy.',
@@ -103,7 +125,7 @@ export default class ACECommonStaticConfig {
             }
           })
           .catch(err => {
-            console.log(`then _staticConfigImpl.configure::err: ${JSON.stringify(err)}`)
+            console.log(`0002, Can not request policy. ${JSON.stringify(err)}`)
             rejectToOut(err)
           })
       })
