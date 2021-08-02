@@ -30,7 +30,7 @@ export default class ACELog {
     }
 
     var _location
-    if (priority >= LogLevel.INFO) {
+    if (priority >= this._logLevel) {
       _location = ' [' + tag + '] '
     } else {
       _location = '::'

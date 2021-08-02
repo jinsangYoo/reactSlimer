@@ -21,7 +21,7 @@ export default class ACELog {
             return;
         }
         var _location;
-        if (priority >= LogLevel.INFO) {
+        if (priority >= this._logLevel) {
             _location = ' [' + tag + '] ';
         }
         else {

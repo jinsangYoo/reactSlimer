@@ -43,7 +43,7 @@ export class ACS {
   }
 
   public static SDKVersion(): string {
-    return '0.0.132'
+    return '0.0.133'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
