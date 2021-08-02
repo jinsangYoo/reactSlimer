@@ -11,17 +11,21 @@ import ACOneConstantVt from '../constant/ACOneConstantVt'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../../common/constant/ACEPublicStaticConfig'
+import {isEmpty} from '../../common/util/TextUtils'
 import ACELog from '../../common/logger/ACELog'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
   private static instance: ACEParameterUtilForOne
+  private _enablePrivacyPolicy: boolean
 
   public static getInstance(): ACEParameterUtilForOne {
     return this.instance || (this.instance = new this())
   }
 
-  private constructor() {}
+  private constructor() {
+    this._enablePrivacyPolicy = false
+  }
   loadUniqueKeyForSDK(): void {
     ACEParametersForOne.getInstance().setPcStampWhenNotStored()
   }
@@ -37,13 +41,16 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   public initParameters(
     key: string,
+    enablePrivacyPolicy: boolean,
     callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): void
-  public initParameters(key: string): Promise<ACEResponseToCaller>
+  public initParameters(key: string, enablePrivacyPolicy: boolean): Promise<ACEResponseToCaller>
   public initParameters(
     key: string,
+    enablePrivacyPolicy: boolean,
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
+    this._enablePrivacyPolicy = enablePrivacyPolicy
     const _parametersForOne = ACEParametersForOne.getInstance()
     _parametersForOne.getCE()
     _parametersForOne.setDM(ACEParameterUtil.getResolution())
@@ -103,6 +110,14 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           }
         })
     })
+  }
+
+  public setID(value: string): void {
+    if (!isEmpty(value) && this._enablePrivacyPolicy) {
+      value = ACOneConstant.EnabledPrivacyPolicyUserID
+    }
+
+    return ACEParametersForOne.getInstance().setSTS(value)
   }
 
   public isFirstLog(): boolean {
@@ -222,6 +237,14 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback)
   }
   // #endregion
+
+  public setUserID(value: string): void {
+    if (!isEmpty(value) && this._enablePrivacyPolicy) {
+      value = ACOneConstant.EnabledPrivacyPolicyUserID
+    }
+
+    return ACEParametersForOne.getInstance().setSTS(value)
+  }
 
   public setterForString(key: string, value: string): void {}
 }

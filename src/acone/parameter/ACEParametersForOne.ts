@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 export default class ACEParametersForOne extends ACEParameters {
   private static _TAG = 'paramForOne'
   private static instance: ACEParametersForOne
+
   private adeld: string
   private adid: string
   private ag: number

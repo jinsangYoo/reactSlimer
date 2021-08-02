@@ -32,7 +32,7 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
     if (configuration.enablePrivacyPolicy) this._enablePrivacyPolicy = configuration.enablePrivacyPolicy
     if (configuration.debug) this._debug = configuration.debug
 
-    return ACEParameterUtilForOne.getInstance().initParameters(this._key, callback)
+    return ACEParameterUtilForOne.getInstance().initParameters(this._key, this._enablePrivacyPolicy, callback)
   }
   isDebug(): boolean {
     return this._debug
