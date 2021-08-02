@@ -4,6 +4,7 @@ import ACEPolicyParameters from './ACEPolicyParameters';
 import { isEmpty } from '../util/TextUtils';
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton';
 import ACEConstantInteger from '../constant/ACEConstantInteger';
+import ACELog from '../logger/ACELog';
 export default class ACEPolicyParameterUtil {
     constructor() {
         ACEPolicyParameterUtil.REPEAT_PULLING_INTERVAL_SECOND =
@@ -14,16 +15,16 @@ export default class ACEPolicyParameterUtil {
     }
     savePolicy(result) {
         if (result.getCode() != HttpURLConnection.HTTP_OK) {
-            console.log(`http response code not ok: ${result.getCode()}`);
+            ACELog.d(ACEPolicyParameterUtil._TAG, `http response code not ok: ${result.getCode()}`);
             return;
         }
-        console.log('Receive policy.');
+        ACELog.d(ACEPolicyParameterUtil._TAG, 'Receive policy.');
         const _policyParameters = ACEPolicyParameters.getInstance();
         const responseHeaders = result.getHeaders();
         if (responseHeaders[POLICY.RESPONSE_SDK_ENABLE.toLowerCase()]) {
             _policyParameters.setCpAllow(responseHeaders[POLICY.RESPONSE_SDK_ENABLE.toLowerCase()]);
             if (!ControlTowerSingleton.getInstance().isEnableByPolicy()) {
-                console.log('disabled by policy.');
+                ACELog.d(ACEPolicyParameterUtil._TAG, 'disabled by policy.');
                 ControlTowerSingleton.getInstance().setSDKDisable();
             }
         }
@@ -45,7 +46,7 @@ export default class ACEPolicyParameterUtil {
         if (responseHeaders[POLICY.RESPONSE_FORCE_STOP.toLowerCase()]) {
             const _value = responseHeaders[POLICY.RESPONSE_SOURCE_IP.toLowerCase()];
             if (!isEmpty(_value) && _value === POLICY.FLAG_SDK_FORCE_STOP) {
-                console.log('force stop enabled.');
+                ACELog.d(ACEPolicyParameterUtil._TAG, 'force stop enabled.');
                 ControlTowerSingleton.getInstance().enableForceStop();
             }
         }
@@ -66,9 +67,9 @@ export default class ACEPolicyParameterUtil {
         if (responseHeaders[POLICY.RESPONSE_TOAST_APPKEY.toLowerCase()]) {
             _policyParameters.setToastAppKey(responseHeaders[POLICY.RESPONSE_TOAST_APPKEY.toLowerCase()]);
         }
-        console.log(_policyParameters.toJSON());
-        console.log('done save policy.');
+        ACELog.d(ACEPolicyParameterUtil._TAG, 'done save policy.', _policyParameters);
     }
 }
+ACEPolicyParameterUtil._TAG = 'paramUtilForPolicy';
 ACEPolicyParameterUtil.REPEAT_PULLING_INTERVAL_SECOND_DEFAULT = 6 * 60 * 60;
 //# sourceMappingURL=ACEPolicyParameterUtil.js.map

@@ -3,6 +3,7 @@ import { ITaskParams } from '../../common/task/ITaskParams';
 import { AxiosResponse } from 'axios';
 import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
 export default class APIForPolicy extends Task {
+    private static _TAG;
     constructor(params: ITaskParams);
     doWork(): void;
     didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;

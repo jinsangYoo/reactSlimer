@@ -2,8 +2,10 @@ import {SDKMode, NetworkMode} from '../constant/SDKMode'
 import {ACEPlatform, AceConfiguration} from '../../acone/aceconfiguration'
 import ControlTower from './ControlTower'
 import ACEControlTowerForOne from '../../acone/controltower.ts/ACEControlTowerForOne'
+import ACELog from '../logger/ACELog'
 
 export default class ControlTowerSingleton {
+  private static _TAG = 'towerSingle'
   private _platform: ACEPlatform
   private _controlTower: ControlTower
 
@@ -37,12 +39,13 @@ export default class ControlTowerSingleton {
   protected isDisabled(): boolean {
     const currentIsCompletePolicy = this.getIsCompletePolicy()
     const currentIsSDKEnabled = this.getIsSDKEnabled()
-    console.log(
-      `ACEControlTower.getIsCompletePolicy(): ${currentIsCompletePolicy}, ACEControlTower.getIsSDKEnabled(): ${currentIsSDKEnabled}`,
+    ACELog.d(
+      ControlTowerSingleton._TAG,
+      `getIsCompletePolicy(): ${currentIsCompletePolicy}, getIsSDKEnabled(): ${currentIsSDKEnabled}`,
     )
 
     if (currentIsCompletePolicy && !currentIsSDKEnabled) {
-      console.log('SDK is disabled.')
+      ACELog.d(ControlTowerSingleton._TAG, 'SDK is disabled.')
       return true
     }
 

@@ -3,6 +3,7 @@ import { ACENetwork } from '../../common/http/ACENetwork';
 import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil';
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton';
 import { makeSuccessCallbackParams, makeFailCallbackParams } from '../../common/util/MapUtil';
+import ACELog from '../../common/logger/ACELog';
 export default class APIForPolicy extends Task {
     constructor(params) {
         super(params);
@@ -13,14 +14,14 @@ export default class APIForPolicy extends Task {
     didWork(callback) {
         super.didWork(callback);
         ACENetwork.requestToPolicy(response => {
-            console.log('APIForPolicy::in requestToPolicy.completed');
+            ACELog.d(APIForPolicy._TAG, 'in requestToPolicy, completed');
             this.completed(response);
             this.doneWork();
             if (callback) {
                 callback(undefined, makeSuccessCallbackParams(this));
             }
         }, err => {
-            console.log('APIForPolicy::in requestToPolicy.failed');
+            ACELog.d(APIForPolicy._TAG, 'in requestToPolicy, failed');
             this.failed(err);
             this.doneWork();
             if (callback) {
@@ -33,9 +34,9 @@ export default class APIForPolicy extends Task {
     }
     completed(response) {
         super.completed(response);
-        console.log('APIForPolicy::completed::before savePolicy');
+        ACELog.d(APIForPolicy._TAG, 'completed, before savePolicy');
         ACEPolicyParameterUtil.getInstance().savePolicy(this._response);
-        console.log('APIForPolicy::completed::after savePolicy');
+        ACELog.d(APIForPolicy._TAG, 'completed, after savePolicy');
         ControlTowerSingleton.getInstance().succeedRequestPolicy();
     }
     failed(err) {
@@ -43,4 +44,5 @@ export default class APIForPolicy extends Task {
         ControlTowerSingleton.getInstance().failedRequestPolicy();
     }
 }
+APIForPolicy._TAG = 'APIForPolicy';
 //# sourceMappingURL=APIForPolicy.js.map

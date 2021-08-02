@@ -3,6 +3,7 @@ import APIForBuy from './APIForBuy';
 import TaskAdapter from '../../common/task/TaskAdapter';
 import ACEofAPIForOne from '../constant/ACEofAPIForOne';
 import APIForPolicy from './APIForPolicy';
+import ACELog from '../../common/logger/ACELog';
 export default class ACEReducerForOne {
     constructor() {
     }
@@ -22,13 +23,13 @@ export default class ACEReducerForOne {
                 taskAdapter.addTask(new APIForPolicy(params), callback);
                 break;
             default:
-                console.log('not implementation Task.');
+                ACELog.d(ACEReducerForOne._TAG, 'not implementation Task.');
                 break;
         }
         return taskAdapter.run();
     }
     static buy(pageName, callback) {
-        console.log('buy: ' + JSON.stringify(pageName));
+        ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName));
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.Buy,
             payload: {},
@@ -37,7 +38,7 @@ export default class ACEReducerForOne {
         }, callback);
     }
     static plWithPage(pageName, callback) {
-        console.log('plWithPage: ' + JSON.stringify(pageName));
+        ACELog.d(ACEReducerForOne._TAG, 'plWithPage: ' + JSON.stringify(pageName));
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.PlWithPage,
             payload: {},
@@ -54,4 +55,5 @@ export default class ACEReducerForOne {
         }, callback);
     }
 }
+ACEReducerForOne._TAG = 'reducerForOne';
 //# sourceMappingURL=ACEReducerForOne.js.map

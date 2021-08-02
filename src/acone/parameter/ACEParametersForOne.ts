@@ -11,10 +11,12 @@ import ACOneConstantSt from '../constant/ACOneConstantSt'
 import ACOneConstantVt from '../constant/ACOneConstantVt'
 import SESSION from '../../common/constant/Session'
 import {ACEInnerCBResultKey} from '../../common/constant/ACEInnerCBResultKey'
+import ACELog from '../../common/logger/ACELog'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default class ACEParametersForOne extends ACEParameters {
+  private static _TAG = 'paramForOne'
   private static instance: ACEParametersForOne
   private adeld: string
   private adid: string
@@ -208,10 +210,9 @@ export default class ACEParametersForOne extends ACEParameters {
 
   public getInstallReferrer(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
     if (!global.Promise) {
-      console.log('getInstallReferrer::not support promise.')
-
+      ACELog.d(ACEParametersForOne._TAG, 'getInstallReferrer not support promise.')
       AsyncStorage.getItem(ACECONSTANT.InstallReferrer, (err, result) => {
-        console.log(`${ACECONSTANT.InstallReferrer}: ${result}`)
+        ACELog.d(ACEParametersForOne._TAG, `${ACECONSTANT.InstallReferrer}: ${result}`)
         if (callback) {
           callback(err, {
             getKey: ACECONSTANT.InstallReferrer,
@@ -220,11 +221,10 @@ export default class ACEParametersForOne extends ACEParameters {
         }
       })
     } else {
-      console.log('getInstallReferrer::support promise.')
-
+      ACELog.d(ACEParametersForOne._TAG, 'getInstallReferrer support promise.')
       return new Promise((resolve, reject) => {
         AsyncStorage.getItem(ACECONSTANT.InstallReferrer, (err, result) => {
-          console.log(`${ACECONSTANT.InstallReferrer}: ${result}`)
+          ACELog.d(ACEParametersForOne._TAG, `${ACECONSTANT.InstallReferrer}: ${result}`)
           if (callback) {
             callback(err, {
               getKey: ACECONSTANT.InstallReferrer,
@@ -253,9 +253,9 @@ export default class ACEParametersForOne extends ACEParameters {
       value = ACECONSTANT.EMPTY
     }
 
-    console.log(`${ACECONSTANT.InstallReferrer}: ${value}`)
+    ACELog.d(ACEParametersForOne._TAG, `${ACECONSTANT.InstallReferrer}: ${value}`)
     if (!global.Promise) {
-      console.log('setInstallReferrer::not support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'setInstallReferrer not support promise.')
       AsyncStorage.setItem(ACECONSTANT.InstallReferrer, value, err => {
         if (callback) {
           callback(err, {
@@ -265,7 +265,7 @@ export default class ACEParametersForOne extends ACEParameters {
         }
       })
     } else {
-      console.log('setInstallReferrer::support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'setInstallReferrer support promise.')
       return new Promise((resolve, reject) => {
         AsyncStorage.setItem(ACECONSTANT.InstallReferrer, value, err => {
           if (callback) {
@@ -542,10 +542,10 @@ export default class ACEParametersForOne extends ACEParameters {
   public loadST(): Promise<object>
   public loadST(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
     if (!global.Promise) {
-      console.log('loadST::not support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'loadST not support promise.')
 
       AsyncStorage.getItem(ACOneConstantSt.KeyInStorage, (err, result) => {
-        console.log(`${ACOneConstantSt.KeyInStorage}: ${result}`)
+        ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${result}`)
         if (result) {
           this.setST(JSON.parse(result))
         }
@@ -558,11 +558,11 @@ export default class ACEParametersForOne extends ACEParameters {
         }
       })
     } else {
-      console.log('loadST::support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'loadST support promise.')
 
       return new Promise((resolve, reject) => {
         AsyncStorage.getItem(ACOneConstantSt.KeyInStorage, (err, result) => {
-          console.log(`${ACOneConstantSt.KeyInStorage}: ${result}`)
+          ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${result}`)
           if (callback) {
             if (result) {
               this.setST(JSON.parse(result))
@@ -599,10 +599,10 @@ export default class ACEParametersForOne extends ACEParameters {
   ): Promise<object> | void {
     const _json = JSON.stringify(st)
     if (!global.Promise) {
-      console.log('saveST_toInStorage::not support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'saveST_toInStorage not support promise.')
 
       AsyncStorage.setItem(ACOneConstantSt.KeyInStorage, _json, err => {
-        console.log(`${ACOneConstantSt.KeyInStorage}: ${_json}`)
+        ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
         if (callback) {
           callback(err, {
             getKey: ACOneConstantSt.KeyInStorage,
@@ -611,11 +611,11 @@ export default class ACEParametersForOne extends ACEParameters {
         }
       })
     } else {
-      console.log('saveST_toInStorage::support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'saveST_toInStorage support promise.')
 
       return new Promise((resolve, reject) => {
         AsyncStorage.setItem(ACOneConstantSt.KeyInStorage, _json, err => {
-          console.log(`${ACOneConstantSt.KeyInStorage}: ${_json}`)
+          ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
           if (callback) {
             callback(err, {
               getKey: ACOneConstantSt.KeyInStorage,
@@ -788,7 +788,7 @@ export default class ACEParametersForOne extends ACEParameters {
   public loadVT(): Promise<object>
   public loadVT(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
     if (!global.Promise) {
-      console.log('loadVT::not support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'loadVT not support promise.')
 
       AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
         if (callback) {
@@ -814,7 +814,7 @@ export default class ACEParametersForOne extends ACEParameters {
         }
       })
     } else {
-      console.log('loadVT::support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'loadVT support promise.')
 
       return new Promise((resolve, reject) => {
         AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
@@ -869,10 +869,10 @@ export default class ACEParametersForOne extends ACEParameters {
   ): Promise<object> | void {
     const _json = JSON.stringify(vt)
     if (!global.Promise) {
-      console.log('saveVT_toInStorage::not support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'saveVT_toInStorage not support promise.')
 
       AsyncStorage.setItem(ACOneConstantVt.KeyInStorage, _json, err => {
-        console.log(`${ACOneConstantVt.KeyInStorage}: ${_json}`)
+        ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
         if (callback) {
           callback(err, {
             getKey: ACOneConstantVt.KeyInStorage,
@@ -881,11 +881,11 @@ export default class ACEParametersForOne extends ACEParameters {
         }
       })
     } else {
-      console.log('saveVT_toInStorage::support promise.')
+      ACELog.d(ACEParametersForOne._TAG, 'saveVT_toInStorage support promise.')
 
       return new Promise((resolve, reject) => {
         AsyncStorage.setItem(ACOneConstantVt.KeyInStorage, _json, err => {
-          console.log(`${ACOneConstantVt.KeyInStorage}: ${_json}`)
+          ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
           if (callback) {
             callback(err, {
               getKey: ACOneConstantVt.KeyInStorage,

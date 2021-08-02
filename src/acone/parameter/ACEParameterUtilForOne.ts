@@ -11,8 +11,10 @@ import ACOneConstantVt from '../constant/ACOneConstantVt'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../../common/constant/ACEPublicStaticConfig'
+import ACELog from '../../common/logger/ACELog'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
+  private static _TAG = 'paramUtilForOne'
   private static instance: ACEParameterUtilForOne
 
   public static getInstance(): ACEParameterUtilForOne {
@@ -67,7 +69,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return new Promise((resolve, reject) => {
       Promise.all([promiseWorkLoadVT])
         .then(res => {
-          console.log(`then Promise.all::res: ${JSON.stringify(res)}`)
+          ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all res:', res)
           this.getVT()
           this.loadUniqueKeyForSDK()
 
@@ -85,7 +87,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           }
         })
         .catch(err => {
-          console.log(`catch Promise.all::err: ${JSON.stringify(err)}`)
+          ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all err:', err)
 
           const response: ACEResponseToCaller = {
             taskHash: '0004',
@@ -121,18 +123,18 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
       if (_st) {
         if (!global.Promise) {
           this.saveST_toInStorage(_st, (error?: Error, result?: object) => {
-            console.log('save willUpdateSt')
+            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt')
             if (error) {
-              console.log(`error: ${JSON.stringify(error)}`)
+              ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage error:', error)
             }
             if (result) {
-              console.log(`result: ${JSON.stringify(error)}`)
+              ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage result:', result)
             }
           })
         } else {
           this.saveST_toInStorage(_st).then(result => {
-            console.log('save willUpdateSt')
-            console.log(`result: ${JSON.stringify(result)}`)
+            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt')
+            ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage result:', result)
           })
         }
       }
@@ -141,18 +143,18 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
       if (_vt) {
         if (!global.Promise) {
           this.saveVT_toInStorage(_vt, (error?: Error, result?: object) => {
-            console.log('save willUpdateVt')
+            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateVt')
             if (error) {
-              console.log(`error: ${JSON.stringify(error)}`)
+              ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage error:', error)
             }
             if (result) {
-              console.log(`result: ${JSON.stringify(error)}`)
+              ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage result:', result)
             }
           })
         } else {
           this.saveVT_toInStorage(_vt).then(result => {
-            console.log('save willUpdateVt')
-            console.log(`result: ${JSON.stringify(result)}`)
+            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateVt')
+            ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage result:', result)
           })
         }
       }

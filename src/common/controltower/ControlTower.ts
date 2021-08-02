@@ -5,6 +5,7 @@ import POLICY from '../constant/Policy'
 import ACELog from '../logger/ACELog'
 
 export default class ControlTower {
+  private static _pTAG = 'pTower'
   protected _sdk_mode: SDKMode
   protected _network_mode: NetworkMode
   protected _isCompletePolicy: boolean
@@ -33,20 +34,22 @@ export default class ControlTower {
   }
 
   public setIsCompletePolicy(isCompletePolicy: boolean, isSucceedRequestPolicy: boolean) {
-    console.log(
-      `ControlTower.setIsCompletePolicy::isCompletePolicy: ${isCompletePolicy}, isSucceedRequestPolicy: ${isSucceedRequestPolicy}`,
+    ACELog.d(
+      ControlTower._pTAG,
+      `setIsCompletePolicy, isCompletePolicy: ${isCompletePolicy}, isSucceedRequestPolicy: ${isSucceedRequestPolicy}`,
     )
   }
 
   protected isDisabled(): boolean {
     const alreadyIsCompletePolicy = this.getIsCompletePolicy()
     const isSDKEnabled = this.getIsSDKEnabled()
-    console.log(
-      `ControlTower.isDisabled::alreadyIsCompletePolicy: ${alreadyIsCompletePolicy}, isSDKEnabled: ${isSDKEnabled}`,
+    ACELog.d(
+      ControlTower._pTAG,
+      `isDisabled, alreadyIsCompletePolicy: ${alreadyIsCompletePolicy}, isSDKEnabled: ${isSDKEnabled}`,
     )
 
     if (alreadyIsCompletePolicy && !isSDKEnabled) {
-      console.log('SDK is disabled.')
+      ACELog.d(ControlTower._pTAG, 'SDK is disabled.')
       return true
     }
 
@@ -54,7 +57,7 @@ export default class ControlTower {
   }
 
   public setSDKDisable(): void {
-    console.log('Set SDK disable by policy.')
+    ACELog.d(ControlTower._pTAG, 'Set SDK disable by policy.')
     this._isSDKEnabled = false
   }
 
@@ -73,14 +76,14 @@ export default class ControlTower {
 
   public getIsSDKEnabled(): boolean {
     if (this._isSDKForceStop) {
-      console.log('SDK was force stopped.')
+      ACELog.d(ControlTower._pTAG, 'SDK was force stopped.')
       return false
     }
     this._isSDKEnabled = this.isEnableByPolicy()
-    console.log(`isEnable of policy: ${this._isSDKEnabled}`)
+    ACELog.d(ControlTower._pTAG, `isEnable of policy: ${this._isSDKEnabled}`)
 
     if (!this._isSDKEnabled) {
-      console.log('not found SDK policy information.')
+      ACELog.d(ControlTower._pTAG, 'not found SDK policy information.')
     }
 
     return this._isSDKEnabled

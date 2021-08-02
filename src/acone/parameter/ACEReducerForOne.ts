@@ -5,10 +5,12 @@ import TaskAdapter from '../../common/task/TaskAdapter'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import APIForPolicy from './APIForPolicy'
 import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
+import ACELog from '../../common/logger/ACELog'
 // import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
 
 // 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
 export default class ACEReducerForOne {
+  private static _TAG = 'reducerForOne'
   private static instance: ACEReducerForOne
   // private emitter: ACEWorkerEventsForWorkerEmitter
 
@@ -58,7 +60,7 @@ export default class ACEReducerForOne {
         taskAdapter.addTask(new APIForPolicy(params), callback)
         break
       default:
-        console.log('not implementation Task.')
+        ACELog.d(ACEReducerForOne._TAG, 'not implementation Task.')
         break
     }
 
@@ -71,7 +73,7 @@ export default class ACEReducerForOne {
     pageName: string,
     callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
-    console.log('buy: ' + JSON.stringify(pageName))
+    ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.Buy,
@@ -89,7 +91,7 @@ export default class ACEReducerForOne {
     pageName: string,
     callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
-    console.log('plWithPage: ' + JSON.stringify(pageName))
+    ACELog.d(ACEReducerForOne._TAG, 'plWithPage: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.PlWithPage,

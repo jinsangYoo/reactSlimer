@@ -6,8 +6,10 @@ import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 import {makeSuccessCallbackParams, makeFailCallbackParams} from '../../common/util/MapUtil'
 import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
+import ACELog from '../../common/logger/ACELog'
 
 export default class APIForPolicy extends Task {
+  private static _TAG = 'APIForPolicy'
   public constructor(params: ITaskParams) {
     super(params)
   }
@@ -21,7 +23,7 @@ export default class APIForPolicy extends Task {
 
     ACENetwork.requestToPolicy(
       response => {
-        console.log('APIForPolicy::in requestToPolicy.completed')
+        ACELog.d(APIForPolicy._TAG, 'in requestToPolicy, completed')
         this.completed(response)
         this.doneWork()
         if (callback) {
@@ -29,7 +31,7 @@ export default class APIForPolicy extends Task {
         }
       },
       err => {
-        console.log('APIForPolicy::in requestToPolicy.failed')
+        ACELog.d(APIForPolicy._TAG, 'in requestToPolicy, failed')
         this.failed(err)
         this.doneWork()
         if (callback) {
@@ -45,9 +47,9 @@ export default class APIForPolicy extends Task {
 
   public completed(response: AxiosResponse) {
     super.completed(response)
-    console.log('APIForPolicy::completed::before savePolicy')
+    ACELog.d(APIForPolicy._TAG, 'completed, before savePolicy')
     ACEPolicyParameterUtil.getInstance().savePolicy(this._response)
-    console.log('APIForPolicy::completed::after savePolicy')
+    ACELog.d(APIForPolicy._TAG, 'completed, after savePolicy')
     ControlTowerSingleton.getInstance().succeedRequestPolicy()
   }
 

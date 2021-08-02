@@ -1,5 +1,6 @@
 import { SDKMode, NetworkMode } from '../constant/SDKMode';
 export default class ControlTower {
+    private static _pTAG;
     protected _sdk_mode: SDKMode;
     protected _network_mode: NetworkMode;
     protected _isCompletePolicy: boolean;

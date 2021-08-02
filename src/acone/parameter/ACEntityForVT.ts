@@ -1,8 +1,10 @@
 import ACECONSTANT from '../../common/constant/ACEConstant'
 import ACOneConstantVt from '../constant/ACOneConstantVt'
 import {getRandom6CharForSTVT} from '../../common/util/RandomUtil'
+import ACELog from '../../common/logger/ACELog'
 
 export default class ACEntityForVT {
+  private static _TAG = 'vt'
   private _map: Map<string, string>
 
   public constructor() {
@@ -161,9 +163,9 @@ export default class ACEntityForVT {
     if (!_pcStamp || _pcStamp == ACOneConstantVt.DefaultTS) {
       this.setPcStamp(Date.now())
       this.setRandom6ForPcStamp(getRandom6CharForSTVT())
-      console.log(`maked pcStamp: ${this.getPcStampGoldMaster()}`)
+      ACELog.d(ACEntityForVT._TAG, `maked pcStamp: ${this.getPcStampGoldMaster()}`)
     } else {
-      console.log(`existed pcStamp: ${this.getPcStampGoldMaster()}`)
+      ACELog.d(ACEntityForVT._TAG, `existed pcStamp: ${this.getPcStampGoldMaster()}`)
     }
   }
   // #endregion

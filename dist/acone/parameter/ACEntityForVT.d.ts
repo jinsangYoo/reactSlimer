@@ -1,4 +1,5 @@
 export default class ACEntityForVT {
+    private static _TAG;
     private _map;
     constructor();
     getMap(): Map<string, string>;

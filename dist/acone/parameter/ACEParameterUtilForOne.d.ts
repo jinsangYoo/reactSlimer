@@ -3,6 +3,7 @@ import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
 import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
+    private static _TAG;
     private static instance;
     static getInstance(): ACEParameterUtilForOne;
     private constructor();

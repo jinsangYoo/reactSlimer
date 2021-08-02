@@ -20,20 +20,20 @@ export default class ControlTower {
         return this._isCompletePolicy;
     }
     setIsCompletePolicy(isCompletePolicy, isSucceedRequestPolicy) {
-        console.log(`ControlTower.setIsCompletePolicy::isCompletePolicy: ${isCompletePolicy}, isSucceedRequestPolicy: ${isSucceedRequestPolicy}`);
+        ACELog.d(ControlTower._pTAG, `setIsCompletePolicy, isCompletePolicy: ${isCompletePolicy}, isSucceedRequestPolicy: ${isSucceedRequestPolicy}`);
     }
     isDisabled() {
         const alreadyIsCompletePolicy = this.getIsCompletePolicy();
         const isSDKEnabled = this.getIsSDKEnabled();
-        console.log(`ControlTower.isDisabled::alreadyIsCompletePolicy: ${alreadyIsCompletePolicy}, isSDKEnabled: ${isSDKEnabled}`);
+        ACELog.d(ControlTower._pTAG, `isDisabled, alreadyIsCompletePolicy: ${alreadyIsCompletePolicy}, isSDKEnabled: ${isSDKEnabled}`);
         if (alreadyIsCompletePolicy && !isSDKEnabled) {
-            console.log('SDK is disabled.');
+            ACELog.d(ControlTower._pTAG, 'SDK is disabled.');
             return true;
         }
         return false;
     }
     setSDKDisable() {
-        console.log('Set SDK disable by policy.');
+        ACELog.d(ControlTower._pTAG, 'Set SDK disable by policy.');
         this._isSDKEnabled = false;
     }
     isEnableByPolicy() {
@@ -47,13 +47,13 @@ export default class ControlTower {
     }
     getIsSDKEnabled() {
         if (this._isSDKForceStop) {
-            console.log('SDK was force stopped.');
+            ACELog.d(ControlTower._pTAG, 'SDK was force stopped.');
             return false;
         }
         this._isSDKEnabled = this.isEnableByPolicy();
-        console.log(`isEnable of policy: ${this._isSDKEnabled}`);
+        ACELog.d(ControlTower._pTAG, `isEnable of policy: ${this._isSDKEnabled}`);
         if (!this._isSDKEnabled) {
-            console.log('not found SDK policy information.');
+            ACELog.d(ControlTower._pTAG, 'not found SDK policy information.');
         }
         return this._isSDKEnabled;
     }
@@ -88,4 +88,5 @@ export default class ControlTower {
         return NetworkMode.COMPANY_dev;
     }
 }
+ControlTower._pTAG = 'pTower';
 //# sourceMappingURL=ControlTower.js.map

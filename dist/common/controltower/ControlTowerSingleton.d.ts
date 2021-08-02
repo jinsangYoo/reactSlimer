@@ -1,6 +1,7 @@
 import { SDKMode, NetworkMode } from '../constant/SDKMode';
 import { ACEPlatform } from '../../acone/aceconfiguration';
 export default class ControlTowerSingleton {
+    private static _TAG;
     private _platform;
     private _controlTower;
     private static instance;

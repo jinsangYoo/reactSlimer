@@ -138,22 +138,4 @@ export default class ACEPolicyParameters {
       if (value) this.toastAppKey = value
     }
   }
-
-  public toJSON(): string {
-    return JSON.stringify(
-      {
-        cpAllow: this.cpAllow,
-        cpApp: this.cpApp,
-        cpCid: this.cpCid,
-        cpDebug: this.cpDebug,
-        cpDomain: this.cpDomain,
-        cpPrivate: this.cpPrivate,
-        cpSourceIP: this.cpSourceIP,
-        cpCrashDomain: this.cpCrashDomain,
-        toastAppKey: this.toastAppKey,
-      },
-      null,
-      2,
-    )
-  }
 }

@@ -49,7 +49,7 @@ export default class ACECommonStaticConfig {
       ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.')
     }
 
-    ACELog.d(ACECommonStaticConfig._TAG, 'AceConfiguration information: ', configuration)
+    ACELog.d(ACECommonStaticConfig._TAG, 'AceConfiguration information:', configuration)
 
     if (configuration.platform) {
       this._platform = configuration.platform
@@ -63,7 +63,7 @@ export default class ACECommonStaticConfig {
       this._staticConfigImpl
         .configure(configuration)
         .then(res => {
-          ACELog.d(ACECommonStaticConfig._TAG, 'SDK init step one result: ', res)
+          ACELog.d(ACECommonStaticConfig._TAG, 'SDK init step one result:', res)
           return res
         })
         .then(res => {
@@ -96,7 +96,7 @@ export default class ACECommonStaticConfig {
         this._staticConfigImpl
           .configure(configuration)
           .then(res => {
-            ACELog.d(ACECommonStaticConfig._TAG, 'SDK init step one result: ', res)
+            ACELog.d(ACECommonStaticConfig._TAG, 'SDK init step one result:', res)
             return res
           })
           .then(res => {

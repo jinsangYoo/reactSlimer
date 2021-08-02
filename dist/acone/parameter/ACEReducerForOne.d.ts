@@ -1,5 +1,6 @@
 import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
 export default class ACEReducerForOne {
+    private static _TAG;
     private static instance;
     static getInstance(): ACEReducerForOne;
     private constructor();

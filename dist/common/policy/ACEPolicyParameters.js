@@ -119,18 +119,5 @@ export default class ACEPolicyParameters {
                 this.toastAppKey = value;
         }
     }
-    toJSON() {
-        return JSON.stringify({
-            cpAllow: this.cpAllow,
-            cpApp: this.cpApp,
-            cpCid: this.cpCid,
-            cpDebug: this.cpDebug,
-            cpDomain: this.cpDomain,
-            cpPrivate: this.cpPrivate,
-            cpSourceIP: this.cpSourceIP,
-            cpCrashDomain: this.cpCrashDomain,
-            toastAppKey: this.toastAppKey,
-        }, null, 2);
-    }
 }
 //# sourceMappingURL=ACEPolicyParameters.js.map

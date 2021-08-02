@@ -1,3 +1,4 @@
+import ACELog from '../logger/ACELog';
 export default class TaskAdapter {
     addTask(argTask, callback) {
         this._task = argTask;
@@ -6,20 +7,20 @@ export default class TaskAdapter {
     doWork() {
         return new Promise((resolve, reject) => {
             if (this._task) {
-                console.log('TaskAdapter::in doWork');
+                ACELog.d(TaskAdapter._TAG, 'in doWork');
                 this._task.doWork();
                 resolve(true);
             }
             else {
-                console.log('TaskAdapter::in doWork::undefined task');
+                ACELog.d(TaskAdapter._TAG, 'in doWork, undefined task');
                 reject(new Error('undefined task'));
             }
         });
     }
     didWork(resultDoWork) {
-        console.log(`TaskAdapter::in didWork::resultDoWork: ${resultDoWork}`);
+        ACELog.d(TaskAdapter._TAG, `in didWork, resultDoWork: ${resultDoWork}`);
         if (resultDoWork) {
-            console.log(`TaskAdapter::in didWork::try didWork`);
+            ACELog.d(TaskAdapter._TAG, "in didWork, try didWork task's ");
             this._task.didWork(this._callback);
         }
     }
@@ -29,8 +30,9 @@ export default class TaskAdapter {
             this.didWork(resolve);
         })
             .catch(err => {
-            console.log(`TaskAdapter::run::err:${JSON.stringify(err)}`);
+            ACELog.d(TaskAdapter._TAG, 'run err:', err);
         });
     }
 }
+TaskAdapter._TAG = 'taskAdap';
 //# sourceMappingURL=TaskAdapter.js.map

@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
 export declare class ACENetwork {
+    private static _TAG;
     private static networkRequestTypeToParams;
     private static logToBaseURL;
     private static policyToBaseURL;

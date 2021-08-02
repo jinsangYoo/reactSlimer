@@ -6,14 +6,18 @@ import ACECommonStaticConfig from '../config/ACECommonStaticConfig'
 import {Platform} from 'react-native'
 import {ACS} from '../../acone/acs'
 import {mapValueStringToObject} from '../util/MapUtil'
+import ACELog from '../logger/ACELog'
 
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 
 export class ACENetwork {
+  private static _TAG = 'Net'
+
   private static networkRequestTypeToParams(requestType: NetworkRequestType): ACENetworkParams {
     const currentNetworkMode = ControlTowerSingleton.getInstance().getNetworkMode()
-    console.log(
-      `ACENetwork.networkRequestTypeToParams::requestType: ${NetworkRequestType[requestType]}, currentNetworkMode:${NetworkMode[currentNetworkMode]}`,
+    ACELog.d(
+      ACENetwork._TAG,
+      `networkRequestTypeToParams requestType: ${NetworkRequestType[requestType]}, currentNetworkMode:${NetworkMode[currentNetworkMode]}`,
     )
     return {
       baseUrl: this.networkRequestTypeToBaseURLs(currentNetworkMode, requestType),
@@ -153,7 +157,7 @@ export class ACENetwork {
     axios.defaults.headers.common['Content-Type'] = 'text/plain'
 
     const requestHeaders = mapValueStringToObject(params.requestHeaders)
-    console.log(`ACENetwork.request::requestHeaders:${JSON.stringify(requestHeaders)}`)
+    ACELog.d(ACENetwork._TAG, 'request requestHeaders:', requestHeaders)
     const requestConfig: AxiosRequestConfig = {
       url: params.url,
       method: method,

@@ -2,6 +2,7 @@ import ACEParameters from '../../common/parameter/ACEParameters';
 import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
 export default class ACEParametersForOne extends ACEParameters {
+    private static _TAG;
     private static instance;
     private adeld;
     private adid;
