@@ -5,7 +5,6 @@ export const ACParams = {
         BUY: 'buy',
     },
     init(type = ACParams.TYPE.DEFAULT, name) {
-        console.log(`in ACParams.init, type: ${type}, name: ${name}`);
         return { type, name };
     },
 };

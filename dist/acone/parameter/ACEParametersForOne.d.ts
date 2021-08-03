@@ -104,6 +104,8 @@ export default class ACEParametersForOne extends ACEParameters {
     setSTS(value: string): void;
     getSV(): string;
     setSV(value: string): void;
+    getTP(): string;
+    setTP(value: string): void;
     getTZ(): string;
     getUDF1(): number;
     setUDF1(value: number): void;

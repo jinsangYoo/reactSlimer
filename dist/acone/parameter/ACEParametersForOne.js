@@ -12,6 +12,7 @@ import ACOneConstantVt from '../constant/ACOneConstantVt';
 import SESSION from '../../common/constant/Session';
 import { ACEInnerCBResultKey } from '../../common/constant/ACEInnerCBResultKey';
 import ACELog from '../../common/logger/ACELog';
+import ACOneConstantInteger from '../constant/ACOneConstantInteger';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class ACEParametersForOne extends ACEParameters {
     constructor() {
@@ -566,11 +567,25 @@ export default class ACEParametersForOne extends ACEParameters {
             this.sv = value;
         }
     }
-    getTZ() {
+    getTP() {
         if (isEmpty(this.tp)) {
             this.tp = ACECONSTANT.EMPTY;
         }
         return this.tp;
+    }
+    setTP(value) {
+        if (isEmpty(value)) {
+            this.tp = ACECONSTANT.EMPTY;
+        }
+        else {
+            this.tp = value;
+        }
+    }
+    getTZ() {
+        var _timezoneOffset = new Date().getTimezoneOffset() / 60 + ACOneConstantInteger.TimezoneArrayIndexAtAceServer;
+        if (_timezoneOffset > 24)
+            _timezoneOffset -= 24;
+        return _timezoneOffset.toString();
     }
     getUDF1() {
         if (this.udf1 < 0) {

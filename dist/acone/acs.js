@@ -1,3 +1,4 @@
+import { ACParams } from './acparam';
 import ACECommonStaticConfig from '../common/config/ACECommonStaticConfig';
 import ACEReducerForOne from './parameter/ACEReducerForOne';
 export class ACS {
@@ -11,41 +12,67 @@ export class ACS {
         return ACECommonStaticConfig.configure(value, callback);
     }
     static send(value, callback) {
-        console.log('in send');
-        console.log(JSON.stringify(value, null, 2));
-        console.log('try plWithPage');
-        console.log(`value.name: ${value.name}`);
-        if (callback) {
-            ACEReducerForOne.plWithPage(value.name, (error, innerResult) => {
+        const callbackAtSend = (error, innerResult) => {
+            if (callback) {
                 if (error) {
                     callback(new Error(`0001, Can not use ${value.type} api.`));
                 }
                 else {
                     callback(undefined, innerResult);
                 }
-            });
-        }
-        else {
-            return new Promise((resolveToOut, rejectToOut) => {
-                ACEReducerForOne.plWithPage(value.name, (error, innerResult) => {
-                    if (error) {
-                        if (innerResult) {
-                            rejectToOut(innerResult);
-                        }
-                        else {
-                            rejectToOut(new Error(`0002, Can not use ${value.type} api.`));
-                        }
-                    }
-                    else {
-                        if (innerResult)
-                            resolveToOut(innerResult);
-                    }
-                });
-            });
+            }
+        };
+        switch (value.type) {
+            case ACParams.TYPE.BUY:
+                if (callback) {
+                    ACEReducerForOne.buy(value.name, callbackAtSend);
+                }
+                else {
+                    return new Promise((resolveToOut, rejectToOut) => {
+                        ACEReducerForOne.buy(value.name, (error, innerResult) => {
+                            if (error) {
+                                if (innerResult) {
+                                    rejectToOut(innerResult);
+                                }
+                                else {
+                                    rejectToOut(new Error(`0002, Can not use ${value.type} api.`));
+                                }
+                            }
+                            else {
+                                if (innerResult)
+                                    resolveToOut(innerResult);
+                            }
+                        });
+                    });
+                }
+                break;
+            case ACParams.TYPE.EVENT:
+                if (callback) {
+                    ACEReducerForOne.plWithPage(value.name, callbackAtSend);
+                }
+                else {
+                    return new Promise((resolveToOut, rejectToOut) => {
+                        ACEReducerForOne.plWithPage(value.name, (error, innerResult) => {
+                            if (error) {
+                                if (innerResult) {
+                                    rejectToOut(innerResult);
+                                }
+                                else {
+                                    rejectToOut(new Error(`0002, Can not use ${value.type} api.`));
+                                }
+                            }
+                            else {
+                                if (innerResult)
+                                    resolveToOut(innerResult);
+                            }
+                        });
+                    });
+                }
+                break;
         }
     }
     static SDKVersion() {
-        return '0.0.150';
+        return '0.0.152';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;

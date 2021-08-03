@@ -2,7 +2,7 @@ import ACEParametersForOne from './ACEParametersForOne'
 import IACEParameterUtil from '../../common/parameter/IACEParameterUtil'
 import ACEParameterUtil from '../../common/parameter/ACEParameterUtil'
 import ACECONSTANT from '../../common/constant/ACEConstant'
-import ACOneConstantInteger from '../../common/constant/ACOneConstantInteger'
+import ACOneConstantInteger from '../constant/ACOneConstantInteger'
 import ACOneConstant from '../constant/ACOneConstant'
 import {ACS} from '../acs'
 import SESSION from '../../common/constant/Session'
@@ -68,6 +68,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     this.setSTS(ACECONSTANT.ZERO)
     _parametersForOne.setADELD(false)
     _parametersForOne.setADID(ACECONSTANT.DEFAULT_ADID)
+
+    ACELog.d(ACEParameterUtilForOne._TAG, `tz: ${_parametersForOne.getTZ()}`)
 
     this.setNewSession()
     ACS.setPackageNameOrBundleID(ACEParameterUtil.getPackageNameOrBundleID())
