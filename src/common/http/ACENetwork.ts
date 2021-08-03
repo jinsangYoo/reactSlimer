@@ -155,6 +155,7 @@ export class ACENetwork {
   ): void {
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
     axios.defaults.headers.common['Content-Type'] = 'text/plain'
+    axios.defaults.headers.common['User-Agent'] = 'react-native ' + Platform.OS
 
     const requestHeaders = mapValueStringToObject(params.requestHeaders)
     ACELog.d(ACENetwork._TAG, 'request requestHeaders:', requestHeaders)

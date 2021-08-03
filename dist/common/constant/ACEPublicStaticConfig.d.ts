@@ -58,4 +58,9 @@ export declare const enum ACEGender {
     Man = "man",
     Woman = "woman"
 }
+export declare enum ACEMaritalStatus {
+    Unknown = "",
+    Married = "married",
+    Single = "single"
+}
 //# sourceMappingURL=ACEPublicStaticConfig.d.ts.map

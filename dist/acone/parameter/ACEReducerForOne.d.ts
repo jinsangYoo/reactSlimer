@@ -5,10 +5,10 @@ export default class ACEReducerForOne {
     static getInstance(): ACEReducerForOne;
     private constructor();
     private static reducer;
-    static buy(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
-    static buy(pageName: string): Promise<object>;
-    static plWithPage(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void;
-    static plWithPage(pageName: string): Promise<object>;
+    static buy(pageName: string, callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
+    static buy(pageName: string): Promise<ACEResponseToCaller>;
+    static plWithPage(pageName: string, callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
+    static plWithPage(pageName: string): Promise<ACEResponseToCaller>;
     static policy(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
     static policy(): Promise<ACEResponseToCaller>;
 }

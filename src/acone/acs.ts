@@ -36,14 +36,39 @@ export class ACS {
     return ACECommonStaticConfig.configure(value, callback)
   }
 
-  public static send(value: ACParams, callback: (error?: object, result?: object) => void): void
-  public static send(value: ACParams): Promise<object>
-  public static send(value: ACParams, callback?: (error?: object, result?: object) => void): Promise<object> | void {
-    return ACEReducerForOne.plWithPage(value.name, callback)
+  public static send(value: ACParams, callback: (error?: object, result?: ACEResponseToCaller) => void): void
+  public static send(value: ACParams): Promise<ACEResponseToCaller>
+  public static send(
+    value: ACParams,
+    callback?: (error?: object, result?: ACEResponseToCaller) => void,
+  ): Promise<ACEResponseToCaller> | void {
+    if (callback) {
+      ACEReducerForOne.plWithPage(value.name, (error?: object, innerResult?: ACEResponseToCaller) => {
+        if (error) {
+          callback(new Error(`0001, Can not use ${value.type} api.`))
+        } else {
+          callback(undefined, innerResult)
+        }
+      })
+    } else {
+      return new Promise((resolveToOut, rejectToOut) => {
+        ACEReducerForOne.plWithPage(value.name, (error?: object, innerResult?: ACEResponseToCaller) => {
+          if (error) {
+            if (innerResult) {
+              rejectToOut(innerResult)
+            } else {
+              rejectToOut(new Error(`0002, Can not use ${value.type} api.`))
+            }
+          } else {
+            if (innerResult) resolveToOut(innerResult)
+          }
+        })
+      })
+    }
   }
 
   public static SDKVersion(): string {
-    return '0.0.133'
+    return '0.0.150'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {

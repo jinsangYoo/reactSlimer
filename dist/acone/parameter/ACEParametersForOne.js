@@ -6,7 +6,7 @@ import ADID from '../../common/constant/ADID';
 import ACECONSTANT from '../../common/constant/ACEConstant';
 import ACOneConstant from '../constant/ACOneConstant';
 import IACBuyMode from '../constant/IACBuyMode';
-import ACEMaritalStatus from '../../common/constant/ACEMaritalStatus';
+import { ACEMaritalStatus } from '../../common/constant/ACEPublicStaticConfig';
 import ACOneConstantSt from '../constant/ACOneConstantSt';
 import ACOneConstantVt from '../constant/ACOneConstantVt';
 import SESSION from '../../common/constant/Session';

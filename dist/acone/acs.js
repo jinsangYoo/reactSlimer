@@ -11,10 +11,41 @@ export class ACS {
         return ACECommonStaticConfig.configure(value, callback);
     }
     static send(value, callback) {
-        return ACEReducerForOne.plWithPage(value.name, callback);
+        console.log('in send');
+        console.log(JSON.stringify(value, null, 2));
+        console.log('try plWithPage');
+        console.log(`value.name: ${value.name}`);
+        if (callback) {
+            ACEReducerForOne.plWithPage(value.name, (error, innerResult) => {
+                if (error) {
+                    callback(new Error(`0001, Can not use ${value.type} api.`));
+                }
+                else {
+                    callback(undefined, innerResult);
+                }
+            });
+        }
+        else {
+            return new Promise((resolveToOut, rejectToOut) => {
+                ACEReducerForOne.plWithPage(value.name, (error, innerResult) => {
+                    if (error) {
+                        if (innerResult) {
+                            rejectToOut(innerResult);
+                        }
+                        else {
+                            rejectToOut(new Error(`0002, Can not use ${value.type} api.`));
+                        }
+                    }
+                    else {
+                        if (innerResult)
+                            resolveToOut(innerResult);
+                    }
+                });
+            });
+        }
     }
     static SDKVersion() {
-        return '0.0.133';
+        return '0.0.150';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;

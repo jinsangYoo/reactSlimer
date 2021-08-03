@@ -5,14 +5,16 @@ import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
     private static _TAG;
     private static instance;
+    private _enablePrivacyPolicy;
     static getInstance(): ACEParameterUtilForOne;
     private constructor();
     loadUniqueKeyForSDK(): void;
     setFirstLogParameters(): void;
     setLogSource(value: number): void;
     getSdkDetails(json: JSON): void;
-    initParameters(key: string, callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined): void;
-    initParameters(key: string): Promise<ACEResponseToCaller>;
+    initParameters(key: string, enablePrivacyPolicy: boolean, callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined): void;
+    initParameters(key: string, enablePrivacyPolicy: boolean): Promise<ACEResponseToCaller>;
+    setID(value: string): void;
     isFirstLog(): boolean;
     resetSessionAndParameterAfterSend(): void;
     resetSessionAndParameterAfterSendWithParams(params?: JSON): void;
@@ -31,6 +33,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     loadVT(): Promise<object>;
     saveVT_toInStorage(vt: ACEntityForVT, callback: (error?: Error, result?: object) => void): void;
     saveVT_toInStorage(vt: ACEntityForVT): Promise<object>;
+    setUserID(value: string): void;
     setterForString(key: string, value: string): void;
 }
 //# sourceMappingURL=ACEParameterUtilForOne.d.ts.map

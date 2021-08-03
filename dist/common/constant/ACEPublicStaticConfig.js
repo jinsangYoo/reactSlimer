@@ -35,4 +35,10 @@ export var ACEResultCode;
     ACEResultCode[ACEResultCode["NotSupportPromise"] = 1024] = "NotSupportPromise";
     ACEResultCode[ACEResultCode["CanNotRequestToPolicy"] = 1025] = "CanNotRequestToPolicy";
 })(ACEResultCode || (ACEResultCode = {}));
+export var ACEMaritalStatus;
+(function (ACEMaritalStatus) {
+    ACEMaritalStatus["Unknown"] = "";
+    ACEMaritalStatus["Married"] = "married";
+    ACEMaritalStatus["Single"] = "single";
+})(ACEMaritalStatus || (ACEMaritalStatus = {}));
 //# sourceMappingURL=ACEPublicStaticConfig.js.map

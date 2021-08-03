@@ -13,7 +13,7 @@ export default class ACEOneStaticConfig {
             this._enablePrivacyPolicy = configuration.enablePrivacyPolicy;
         if (configuration.debug)
             this._debug = configuration.debug;
-        return ACEParameterUtilForOne.getInstance().initParameters(this._key, callback);
+        return ACEParameterUtilForOne.getInstance().initParameters(this._key, this._enablePrivacyPolicy, callback);
     }
     isDebug() {
         return this._debug;

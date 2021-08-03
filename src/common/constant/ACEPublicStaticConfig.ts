@@ -67,3 +67,9 @@ export const enum ACEGender {
   Man = 'man',
   Woman = 'woman',
 }
+
+export enum ACEMaritalStatus {
+  Unknown = '',
+  Married = 'married',
+  Single = 'single',
+}

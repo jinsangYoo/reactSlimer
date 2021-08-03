@@ -6,6 +6,7 @@ import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import APIForPolicy from './APIForPolicy'
 import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 import ACELog from '../../common/logger/ACELog'
+import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 // import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
 
 // 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
@@ -67,12 +68,15 @@ export default class ACEReducerForOne {
     return taskAdapter.run()
   }
 
-  public static buy(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void
-  public static buy(pageName: string): Promise<object>
   public static buy(
     pageName: string,
-    callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+  ): void
+  public static buy(pageName: string): Promise<ACEResponseToCaller>
+  public static buy(
+    pageName: string,
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+  ): Promise<ACEResponseToCaller> | void {
     ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
@@ -85,17 +89,24 @@ export default class ACEReducerForOne {
     )
   }
 
-  public static plWithPage(pageName: string, callback: ((error?: Error, result?: object) => void) | undefined): void
-  public static plWithPage(pageName: string): Promise<object>
   public static plWithPage(
     pageName: string,
-    callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
-    ACELog.d(ACEReducerForOne._TAG, 'plWithPage: ' + JSON.stringify(pageName))
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+  ): void
+  public static plWithPage(pageName: string): Promise<ACEResponseToCaller>
+  public static plWithPage(
+    pageName: string,
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+  ): Promise<ACEResponseToCaller> | void {
+    ControlTowerSingleton.getInstance().setDevSDKMode()
+    ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.PlWithPage,
-        payload: {},
+        payload: {
+          pageName: pageName,
+        },
         error: false,
         debugParams: {},
       },

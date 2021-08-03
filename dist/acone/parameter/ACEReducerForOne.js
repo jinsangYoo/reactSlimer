@@ -4,6 +4,7 @@ import TaskAdapter from '../../common/task/TaskAdapter';
 import ACEofAPIForOne from '../constant/ACEofAPIForOne';
 import APIForPolicy from './APIForPolicy';
 import ACELog from '../../common/logger/ACELog';
+import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton';
 export default class ACEReducerForOne {
     constructor() {
     }
@@ -11,6 +12,7 @@ export default class ACEReducerForOne {
         return this.instance || (this.instance = new this());
     }
     static reducer(params, callback) {
+        ACELog.d(ACEReducerForOne._TAG, 'in reducer', params);
         const taskAdapter = new TaskAdapter();
         switch (params.type) {
             case ACEofAPIForOne.Buy:
@@ -38,13 +40,23 @@ export default class ACEReducerForOne {
         }, callback);
     }
     static plWithPage(pageName, callback) {
-        ACELog.d(ACEReducerForOne._TAG, 'plWithPage: ' + JSON.stringify(pageName));
-        return ACEReducerForOne.reducer({
-            type: ACEofAPIForOne.PlWithPage,
-            payload: {},
-            error: false,
-            debugParams: {},
-        }, callback);
+        ControlTowerSingleton.getInstance().setDevSDKMode();
+        ControlTowerSingleton.getInstance().setHomeDevNetworkMode();
+        ACELog.d(ACEReducerForOne._TAG, 'plWithPage: ' + pageName);
+        try {
+            console.log('in try, ACEReducerForOne.reducer');
+            return ACEReducerForOne.reducer({
+                type: ACEofAPIForOne.PlWithPage,
+                payload: {
+                    pageName: pageName,
+                },
+                error: false,
+                debugParams: {},
+            }, callback);
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
     static policy(callback) {
         return ACEReducerForOne.reducer({

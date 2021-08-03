@@ -8,9 +8,12 @@ import SESSION from '../../common/constant/Session';
 import ACOneConstantSt from '../constant/ACOneConstantSt';
 import ACOneConstantVt from '../constant/ACOneConstantVt';
 import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPublicStaticConfig';
+import { isEmpty } from '../../common/util/TextUtils';
 import ACELog from '../../common/logger/ACELog';
 export default class ACEParameterUtilForOne {
-    constructor() { }
+    constructor() {
+        this._enablePrivacyPolicy = false;
+    }
     static getInstance() {
         return this.instance || (this.instance = new this());
     }
@@ -26,7 +29,8 @@ export default class ACEParameterUtilForOne {
     getSdkDetails(json) {
         throw new Error('Method not implemented.');
     }
-    initParameters(key, callback) {
+    initParameters(key, enablePrivacyPolicy, callback) {
+        this._enablePrivacyPolicy = enablePrivacyPolicy;
         const _parametersForOne = ACEParametersForOne.getInstance();
         _parametersForOne.getCE();
         _parametersForOne.setDM(ACEParameterUtil.getResolution());
@@ -83,6 +87,12 @@ export default class ACEParameterUtilForOne {
                 }
             });
         });
+    }
+    setID(value) {
+        if (!isEmpty(value) && this._enablePrivacyPolicy) {
+            value = ACOneConstant.EnabledPrivacyPolicyUserID;
+        }
+        return ACEParametersForOne.getInstance().setSTS(value);
     }
     isFirstLog() {
         return this.getSession() == SESSION.NEW;
@@ -172,6 +182,12 @@ export default class ACEParameterUtilForOne {
     }
     saveVT_toInStorage(vt, callback) {
         return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback);
+    }
+    setUserID(value) {
+        if (!isEmpty(value) && this._enablePrivacyPolicy) {
+            value = ACOneConstant.EnabledPrivacyPolicyUserID;
+        }
+        return ACEParametersForOne.getInstance().setSTS(value);
     }
     setterForString(key, value) { }
 }

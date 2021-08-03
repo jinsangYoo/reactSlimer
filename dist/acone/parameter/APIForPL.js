@@ -1,26 +1,28 @@
 import Task from '../../common/task/Task';
 import { ACENetwork } from '../../common/http/ACENetwork';
 import { makeSuccessCallbackParams, makeFailCallbackParams } from '../../common/util/MapUtil';
+import ACELog from '../../common/logger/ACELog';
 export default class APIForPL extends Task {
     constructor(params) {
         super(params);
+        ACELog.d(APIForPL._TAG, 'in constructor, params:', params);
     }
     doWork() {
         super.doWork();
-        console.log('APIForPL::doWork');
+        ACELog.d(APIForPL._TAG, 'doWork');
     }
     didWork(callback) {
         super.didWork(callback);
-        console.log('APIForPL::didWork');
+        ACELog.d(APIForPL._TAG, 'didWork');
         ACENetwork.requestToLog(response => {
-            console.log('APIForPL::in requestToLog.completed');
+            ACELog.d(APIForPL._TAG, 'in requestToPolicy, completed');
             this.completed(response);
             this.doneWork();
             if (callback) {
                 callback(undefined, makeSuccessCallbackParams(this));
             }
         }, err => {
-            console.log('APIForPL::in requestToLog.failed');
+            ACELog.d(APIForPL._TAG, 'in requestToPolicy, failed');
             this.failed(err);
             this.doneWork();
             if (callback) {
@@ -30,15 +32,16 @@ export default class APIForPL extends Task {
     }
     completed(response) {
         super.completed(response);
-        console.log('APIForPL::completed');
+        ACELog.d(APIForPL._TAG, 'completed');
     }
     failed(err) {
         super.failed(err);
-        console.log('APIForPL::failed');
+        ACELog.d(APIForPL._TAG, 'failed');
     }
     doneWork() {
         super.doneWork();
-        console.log('APIForPL::doneWork');
+        ACELog.d(APIForPL._TAG, 'doneWork');
     }
 }
+APIForPL._TAG = 'APIForPL';
 //# sourceMappingURL=APIForPL.js.map

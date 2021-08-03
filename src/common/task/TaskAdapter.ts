@@ -7,6 +7,7 @@ export default class TaskAdapter {
   private _task: Task
   private _callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined
 
+  public addTask(argTask: Task): void
   public addTask(argTask: Task, callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void
   public addTask(argTask: Task, callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {
     this._task = argTask
