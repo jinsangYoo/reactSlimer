@@ -5,17 +5,27 @@ import {AxiosResponse} from 'axios'
 import {makeSuccessCallbackParams, makeFailCallbackParams} from '../../common/util/MapUtil'
 import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 import ACELog from '../../common/logger/ACELog'
+import ACEParameterUtilForOne from './ACEParameterUtilForOne'
+import TP from '../constant/TP'
+import ACECONSTANT from '../../common/constant/ACEConstant'
 
 export default class APIForPL extends Task {
   private static _TAG = 'APIForPL'
+  private pageName: string
+
   public constructor(params: ITaskParams) {
     super(params)
     ACELog.d(APIForPL._TAG, 'in constructor, params:', params)
+    this.pageName = params.payload.pageName ?? ACECONSTANT.EMPTY
   }
 
   public doWork() {
     super.doWork()
     ACELog.d(APIForPL._TAG, 'doWork')
+
+    const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
+    _parameterUtilForOne.setTP(TP.SITE)
+    _parameterUtilForOne.updateUrlToRef(this.pageName)
   }
 
   public didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {

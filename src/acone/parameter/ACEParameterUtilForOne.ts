@@ -11,7 +11,7 @@ import ACOneConstantVt from '../constant/ACOneConstantVt'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../../common/constant/ACEPublicStaticConfig'
-import {isEmpty} from '../../common/util/TextUtils'
+import {isEmpty, onlyLetteringAtStartIndex} from '../../common/util/TextUtils'
 import ACELog from '../../common/logger/ACELog'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
@@ -217,6 +217,23 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   public makeSV(): string {
     return `${ACOneConstant.DefaultServiceCode}${ACS.SDKVersion()}${ACOneConstant.DefaultNotCustomSDKForCustomer}`
+  }
+
+  public setTP(value: string): void {
+    ACEParametersForOne.getInstance().setTP(value)
+  }
+
+  public setURL(value: string): void {
+    value = onlyLetteringAtStartIndex(value)
+    const _parametersForOne = ACEParametersForOne.getInstance()
+    ACELog.d(ACEParameterUtilForOne._TAG, `>>${ACS.getPackageNameOrBundleID()}/${value}<<`)
+    _parametersForOne.setURL(`${ACS.getPackageNameOrBundleID()}/${value}`)
+  }
+
+  public updateUrlToRef(value: string): void {
+    const _parametersForOne = ACEParametersForOne.getInstance()
+    _parametersForOne.setREF(_parametersForOne.getURL())
+    this.setURL(value)
   }
 
   // #region VT

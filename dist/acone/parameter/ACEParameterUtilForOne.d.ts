@@ -28,6 +28,9 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     clearSV(): void;
     loadSV(): void;
     makeSV(): string;
+    setTP(value: string): void;
+    setURL(value: string): void;
+    updateUrlToRef(value: string): void;
     getVT(): ACEntityForVT;
     loadVT(callback: (error?: Error, result?: object) => void): void;
     loadVT(): Promise<object>;

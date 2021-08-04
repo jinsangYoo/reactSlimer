@@ -4,6 +4,7 @@ import { AxiosResponse } from 'axios';
 import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
 export default class APIForPL extends Task {
     private static _TAG;
+    private pageName;
     constructor(params: ITaskParams);
     doWork(): void;
     didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;

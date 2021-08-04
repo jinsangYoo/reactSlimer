@@ -8,7 +8,7 @@ import SESSION from '../../common/constant/Session';
 import ACOneConstantSt from '../constant/ACOneConstantSt';
 import ACOneConstantVt from '../constant/ACOneConstantVt';
 import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPublicStaticConfig';
-import { isEmpty } from '../../common/util/TextUtils';
+import { isEmpty, onlyLetteringAtStartIndex } from '../../common/util/TextUtils';
 import ACELog from '../../common/logger/ACELog';
 export default class ACEParameterUtilForOne {
     constructor() {
@@ -174,6 +174,20 @@ export default class ACEParameterUtilForOne {
     }
     makeSV() {
         return `${ACOneConstant.DefaultServiceCode}${ACS.SDKVersion()}${ACOneConstant.DefaultNotCustomSDKForCustomer}`;
+    }
+    setTP(value) {
+        ACEParametersForOne.getInstance().setTP(value);
+    }
+    setURL(value) {
+        value = onlyLetteringAtStartIndex(value);
+        const _parametersForOne = ACEParametersForOne.getInstance();
+        ACELog.d(ACEParameterUtilForOne._TAG, `>>${ACS.getPackageNameOrBundleID()}/${value}<<`);
+        _parametersForOne.setURL(`${ACS.getPackageNameOrBundleID()}/${value}`);
+    }
+    updateUrlToRef(value) {
+        const _parametersForOne = ACEParametersForOne.getInstance();
+        _parametersForOne.setREF(_parametersForOne.getURL());
+        this.setURL(value);
     }
     getVT() {
         return ACEParametersForOne.getInstance().getVT();

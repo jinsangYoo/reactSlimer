@@ -18,3 +18,20 @@ export function isEmpty(value: any): boolean {
     (typeof value === 'object' && Object.keys(value).length === 0) // check for empty object
   )
 }
+
+export function isLetterAtStringStartIndex(value: string): boolean {
+  const regex = /^[\w].*/
+  return regex.test(value)
+}
+
+export function onlyLetteringAtStartIndex(value: string): string {
+  if (!isEmpty(value)) {
+    while (!isLetterAtStringStartIndex(value)) {
+      value = value.substring(1)
+      if (isEmpty(value)) {
+        break
+      }
+    }
+  }
+  return value
+}

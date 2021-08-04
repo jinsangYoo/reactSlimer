@@ -14,6 +14,7 @@ import { ACEInnerCBResultKey } from '../../common/constant/ACEInnerCBResultKey';
 import ACELog from '../../common/logger/ACELog';
 import ACOneConstantInteger from '../constant/ACOneConstantInteger';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TP from '../constant/TP';
 export default class ACEParametersForOne extends ACEParameters {
     constructor() {
         super();
@@ -575,7 +576,7 @@ export default class ACEParametersForOne extends ACEParameters {
     }
     setTP(value) {
         if (isEmpty(value)) {
-            this.tp = ACECONSTANT.EMPTY;
+            this.tp = TP.UNKNOWN;
         }
         else {
             this.tp = value;
