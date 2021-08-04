@@ -1,6 +1,6 @@
 import ACECONSTANT from '../../common/constant/ACEConstant';
 import ACOneConstantVt from '../constant/ACOneConstantVt';
-import { getRandom6CharForSTVT } from '../../common/util/RandomUtil';
+import { getRandom6CharForSTVT } from '../../common/util/NumberUtil';
 import ACELog from '../../common/logger/ACELog';
 export default class ACEntityForVT {
     constructor() {
@@ -39,6 +39,28 @@ export default class ACEntityForVT {
         const _pcStampRandom = (_h = value.get(ACOneConstantVt.KeyRandom6ForPcStamp)) !== null && _h !== void 0 ? _h : ACECONSTANT.ZERO6;
         this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, _pcStampRandom);
     }
+    setDeepCopyForJSON(value) {
+        var _a, _b, _c, _d, _e, _f, _g, _h;
+        if (this._map) {
+            this._map = new Map();
+        }
+        const _vts = (_a = value[ACOneConstantVt.KeyVTS]) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
+        this._map.set(ACOneConstantVt.KeyVTS, _vts);
+        const _vtsRandom = (_b = value[ACOneConstantVt.KeyRandom6ForVTS]) !== null && _b !== void 0 ? _b : ACECONSTANT.ZERO6;
+        this._map.set(ACOneConstantVt.KeyRandom6ForVTS, _vtsRandom);
+        const _visitCount = (_c = value[ACOneConstantVt.KeyVisitCount]) !== null && _c !== void 0 ? _c : ACECONSTANT.ZERO;
+        this._map.set(ACOneConstantVt.KeyVisitCount, _visitCount);
+        const _buyTimeTS = (_d = value[ACOneConstantVt.KeyBuyTimeTS]) !== null && _d !== void 0 ? _d : ACOneConstantVt.DefaultTS;
+        this._map.set(ACOneConstantVt.KeyBuyTimeTS, _buyTimeTS);
+        const _buyTimeTSRandom = (_e = value[ACOneConstantVt.KeyRandom6ForBuyTimeTS]) !== null && _e !== void 0 ? _e : ACECONSTANT.ZERO6;
+        this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, _buyTimeTSRandom);
+        const _buyCount = (_f = value[ACOneConstantVt.KeyBuyCount]) !== null && _f !== void 0 ? _f : ACECONSTANT.ZERO;
+        this._map.set(ACOneConstantVt.KeyBuyCount, _buyCount);
+        const _pcStamp = (_g = value[ACOneConstantVt.KeyPcStamp]) !== null && _g !== void 0 ? _g : ACOneConstantVt.DefaultTS;
+        this._map.set(ACOneConstantVt.KeyPcStamp, _pcStamp);
+        const _pcStampRandom = (_h = value[ACOneConstantVt.KeyRandom6ForPcStamp]) !== null && _h !== void 0 ? _h : ACECONSTANT.ZERO6;
+        this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, _pcStampRandom);
+    }
     getAssembleParams() {
         const _vts = this.getVTSGoldMaster();
         const _visitCount = this.getVisitCount();
@@ -48,31 +70,39 @@ export default class ACEntityForVT {
         return `${_vts}|${_visitCount}|${_buyTimeTS}|${_buyCount}|${_pcStamp}`;
     }
     getVTSGoldMaster() {
-        var _a, _b;
-        const _vts = (_a = this.getVTS()) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
-        const _random = (_b = this.getRandom6ForVTS()) !== null && _b !== void 0 ? _b : ACECONSTANT.ZERO6;
+        const _vts = this.getVTS();
+        const _random = this.getRandom6ForVTS();
         return `${_vts}${_random}`;
     }
     getBuyTimeTSGoldMaster() {
-        var _a, _b;
-        const _buyTimeTS = (_a = this.getBuyTimeTS()) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
-        const _random = (_b = this.getRandom6ForBuyTimeTS()) !== null && _b !== void 0 ? _b : ACECONSTANT.ZERO6;
+        const _buyTimeTS = this.getBuyTimeTS();
+        const _random = this.getRandom6ForBuyTimeTS();
         return `${_buyTimeTS}${_random}`;
     }
     getPcStampGoldMaster() {
-        var _a, _b;
-        const _pcStamp = (_a = this.getPcStamp()) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
-        const _random = (_b = this.getRandom6ForPcStamp()) !== null && _b !== void 0 ? _b : ACECONSTANT.ZERO6;
+        const _pcStamp = this.getPcStamp();
+        const _random = this.getRandom6ForPcStamp();
         return `${_pcStamp}${_random}`;
     }
+    isEmptyAtVTS() {
+        const _vts = this.getVTS();
+        if (_vts == ACOneConstantVt.DefaultTS) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     getVTS() {
-        return this._map.get(ACOneConstantVt.KeyVTS);
+        var _a;
+        return (_a = this._map.get(ACOneConstantVt.KeyVTS)) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
     }
     setVTS(value) {
         this._map.set(ACOneConstantVt.KeyVTS, value.valueOf().toString());
     }
     getRandom6ForVTS() {
-        return this._map.get(ACOneConstantVt.KeyRandom6ForVTS);
+        var _a;
+        return (_a = this._map.get(ACOneConstantVt.KeyRandom6ForVTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
     }
     setRandom6ForVTS(value) {
         this._map.set(ACOneConstantVt.KeyRandom6ForVTS, value);
@@ -84,14 +114,25 @@ export default class ACEntityForVT {
     setVisitCount(value) {
         this._map.set(ACOneConstantVt.KeyVisitCount, value.toString());
     }
+    isEmptyAtBuyTimeTS() {
+        const _buyTimeTS = this.getBuyTimeTS();
+        if (_buyTimeTS == ACOneConstantVt.DefaultTS) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     getBuyTimeTS() {
-        return this._map.get(ACOneConstantVt.KeyBuyTimeTS);
+        var _a;
+        return (_a = this._map.get(ACOneConstantVt.KeyBuyTimeTS)) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
     }
     setBuyTimeTS(value) {
         this._map.set(ACOneConstantVt.KeyBuyTimeTS, value.valueOf().toString());
     }
     getRandom6ForBuyTimeTS() {
-        return this._map.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS);
+        var _a;
+        return (_a = this._map.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
     }
     setRandom6ForBuyTimeTS(value) {
         this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, value);
@@ -104,20 +145,22 @@ export default class ACEntityForVT {
         this._map.set(ACOneConstantVt.KeyBuyCount, value.toString());
     }
     getPcStamp() {
-        return this._map.get(ACOneConstantVt.KeyPcStamp);
+        var _a;
+        return (_a = this._map.get(ACOneConstantVt.KeyPcStamp)) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
     }
     setPcStamp(value) {
         this._map.set(ACOneConstantVt.KeyPcStamp, value.toString());
     }
     getRandom6ForPcStamp() {
-        return this._map.get(ACOneConstantVt.KeyRandom6ForPcStamp);
+        var _a;
+        return (_a = this._map.get(ACOneConstantVt.KeyRandom6ForPcStamp)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
     }
     setRandom6ForPcStamp(value) {
         this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, value);
     }
     setPcStampWhenNotStored() {
         const _pcStamp = this.getPcStamp();
-        if (!_pcStamp || _pcStamp == ACOneConstantVt.DefaultTS) {
+        if (_pcStamp == ACOneConstantVt.DefaultTS) {
             this.setPcStamp(Date.now());
             this.setRandom6ForPcStamp(getRandom6CharForSTVT());
             ACELog.d(ACEntityForVT._TAG, `maked pcStamp: ${this.getPcStampGoldMaster()}`);
@@ -125,6 +168,18 @@ export default class ACEntityForVT {
         else {
             ACELog.d(ACEntityForVT._TAG, `existed pcStamp: ${this.getPcStampGoldMaster()}`);
         }
+    }
+    toJSON() {
+        return {
+            ac1_buyCount: this.getBuyCount(),
+            ac1_buyTimeTS: this.getBuyTimeTS(),
+            ac1_random6BuyTimeTS: this.getRandom6ForBuyTimeTS(),
+            ac1_visitCount: this.getVisitCount(),
+            ac1_vTS: this.getVTS(),
+            ac1_random6VTS: this.getRandom6ForVTS(),
+            ac1_pcStamp: this.getPcStamp(),
+            ac1_random6pcStamp: this.getRandom6ForPcStamp(),
+        };
     }
 }
 ACEntityForVT._TAG = 'vt';

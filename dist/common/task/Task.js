@@ -6,7 +6,7 @@ export default class Task {
         this._logSource = params.type;
         this._date = Date.now();
     }
-    doWork() {
+    doWork(callback) {
         ACELog.d(Task._pTAG, `doWork: ${ACEofAPIForOne[this._logSource]}`);
     }
     didWork(callback) {

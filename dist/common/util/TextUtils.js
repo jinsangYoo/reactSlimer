@@ -20,4 +20,11 @@ export function onlyLetteringAtStartIndex(value) {
     }
     return value;
 }
+export function stringToNumber(num, base) {
+    const parsed = parseInt(num, base);
+    if (isNaN(parsed)) {
+        return 0;
+    }
+    return parsed * 100;
+}
 //# sourceMappingURL=TextUtils.js.map

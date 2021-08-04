@@ -537,7 +537,7 @@ export default class ACEParametersForOne extends ACEParameters {
     if (!this.st) {
       this.st = new ACEntityForST()
     } else {
-      this.st.setST(value)
+      this.st.setDeepCopy(value.getMap())
     }
   }
 
@@ -789,11 +789,25 @@ export default class ACEParametersForOne extends ACEParameters {
   }
 
   public setVT(value: ACEntityForVT): void {
+    ACELog.d(ACEParametersForOne._TAG, `setVT::value`, value)
+    ACELog.d(ACEParametersForOne._TAG, `setVT::before this.vt`, this.vt)
     if (!this.vt) {
       this.vt = new ACEntityForVT()
-    } else {
-      this.vt.setDeepCopy(value.getMap())
     }
+    this.vt.setDeepCopy(value.getMap())
+
+    ACELog.d(ACEParametersForOne._TAG, `setVT::after this.vt`, this.vt)
+  }
+
+  public setJSONtoVT(value: JSON): void {
+    ACELog.d(ACEParametersForOne._TAG, `setJSONtoVT::value: ${JSON.stringify(value, null, 2)}`)
+    ACELog.d(ACEParametersForOne._TAG, `setJSONtoVT::before this.vt`, this.vt)
+    if (!this.vt) {
+      this.vt = new ACEntityForVT()
+    }
+    this.vt.setDeepCopyForJSON(value)
+
+    ACELog.d(ACEParametersForOne._TAG, `setJSONtoVT::after this.vt`, this.vt)
   }
 
   public setPcStampWhenNotStored() {
@@ -806,9 +820,8 @@ export default class ACEParametersForOne extends ACEParameters {
   public loadVT(): Promise<object>
   public loadVT(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
     if (!global.Promise) {
-      ACELog.d(ACEParametersForOne._TAG, 'loadVT not support promise.')
-
       AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
+        ACELog.d(ACEParametersForOne._TAG, 'in loadVT::in cb::result', JSON.parse(result ?? '{"result":"undefined"}'))
         if (callback) {
           if (err) {
             callback(err, {
@@ -817,7 +830,7 @@ export default class ACEParametersForOne extends ACEParameters {
             })
           } else {
             if (result) {
-              this.setST(JSON.parse(result))
+              this.setJSONtoVT(JSON.parse(result))
               callback(err, {
                 code: ACEInnerCBResultKey.Success,
                 result: ACEInnerCBResultKey[ACEInnerCBResultKey.Success],
@@ -832,10 +845,13 @@ export default class ACEParametersForOne extends ACEParameters {
         }
       })
     } else {
-      ACELog.d(ACEParametersForOne._TAG, 'loadVT support promise.')
-
       return new Promise((resolve, reject) => {
         AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
+          ACELog.d(
+            ACEParametersForOne._TAG,
+            'in loadVT::in Promise::result',
+            JSON.parse(result ?? '{"result":"undefined"}'),
+          )
           if (callback) {
             if (err) {
               callback(err, {
@@ -844,7 +860,7 @@ export default class ACEParametersForOne extends ACEParameters {
               })
             } else {
               if (result) {
-                this.setST(JSON.parse(result))
+                this.setJSONtoVT(JSON.parse(result))
                 callback(err, {
                   code: ACEInnerCBResultKey.Success,
                   result: ACEInnerCBResultKey[ACEInnerCBResultKey.Success],
@@ -861,7 +877,7 @@ export default class ACEParametersForOne extends ACEParameters {
               reject(err)
             } else {
               if (result) {
-                this.setVT(JSON.parse(result))
+                this.setJSONtoVT(JSON.parse(result))
                 resolve({
                   code: ACEInnerCBResultKey.Success,
                   result: ACEInnerCBResultKey[ACEInnerCBResultKey.Success],
@@ -886,9 +902,8 @@ export default class ACEParametersForOne extends ACEParameters {
     callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
     const _json = JSON.stringify(vt)
+    ACELog.d(ACEParametersForOne._TAG, 'in saveVT_toInStorage will save to', vt)
     if (!global.Promise) {
-      ACELog.d(ACEParametersForOne._TAG, 'saveVT_toInStorage not support promise.')
-
       AsyncStorage.setItem(ACOneConstantVt.KeyInStorage, _json, err => {
         ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
         if (callback) {
@@ -899,8 +914,6 @@ export default class ACEParametersForOne extends ACEParameters {
         }
       })
     } else {
-      ACELog.d(ACEParametersForOne._TAG, 'saveVT_toInStorage support promise.')
-
       return new Promise((resolve, reject) => {
         AsyncStorage.setItem(ACOneConstantVt.KeyInStorage, _json, err => {
           ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)

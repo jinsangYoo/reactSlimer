@@ -34,6 +34,7 @@ export var ACEResultCode;
     ACEResultCode[ACEResultCode["NeitherDeeplinkAndPush"] = 1023] = "NeitherDeeplinkAndPush";
     ACEResultCode[ACEResultCode["NotSupportPromise"] = 1024] = "NotSupportPromise";
     ACEResultCode[ACEResultCode["CanNotRequestToPolicy"] = 1025] = "CanNotRequestToPolicy";
+    ACEResultCode[ACEResultCode["FailLoadVT"] = 1026] = "FailLoadVT";
 })(ACEResultCode || (ACEResultCode = {}));
 export var ACEMaritalStatus;
 (function (ACEMaritalStatus) {

@@ -11,8 +11,9 @@ import ACOneConstantVt from '../constant/ACOneConstantVt'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../../common/constant/ACEPublicStaticConfig'
-import {isEmpty, onlyLetteringAtStartIndex} from '../../common/util/TextUtils'
+import {isEmpty, onlyLetteringAtStartIndex, stringToNumber} from '../../common/util/TextUtils'
 import ACELog from '../../common/logger/ACELog'
+import {getRandom6CharForSTVT} from '../../common/util/NumberUtil'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -190,6 +191,47 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     ACEParametersForOne.getInstance().setVK(SESSION.KEEP)
   }
 
+  //#region Update ST & VT
+  public updateSTnVT(willUpdateVt: ACEntityForVT): Promise<object> {
+    const _now = new Date()
+    const _randomString = getRandom6CharForSTVT()
+    if (this.isFirstLog()) {
+      this.setStartTS(_now, _randomString)
+      this.setSTS(this.getStartTSGoldMaster())
+
+      if (this.getVT().isEmptyAtVTS()) {
+        ACELog.d(ACEParameterUtilForOne._TAG, 'update vts')
+        this.setVTSButNotStorage(_now, _randomString)
+      }
+      this.setVTSAtObject(willUpdateVt, _now, _randomString)
+
+      const visitCount = this.getVisitCount()
+      if (visitCount == 0) {
+        ACELog.d(ACEParameterUtilForOne._TAG, 'visitCount is 0')
+        this.setVisitCountAtObject(willUpdateVt, 2)
+      } else {
+        ACELog.d(ACEParameterUtilForOne._TAG, `visitCount is ${visitCount}`)
+        this.setVisitCountAtObject(willUpdateVt, visitCount + 1)
+      }
+
+      if (this.getVT().isEmptyAtBuyTimeTS()) {
+        this.setBuyTimeTSButNotStorage(_now, _randomString)
+        this.setBuyTimeTSAtObject(willUpdateVt, _now, _randomString)
+        this.setBuyCountAtObject(willUpdateVt, 1)
+      }
+    }
+    this.setGetTS(_now, _randomString)
+    return this.saveVT_toInStorage(this.getVT())
+  }
+  //#endregion
+
+  //#region ST
+  public setGetTS(value: Date, random6Value: string): void {
+    const _parametersForOne = ACEParametersForOne.getInstance()
+    _parametersForOne.getST().setGetTS(value)
+    _parametersForOne.getST().setRandom6ForGetTS(random6Value)
+  }
+
   public saveST_toInStorage(st: ACEntityForST, callback: (error?: Error, result?: object) => void): void
   public saveST_toInStorage(st: ACEntityForST): Promise<object>
   public saveST_toInStorage(
@@ -199,6 +241,17 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return ACEParametersForOne.getInstance().saveST_toInStorage(st, callback)
   }
 
+  public setStartTS(value: Date, random6Value: string): void {
+    const _parametersForOne = ACEParametersForOne.getInstance()
+    _parametersForOne.getST().setStartTS(value)
+    _parametersForOne.getST().setRandom6ForStartTS(random6Value)
+  }
+
+  public getStartTSGoldMaster(): string {
+    const _parametersForOne = ACEParametersForOne.getInstance()
+    return _parametersForOne.getST().getStartTSGoldMaster()
+  }
+
   public getSTS(): string {
     return ACEParametersForOne.getInstance().getSTS()
   }
@@ -206,6 +259,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   public setSTS(value: string): void {
     return ACEParametersForOne.getInstance().setSTS(value)
   }
+  //#endregion
 
   public clearSV(): void {
     ACEParametersForOne.getInstance().setSV(ACECONSTANT.EMPTY)
@@ -237,6 +291,32 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   }
 
   // #region VT
+  public setBuyCountAtObject(willUpdateVt: ACEntityForVT, value: number): void {
+    willUpdateVt.setBuyCount(value)
+  }
+
+  public getBuyTimeTS(): string {
+    return ACEParametersForOne.getInstance().getVT().getBuyTimeTS()
+  }
+
+  public setBuyTimeTSButNotStorage(value: Date, random: string): void {
+    this.getVT().setBuyTimeTS(value)
+    this.getVT().setRandom6ForBuyTimeTS(random)
+  }
+
+  public setBuyTimeTSAtObject(willUpdateVt: ACEntityForVT, value: Date, random: string): void {
+    willUpdateVt.setBuyTimeTS(value)
+    willUpdateVt.setRandom6ForBuyTimeTS(random)
+  }
+
+  public getVisitCount(): number {
+    return stringToNumber(this.getVT().getVisitCount(), 10)
+  }
+
+  public setVisitCountAtObject(willUpdateVt: ACEntityForVT, value: number): void {
+    willUpdateVt.setVisitCount(value)
+  }
+
   public getVT(): ACEntityForVT {
     return ACEParametersForOne.getInstance().getVT()
   }
@@ -245,6 +325,16 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   public loadVT(): Promise<object>
   public loadVT(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
     return ACEParametersForOne.getInstance().loadVT(callback)
+  }
+
+  public setVTSButNotStorage(value: Date, random: string): void {
+    this.getVT().setVTS(value)
+    this.getVT().setRandom6ForVTS(random)
+  }
+
+  public setVTSAtObject(willUpdateVt: ACEntityForVT, value: Date, random: string): void {
+    willUpdateVt.setVTS(value)
+    willUpdateVt.setRandom6ForVTS(random)
   }
 
   public saveVT_toInStorage(vt: ACEntityForVT, callback: (error?: Error, result?: object) => void): void

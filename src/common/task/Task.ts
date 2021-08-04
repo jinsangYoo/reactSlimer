@@ -17,7 +17,7 @@ export default class Task {
     this._date = Date.now()
   }
 
-  public doWork() {
+  public doWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
     ACELog.d(Task._pTAG, `doWork: ${ACEofAPIForOne[this._logSource]}`)
   }
 

@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
 export default class APIForBuy extends Task {
     constructor(params: ITaskParams);
-    doWork(): void;
+    doWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
     didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
     doneWork(): void;
     completed(response: AxiosResponse): void;

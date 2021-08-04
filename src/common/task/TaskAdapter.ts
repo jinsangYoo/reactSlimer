@@ -18,8 +18,17 @@ export default class TaskAdapter {
     return new Promise((resolve, reject) => {
       if (this._task) {
         ACELog.d(TaskAdapter._TAG, 'in doWork')
-        this._task.doWork()
-        resolve(true)
+        this._task.doWork((error?: object, result?: ACEResponseToCaller) => {
+          if (result) {
+            ACELog.d(TaskAdapter._TAG, 'in doWork::in cb', result)
+          }
+
+          if (error) {
+            resolve(false)
+          } else {
+            resolve(true)
+          }
+        })
       } else {
         ACELog.d(TaskAdapter._TAG, 'in doWork, undefined task')
         reject(new Error('undefined task'))
@@ -30,8 +39,9 @@ export default class TaskAdapter {
   private didWork(resultDoWork: boolean): void {
     ACELog.d(TaskAdapter._TAG, `in didWork, resultDoWork: ${resultDoWork}`)
     if (resultDoWork) {
-      ACELog.d(TaskAdapter._TAG, "in didWork, try didWork task's ")
       this._task.didWork(this._callback)
+    } else {
+      throw new Error(`Fail doWork at ${this._task.getDescription()}.`)
     }
   }
 

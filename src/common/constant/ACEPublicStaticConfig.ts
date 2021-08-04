@@ -60,6 +60,7 @@ export enum ACEResultCode {
   NeitherDeeplinkAndPush = 1023,
   NotSupportPromise = 1024,
   CanNotRequestToPolicy = 1025,
+  FailLoadVT = 1026,
 }
 
 export const enum ACEGender {

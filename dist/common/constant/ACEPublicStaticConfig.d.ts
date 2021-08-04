@@ -51,7 +51,8 @@ export declare enum ACEResultCode {
     FailResponseHeaderToMapType = 1022,
     NeitherDeeplinkAndPush = 1023,
     NotSupportPromise = 1024,
-    CanNotRequestToPolicy = 1025
+    CanNotRequestToPolicy = 1025,
+    FailLoadVT = 1026
 }
 export declare const enum ACEGender {
     Unknown = "",

@@ -8,8 +8,9 @@ import SESSION from '../../common/constant/Session';
 import ACOneConstantSt from '../constant/ACOneConstantSt';
 import ACOneConstantVt from '../constant/ACOneConstantVt';
 import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPublicStaticConfig';
-import { isEmpty, onlyLetteringAtStartIndex } from '../../common/util/TextUtils';
+import { isEmpty, onlyLetteringAtStartIndex, stringToNumber } from '../../common/util/TextUtils';
 import ACELog from '../../common/logger/ACELog';
+import { getRandom6CharForSTVT } from '../../common/util/NumberUtil';
 export default class ACEParameterUtilForOne {
     constructor() {
         this._enablePrivacyPolicy = false;
@@ -157,8 +158,51 @@ export default class ACEParameterUtilForOne {
     setKeepSession() {
         ACEParametersForOne.getInstance().setVK(SESSION.KEEP);
     }
+    updateSTnVT(willUpdateVt) {
+        const _now = new Date();
+        const _randomString = getRandom6CharForSTVT();
+        if (this.isFirstLog()) {
+            this.setStartTS(_now, _randomString);
+            this.setSTS(this.getStartTSGoldMaster());
+            if (this.getVT().isEmptyAtVTS()) {
+                ACELog.d(ACEParameterUtilForOne._TAG, 'update vts');
+                this.setVTSButNotStorage(_now, _randomString);
+            }
+            this.setVTSAtObject(willUpdateVt, _now, _randomString);
+            const visitCount = this.getVisitCount();
+            if (visitCount == 0) {
+                ACELog.d(ACEParameterUtilForOne._TAG, 'visitCount is 0');
+                this.setVisitCountAtObject(willUpdateVt, 2);
+            }
+            else {
+                ACELog.d(ACEParameterUtilForOne._TAG, `visitCount is ${visitCount}`);
+                this.setVisitCountAtObject(willUpdateVt, visitCount + 1);
+            }
+            if (this.getVT().isEmptyAtBuyTimeTS()) {
+                this.setBuyTimeTSButNotStorage(_now, _randomString);
+                this.setBuyTimeTSAtObject(willUpdateVt, _now, _randomString);
+                this.setBuyCountAtObject(willUpdateVt, 1);
+            }
+        }
+        this.setGetTS(_now, _randomString);
+        return this.saveVT_toInStorage(this.getVT());
+    }
+    setGetTS(value, random6Value) {
+        const _parametersForOne = ACEParametersForOne.getInstance();
+        _parametersForOne.getST().setGetTS(value);
+        _parametersForOne.getST().setRandom6ForGetTS(random6Value);
+    }
     saveST_toInStorage(st, callback) {
         return ACEParametersForOne.getInstance().saveST_toInStorage(st, callback);
+    }
+    setStartTS(value, random6Value) {
+        const _parametersForOne = ACEParametersForOne.getInstance();
+        _parametersForOne.getST().setStartTS(value);
+        _parametersForOne.getST().setRandom6ForStartTS(random6Value);
+    }
+    getStartTSGoldMaster() {
+        const _parametersForOne = ACEParametersForOne.getInstance();
+        return _parametersForOne.getST().getStartTSGoldMaster();
     }
     getSTS() {
         return ACEParametersForOne.getInstance().getSTS();
@@ -189,11 +233,39 @@ export default class ACEParameterUtilForOne {
         _parametersForOne.setREF(_parametersForOne.getURL());
         this.setURL(value);
     }
+    setBuyCountAtObject(willUpdateVt, value) {
+        willUpdateVt.setBuyCount(value);
+    }
+    getBuyTimeTS() {
+        return ACEParametersForOne.getInstance().getVT().getBuyTimeTS();
+    }
+    setBuyTimeTSButNotStorage(value, random) {
+        this.getVT().setBuyTimeTS(value);
+        this.getVT().setRandom6ForBuyTimeTS(random);
+    }
+    setBuyTimeTSAtObject(willUpdateVt, value, random) {
+        willUpdateVt.setBuyTimeTS(value);
+        willUpdateVt.setRandom6ForBuyTimeTS(random);
+    }
+    getVisitCount() {
+        return stringToNumber(this.getVT().getVisitCount(), 10);
+    }
+    setVisitCountAtObject(willUpdateVt, value) {
+        willUpdateVt.setVisitCount(value);
+    }
     getVT() {
         return ACEParametersForOne.getInstance().getVT();
     }
     loadVT(callback) {
         return ACEParametersForOne.getInstance().loadVT(callback);
+    }
+    setVTSButNotStorage(value, random) {
+        this.getVT().setVTS(value);
+        this.getVT().setRandom6ForVTS(random);
+    }
+    setVTSAtObject(willUpdateVt, value, random) {
+        willUpdateVt.setVTS(value);
+        willUpdateVt.setRandom6ForVTS(random);
     }
     saveVT_toInStorage(vt, callback) {
         return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback);

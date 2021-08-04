@@ -121,6 +121,7 @@ export default class ACEParametersForOne extends ACEParameters {
     setVK(value: number): void;
     getVT(): ACEntityForVT;
     setVT(value: ACEntityForVT): void;
+    setJSONtoVT(value: JSON): void;
     setPcStampWhenNotStored(): void;
     loadVT(callback: ((error?: Error, result?: object) => void) | undefined): void;
     loadVT(): Promise<object>;

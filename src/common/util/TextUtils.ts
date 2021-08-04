@@ -35,3 +35,11 @@ export function onlyLetteringAtStartIndex(value: string): string {
   }
   return value
 }
+
+export function stringToNumber(num: string, base: number) {
+  const parsed = parseInt(num, base)
+  if (isNaN(parsed)) {
+    return 0
+  }
+  return parsed * 100
+}

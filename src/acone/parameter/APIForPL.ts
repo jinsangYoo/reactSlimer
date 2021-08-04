@@ -8,9 +8,12 @@ import ACELog from '../../common/logger/ACELog'
 import ACEParameterUtilForOne from './ACEParameterUtilForOne'
 import TP from '../constant/TP'
 import ACECONSTANT from '../../common/constant/ACEConstant'
+import {ACEResultCode, ACEConstantCallback} from '../../common/constant/ACEPublicStaticConfig'
+import ACEntityForVT from './ACEntityForVT'
 
 export default class APIForPL extends Task {
   private static _TAG = 'APIForPL'
+  private _willUpdateVt?: ACEntityForVT
   private pageName: string
 
   public constructor(params: ITaskParams) {
@@ -19,13 +22,45 @@ export default class APIForPL extends Task {
     this.pageName = params.payload.pageName ?? ACECONSTANT.EMPTY
   }
 
-  public doWork() {
-    super.doWork()
+  public doWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
+    super.doWork(callback)
     ACELog.d(APIForPL._TAG, 'doWork')
 
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
     _parameterUtilForOne.setTP(TP.SITE)
     _parameterUtilForOne.updateUrlToRef(this.pageName)
+    _parameterUtilForOne
+      .loadVT()
+      .then(response => {
+        ACELog.d(APIForPL._TAG, 'Done load vt.', response)
+        return _parameterUtilForOne.updateSTnVT(this.assignWillUpdateVt())
+      })
+      .then(response => {
+        ACELog.d(APIForPL._TAG, 'Done update st and vt.', response)
+        if (callback) {
+          const res: ACEResponseToCaller = {
+            taskHash: `${this._logSource}::0011`,
+            code: ACEResultCode.Success,
+            result: ACEConstantCallback[ACEConstantCallback.Success],
+            message: 'Done update st and vt.',
+            apiName: this.getDescription(),
+          }
+          callback(undefined, res)
+        }
+      })
+      .catch(err => {
+        ACELog.d(APIForPL._TAG, 'Fail load st and vt.', err)
+        if (callback) {
+          const res: ACEResponseToCaller = {
+            taskHash: `${this._logSource}::0012`,
+            code: ACEResultCode.FailLoadVT,
+            result: ACEConstantCallback[ACEConstantCallback.Failed],
+            message: 'Fail load vt.',
+            apiName: this.getDescription(),
+          }
+          callback(err, res)
+        }
+      })
   }
 
   public didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {
@@ -65,5 +100,15 @@ export default class APIForPL extends Task {
   public doneWork() {
     super.doneWork()
     ACELog.d(APIForPL._TAG, 'doneWork')
+  }
+
+  protected assignWillUpdateVt(): ACEntityForVT {
+    if (!this._willUpdateVt) {
+      const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
+      this._willUpdateVt = new ACEntityForVT()
+      this._willUpdateVt.setDeepCopy(_parameterUtilForOne.getVT().getMap())
+    }
+
+    return this._willUpdateVt
   }
 }

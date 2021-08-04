@@ -1,6 +1,6 @@
 import ACECONSTANT from '../../common/constant/ACEConstant'
 import ACOneConstantVt from '../constant/ACOneConstantVt'
-import {getRandom6CharForSTVT} from '../../common/util/RandomUtil'
+import {getRandom6CharForSTVT} from '../../common/util/NumberUtil'
 import ACELog from '../../common/logger/ACELog'
 
 export default class ACEntityForVT {
@@ -53,6 +53,32 @@ export default class ACEntityForVT {
     this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, _pcStampRandom)
   }
 
+  public setDeepCopyForJSON(value: JSON) {
+    if (this._map) {
+      this._map = new Map<string, string>()
+    }
+    const _vts = value[ACOneConstantVt.KeyVTS] ?? ACOneConstantVt.DefaultTS
+    this._map.set(ACOneConstantVt.KeyVTS, _vts)
+    const _vtsRandom = value[ACOneConstantVt.KeyRandom6ForVTS] ?? ACECONSTANT.ZERO6
+    this._map.set(ACOneConstantVt.KeyRandom6ForVTS, _vtsRandom)
+
+    const _visitCount = value[ACOneConstantVt.KeyVisitCount] ?? ACECONSTANT.ZERO
+    this._map.set(ACOneConstantVt.KeyVisitCount, _visitCount)
+
+    const _buyTimeTS = value[ACOneConstantVt.KeyBuyTimeTS] ?? ACOneConstantVt.DefaultTS
+    this._map.set(ACOneConstantVt.KeyBuyTimeTS, _buyTimeTS)
+    const _buyTimeTSRandom = value[ACOneConstantVt.KeyRandom6ForBuyTimeTS] ?? ACECONSTANT.ZERO6
+    this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, _buyTimeTSRandom)
+
+    const _buyCount = value[ACOneConstantVt.KeyBuyCount] ?? ACECONSTANT.ZERO
+    this._map.set(ACOneConstantVt.KeyBuyCount, _buyCount)
+
+    const _pcStamp = value[ACOneConstantVt.KeyPcStamp] ?? ACOneConstantVt.DefaultTS
+    this._map.set(ACOneConstantVt.KeyPcStamp, _pcStamp)
+    const _pcStampRandom = value[ACOneConstantVt.KeyRandom6ForPcStamp] ?? ACECONSTANT.ZERO6
+    this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, _pcStampRandom)
+  }
+
   public getAssembleParams(): string {
     const _vts = this.getVTSGoldMaster()
     const _visitCount = this.getVisitCount()
@@ -64,38 +90,47 @@ export default class ACEntityForVT {
 
   // #region GoldMaster
   public getVTSGoldMaster(): string {
-    const _vts = this.getVTS() ?? ACOneConstantVt.DefaultTS
-    const _random = this.getRandom6ForVTS() ?? ACECONSTANT.ZERO6
+    const _vts = this.getVTS()
+    const _random = this.getRandom6ForVTS()
 
     return `${_vts}${_random}`
   }
 
   public getBuyTimeTSGoldMaster(): string {
-    const _buyTimeTS = this.getBuyTimeTS() ?? ACOneConstantVt.DefaultTS
-    const _random = this.getRandom6ForBuyTimeTS() ?? ACECONSTANT.ZERO6
+    const _buyTimeTS = this.getBuyTimeTS()
+    const _random = this.getRandom6ForBuyTimeTS()
 
     return `${_buyTimeTS}${_random}`
   }
 
   public getPcStampGoldMaster(): string {
-    const _pcStamp = this.getPcStamp() ?? ACOneConstantVt.DefaultTS
-    const _random = this.getRandom6ForPcStamp() ?? ACECONSTANT.ZERO6
+    const _pcStamp = this.getPcStamp()
+    const _random = this.getRandom6ForPcStamp()
 
     return `${_pcStamp}${_random}`
   }
   // #endregion
 
   // #region vts
-  public getVTS(): string | undefined {
-    return this._map.get(ACOneConstantVt.KeyVTS)
+  public isEmptyAtVTS(): boolean {
+    const _vts = this.getVTS()
+    if (_vts == ACOneConstantVt.DefaultTS) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  public getVTS(): string {
+    return this._map.get(ACOneConstantVt.KeyVTS) ?? ACOneConstantVt.DefaultTS
   }
 
   public setVTS(value: Date): void {
     this._map.set(ACOneConstantVt.KeyVTS, value.valueOf().toString())
   }
 
-  public getRandom6ForVTS(): string | undefined {
-    return this._map.get(ACOneConstantVt.KeyRandom6ForVTS)
+  public getRandom6ForVTS(): string {
+    return this._map.get(ACOneConstantVt.KeyRandom6ForVTS) ?? ACECONSTANT.ZERO6
   }
 
   public setRandom6ForVTS(value: string): void {
@@ -114,16 +149,25 @@ export default class ACEntityForVT {
   // #endregion
 
   // #region BuyTimeTS
-  public getBuyTimeTS(): string | undefined {
-    return this._map.get(ACOneConstantVt.KeyBuyTimeTS)
+  public isEmptyAtBuyTimeTS(): boolean {
+    const _buyTimeTS = this.getBuyTimeTS()
+    if (_buyTimeTS == ACOneConstantVt.DefaultTS) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  public getBuyTimeTS(): string {
+    return this._map.get(ACOneConstantVt.KeyBuyTimeTS) ?? ACOneConstantVt.DefaultTS
   }
 
   public setBuyTimeTS(value: Date): void {
     this._map.set(ACOneConstantVt.KeyBuyTimeTS, value.valueOf().toString())
   }
 
-  public getRandom6ForBuyTimeTS(): string | undefined {
-    return this._map.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS)
+  public getRandom6ForBuyTimeTS(): string {
+    return this._map.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS) ?? ACECONSTANT.ZERO6
   }
 
   public setRandom6ForBuyTimeTS(value: string): void {
@@ -142,16 +186,16 @@ export default class ACEntityForVT {
   // #endregion
 
   // #region pcstamp
-  public getPcStamp(): string | undefined {
-    return this._map.get(ACOneConstantVt.KeyPcStamp)
+  public getPcStamp(): string {
+    return this._map.get(ACOneConstantVt.KeyPcStamp) ?? ACOneConstantVt.DefaultTS
   }
 
   public setPcStamp(value: number): void {
     this._map.set(ACOneConstantVt.KeyPcStamp, value.toString())
   }
 
-  public getRandom6ForPcStamp(): string | undefined {
-    return this._map.get(ACOneConstantVt.KeyRandom6ForPcStamp)
+  public getRandom6ForPcStamp(): string {
+    return this._map.get(ACOneConstantVt.KeyRandom6ForPcStamp) ?? ACECONSTANT.ZERO6
   }
 
   public setRandom6ForPcStamp(value: string): void {
@@ -160,7 +204,7 @@ export default class ACEntityForVT {
 
   public setPcStampWhenNotStored() {
     const _pcStamp = this.getPcStamp()
-    if (!_pcStamp || _pcStamp == ACOneConstantVt.DefaultTS) {
+    if (_pcStamp == ACOneConstantVt.DefaultTS) {
       this.setPcStamp(Date.now())
       this.setRandom6ForPcStamp(getRandom6CharForSTVT())
       ACELog.d(ACEntityForVT._TAG, `maked pcStamp: ${this.getPcStampGoldMaster()}`)
@@ -169,4 +213,21 @@ export default class ACEntityForVT {
     }
   }
   // #endregion
+
+  public toJSON(): object {
+    return {
+      ac1_buyCount: this.getBuyCount(),
+
+      ac1_buyTimeTS: this.getBuyTimeTS(),
+      ac1_random6BuyTimeTS: this.getRandom6ForBuyTimeTS(),
+
+      ac1_visitCount: this.getVisitCount(),
+
+      ac1_vTS: this.getVTS(),
+      ac1_random6VTS: this.getRandom6ForVTS(),
+
+      ac1_pcStamp: this.getPcStamp(),
+      ac1_random6pcStamp: this.getRandom6ForPcStamp(),
+    }
+  }
 }

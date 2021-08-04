@@ -4,12 +4,23 @@ import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil';
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton';
 import { makeSuccessCallbackParams, makeFailCallbackParams } from '../../common/util/MapUtil';
 import ACELog from '../../common/logger/ACELog';
+import { ACEResultCode, ACEConstantCallback } from '../../common/constant/ACEPublicStaticConfig';
 export default class APIForPolicy extends Task {
     constructor(params) {
         super(params);
     }
-    doWork() {
-        super.doWork();
+    doWork(callback) {
+        super.doWork(callback);
+        if (callback) {
+            const res = {
+                taskHash: `${this._logSource}::0011`,
+                code: ACEResultCode.Success,
+                result: ACEConstantCallback[ACEConstantCallback.Success],
+                message: 'Done doWork to policy.',
+                apiName: this.getDescription(),
+            };
+            callback(undefined, res);
+        }
     }
     didWork(callback) {
         super.didWork(callback);
