@@ -11,6 +11,7 @@ export declare class ACENetwork {
     private static logToURL;
     private static policyToURL;
     private static networkRequestTypeToURLs;
+    private static networkRequestTypeToURLParams;
     static requestToPolicy(completed?: (response: AxiosResponse) => void, failed?: (err: object) => void): void;
     static requestToLog(completed?: (response: AxiosResponse) => void, failed?: (err: object) => void): void;
     private static request;

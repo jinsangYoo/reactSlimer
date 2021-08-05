@@ -8,6 +8,7 @@ import { ACS } from '../../acone/acs';
 import { mapValueStringToObject } from '../util/MapUtil';
 import ACELog from '../logger/ACELog';
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton';
+import ACEParameterUtilForOne from '../../acone/parameter/ACEParameterUtilForOne';
 export class ACENetwork {
     static networkRequestTypeToParams(requestType) {
         const currentNetworkMode = ControlTowerSingleton.getInstance().getNetworkMode();
@@ -16,6 +17,7 @@ export class ACENetwork {
             baseUrl: this.networkRequestTypeToBaseURLs(currentNetworkMode, requestType),
             requestHeaders: this.networkRequestTypeToHeaders(currentNetworkMode, requestType),
             url: this.networkRequestTypeToURLs(currentNetworkMode, requestType),
+            params: this.networkRequestTypeToURLParams(requestType),
         };
     }
     static logToBaseURL(networkMode) {
@@ -110,24 +112,33 @@ export class ACENetwork {
                 return this.policyToURL(networkMode);
         }
     }
+    static networkRequestTypeToURLParams(requestType) {
+        switch (requestType) {
+            case NetworkRequestType.LOG:
+                return ACEParameterUtilForOne.getInstance().getParamsToObjectForLogSend();
+            case NetworkRequestType.POLICY:
+                return {};
+        }
+    }
     static requestToPolicy(completed, failed) {
         ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.POLICY), completed, failed);
     }
     static requestToLog(completed, failed) {
         ACENetwork.request(ACENetwork.networkRequestTypeToParams(NetworkRequestType.LOG), completed, failed);
     }
-    static request(params, completed, failed, method = HTTP_METHOD.GET) {
+    static request(networkParam, completed, failed, method = HTTP_METHOD.GET) {
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
         axios.defaults.headers.common['Content-Type'] = 'text/plain';
         axios.defaults.headers.common['User-Agent'] = 'react-native ' + Platform.OS;
-        const requestHeaders = mapValueStringToObject(params.requestHeaders);
+        const requestHeaders = mapValueStringToObject(networkParam.requestHeaders);
         ACELog.d(ACENetwork._TAG, 'request requestHeaders:', requestHeaders);
         const requestConfig = {
-            url: params.url,
+            url: networkParam.url,
             method: method,
-            baseURL: params.baseUrl,
+            baseURL: networkParam.baseUrl,
             headers: requestHeaders,
             timeout: 1000,
+            params: networkParam.params,
         };
         axios
             .create()

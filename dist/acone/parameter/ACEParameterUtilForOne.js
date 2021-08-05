@@ -284,6 +284,9 @@ export default class ACEParameterUtilForOne {
         return ACEParametersForOne.getInstance().setSTS(value);
     }
     setterForString(key, value) { }
+    getParamsToObjectForLogSend() {
+        return ACEParametersForOne.getInstance().getParamsToObjectForLogSend();
+    }
 }
 ACEParameterUtilForOne._TAG = 'paramUtilForOne';
 //# sourceMappingURL=ACEParameterUtilForOne.js.map

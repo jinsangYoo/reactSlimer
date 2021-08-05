@@ -815,10 +815,51 @@ export default class ACEParametersForOne extends ACEParameters {
             });
         }
     }
-    getParamsToJSONString() {
-        return JSON.stringify({
+    getParamsToObject() {
+        return {
             adeld: this.adeld,
-        });
+            adid: this.adid,
+            ag: this.ag,
+            push: this.push,
+            amt: this.amt,
+            ce: this.ce,
+            ct: this.ct,
+            dm: this.dm,
+            gd: this.gd,
+            id: this._id,
+            jn: this.jn,
+            kw: this.kw,
+            lg: this.lg,
+            ll: this.ll,
+            md: this.md,
+            mid: this.mid,
+            mr: this.mr,
+            onum: this.onum,
+            pay: this.payMethod,
+            pd: this.pd,
+            re: this.re,
+            ref: this.ref,
+            ri: this.ri,
+            skey: this.skey,
+            src: this.src,
+            st: this.st.getAssembleParams(),
+            sts: this.sts,
+            sv: this.sv,
+            tp: this.tp,
+            tz: this.getTZ(),
+            udf1: this.udf1,
+            udf2: this.udf2,
+            udf3: this.udf3,
+            url: this.url,
+            userId: this.userId,
+            vk: this.vk,
+            vt: this.vt.getAssembleParams(),
+        };
+    }
+    getParamsToObjectForLogSend() {
+        var toParamsObject = this.getParamsToObject();
+        delete toParamsObject.push;
+        return toParamsObject;
     }
 }
 ACEParametersForOne._TAG = 'paramForOne';

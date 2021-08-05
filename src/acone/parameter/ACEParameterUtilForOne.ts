@@ -362,4 +362,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   }
 
   public setterForString(key: string, value: string): void {}
+
+  public getParamsToObjectForLogSend(): object {
+    return ACEParametersForOne.getInstance().getParamsToObjectForLogSend()
+  }
 }

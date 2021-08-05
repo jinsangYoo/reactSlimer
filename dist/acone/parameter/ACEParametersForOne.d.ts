@@ -127,6 +127,47 @@ export default class ACEParametersForOne extends ACEParameters {
     loadVT(): Promise<object>;
     saveVT_toInStorage(vt: ACEntityForVT, callback: ((error?: Error, result?: object) => void) | undefined): void;
     saveVT_toInStorage(vt: ACEntityForVT): Promise<object>;
-    protected getParamsToJSONString(): string;
+    protected getParamsToObject(): ParamsForNetwork;
+    getParamsToObjectForLogSend(): ParamsForNetwork;
 }
+declare type ParamsForNetwork = {
+    adeld: string;
+    adid: string;
+    ag: number;
+    push?: string;
+    amt: string;
+    ce: string;
+    ct: string;
+    dm: string;
+    gd: string;
+    id: string;
+    jn: string;
+    kw: string;
+    lg: string;
+    ll: string;
+    md: string;
+    mid: string;
+    mr: string;
+    onum: string;
+    pay: string;
+    pd: string;
+    re: number;
+    ref: string;
+    ri: string;
+    skey: string;
+    src: string;
+    st: string;
+    sts: string;
+    sv: string;
+    tp: string;
+    tz: string;
+    udf1: number;
+    udf2: number;
+    udf3: number;
+    url: string;
+    userId: string;
+    vk: number;
+    vt: string;
+};
+export {};
 //# sourceMappingURL=ACEParametersForOne.d.ts.map

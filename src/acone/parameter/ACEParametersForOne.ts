@@ -938,9 +938,121 @@ export default class ACEParametersForOne extends ACEParameters {
   }
   // #endregion
 
-  protected getParamsToJSONString(): string {
-    return JSON.stringify({
+  protected getParamsToObject(): ParamsForNetwork {
+    return {
       adeld: this.adeld,
-    })
+      adid: this.adid,
+      ag: this.ag,
+      push: this.push,
+      amt: this.amt,
+
+      ce: this.ce,
+      ct: this.ct,
+
+      dm: this.dm,
+
+      gd: this.gd,
+
+      id: this._id,
+
+      jn: this.jn,
+
+      kw: this.kw,
+
+      lg: this.lg,
+      ll: this.ll,
+
+      md: this.md,
+      mid: this.mid,
+      mr: this.mr,
+
+      onum: this.onum,
+
+      pay: this.payMethod,
+      pd: this.pd,
+
+      re: this.re,
+      ref: this.ref,
+      ri: this.ri,
+
+      skey: this.skey,
+      src: this.src,
+      st: this.st.getAssembleParams(),
+      sts: this.sts,
+      sv: this.sv,
+
+      tp: this.tp,
+      tz: this.getTZ(),
+
+      udf1: this.udf1,
+      udf2: this.udf2,
+      udf3: this.udf3,
+      url: this.url,
+
+      userId: this.userId,
+      vk: this.vk,
+      vt: this.vt.getAssembleParams(),
+    }
   }
+
+  public getParamsToObjectForLogSend(): ParamsForNetwork {
+    var toParamsObject = this.getParamsToObject()
+    delete toParamsObject.push
+    return toParamsObject
+  }
+}
+
+type ParamsForNetwork = {
+  adeld: string
+  adid: string
+  ag: number
+  push?: string
+  amt: string
+
+  ce: string
+  ct: string
+
+  dm: string
+
+  gd: string
+
+  id: string
+
+  jn: string
+
+  kw: string
+
+  lg: string
+  ll: string
+
+  md: string
+  mid: string
+  mr: string
+
+  onum: string
+
+  pay: string
+  pd: string
+
+  re: number
+  ref: string
+  ri: string
+
+  skey: string
+  src: string
+  st: string
+  sts: string
+  sv: string
+
+  tp: string
+  tz: string
+
+  udf1: number
+  udf2: number
+  udf3: number
+  url: string
+  userId: string
+
+  vk: number
+  vt: string
 }

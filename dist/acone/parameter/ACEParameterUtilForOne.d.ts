@@ -50,5 +50,6 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     saveVT_toInStorage(vt: ACEntityForVT): Promise<object>;
     setUserID(value: string): void;
     setterForString(key: string, value: string): void;
+    getParamsToObjectForLogSend(): object;
 }
 //# sourceMappingURL=ACEParameterUtilForOne.d.ts.map

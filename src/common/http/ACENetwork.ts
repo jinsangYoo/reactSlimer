@@ -9,6 +9,7 @@ import {mapValueStringToObject} from '../util/MapUtil'
 import ACELog from '../logger/ACELog'
 
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
+import ACEParameterUtilForOne from '../../acone/parameter/ACEParameterUtilForOne'
 
 export class ACENetwork {
   private static _TAG = 'Net'
@@ -23,6 +24,7 @@ export class ACENetwork {
       baseUrl: this.networkRequestTypeToBaseURLs(currentNetworkMode, requestType),
       requestHeaders: this.networkRequestTypeToHeaders(currentNetworkMode, requestType),
       url: this.networkRequestTypeToURLs(currentNetworkMode, requestType),
+      params: this.networkRequestTypeToURLParams(requestType),
     }
   }
 
@@ -136,6 +138,15 @@ export class ACENetwork {
         return this.policyToURL(networkMode)
     }
   }
+
+  private static networkRequestTypeToURLParams(requestType: NetworkRequestType): object {
+    switch (requestType) {
+      case NetworkRequestType.LOG:
+        return ACEParameterUtilForOne.getInstance().getParamsToObjectForLogSend()
+      case NetworkRequestType.POLICY:
+        return {}
+    }
+  }
   //#endregion
 
   //#region request
@@ -148,7 +159,7 @@ export class ACENetwork {
   }
 
   private static request(
-    params: ACENetworkParams,
+    networkParam: ACENetworkParams,
     completed?: (response: AxiosResponse) => void,
     failed?: (err: object) => void,
     method: HTTP_METHOD = HTTP_METHOD.GET,
@@ -157,14 +168,15 @@ export class ACENetwork {
     axios.defaults.headers.common['Content-Type'] = 'text/plain'
     axios.defaults.headers.common['User-Agent'] = 'react-native ' + Platform.OS
 
-    const requestHeaders = mapValueStringToObject(params.requestHeaders)
+    const requestHeaders = mapValueStringToObject(networkParam.requestHeaders)
     ACELog.d(ACENetwork._TAG, 'request requestHeaders:', requestHeaders)
     const requestConfig: AxiosRequestConfig = {
-      url: params.url,
+      url: networkParam.url,
       method: method,
-      baseURL: params.baseUrl,
+      baseURL: networkParam.baseUrl,
       headers: requestHeaders,
       timeout: 1000,
+      params: networkParam.params,
     }
 
     // let collectorConfig: AxiosRequestConfig = {
