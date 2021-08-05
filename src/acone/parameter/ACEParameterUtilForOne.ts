@@ -80,8 +80,10 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
       Promise.all([promiseWorkLoadVT])
         .then(res => {
           ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all res:', res)
+
           this.getVT()
           this.loadUniqueKeyForSDK()
+          ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all vt:', this.getVT())
 
           const response: ACEResponseToCaller = {
             taskHash: '0003',
@@ -202,15 +204,17 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
       if (this.getVT().isEmptyAtVTS()) {
         ACELog.d(ACEParameterUtilForOne._TAG, 'update vts')
         this.setVTSButNotStorage(_now, _randomString)
+      } else {
+        ACELog.d(ACEParameterUtilForOne._TAG, `vts is >>${this.getVT().getVTS()}<<`)
       }
       this.setVTSAtObject(willUpdateVt, _now, _randomString)
 
       const visitCount = this.getVisitCount()
+      ACELog.d(ACEParameterUtilForOne._TAG, `visitCount is >>${visitCount}<<`)
       if (visitCount == 0) {
         ACELog.d(ACEParameterUtilForOne._TAG, 'visitCount is 0')
         this.setVisitCountAtObject(willUpdateVt, 2)
       } else {
-        ACELog.d(ACEParameterUtilForOne._TAG, `visitCount is ${visitCount}`)
         this.setVisitCountAtObject(willUpdateVt, visitCount + 1)
       }
 
@@ -219,6 +223,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
         this.setBuyTimeTSAtObject(willUpdateVt, _now, _randomString)
         this.setBuyCountAtObject(willUpdateVt, 1)
       }
+    } else {
+      ACELog.d(ACEParameterUtilForOne._TAG, `not firstLog: ${this.getSession()}, ${SESSION[this.getSession()]}`)
     }
     this.setGetTS(_now, _randomString)
     return this.saveVT_toInStorage(this.getVT())

@@ -24,10 +24,12 @@ export default class APIForPL extends Task {
             .loadVT()
             .then(response => {
             ACELog.d(APIForPL._TAG, 'Done load vt.', response);
+            ACELog.d(APIForPL._TAG, 'vt after loadVT()', _parameterUtilForOne.getVT());
             return _parameterUtilForOne.updateSTnVT(this.assignWillUpdateVt());
         })
             .then(response => {
             ACELog.d(APIForPL._TAG, 'Done update st and vt.', response);
+            ACELog.d(APIForPL._TAG, 'vt after updateSTnVT()', _parameterUtilForOne.getVT());
             if (callback) {
                 const res = {
                     taskHash: `${this._logSource}::0011`,

@@ -767,7 +767,7 @@ export default class ACEParametersForOne extends ACEParameters {
     if (this.vk < 0) {
       this.vk = SESSION.NEW
     }
-    return this.udf3
+    return this.vk
   }
 
   public setVK(value: number): void {

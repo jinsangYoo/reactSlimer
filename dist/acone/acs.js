@@ -72,7 +72,7 @@ export class ACS {
         }
     }
     static SDKVersion() {
-        return '0.0.164';
+        return '0.0.169';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
