@@ -2,6 +2,7 @@ import IACEParameterUtil from '../../common/parameter/IACEParameterUtil';
 import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
 import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
+import ParameterAfterSend from '../constant/ParameterAfterSend';
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
     private static _TAG;
     private static instance;
@@ -17,11 +18,12 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     setID(value: string): void;
     isFirstLog(): boolean;
     resetSessionAndParameterAfterSend(): void;
-    resetSessionAndParameterAfterSendWithParams(params?: JSON): void;
+    resetSessionAndParameterAfterSendWithParams(params?: ParameterAfterSend): Promise<boolean>;
     setNewSession(): void;
     getSession(): number;
     setKeepSession(): void;
     updateSTnVT(willUpdateVt: ACEntityForVT): Promise<object>;
+    getST(): ACEntityForST;
     setGetTS(value: Date, random6Value: string): void;
     saveST_toInStorage(st: ACEntityForST, callback: (error?: Error, result?: object) => void): void;
     saveST_toInStorage(st: ACEntityForST): Promise<object>;

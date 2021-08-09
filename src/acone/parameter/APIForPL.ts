@@ -10,10 +10,12 @@ import TP from '../constant/TP'
 import ACECONSTANT from '../../common/constant/ACEConstant'
 import {ACEResultCode, ACEConstantCallback} from '../../common/constant/ACEPublicStaticConfig'
 import ACEntityForVT from './ACEntityForVT'
+import ACEntityForST from './ACEntityForVT'
 
 export default class APIForPL extends Task {
   private static _TAG = 'APIForPL'
   private _willUpdateVt?: ACEntityForVT
+  private _willUpdateSt?: ACEntityForST
   private pageName: string
 
   public constructor(params: ITaskParams) {
@@ -73,18 +75,12 @@ export default class APIForPL extends Task {
       response => {
         ACELog.d(APIForPL._TAG, 'in requestToPolicy, completed')
         this.completed(response)
-        this.doneWork()
-        if (callback) {
-          callback(undefined, makeSuccessCallbackParams(this))
-        }
+        this.doneWork(callback)
       },
       err => {
         ACELog.d(APIForPL._TAG, 'in requestToPolicy, failed')
         this.failed(err)
-        this.doneWork()
-        if (callback) {
-          callback(err, makeFailCallbackParams(this))
-        }
+        this.doneWork(callback)
       },
     )
   }
@@ -99,9 +95,44 @@ export default class APIForPL extends Task {
     ACELog.d(APIForPL._TAG, 'failed')
   }
 
-  public doneWork() {
-    super.doneWork()
+  public doneWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
+    super.doneWork(callback)
     ACELog.d(APIForPL._TAG, 'doneWork')
+    const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
+    _parameterUtilForOne
+      .resetSessionAndParameterAfterSendWithParams({
+        vt: this.assignWillUpdateVt(),
+      })
+      .then(result => {
+        ACELog.d(APIForPL._TAG, `resetSessionAndParameterAfterSendWithParams::result: ${result}`)
+        if (callback) {
+          if (this._error) {
+            callback(undefined, makeSuccessCallbackParams(this))
+          } else {
+            callback(this.getNetworkError(), makeFailCallbackParams(this))
+          }
+        }
+      })
+      .catch(err => {
+        ACELog.d(APIForPL._TAG, `resetSessionAndParameterAfterSendWithParams::err: ${err}`)
+        if (callback) {
+          if (this._error) {
+            callback(undefined, makeSuccessCallbackParams(this))
+          } else {
+            callback(this.getNetworkError(), makeFailCallbackParams(this))
+          }
+        }
+      })
+  }
+
+  protected assignWillUpdateSt(): ACEntityForST {
+    if (!this._willUpdateSt) {
+      const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
+      this._willUpdateSt = new ACEntityForST()
+      this._willUpdateSt.setDeepCopy(_parameterUtilForOne.getST().getMap())
+    }
+
+    return this._willUpdateSt
   }
 
   protected assignWillUpdateVt(): ACEntityForVT {

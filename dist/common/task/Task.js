@@ -12,7 +12,7 @@ export default class Task {
     didWork(callback) {
         ACELog.d(Task._pTAG, `didWork: ${ACEofAPIForOne[this._logSource]}`);
     }
-    doneWork() {
+    doneWork(callback) {
         ACELog.d(Task._pTAG, `doneWork: ${ACEofAPIForOne[this._logSource]}`);
     }
     completed(response) {

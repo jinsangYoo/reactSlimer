@@ -25,7 +25,7 @@ export default class Task {
     ACELog.d(Task._pTAG, `didWork: ${ACEofAPIForOne[this._logSource]}`)
   }
 
-  public doneWork() {
+  public doneWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
     ACELog.d(Task._pTAG, `doneWork: ${ACEofAPIForOne[this._logSource]}`)
   }
 

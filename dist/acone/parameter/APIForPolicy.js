@@ -27,21 +27,23 @@ export default class APIForPolicy extends Task {
         ACENetwork.requestToPolicy(response => {
             ACELog.d(APIForPolicy._TAG, 'in requestToPolicy, completed');
             this.completed(response);
-            this.doneWork();
-            if (callback) {
-                callback(undefined, makeSuccessCallbackParams(this));
-            }
+            this.doneWork(callback);
         }, err => {
             ACELog.d(APIForPolicy._TAG, 'in requestToPolicy, failed');
             this.failed(err);
-            this.doneWork();
-            if (callback) {
-                callback(err, makeFailCallbackParams(this));
-            }
+            this.doneWork(callback);
         });
     }
-    doneWork() {
-        super.doneWork();
+    doneWork(callback) {
+        super.doneWork(callback);
+        if (callback) {
+            if (this._error) {
+                callback(undefined, makeSuccessCallbackParams(this));
+            }
+            else {
+                callback(this.getNetworkError(), makeFailCallbackParams(this));
+            }
+        }
     }
     completed(response) {
         super.completed(response);

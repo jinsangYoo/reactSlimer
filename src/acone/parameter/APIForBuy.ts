@@ -37,8 +37,8 @@ export default class APIForBuy extends Task {
     )
   }
 
-  public doneWork() {
-    super.doneWork()
+  public doneWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
+    super.doneWork(callback)
   }
 
   public completed(response: AxiosResponse) {

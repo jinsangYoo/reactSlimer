@@ -5,8 +5,6 @@ import ACOneConstantInteger from '../constant/ACOneConstantInteger';
 import ACOneConstant from '../constant/ACOneConstant';
 import { ACS } from '../acs';
 import SESSION from '../../common/constant/Session';
-import ACOneConstantSt from '../constant/ACOneConstantSt';
-import ACOneConstantVt from '../constant/ACOneConstantVt';
 import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPublicStaticConfig';
 import { isEmpty, onlyLetteringAtStartIndex, stringToNumber } from '../../common/util/TextUtils';
 import ACELog from '../../common/logger/ACELog';
@@ -108,47 +106,65 @@ export default class ACEParameterUtilForOne {
             this.setKeepSession();
         }
         if (params) {
-            const _st = params[ACOneConstantSt.KeyWillUpdateSt];
+            const _st = params.st;
+            const _vt = params.vt;
             if (_st) {
-                if (!global.Promise) {
-                    this.saveST_toInStorage(_st, (error, result) => {
-                        ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt');
-                        if (error) {
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage error:', error);
-                        }
-                        if (result) {
+                if (_vt) {
+                    return new Promise((resolve, reject) => {
+                        this.saveST_toInStorage(_st)
+                            .then(result => {
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt');
                             ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage result:', result);
-                        }
+                            return this.saveVT_toInStorage(_vt);
+                        })
+                            .then(result => {
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateVt');
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage result:', result);
+                            resolve(true);
+                        })
+                            .catch(err => {
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'fail willUpdate S/Vt.');
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'err', err);
+                            reject(false);
+                        });
                     });
                 }
                 else {
-                    this.saveST_toInStorage(_st).then(result => {
-                        ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt');
-                        ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage result:', result);
+                    return new Promise((resolve, reject) => {
+                        this.saveST_toInStorage(_st)
+                            .then(result => {
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt');
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage result:', result);
+                            resolve(true);
+                        })
+                            .catch(err => {
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'fail willUpdate only St.');
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'err', err);
+                            reject(false);
+                        });
                     });
                 }
             }
-            const _vt = params[ACOneConstantVt.KeyWillUpdateVt];
             if (_vt) {
-                if (!global.Promise) {
-                    this.saveVT_toInStorage(_vt, (error, result) => {
-                        ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateVt');
-                        if (error) {
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage error:', error);
-                        }
-                        if (result) {
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage result:', result);
-                        }
-                    });
-                }
-                else {
-                    this.saveVT_toInStorage(_vt).then(result => {
+                return new Promise((resolve, reject) => {
+                    this.saveVT_toInStorage(_vt)
+                        .then(result => {
                         ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateVt');
                         ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage result:', result);
+                        resolve(true);
+                    })
+                        .catch(err => {
+                        ACELog.d(ACEParameterUtilForOne._TAG, 'fail willUpdate only Vt.');
+                        ACELog.d(ACEParameterUtilForOne._TAG, 'err', err);
+                        reject(false);
                     });
-                }
+                });
             }
         }
+        return new Promise((resolve, reject) => {
+            ACELog.d(ACEParameterUtilForOne._TAG, 'not save S/Vt.');
+            resolve(true);
+        });
     }
     setNewSession() {
         ACEParametersForOne.getInstance().setVK(SESSION.NEW);
@@ -193,6 +209,9 @@ export default class ACEParameterUtilForOne {
         }
         this.setGetTS(_now, _randomString);
         return this.saveVT_toInStorage(this.getVT());
+    }
+    getST() {
+        return ACEParametersForOne.getInstance().getST();
     }
     setGetTS(value, random6Value) {
         const _parametersForOne = ACEParametersForOne.getInstance();

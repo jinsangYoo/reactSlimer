@@ -6,14 +6,13 @@ import ACOneConstantInteger from '../constant/ACOneConstantInteger'
 import ACOneConstant from '../constant/ACOneConstant'
 import {ACS} from '../acs'
 import SESSION from '../../common/constant/Session'
-import ACOneConstantSt from '../constant/ACOneConstantSt'
-import ACOneConstantVt from '../constant/ACOneConstantVt'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../../common/constant/ACEPublicStaticConfig'
 import {isEmpty, onlyLetteringAtStartIndex, stringToNumber} from '../../common/util/TextUtils'
 import ACELog from '../../common/logger/ACELog'
 import {getRandom6CharForSTVT} from '../../common/util/NumberUtil'
+import ParameterAfterSend from '../constant/ParameterAfterSend'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -133,52 +132,72 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     this.resetSessionAndParameterAfterSendWithParams(undefined)
   }
 
-  public resetSessionAndParameterAfterSendWithParams(params?: JSON): void {
+  public resetSessionAndParameterAfterSendWithParams(params?: ParameterAfterSend): Promise<boolean> {
     if (this.isFirstLog()) {
       this.setKeepSession()
     }
 
     if (params) {
-      const _st: ACEntityForST = params[ACOneConstantSt.KeyWillUpdateSt]
+      const _st = params.st
+      const _vt = params.vt
       if (_st) {
-        if (!global.Promise) {
-          this.saveST_toInStorage(_st, (error?: Error, result?: object) => {
-            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt')
-            if (error) {
-              ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage error:', error)
-            }
-            if (result) {
-              ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage result:', result)
-            }
+        if (_vt) {
+          return new Promise((resolve, reject) => {
+            this.saveST_toInStorage(_st)
+              .then(result => {
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St')
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result)
+                return this.saveVT_toInStorage(_vt)
+              })
+              .then(result => {
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt')
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result)
+                resolve(true)
+              })
+              .catch(err => {
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::fail willUpdate S/Vt.')
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::err', err)
+                reject(false)
+              })
           })
         } else {
-          this.saveST_toInStorage(_st).then(result => {
-            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt')
-            ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage result:', result)
+          return new Promise((resolve, reject) => {
+            this.saveST_toInStorage(_st)
+              .then(result => {
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St')
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result)
+                resolve(true)
+              })
+              .catch(err => {
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::fail willUpdate only St.')
+                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::err', err)
+                reject(false)
+              })
           })
         }
       }
 
-      const _vt: ACEntityForVT = params[ACOneConstantVt.KeyWillUpdateVt]
       if (_vt) {
-        if (!global.Promise) {
-          this.saveVT_toInStorage(_vt, (error?: Error, result?: object) => {
-            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateVt')
-            if (error) {
-              ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage error:', error)
-            }
-            if (result) {
-              ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage result:', result)
-            }
-          })
-        } else {
-          this.saveVT_toInStorage(_vt).then(result => {
-            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateVt')
-            ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage result:', result)
-          })
-        }
+        return new Promise((resolve, reject) => {
+          this.saveVT_toInStorage(_vt)
+            .then(result => {
+              ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt')
+              ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result)
+              resolve(true)
+            })
+            .catch(err => {
+              ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::fail willUpdate only Vt.')
+              ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::err', err)
+              reject(false)
+            })
+        })
       }
     }
+
+    return new Promise((resolve, reject) => {
+      ACELog.d(ACEParameterUtilForOne._TAG, 'not save S/Vt.')
+      resolve(true)
+    })
   }
 
   public setNewSession(): void {
@@ -232,6 +251,10 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   //#endregion
 
   //#region ST
+  public getST(): ACEntityForST {
+    return ACEParametersForOne.getInstance().getST()
+  }
+
   public setGetTS(value: Date, random6Value: string): void {
     const _parametersForOne = ACEParametersForOne.getInstance()
     _parametersForOne.getST().setGetTS(value)

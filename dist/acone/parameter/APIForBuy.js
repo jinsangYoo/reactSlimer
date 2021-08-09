@@ -26,8 +26,8 @@ export default class APIForBuy extends Task {
             this.failed(err);
         });
     }
-    doneWork() {
-        super.doneWork();
+    doneWork(callback) {
+        super.doneWork(callback);
     }
     completed(response) {
         super.completed(response);

@@ -12,7 +12,7 @@ export default class Task {
     protected constructor(params: ITaskParams);
     doWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
     didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
-    doneWork(): void;
+    doneWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
     protected completed(response: AxiosResponse): void;
     protected failed(err: any): void;
     getLogSource(): number;
