@@ -7,11 +7,7 @@ import ControlTowerSingleton from '../../common/controltower/ControlTowerSinglet
 import {makeSuccessCallbackParams, makeFailCallbackParams} from '../../common/util/MapUtil'
 import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 import ACELog from '../../common/logger/ACELog'
-import {
-  ACEResultCode,
-  ACEConstantCallback,
-  NetworkResultToResponseToCaller,
-} from '../../common/constant/ACEPublicStaticConfig'
+import {ACEResultCode, ACEConstantCallback} from '../../common/constant/ACEPublicStaticConfig'
 
 export default class APIForPolicy extends Task {
   private static _TAG = 'APIForPolicy'
