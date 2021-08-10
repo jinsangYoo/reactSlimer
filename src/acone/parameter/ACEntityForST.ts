@@ -15,7 +15,7 @@ export default class ACEntityForST {
     this._map.set(ACOneConstantSt.KeyRandom6ForInsenginetTS, ACECONSTANT.ZERO6)
 
     this._map.set(ACOneConstantSt.KeyRTS, ACOneConstantSt.DefaultTS)
-    this._map.set(ACOneConstantSt.KeyRandom6ForRTS, ACECONSTANT.ZERO6)
+    this._map.set(ACOneConstantSt.KeyRandom6ForRTS, ACECONSTANT.EMPTY)
 
     this._map.set(ACOneConstantSt.KeyStartTS, ACOneConstantSt.DefaultTS)
     this._map.set(ACOneConstantSt.KeyRandom6ForStartTS, ACECONSTANT.ZERO6)
@@ -134,7 +134,7 @@ export default class ACEntityForST {
   }
 
   public getRandom6ForRTS(): string {
-    return this._map.get(ACOneConstantSt.KeyRandom6ForRTS) ?? ACECONSTANT.ZERO6
+    return this._map.get(ACOneConstantSt.KeyRandom6ForRTS) ?? ACECONSTANT.EMPTY
   }
 
   public setRandom6ForRTS(value: string): void {

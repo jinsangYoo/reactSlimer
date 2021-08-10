@@ -113,18 +113,18 @@ export default class ACEParameterUtilForOne {
                     return new Promise((resolve, reject) => {
                         this.saveST_toInStorage(_st)
                             .then(result => {
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt');
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage result:', result);
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St');
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result);
                             return this.saveVT_toInStorage(_vt);
                         })
                             .then(result => {
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateVt');
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage result:', result);
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt');
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result);
                             resolve(true);
                         })
                             .catch(err => {
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'fail willUpdate S/Vt.');
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'err', err);
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::fail willUpdate S/Vt.');
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::err', err);
                             reject(false);
                         });
                     });
@@ -133,13 +133,13 @@ export default class ACEParameterUtilForOne {
                     return new Promise((resolve, reject) => {
                         this.saveST_toInStorage(_st)
                             .then(result => {
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateSt');
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'saveST_toInStorage result:', result);
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St');
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result);
                             resolve(true);
                         })
                             .catch(err => {
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'fail willUpdate only St.');
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'err', err);
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::fail willUpdate only St.');
+                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::err', err);
                             reject(false);
                         });
                     });
@@ -149,13 +149,13 @@ export default class ACEParameterUtilForOne {
                 return new Promise((resolve, reject) => {
                     this.saveVT_toInStorage(_vt)
                         .then(result => {
-                        ACELog.d(ACEParameterUtilForOne._TAG, 'save willUpdateVt');
-                        ACELog.d(ACEParameterUtilForOne._TAG, 'saveVT_toInStorage result:', result);
+                        ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt');
+                        ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result);
                         resolve(true);
                     })
                         .catch(err => {
-                        ACELog.d(ACEParameterUtilForOne._TAG, 'fail willUpdate only Vt.');
-                        ACELog.d(ACEParameterUtilForOne._TAG, 'err', err);
+                        ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::fail willUpdate only Vt.');
+                        ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::err', err);
                         reject(false);
                     });
                 });

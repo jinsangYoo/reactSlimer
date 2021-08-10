@@ -60,11 +60,11 @@ export default class APIForPL extends Task {
         super.didWork(callback);
         ACELog.d(APIForPL._TAG, 'didWork');
         ACENetwork.requestToLog(response => {
-            ACELog.d(APIForPL._TAG, 'in requestToPolicy, completed');
+            ACELog.d(APIForPL._TAG, 'in requestToLog, completed');
             this.completed(response);
             this.doneWork(callback);
         }, err => {
-            ACELog.d(APIForPL._TAG, 'in requestToPolicy, failed');
+            ACELog.d(APIForPL._TAG, 'in requestToLog, failed');
             this.failed(err);
             this.doneWork(callback);
         });
@@ -89,10 +89,10 @@ export default class APIForPL extends Task {
             ACELog.d(APIForPL._TAG, `resetSessionAndParameterAfterSendWithParams::result: ${result}`);
             if (callback) {
                 if (this._error) {
-                    callback(undefined, makeSuccessCallbackParams(this));
+                    callback(this.getNetworkError(), makeFailCallbackParams(this));
                 }
                 else {
-                    callback(this.getNetworkError(), makeFailCallbackParams(this));
+                    callback(undefined, makeSuccessCallbackParams(this));
                 }
             }
         })
@@ -100,10 +100,10 @@ export default class APIForPL extends Task {
             ACELog.d(APIForPL._TAG, `resetSessionAndParameterAfterSendWithParams::err: ${err}`);
             if (callback) {
                 if (this._error) {
-                    callback(undefined, makeSuccessCallbackParams(this));
+                    callback(this.getNetworkError(), makeFailCallbackParams(this));
                 }
                 else {
-                    callback(this.getNetworkError(), makeFailCallbackParams(this));
+                    callback(undefined, makeSuccessCallbackParams(this));
                 }
             }
         });

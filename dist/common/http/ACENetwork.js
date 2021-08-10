@@ -131,7 +131,6 @@ export class ACENetwork {
         axios.defaults.headers.common['Content-Type'] = 'text/plain';
         axios.defaults.headers.common['User-Agent'] = 'react-native ' + Platform.OS;
         const requestHeaders = mapValueStringToObject(networkParam.requestHeaders);
-        ACELog.d(ACENetwork._TAG, 'request requestHeaders:', requestHeaders);
         const requestConfig = {
             url: networkParam.url,
             method: method,
@@ -140,6 +139,7 @@ export class ACENetwork {
             timeout: 1000,
             params: networkParam.params,
         };
+        ACELog.d(ACENetwork._TAG, 'requestConfig', requestConfig);
         axios
             .create()
             .request(requestConfig)

@@ -8,7 +8,7 @@ export default class ACEntityForST {
         this._map.set(ACOneConstantSt.KeyInsenginetTS, ACOneConstantSt.DefaultTS);
         this._map.set(ACOneConstantSt.KeyRandom6ForInsenginetTS, ACECONSTANT.ZERO6);
         this._map.set(ACOneConstantSt.KeyRTS, ACOneConstantSt.DefaultTS);
-        this._map.set(ACOneConstantSt.KeyRandom6ForRTS, ACECONSTANT.ZERO6);
+        this._map.set(ACOneConstantSt.KeyRandom6ForRTS, ACECONSTANT.EMPTY);
         this._map.set(ACOneConstantSt.KeyStartTS, ACOneConstantSt.DefaultTS);
         this._map.set(ACOneConstantSt.KeyRandom6ForStartTS, ACECONSTANT.ZERO6);
     }
@@ -101,7 +101,7 @@ export default class ACEntityForST {
     }
     getRandom6ForRTS() {
         var _a;
-        return (_a = this._map.get(ACOneConstantSt.KeyRandom6ForRTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
+        return (_a = this._map.get(ACOneConstantSt.KeyRandom6ForRTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.EMPTY;
     }
     setRandom6ForRTS(value) {
         this._map.set(ACOneConstantSt.KeyRandom6ForRTS, value);

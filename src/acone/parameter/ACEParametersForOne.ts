@@ -789,25 +789,25 @@ export default class ACEParametersForOne extends ACEParameters {
   }
 
   public setVT(value: ACEntityForVT): void {
-    ACELog.d(ACEParametersForOne._TAG, `setVT::value`, value)
-    ACELog.d(ACEParametersForOne._TAG, `setVT::before this.vt`, this.vt)
+    // ACELog.d(ACEParametersForOne._TAG, `setVT::value`, value)
+    // ACELog.d(ACEParametersForOne._TAG, `setVT::before this.vt`, this.vt)
     if (!this.vt) {
       this.vt = new ACEntityForVT()
     }
     this.vt.setDeepCopy(value.getMap())
 
-    ACELog.d(ACEParametersForOne._TAG, `setVT::after this.vt`, this.vt)
+    // ACELog.d(ACEParametersForOne._TAG, `setVT::after this.vt`, this.vt)
   }
 
   public setJSONtoVT(value: JSON): void {
-    ACELog.d(ACEParametersForOne._TAG, `setJSONtoVT::value: ${JSON.stringify(value, null, 2)}`)
-    ACELog.d(ACEParametersForOne._TAG, `setJSONtoVT::before this.vt`, this.vt)
+    // ACELog.d(ACEParametersForOne._TAG, `setJSONtoVT::value: ${JSON.stringify(value, null, 2)}`)
+    // ACELog.d(ACEParametersForOne._TAG, `setJSONtoVT::before this.vt`, this.vt)
     if (!this.vt) {
       this.vt = new ACEntityForVT()
     }
     this.vt.setDeepCopyForJSON(value)
 
-    ACELog.d(ACEParametersForOne._TAG, `setJSONtoVT::after this.vt`, this.vt)
+    // ACELog.d(ACEParametersForOne._TAG, `setJSONtoVT::after this.vt`, this.vt)
   }
 
   public setPcStampWhenNotStored() {
@@ -902,7 +902,7 @@ export default class ACEParametersForOne extends ACEParameters {
     callback?: ((error?: Error, result?: object) => void) | undefined,
   ): Promise<object> | void {
     const _json = JSON.stringify(vt)
-    ACELog.d(ACEParametersForOne._TAG, 'in saveVT_toInStorage will save to', vt)
+    // ACELog.d(ACEParametersForOne._TAG, 'in saveVT_toInStorage will save to', vt)
     if (!global.Promise) {
       AsyncStorage.setItem(ACOneConstantVt.KeyInStorage, _json, err => {
         ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
