@@ -1,6 +1,6 @@
 {
   "name": "reactslimer",
-  "version": "0.0.1",
+  "version": "0.0.190",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,38 +10,40 @@
     "start:expo": "rm -rf reactSlimerWithExpo/dist && tsc -w --outDir reactSlimerWithExpo/dist",
     "prepare": "rm -rf dist && tsc"
   },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --ext .tsx --ext .ts src/ --fix"
-    ],
-    "./src/**": [
-      "prettier --write ."
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
   },
+  "bugs": {
+    "email": "milkybboy@gmail.com"
+  },
+  "author": "jinsang yoo",
+  "license": "MIT",
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jinsangYoo/reactSlimer"
+  },
   "devDependencies": {
-    "@types/babel__core": "^7.1.14",
-    "@types/react": "^17.0.11",
-    "@types/react-native": "^0.64.10",
-    "@typescript-eslint/eslint-plugin": "^4.27.0",
-    "@typescript-eslint/parser": "^4.27.0",
-    "eslint": "^7.28.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "husky": "^6.0.0",
-    "lint-staged": "^11.0.0",
-    "prettier": "^2.3.1",
+    "@types/babel__core": "^7.1.15",
+    "@types/react": "^17.0.16",
+    "@types/react-native": "^0.64.12",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.1.2",
     "react": "^17.0.2",
     "react-native": "^0.64.2",
-    "typescript": "^4.3.4"
+    "typescript": "^4.3.5",
+    "lodash": "^4.17.21"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.5",
+    "@react-native-community/netinfo": "^6.0.0",
+    "axios": "^0.21.1",
+    "events": "^3.3.0",
+    "react-native-device-info": "^8.1.7"
   }
 }
