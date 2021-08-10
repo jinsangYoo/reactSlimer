@@ -4,17 +4,21 @@ export enum ACEConstantCallback {
   Success = 'success',
 }
 
-export type ResponseOfAPI = {
-  responseCode?: number
-  descriptrion?: string
-  forLNC?: string
-}
-
 export type ControlTowerOfSDK = {
   isCompletePolicy: boolean
   isForceStop: boolean
   isInstallReferrerWaitDone: boolean
   isSDKEnabled: boolean
+}
+
+export type NetworkResultToResponseToCaller = {
+  config?: object
+}
+
+export type NetworkErrorToResponseToCaller = {
+  message?: string
+  name?: string
+  config?: object
 }
 
 export type ACEResponseToCaller = {
@@ -23,7 +27,7 @@ export type ACEResponseToCaller = {
   result: string
   message: string
   apiName?: string
-  reseponse?: ResponseOfAPI
+  reseponse?: object
   controlTower?: ControlTowerOfSDK
 }
 
@@ -61,6 +65,10 @@ export enum ACEResultCode {
   NotSupportPromise = 1024,
   CanNotRequestToPolicy = 1025,
   FailLoadVT = 1026,
+  DoNotInitialized = 1027,
+  NotReceivePolicy = 1028,
+  UnknownConnectStateToTheInternet = 1029,
+  DisabledByPolicy = 1030,
 }
 
 export const enum ACEGender {

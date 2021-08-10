@@ -35,6 +35,10 @@ export var ACEResultCode;
     ACEResultCode[ACEResultCode["NotSupportPromise"] = 1024] = "NotSupportPromise";
     ACEResultCode[ACEResultCode["CanNotRequestToPolicy"] = 1025] = "CanNotRequestToPolicy";
     ACEResultCode[ACEResultCode["FailLoadVT"] = 1026] = "FailLoadVT";
+    ACEResultCode[ACEResultCode["DoNotInitialized"] = 1027] = "DoNotInitialized";
+    ACEResultCode[ACEResultCode["NotReceivePolicy"] = 1028] = "NotReceivePolicy";
+    ACEResultCode[ACEResultCode["UnknownConnectStateToTheInternet"] = 1029] = "UnknownConnectStateToTheInternet";
+    ACEResultCode[ACEResultCode["DisabledByPolicy"] = 1030] = "DisabledByPolicy";
 })(ACEResultCode || (ACEResultCode = {}));
 export var ACEMaritalStatus;
 (function (ACEMaritalStatus) {

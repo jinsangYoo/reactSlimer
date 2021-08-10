@@ -2,6 +2,7 @@ import Task from '../../common/task/Task';
 import { ITaskParams } from '../../common/task/ITaskParams';
 import { AxiosResponse } from 'axios';
 import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
+import { NetworkResultToResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
 export default class APIForPolicy extends Task {
     private static _TAG;
     constructor(params: ITaskParams);
@@ -10,5 +11,6 @@ export default class APIForPolicy extends Task {
     doneWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
     completed(response: AxiosResponse): void;
     failed(err: any): void;
+    getNetworkResultToResponseToCaller(): NetworkResultToResponseToCaller;
 }
 //# sourceMappingURL=APIForPolicy.d.ts.map

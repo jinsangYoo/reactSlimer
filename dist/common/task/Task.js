@@ -41,6 +41,33 @@ export default class Task {
     getNetworkError() {
         return this._error;
     }
+    getNetworkResultToResponseToCaller() {
+        return {};
+    }
+    getNetworkErrorToResponseToCaller() {
+        var _a, _b, _c, _d, _e;
+        if (this._error) {
+            if (ACELog.isDevMode()) {
+                return {
+                    message: (_a = this._error['message']) !== null && _a !== void 0 ? _a : '',
+                    name: (_b = this._error['name']) !== null && _b !== void 0 ? _b : '',
+                    config: (_c = this._error['config']) !== null && _c !== void 0 ? _c : {},
+                };
+            }
+            else {
+                return {
+                    message: (_d = this._error['message']) !== null && _d !== void 0 ? _d : '',
+                    name: (_e = this._error['name']) !== null && _e !== void 0 ? _e : '',
+                };
+            }
+        }
+        else {
+            return {
+                message: '',
+                name: '',
+            };
+        }
+    }
 }
 Task._pTAG = 'pTask';
 //# sourceMappingURL=Task.js.map

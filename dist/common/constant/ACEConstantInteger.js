@@ -7,7 +7,7 @@ var ACEConstantInteger;
     ACEConstantInteger[ACEConstantInteger["MAX_LENGTH_REDUCE_TEXT_COUNT"] = 128] = "MAX_LENGTH_REDUCE_TEXT_COUNT";
     ACEConstantInteger[ACEConstantInteger["OneDayMilliseconds"] = 86400000] = "OneDayMilliseconds";
     ACEConstantInteger[ACEConstantInteger["QUEUE_MAX_FAILED_LOG_COUNT"] = 99] = "QUEUE_MAX_FAILED_LOG_COUNT";
-    ACEConstantInteger[ACEConstantInteger["QUEUE_MAX_WAITING_COUNT"] = 100] = "QUEUE_MAX_WAITING_COUNT";
+    ACEConstantInteger[ACEConstantInteger["QUEUE_MAX_WAITING_COUNT"] = 5] = "QUEUE_MAX_WAITING_COUNT";
     ACEConstantInteger[ACEConstantInteger["TWO_MINUTES"] = 120] = "TWO_MINUTES";
 })(ACEConstantInteger || (ACEConstantInteger = {}));
 export default ACEConstantInteger;

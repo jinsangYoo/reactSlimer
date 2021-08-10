@@ -7,7 +7,11 @@ import ControlTowerSingleton from '../../common/controltower/ControlTowerSinglet
 import {makeSuccessCallbackParams, makeFailCallbackParams} from '../../common/util/MapUtil'
 import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 import ACELog from '../../common/logger/ACELog'
-import {ACEResultCode, ACEConstantCallback} from '../../common/constant/ACEPublicStaticConfig'
+import {
+  ACEResultCode,
+  ACEConstantCallback,
+  NetworkResultToResponseToCaller,
+} from '../../common/constant/ACEPublicStaticConfig'
 
 export default class APIForPolicy extends Task {
   private static _TAG = 'APIForPolicy'
@@ -50,9 +54,9 @@ export default class APIForPolicy extends Task {
     super.doneWork(callback)
     if (callback) {
       if (this._error) {
-        callback(undefined, makeSuccessCallbackParams(this))
-      } else {
         callback(this.getNetworkError(), makeFailCallbackParams(this))
+      } else {
+        callback(undefined, makeSuccessCallbackParams(this))
       }
     }
   }

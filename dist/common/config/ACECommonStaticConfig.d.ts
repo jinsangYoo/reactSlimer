@@ -7,6 +7,7 @@ export default class ACECommonStaticConfig {
     private static _platform;
     static configure(configuration: AceConfiguration, callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined): void;
     static configure(configuration: AceConfiguration): Promise<ACEResponseToCaller>;
+    static isConfigure(): boolean;
     static isDebug(): boolean;
     static getEnablePrivacyPolicy(): boolean;
     static getKey(): string;

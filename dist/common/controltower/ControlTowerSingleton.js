@@ -75,6 +75,12 @@ export default class ControlTowerSingleton {
     static getDefaultNetworkMode() {
         return ControlTower.getDefaultNetworkMode();
     }
+    static getIsCompletePolicy() {
+        return ControlTowerSingleton.getInstance().getIsCompletePolicy();
+    }
+    static isEnableByPolicy() {
+        return ControlTowerSingleton.getInstance().isEnableByPolicy();
+    }
 }
 ControlTowerSingleton._TAG = 'towerSingle';
 //# sourceMappingURL=ControlTowerSingleton.js.map

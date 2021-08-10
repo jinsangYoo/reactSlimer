@@ -24,5 +24,7 @@ export default class ControlTowerSingleton {
     succeedRequestPolicy(): void;
     failedRequestPolicy(): void;
     static getDefaultNetworkMode(): NetworkMode;
+    static getIsCompletePolicy(): boolean;
+    static isEnableByPolicy(): boolean;
 }
 //# sourceMappingURL=ControlTowerSingleton.d.ts.map

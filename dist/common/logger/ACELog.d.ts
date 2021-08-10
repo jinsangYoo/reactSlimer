@@ -6,6 +6,7 @@ export default class ACELog {
     static setDevMode(): void;
     private static setLogLevel;
     static isLoggable(priority: LogLevel): boolean;
+    static isDevMode(): boolean;
     private static println;
     static d(tag: string, msg: string): void;
     static d(tag: string, msg: string, debug: object, moreDebugMessage?: string): void;

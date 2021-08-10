@@ -2,7 +2,7 @@ import { ITaskParams } from './ITaskParams';
 import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne';
 import { AxiosResponse } from 'axios';
 import ACENetworkResult from '../http/ACENetworkResult';
-import { ACEResponseToCaller } from '../constant/ACEPublicStaticConfig';
+import { ACEResponseToCaller, NetworkResultToResponseToCaller, NetworkErrorToResponseToCaller } from '../constant/ACEPublicStaticConfig';
 export default class Task {
     private static _pTAG;
     protected _logSource: ACEofAPIForOne;
@@ -21,5 +21,7 @@ export default class Task {
     getTaskHash(): string;
     getNetworkResult(): ACENetworkResult | undefined;
     getNetworkError(): JSON | undefined;
+    getNetworkResultToResponseToCaller(): NetworkResultToResponseToCaller;
+    getNetworkErrorToResponseToCaller(): NetworkErrorToResponseToCaller;
 }
 //# sourceMappingURL=Task.d.ts.map

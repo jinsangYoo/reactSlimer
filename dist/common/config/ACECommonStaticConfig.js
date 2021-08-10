@@ -119,6 +119,12 @@ export default class ACECommonStaticConfig {
             });
         }
     }
+    static isConfigure() {
+        if (this._staticConfigImpl) {
+            return true;
+        }
+        return false;
+    }
     static isDebug() {
         if (this._staticConfigImpl) {
             return this._staticConfigImpl.isDebug();

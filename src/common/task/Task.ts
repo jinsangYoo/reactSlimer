@@ -2,7 +2,11 @@ import {ITaskParams} from './ITaskParams'
 import ACEofAPIForOne from '../../acone/constant/ACEofAPIForOne'
 import {AxiosResponse} from 'axios'
 import ACENetworkResult from '../http/ACENetworkResult'
-import {ACEResponseToCaller} from '../constant/ACEPublicStaticConfig'
+import {
+  ACEResponseToCaller,
+  NetworkResultToResponseToCaller,
+  NetworkErrorToResponseToCaller,
+} from '../constant/ACEPublicStaticConfig'
 import ACELog from '../logger/ACELog'
 
 export default class Task {
@@ -61,5 +65,45 @@ export default class Task {
 
   public getNetworkError(): JSON | undefined {
     return this._error
+  }
+
+  public getNetworkResultToResponseToCaller(): NetworkResultToResponseToCaller {
+    if (this._response) {
+      if (ACELog.isDevMode()) {
+        return {
+          config: this._response ?? {},
+        }
+      } else {
+        return {
+          config: {},
+        }
+      }
+    } else {
+      return {
+        config: {},
+      }
+    }
+  }
+
+  public getNetworkErrorToResponseToCaller(): NetworkErrorToResponseToCaller {
+    if (this._error) {
+      if (ACELog.isDevMode()) {
+        return {
+          message: this._error['message'] ?? '',
+          name: this._error['name'] ?? '',
+          config: this._error['config'] ?? {},
+        }
+      } else {
+        return {
+          message: this._error['message'] ?? '',
+          name: this._error['name'] ?? '',
+        }
+      }
+    } else {
+      return {
+        message: '',
+        name: '',
+      }
+    }
   }
 }

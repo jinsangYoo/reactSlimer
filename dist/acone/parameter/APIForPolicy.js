@@ -4,7 +4,7 @@ import ACEPolicyParameterUtil from '../../common/policy/ACEPolicyParameterUtil';
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton';
 import { makeSuccessCallbackParams, makeFailCallbackParams } from '../../common/util/MapUtil';
 import ACELog from '../../common/logger/ACELog';
-import { ACEResultCode, ACEConstantCallback } from '../../common/constant/ACEPublicStaticConfig';
+import { ACEResultCode, ACEConstantCallback, } from '../../common/constant/ACEPublicStaticConfig';
 export default class APIForPolicy extends Task {
     constructor(params) {
         super(params);
@@ -38,10 +38,10 @@ export default class APIForPolicy extends Task {
         super.doneWork(callback);
         if (callback) {
             if (this._error) {
-                callback(undefined, makeSuccessCallbackParams(this));
+                callback(this.getNetworkError(), makeFailCallbackParams(this));
             }
             else {
-                callback(this.getNetworkError(), makeFailCallbackParams(this));
+                callback(undefined, makeSuccessCallbackParams(this));
             }
         }
     }
@@ -55,6 +55,26 @@ export default class APIForPolicy extends Task {
     failed(err) {
         super.failed(err);
         ControlTowerSingleton.getInstance().failedRequestPolicy();
+    }
+    getNetworkResultToResponseToCaller() {
+        var _a;
+        if (this._response) {
+            if (ACELog.isDevMode()) {
+                return {
+                    config: (_a = this._response) !== null && _a !== void 0 ? _a : {},
+                };
+            }
+            else {
+                return {
+                    config: {},
+                };
+            }
+        }
+        else {
+            return {
+                config: {},
+            };
+        }
     }
 }
 APIForPolicy._TAG = 'APIForPolicy';

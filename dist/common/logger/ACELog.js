@@ -16,6 +16,9 @@ export default class ACELog {
     static isLoggable(priority) {
         return priority >= this._logLevel;
     }
+    static isDevMode() {
+        return LogLevel.INFO > this._logLevel;
+    }
     static println(priority, tag, msg, info, moreDebugMessage) {
         if (!this.isLoggable(priority)) {
             return;

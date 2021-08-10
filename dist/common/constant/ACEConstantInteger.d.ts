@@ -6,7 +6,7 @@ declare enum ACEConstantInteger {
     MAX_LENGTH_REDUCE_TEXT_COUNT = 128,
     OneDayMilliseconds = 86400000,
     QUEUE_MAX_FAILED_LOG_COUNT = 99,
-    QUEUE_MAX_WAITING_COUNT = 100,
+    QUEUE_MAX_WAITING_COUNT = 5,
     TWO_MINUTES = 120
 }
 export default ACEConstantInteger;

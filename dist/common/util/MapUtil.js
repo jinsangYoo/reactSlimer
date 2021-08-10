@@ -30,9 +30,7 @@ export function makeSuccessCallbackParams(task, message) {
             result: ACEConstantCallback[ACEConstantCallback.Success],
             message: innerMsg,
             apiName: task.getDescription(),
-            reseponse: {
-                descriptrion: JSON.stringify(task.getNetworkError()),
-            },
+            reseponse: task.getNetworkResultToResponseToCaller(),
         };
     }
     else {
@@ -43,7 +41,7 @@ export function makeSuccessCallbackParams(task, message) {
             message: innerMsg,
             apiName: task.getDescription(),
             reseponse: {
-                descriptrion: '_response is undefined.',
+                message: '_response is undefined.',
             },
         };
     }
@@ -61,9 +59,7 @@ export function makeFailCallbackParams(task, message) {
             result: ACEConstantCallback[ACEConstantCallback.Failed],
             message: innerMsg,
             apiName: task.getDescription(),
-            reseponse: {
-                descriptrion: JSON.stringify(task.getNetworkError()),
-            },
+            reseponse: task.getNetworkErrorToResponseToCaller(),
         };
     }
     else {
@@ -74,7 +70,7 @@ export function makeFailCallbackParams(task, message) {
             message: innerMsg,
             apiName: task.getDescription(),
             reseponse: {
-                descriptrion: 'err is undefined.',
+                message: 'err is undefined.',
             },
         };
     }

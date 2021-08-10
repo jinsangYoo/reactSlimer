@@ -108,5 +108,13 @@ export default class ControlTowerSingleton {
   public static getDefaultNetworkMode(): NetworkMode {
     return ControlTower.getDefaultNetworkMode()
   }
+
+  public static getIsCompletePolicy(): boolean {
+    return ControlTowerSingleton.getInstance().getIsCompletePolicy()
+  }
+
+  public static isEnableByPolicy(): boolean {
+    return ControlTowerSingleton.getInstance().isEnableByPolicy()
+  }
   //#endregion
 }

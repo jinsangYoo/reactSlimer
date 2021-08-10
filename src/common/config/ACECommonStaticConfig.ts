@@ -132,6 +132,14 @@ export default class ACECommonStaticConfig {
     }
   }
 
+  public static isConfigure(): boolean {
+    if (this._staticConfigImpl) {
+      return true
+    }
+
+    return false
+  }
+
   public static isDebug(): boolean {
     if (this._staticConfigImpl) {
       return this._staticConfigImpl.isDebug()

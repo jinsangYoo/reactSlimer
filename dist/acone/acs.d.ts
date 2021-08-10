@@ -2,8 +2,10 @@ import { ACParams } from './acparam';
 import { AceConfiguration } from './aceconfiguration';
 import { ACEResponseToCaller } from '..';
 export declare class ACS {
+    private static _TAG;
     private static instance;
     private static _packageNameOrBundleID;
+    private static waitQueue;
     static getInstance(): ACS;
     static configure(value: AceConfiguration, callback: (error?: Error, result?: ACEResponseToCaller) => void): void;
     static configure(value: AceConfiguration): Promise<ACEResponseToCaller>;
@@ -14,5 +16,8 @@ export declare class ACS {
     static SDKVersion(): string;
     static getPackageNameOrBundleID(): string | undefined;
     static setPackageNameOrBundleID(packageNameOrBundleID: string): void;
+    private static _send;
+    private static initWaitQueue;
+    private static setWaitQueue;
 }
 //# sourceMappingURL=acs.d.ts.map
