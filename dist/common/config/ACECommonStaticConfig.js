@@ -10,7 +10,7 @@ export default class ACECommonStaticConfig {
         ControlTowerSingleton.getInstance().setDevSDKMode();
         ControlTowerSingleton.getInstance().setHomeDevNetworkMode();
         ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.SDKVersion()}`);
-        if (this._staticConfigImpl) {
+        if (ControlTowerSingleton.isEnableByPolicy()) {
             ACELog.d(ACECommonStaticConfig._TAG, 'Already init SDK.');
             const response = {
                 taskHash: '0000',
@@ -30,7 +30,15 @@ export default class ACECommonStaticConfig {
             }
         }
         else {
-            ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.');
+            if (this._staticConfigImpl) {
+                ACELog.i(ACECommonStaticConfig._TAG, 'Reinit SDK.');
+                ControlTowerSingleton.reset();
+                ControlTowerSingleton.getInstance().setDevSDKMode();
+                ControlTowerSingleton.getInstance().setHomeDevNetworkMode();
+            }
+            else {
+                ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.');
+            }
         }
         ACELog.d(ACECommonStaticConfig._TAG, 'AceConfiguration information:', configuration);
         if (configuration.platform) {
@@ -118,12 +126,6 @@ export default class ACECommonStaticConfig {
                 });
             });
         }
-    }
-    static isConfigure() {
-        if (this._staticConfigImpl) {
-            return true;
-        }
-        return false;
     }
     static isDebug() {
         if (this._staticConfigImpl) {

@@ -39,6 +39,7 @@ export var ACEResultCode;
     ACEResultCode[ACEResultCode["NotReceivePolicy"] = 1028] = "NotReceivePolicy";
     ACEResultCode[ACEResultCode["UnknownConnectStateToTheInternet"] = 1029] = "UnknownConnectStateToTheInternet";
     ACEResultCode[ACEResultCode["DisabledByPolicy"] = 1030] = "DisabledByPolicy";
+    ACEResultCode[ACEResultCode["NotFoundPolicyInformation"] = 1031] = "NotFoundPolicyInformation";
 })(ACEResultCode || (ACEResultCode = {}));
 export var ACEMaritalStatus;
 (function (ACEMaritalStatus) {

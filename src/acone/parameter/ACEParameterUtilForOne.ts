@@ -13,6 +13,7 @@ import {isEmpty, onlyLetteringAtStartIndex, stringToNumber} from '../../common/u
 import ACELog from '../../common/logger/ACELog'
 import {getRandom6CharForSTVT} from '../../common/util/NumberUtil'
 import ParameterAfterSend from '../constant/ParameterAfterSend'
+import {ResultAfterSaveInStorage} from './ResultAfterSaveInStorage'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -146,12 +147,20 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
             this.saveST_toInStorage(_st)
               .then(result => {
                 ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St')
-                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result)
+                ACELog.d(
+                  ACEParameterUtilForOne._TAG,
+                  `resetSession::result: ${result.getKey}`,
+                  JSON.parse(result.getValue),
+                )
                 return this.saveVT_toInStorage(_vt)
               })
               .then(result => {
                 ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt')
-                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result)
+                ACELog.d(
+                  ACEParameterUtilForOne._TAG,
+                  `resetSession::result: ${result.getKey}`,
+                  JSON.parse(result.getValue),
+                )
                 resolve(true)
               })
               .catch(err => {
@@ -165,7 +174,11 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
             this.saveST_toInStorage(_st)
               .then(result => {
                 ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St')
-                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result)
+                ACELog.d(
+                  ACEParameterUtilForOne._TAG,
+                  `resetSession::result: ${result.getKey}`,
+                  JSON.parse(result.getValue),
+                )
                 resolve(true)
               })
               .catch(err => {
@@ -182,7 +195,11 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           this.saveVT_toInStorage(_vt)
             .then(result => {
               ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt')
-              ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result)
+              ACELog.d(
+                ACEParameterUtilForOne._TAG,
+                `resetSession::result: ${result.getKey}`,
+                JSON.parse(result.getValue),
+              )
               resolve(true)
             })
             .catch(err => {
@@ -261,12 +278,15 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     _parametersForOne.getST().setRandom6ForGetTS(random6Value)
   }
 
-  public saveST_toInStorage(st: ACEntityForST, callback: (error?: Error, result?: object) => void): void
-  public saveST_toInStorage(st: ACEntityForST): Promise<object>
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback?: (error?: Error, result?: object) => void,
-  ): Promise<object> | void {
+    callback: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+  ): void
+  public saveST_toInStorage(st: ACEntityForST): Promise<ResultAfterSaveInStorage>
+  public saveST_toInStorage(
+    st: ACEntityForST,
+    callback?: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+  ): Promise<ResultAfterSaveInStorage> | void {
     return ACEParametersForOne.getInstance().saveST_toInStorage(st, callback)
   }
 
@@ -366,12 +386,15 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     willUpdateVt.setRandom6ForVTS(random)
   }
 
-  public saveVT_toInStorage(vt: ACEntityForVT, callback: (error?: Error, result?: object) => void): void
-  public saveVT_toInStorage(vt: ACEntityForVT): Promise<object>
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback?: (error?: Error, result?: object) => void,
-  ): Promise<object> | void {
+    callback: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+  ): void
+  public saveVT_toInStorage(vt: ACEntityForVT): Promise<ResultAfterSaveInStorage>
+  public saveVT_toInStorage(
+    vt: ACEntityForVT,
+    callback?: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+  ): Promise<ResultAfterSaveInStorage> | void {
     return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback)
   }
   // #endregion

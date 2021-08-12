@@ -49,13 +49,13 @@ export class ACS {
     value: ACParams,
     callback?: (error?: object, result?: ACEResponseToCaller) => void,
   ): Promise<ACEResponseToCaller> | void {
-    if (!ACECommonStaticConfig.isConfigure()) {
+    if (!ControlTowerSingleton.isEnableByPolicy()) {
       ACS.setWaitQueue(value)
       const result: ACEResponseToCaller = {
         taskHash: `${value.type}::0404`,
-        code: ACEResultCode.DoNotInitialized,
+        code: ACEResultCode.NotFoundPolicyInformation,
         result: ACEConstantCallback[ACEConstantCallback.Failed],
-        message: 'Do not initiate at SDK. Please call configure method.',
+        message: 'Not found policy information.',
         apiName: value.type,
       }
 
@@ -115,7 +115,7 @@ export class ACS {
   }
 
   public static SDKVersion(): string {
-    return '0.0.190'
+    return '0.0.197'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {

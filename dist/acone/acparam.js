@@ -1,10 +1,9 @@
 export const ACParams = {
     TYPE: {
-        DEFAULT: 'none',
         EVENT: 'event',
         BUY: 'buy',
     },
-    init(type = ACParams.TYPE.DEFAULT, name) {
+    init(type = ACParams.TYPE.EVENT, name) {
         return { type, name };
     },
 };

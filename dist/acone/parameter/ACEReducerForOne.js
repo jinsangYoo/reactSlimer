@@ -3,6 +3,7 @@ import APIForBuy from './APIForBuy';
 import TaskAdapter from '../../common/task/TaskAdapter';
 import ACEofAPIForOne from '../constant/ACEofAPIForOne';
 import APIForPolicy from './APIForPolicy';
+import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPublicStaticConfig';
 import ACELog from '../../common/logger/ACELog';
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton';
 export default class ACEReducerForOne {
@@ -12,6 +13,26 @@ export default class ACEReducerForOne {
         return this.instance || (this.instance = new this());
     }
     static reducer(params, callback) {
+        if (params.type !== ACEofAPIForOne.Policy) {
+            if (!ControlTowerSingleton.isEnableByPolicy()) {
+                const result = {
+                    taskHash: `${params.type}::0006`,
+                    code: ACEResultCode.NotFoundPolicyInformation,
+                    result: ACEConstantCallback[ACEConstantCallback.Failed],
+                    message: 'Not found policy information.',
+                    apiName: ACEofAPIForOne[params.type],
+                };
+                if (callback) {
+                    callback(new Error('0006, Not found policy information.'), result);
+                    return;
+                }
+                else {
+                    return new Promise((resolveToOut, rejectToOut) => {
+                        rejectToOut(result);
+                    });
+                }
+            }
+        }
         const taskAdapter = new TaskAdapter();
         switch (params.type) {
             case ACEofAPIForOne.Buy:

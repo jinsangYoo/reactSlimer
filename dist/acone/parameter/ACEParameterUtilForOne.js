@@ -114,12 +114,12 @@ export default class ACEParameterUtilForOne {
                         this.saveST_toInStorage(_st)
                             .then(result => {
                             ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St');
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result);
+                            ACELog.d(ACEParameterUtilForOne._TAG, `resetSession::result: ${result.getKey}`, JSON.parse(result.getValue));
                             return this.saveVT_toInStorage(_vt);
                         })
                             .then(result => {
                             ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt');
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result);
+                            ACELog.d(ACEParameterUtilForOne._TAG, `resetSession::result: ${result.getKey}`, JSON.parse(result.getValue));
                             resolve(true);
                         })
                             .catch(err => {
@@ -134,7 +134,7 @@ export default class ACEParameterUtilForOne {
                         this.saveST_toInStorage(_st)
                             .then(result => {
                             ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St');
-                            ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result);
+                            ACELog.d(ACEParameterUtilForOne._TAG, `resetSession::result: ${result.getKey}`, JSON.parse(result.getValue));
                             resolve(true);
                         })
                             .catch(err => {
@@ -150,7 +150,7 @@ export default class ACEParameterUtilForOne {
                     this.saveVT_toInStorage(_vt)
                         .then(result => {
                         ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt');
-                        ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result);
+                        ACELog.d(ACEParameterUtilForOne._TAG, `resetSession::result: ${result.getKey}`, JSON.parse(result.getValue));
                         resolve(true);
                     })
                         .catch(err => {

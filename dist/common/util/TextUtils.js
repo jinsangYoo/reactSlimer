@@ -25,6 +25,6 @@ export function stringToNumber(num, base) {
     if (isNaN(parsed)) {
         return 0;
     }
-    return parsed * 100;
+    return parsed;
 }
 //# sourceMappingURL=TextUtils.js.map

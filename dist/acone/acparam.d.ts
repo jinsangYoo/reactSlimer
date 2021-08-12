@@ -2,7 +2,6 @@ declare type ParamType = 'none' | 'event' | 'buy';
 export declare type IACParams = {
     init: (type: ParamType, value: string) => ACParams;
     TYPE: {
-        DEFAULT: ParamType;
         EVENT: ParamType;
         BUY: ParamType;
     };
@@ -10,6 +9,8 @@ export declare type IACParams = {
 export declare type ACParams = {
     type: ParamType;
     name: string;
+    payMethodName?: string;
+    orderNumber?: string;
 };
 export declare const ACParams: IACParams;
 export {};

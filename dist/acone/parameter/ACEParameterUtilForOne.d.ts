@@ -3,6 +3,7 @@ import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
 import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
 import ParameterAfterSend from '../constant/ParameterAfterSend';
+import { ResultAfterSaveInStorage } from './ResultAfterSaveInStorage';
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
     private static _TAG;
     private static instance;
@@ -25,8 +26,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     updateSTnVT(willUpdateVt: ACEntityForVT): Promise<object>;
     getST(): ACEntityForST;
     setGetTS(value: Date, random6Value: string): void;
-    saveST_toInStorage(st: ACEntityForST, callback: (error?: Error, result?: object) => void): void;
-    saveST_toInStorage(st: ACEntityForST): Promise<object>;
+    saveST_toInStorage(st: ACEntityForST, callback: (error?: Error, result?: ResultAfterSaveInStorage) => void): void;
+    saveST_toInStorage(st: ACEntityForST): Promise<ResultAfterSaveInStorage>;
     setStartTS(value: Date, random6Value: string): void;
     getStartTSGoldMaster(): string;
     getSTS(): string;
@@ -48,8 +49,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     loadVT(): Promise<object>;
     setVTSButNotStorage(value: Date, random: string): void;
     setVTSAtObject(willUpdateVt: ACEntityForVT, value: Date, random: string): void;
-    saveVT_toInStorage(vt: ACEntityForVT, callback: (error?: Error, result?: object) => void): void;
-    saveVT_toInStorage(vt: ACEntityForVT): Promise<object>;
+    saveVT_toInStorage(vt: ACEntityForVT, callback: (error?: Error, result?: ResultAfterSaveInStorage) => void): void;
+    saveVT_toInStorage(vt: ACEntityForVT): Promise<ResultAfterSaveInStorage>;
     setUserID(value: string): void;
     setterForString(key: string, value: string): void;
     getParamsToObjectForLogSend(): object;

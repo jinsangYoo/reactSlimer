@@ -11,6 +11,11 @@ export type IACParams = {
 export type ACParams = {
   type: ParamType
   name: string
+
+  //#region  BUY
+  payMethodName?: string
+  orderNumber?: string
+  //#endregion
 }
 
 export const ACParams: IACParams = {

@@ -5,16 +5,20 @@ import POLICY from '../constant/Policy';
 import ACELog from '../logger/ACELog';
 export default class ControlTower {
     constructor() {
-        this._sdk_mode = SDKMode.development;
+        this.reset();
+    }
+    static getInstance() {
+        return this.instance || (this.instance = new this());
+    }
+    reset() {
+        ACELog.d(ControlTower._pTAG, 'Reset policy information of SDK.');
+        this._sdk_mode = SDKMode.production;
         this._network_mode = NetworkMode.COMPANY_dev;
         this._isCompletePolicy = false;
         this._isInstallReferrerDone = false;
         this._isSDKForceStop = false;
         this._isSDKEnabled = false;
         ACELog.setProductionMode();
-    }
-    static getInstance() {
-        return this.instance || (this.instance = new this());
     }
     getIsCompletePolicy() {
         return this._isCompletePolicy;

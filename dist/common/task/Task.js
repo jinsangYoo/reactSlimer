@@ -42,7 +42,24 @@ export default class Task {
         return this._error;
     }
     getNetworkResultToResponseToCaller() {
-        return {};
+        var _a;
+        if (this._response) {
+            if (ACELog.isDevMode()) {
+                return {
+                    config: (_a = this._response) !== null && _a !== void 0 ? _a : {},
+                };
+            }
+            else {
+                return {
+                    config: {},
+                };
+            }
+        }
+        else {
+            return {
+                config: {},
+            };
+        }
     }
     getNetworkErrorToResponseToCaller() {
         var _a, _b, _c, _d, _e;

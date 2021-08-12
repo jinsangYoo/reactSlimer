@@ -4,7 +4,7 @@ import APIForBuy from './APIForBuy'
 import TaskAdapter from '../../common/task/TaskAdapter'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import APIForPolicy from './APIForPolicy'
-import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
+import {ACEConstantCallback, ACEResultCode, ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 import ACELog from '../../common/logger/ACELog'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 // import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
@@ -48,6 +48,25 @@ export default class ACEReducerForOne {
     params: ITaskParams,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
+    if (params.type !== ACEofAPIForOne.Policy) {
+      if (!ControlTowerSingleton.isEnableByPolicy()) {
+        const result: ACEResponseToCaller = {
+          taskHash: `${params.type}::0006`,
+          code: ACEResultCode.NotFoundPolicyInformation,
+          result: ACEConstantCallback[ACEConstantCallback.Failed],
+          message: 'Not found policy information.',
+          apiName: ACEofAPIForOne[params.type],
+        }
+        if (callback) {
+          callback(new Error('0006, Not found policy information.'), result)
+          return
+        } else {
+          return new Promise((resolveToOut, rejectToOut) => {
+            rejectToOut(result)
+          })
+        }
+      }
+    }
     const taskAdapter = new TaskAdapter()
     switch (params.type) {
       case ACEofAPIForOne.Buy:

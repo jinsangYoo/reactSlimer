@@ -1,6 +1,7 @@
 import ACEParameters from '../../common/parameter/ACEParameters';
 import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
+import { ResultAfterSaveInStorage } from './ResultAfterSaveInStorage';
 export default class ACEParametersForOne extends ACEParameters {
     private static _TAG;
     private static instance;
@@ -98,8 +99,8 @@ export default class ACEParametersForOne extends ACEParameters {
     setST(value: ACEntityForST): void;
     loadST(callback: ((error?: Error, result?: object) => void) | undefined): void;
     loadST(): Promise<object>;
-    saveST_toInStorage(st: ACEntityForST, callback: ((error?: Error, result?: object) => void) | undefined): void;
-    saveST_toInStorage(st: ACEntityForST): Promise<object>;
+    saveST_toInStorage(st: ACEntityForST, callback: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined): void;
+    saveST_toInStorage(st: ACEntityForST): Promise<ResultAfterSaveInStorage>;
     getSTS(): string;
     setSTS(value: string): void;
     getSV(): string;
@@ -125,8 +126,8 @@ export default class ACEParametersForOne extends ACEParameters {
     setPcStampWhenNotStored(): void;
     loadVT(callback: ((error?: Error, result?: object) => void) | undefined): void;
     loadVT(): Promise<object>;
-    saveVT_toInStorage(vt: ACEntityForVT, callback: ((error?: Error, result?: object) => void) | undefined): void;
-    saveVT_toInStorage(vt: ACEntityForVT): Promise<object>;
+    saveVT_toInStorage(vt: ACEntityForVT, callback: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined): void;
+    saveVT_toInStorage(vt: ACEntityForVT): Promise<ResultAfterSaveInStorage>;
     protected getParamsToObject(): ParamsForNetwork;
     getParamsToObjectForLogSend(): ParamsForNetwork;
 }

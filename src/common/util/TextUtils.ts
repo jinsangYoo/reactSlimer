@@ -41,5 +41,5 @@ export function stringToNumber(num: string, base: number) {
   if (isNaN(parsed)) {
     return 0
   }
-  return parsed * 100
+  return parsed
 }

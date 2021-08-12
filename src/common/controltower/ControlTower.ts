@@ -20,7 +20,12 @@ export default class ControlTower {
   }
 
   public constructor() {
-    this._sdk_mode = SDKMode.development
+    this.reset()
+  }
+
+  public reset(): void {
+    ACELog.d(ControlTower._pTAG, 'Reset policy information of SDK.')
+    this._sdk_mode = SDKMode.production
     this._network_mode = NetworkMode.COMPANY_dev
     this._isCompletePolicy = false
     this._isInstallReferrerDone = false

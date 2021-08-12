@@ -104,6 +104,10 @@ export default class ControlTowerSingleton {
     this._controlTower.setIsCompletePolicy(true, false)
   }
 
+  public reset(): void {
+    return this._controlTower.reset()
+  }
+
   //#region static
   public static getDefaultNetworkMode(): NetworkMode {
     return ControlTower.getDefaultNetworkMode()
@@ -115,6 +119,10 @@ export default class ControlTowerSingleton {
 
   public static isEnableByPolicy(): boolean {
     return ControlTowerSingleton.getInstance().isEnableByPolicy()
+  }
+
+  public static reset(): void {
+    return ControlTowerSingleton.getInstance().reset()
   }
   //#endregion
 }

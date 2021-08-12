@@ -10,6 +10,7 @@ export default class ControlTower {
     private static instance;
     static getInstance(): ControlTower;
     constructor();
+    reset(): void;
     getIsCompletePolicy(): boolean;
     setIsCompletePolicy(isCompletePolicy: boolean, isSucceedRequestPolicy: boolean): void;
     protected isDisabled(): boolean;

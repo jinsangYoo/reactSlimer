@@ -17,13 +17,13 @@ export class ACS {
         return ACECommonStaticConfig.configure(value, callback);
     }
     static send(value, callback) {
-        if (!ACECommonStaticConfig.isConfigure()) {
+        if (!ControlTowerSingleton.isEnableByPolicy()) {
             ACS.setWaitQueue(value);
             const result = {
                 taskHash: `${value.type}::0404`,
-                code: ACEResultCode.DoNotInitialized,
+                code: ACEResultCode.NotFoundPolicyInformation,
                 result: ACEConstantCallback[ACEConstantCallback.Failed],
-                message: 'Do not initiate at SDK. Please call configure method.',
+                message: 'Not found policy information.',
                 apiName: value.type,
             };
             if (callback) {
@@ -79,7 +79,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.190';
+        return '0.0.197';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;

@@ -72,6 +72,9 @@ export default class ControlTowerSingleton {
     failedRequestPolicy() {
         this._controlTower.setIsCompletePolicy(true, false);
     }
+    reset() {
+        return this._controlTower.reset();
+    }
     static getDefaultNetworkMode() {
         return ControlTower.getDefaultNetworkMode();
     }
@@ -80,6 +83,9 @@ export default class ControlTowerSingleton {
     }
     static isEnableByPolicy() {
         return ControlTowerSingleton.getInstance().isEnableByPolicy();
+    }
+    static reset() {
+        return ControlTowerSingleton.getInstance().reset();
     }
 }
 ControlTowerSingleton._TAG = 'towerSingle';

@@ -13,8 +13,8 @@ import SESSION from '../../common/constant/Session';
 import { ACEInnerCBResultKey } from '../../common/constant/ACEInnerCBResultKey';
 import ACELog from '../../common/logger/ACELog';
 import ACOneConstantInteger from '../constant/ACOneConstantInteger';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import TP from '../constant/TP';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class ACEParametersForOne extends ACEParameters {
     constructor() {
         super();
@@ -503,9 +503,7 @@ export default class ACEParametersForOne extends ACEParameters {
     saveST_toInStorage(st, callback) {
         const _json = JSON.stringify(st);
         if (!global.Promise) {
-            ACELog.d(ACEParametersForOne._TAG, 'saveST_toInStorage not support promise.');
             AsyncStorage.setItem(ACOneConstantSt.KeyInStorage, _json, err => {
-                ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`);
                 if (callback) {
                     callback(err, {
                         getKey: ACOneConstantSt.KeyInStorage,
@@ -515,10 +513,8 @@ export default class ACEParametersForOne extends ACEParameters {
             });
         }
         else {
-            ACELog.d(ACEParametersForOne._TAG, 'saveST_toInStorage support promise.');
             return new Promise((resolve, reject) => {
                 AsyncStorage.setItem(ACOneConstantSt.KeyInStorage, _json, err => {
-                    ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`);
                     if (callback) {
                         callback(err, {
                             getKey: ACOneConstantSt.KeyInStorage,
@@ -774,7 +770,6 @@ export default class ACEParametersForOne extends ACEParameters {
         const _json = JSON.stringify(vt);
         if (!global.Promise) {
             AsyncStorage.setItem(ACOneConstantVt.KeyInStorage, _json, err => {
-                ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`);
                 if (callback) {
                     callback(err, {
                         getKey: ACOneConstantVt.KeyInStorage,
@@ -786,7 +781,6 @@ export default class ACEParametersForOne extends ACEParameters {
         else {
             return new Promise((resolve, reject) => {
                 AsyncStorage.setItem(ACOneConstantVt.KeyInStorage, _json, err => {
-                    ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`);
                     if (callback) {
                         callback(err, {
                             getKey: ACOneConstantVt.KeyInStorage,
