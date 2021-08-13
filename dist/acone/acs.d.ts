@@ -16,6 +16,7 @@ export declare class ACS {
     static SDKVersion(): string;
     static getPackageNameOrBundleID(): string | undefined;
     static setPackageNameOrBundleID(packageNameOrBundleID: string): void;
+    static popWaitQueue(): void;
     private static _send;
     private static initWaitQueue;
     private static setWaitQueue;

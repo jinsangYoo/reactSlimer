@@ -115,7 +115,7 @@ export class ACS {
   }
 
   public static SDKVersion(): string {
-    return '0.0.197'
+    return '0.0.204'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -124,6 +124,93 @@ export class ACS {
 
   public static setPackageNameOrBundleID(packageNameOrBundleID: string): void {
     this._packageNameOrBundleID = packageNameOrBundleID
+  }
+
+  public static popWaitQueue(): void {
+    ACELog.d(ACS._TAG, 'Start pop waitQueue')
+
+    if (ACS.waitQueue && ACS.waitQueue.length > 0) {
+      ACELog.d(ACS._TAG, `waitQueue: ${ACS.waitQueue.length}`)
+      const boxingPromise = ACS.waitQueue.map(param => {
+        return ACS._send(param)
+      })
+
+      // const initParam = boxingPromise[0]
+      // const remainParamArray = boxingPromise.slice(1)
+      // remainParamArray.reduce((acc, cur, index) => {
+      //   return acc.then(response => {
+      //     ACELog.d(ACS._TAG, `${index}.response:`, response)
+      //     return cur
+      //   })
+      // }, initParam)
+      boxingPromise[0]
+        .then(response => {
+          ACELog.d(ACS._TAG, `${0}.response:`, response)
+          return (
+            boxingPromise[1] ??
+            new Promise<ACEResponseToCaller>((resolveToOut, rejectToOut) => {
+              const result: ACEResponseToCaller = {
+                taskHash: `1::9999`,
+                code: ACEResultCode.NotExistWaitTask,
+                result: ACEConstantCallback[ACEConstantCallback.Failed],
+                message: 'Not exist wait task.',
+              }
+              rejectToOut(result)
+            })
+          )
+        })
+        .then(response => {
+          ACELog.d(ACS._TAG, `${1}.response:`, response)
+          return (
+            boxingPromise[2] ??
+            new Promise<ACEResponseToCaller>((resolveToOut, rejectToOut) => {
+              const result: ACEResponseToCaller = {
+                taskHash: `2::9999`,
+                code: ACEResultCode.NotExistWaitTask,
+                result: ACEConstantCallback[ACEConstantCallback.Failed],
+                message: 'Not exist wait task.',
+              }
+              rejectToOut(result)
+            })
+          )
+        })
+        .then(response => {
+          ACELog.d(ACS._TAG, `${2}.response:`, response)
+          return (
+            boxingPromise[3] ??
+            new Promise<ACEResponseToCaller>((resolveToOut, rejectToOut) => {
+              const result: ACEResponseToCaller = {
+                taskHash: `3::9999`,
+                code: ACEResultCode.NotExistWaitTask,
+                result: ACEConstantCallback[ACEConstantCallback.Failed],
+                message: 'Not exist wait task.',
+              }
+              rejectToOut(result)
+            })
+          )
+        })
+        .then(response => {
+          ACELog.d(ACS._TAG, `${3}.response:`, response)
+          return (
+            boxingPromise[4] ??
+            new Promise<ACEResponseToCaller>((resolveToOut, rejectToOut) => {
+              const result: ACEResponseToCaller = {
+                taskHash: `4::9999`,
+                code: ACEResultCode.NotExistWaitTask,
+                result: ACEConstantCallback[ACEConstantCallback.Failed],
+                message: 'Not exist wait task.',
+              }
+              rejectToOut(result)
+            })
+          )
+        })
+        .then(response => {
+          ACELog.d(ACS._TAG, `${4}.response:`, response)
+        })
+        .catch(err => {
+          ACELog.d(ACS._TAG, 'err:', err)
+        })
+    }
   }
 
   //#region private methods

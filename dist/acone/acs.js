@@ -79,13 +79,81 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.197';
+        return '0.0.204';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
     }
     static setPackageNameOrBundleID(packageNameOrBundleID) {
         this._packageNameOrBundleID = packageNameOrBundleID;
+    }
+    static popWaitQueue() {
+        ACELog.d(ACS._TAG, 'Start pop waitQueue');
+        if (ACS.waitQueue && ACS.waitQueue.length > 0) {
+            ACELog.d(ACS._TAG, `waitQueue: ${ACS.waitQueue.length}`);
+            const boxingPromise = ACS.waitQueue.map(param => {
+                return ACS._send(param);
+            });
+            boxingPromise[0]
+                .then(response => {
+                var _a;
+                ACELog.d(ACS._TAG, `${0}.response:`, response);
+                return ((_a = boxingPromise[1]) !== null && _a !== void 0 ? _a : new Promise((resolveToOut, rejectToOut) => {
+                    const result = {
+                        taskHash: `1::9999`,
+                        code: ACEResultCode.NotExistWaitTask,
+                        result: ACEConstantCallback[ACEConstantCallback.Failed],
+                        message: 'Not exist wait task.',
+                    };
+                    rejectToOut(result);
+                }));
+            })
+                .then(response => {
+                var _a;
+                ACELog.d(ACS._TAG, `${1}.response:`, response);
+                return ((_a = boxingPromise[2]) !== null && _a !== void 0 ? _a : new Promise((resolveToOut, rejectToOut) => {
+                    const result = {
+                        taskHash: `2::9999`,
+                        code: ACEResultCode.NotExistWaitTask,
+                        result: ACEConstantCallback[ACEConstantCallback.Failed],
+                        message: 'Not exist wait task.',
+                    };
+                    rejectToOut(result);
+                }));
+            })
+                .then(response => {
+                var _a;
+                ACELog.d(ACS._TAG, `${2}.response:`, response);
+                return ((_a = boxingPromise[3]) !== null && _a !== void 0 ? _a : new Promise((resolveToOut, rejectToOut) => {
+                    const result = {
+                        taskHash: `3::9999`,
+                        code: ACEResultCode.NotExistWaitTask,
+                        result: ACEConstantCallback[ACEConstantCallback.Failed],
+                        message: 'Not exist wait task.',
+                    };
+                    rejectToOut(result);
+                }));
+            })
+                .then(response => {
+                var _a;
+                ACELog.d(ACS._TAG, `${3}.response:`, response);
+                return ((_a = boxingPromise[4]) !== null && _a !== void 0 ? _a : new Promise((resolveToOut, rejectToOut) => {
+                    const result = {
+                        taskHash: `4::9999`,
+                        code: ACEResultCode.NotExistWaitTask,
+                        result: ACEConstantCallback[ACEConstantCallback.Failed],
+                        message: 'Not exist wait task.',
+                    };
+                    rejectToOut(result);
+                }));
+            })
+                .then(response => {
+                ACELog.d(ACS._TAG, `${4}.response:`, response);
+            })
+                .catch(err => {
+                ACELog.d(ACS._TAG, 'err:', err);
+            });
+        }
     }
     static _send(value, callback) {
         if (callback) {

@@ -70,6 +70,7 @@ export enum ACEResultCode {
   UnknownConnectStateToTheInternet = 1029,
   DisabledByPolicy = 1030,
   NotFoundPolicyInformation = 1031,
+  NotExistWaitTask = 1032,
 }
 
 export const enum ACEGender {
