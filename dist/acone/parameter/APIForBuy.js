@@ -1,8 +1,10 @@
 import Task from '../../common/task/Task';
 import { ACENetwork } from '../../common/http/ACENetwork';
 import { ACEResultCode, ACEConstantCallback } from '../../common/constant/ACEPublicStaticConfig';
+import ACELog from '../../common/logger/ACELog';
 export default class APIForBuy extends Task {
     constructor(params) {
+        ACELog.d(APIForBuy._TAG, 'in constructor, params:', params);
         super(params);
     }
     doWork(callback) {
@@ -36,4 +38,5 @@ export default class APIForBuy extends Task {
         super.failed(err);
     }
 }
+APIForBuy._TAG = 'APIForBuy';
 //# sourceMappingURL=APIForBuy.js.map

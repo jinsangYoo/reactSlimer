@@ -6,7 +6,9 @@ export declare class ACS {
     private static instance;
     private static _packageNameOrBundleID;
     private static waitQueue;
+    private emitter;
     static getInstance(): ACS;
+    constructor();
     static configure(value: AceConfiguration, callback: (error?: Error, result?: ACEResponseToCaller) => void): void;
     static configure(value: AceConfiguration): Promise<ACEResponseToCaller>;
     configure(value: AceConfiguration, callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined): void;
@@ -16,7 +18,7 @@ export declare class ACS {
     static SDKVersion(): string;
     static getPackageNameOrBundleID(): string | undefined;
     static setPackageNameOrBundleID(packageNameOrBundleID: string): void;
-    static popWaitQueue(): void;
+    private popWaitQueue;
     private static _send;
     private static initWaitQueue;
     private static setWaitQueue;

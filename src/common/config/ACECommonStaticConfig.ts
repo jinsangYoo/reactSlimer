@@ -7,13 +7,11 @@ import IACEParameterUtil from '../parameter/IACEParameterUtil'
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../constant/ACEPublicStaticConfig'
 import ACELog from '../logger/ACELog'
-import {EventsForWorkerEmitter} from '../worker/EventsForWorkerEmitter'
 
 export default class ACECommonStaticConfig {
   private static _TAG = 'comInit'
   private static _staticConfigImpl: ACEStaticConfig
   private static _platform: ACEPlatform
-  private static emitter: EventsForWorkerEmitter
 
   public static configure(
     configuration: AceConfiguration,
@@ -28,13 +26,6 @@ export default class ACECommonStaticConfig {
     ControlTowerSingleton.getInstance().setDevSDKMode()
     ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
     // ************************************************ development mode [E]
-
-    if (ACECommonStaticConfig.emitter) {
-      ACECommonStaticConfig.emitter = new EventsForWorkerEmitter()
-      ACECommonStaticConfig.emitter.on('popWaitQueue', () => {
-        ACS.popWaitQueue()
-      })
-    }
 
     ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.SDKVersion()}`)
 
@@ -93,7 +84,6 @@ export default class ACECommonStaticConfig {
               if (error) {
                 callback(new Error('0001, Can not request policy.'), innerResult)
               } else {
-                // ACECommonStaticConfig.emitter.emit('popWaitQueue')
                 callback(undefined, innerResult)
               }
             })
@@ -131,8 +121,6 @@ export default class ACECommonStaticConfig {
                     rejectToOut(new Error('0002, Can not request policy.'))
                   }
                 } else {
-                  // ACECommonStaticConfig.emitter.emit('popWaitQueue')
-                  // ACS.popWaitQueue()
                   if (innerResult) resolveToOut(innerResult)
                 }
               })

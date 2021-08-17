@@ -6,7 +6,14 @@ import { ACEConstantCallback, ACEResultCode } from '../common/constant/ACEPublic
 import ACEConstantInteger from '../common/constant/ACEConstantInteger';
 import ACELog from '../common/logger/ACELog';
 import NetworkUtils from '../common/http/NetworkUtills';
+import { EventsForWorkerEmitter } from '../common/worker/EventsForWorkerEmitter';
 export class ACS {
+    constructor() {
+        this.emitter = new EventsForWorkerEmitter();
+        this.emitter.on('popWaitQueue', () => {
+            this.popWaitQueue();
+        });
+    }
     static getInstance() {
         return this.instance || (this.instance = new this());
     }
@@ -14,7 +21,34 @@ export class ACS {
         return ACS.getInstance().configure(value, callback);
     }
     configure(value, callback) {
-        return ACECommonStaticConfig.configure(value, callback);
+        if (callback) {
+            const callbackAtInit = (error, innerResult) => {
+                if (error) {
+                    callback(new Error(`0000, Can not init SDK.`));
+                }
+                else {
+                    callback(undefined, innerResult);
+                    this.emitter.emit('popWaitQueue');
+                }
+            };
+            ACECommonStaticConfig.configure(value, callbackAtInit);
+        }
+        else {
+            return new Promise((resolveToOut, rejectToOut) => {
+                ACECommonStaticConfig.configure(value)
+                    .then(res => {
+                    resolveToOut(res);
+                })
+                    .then(res => {
+                    ACELog.d(ACS._TAG, `0000::configure::then2: ${JSON.stringify(res, null, 2)}`);
+                    this.emitter.emit('popWaitQueue');
+                })
+                    .catch(err => {
+                    ACELog.d(ACS._TAG, `0000::configure::catch2: ${JSON.stringify(err, null, 2)}`);
+                    rejectToOut(err);
+                });
+            });
+        }
     }
     static send(value, callback) {
         if (!ControlTowerSingleton.isEnableByPolicy()) {
@@ -79,7 +113,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.204';
+        return '0.0.208';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -87,72 +121,22 @@ export class ACS {
     static setPackageNameOrBundleID(packageNameOrBundleID) {
         this._packageNameOrBundleID = packageNameOrBundleID;
     }
-    static popWaitQueue() {
-        ACELog.d(ACS._TAG, 'Start pop waitQueue');
+    popWaitQueue() {
+        ACELog.d(ACS._TAG, 'try pop waitQueue');
         if (ACS.waitQueue && ACS.waitQueue.length > 0) {
             ACELog.d(ACS._TAG, `waitQueue: ${ACS.waitQueue.length}`);
-            const boxingPromise = ACS.waitQueue.map(param => {
-                return ACS._send(param);
-            });
-            boxingPromise[0]
-                .then(response => {
-                var _a;
-                ACELog.d(ACS._TAG, `${0}.response:`, response);
-                return ((_a = boxingPromise[1]) !== null && _a !== void 0 ? _a : new Promise((resolveToOut, rejectToOut) => {
-                    const result = {
-                        taskHash: `1::9999`,
-                        code: ACEResultCode.NotExistWaitTask,
-                        result: ACEConstantCallback[ACEConstantCallback.Failed],
-                        message: 'Not exist wait task.',
-                    };
-                    rejectToOut(result);
-                }));
-            })
-                .then(response => {
-                var _a;
-                ACELog.d(ACS._TAG, `${1}.response:`, response);
-                return ((_a = boxingPromise[2]) !== null && _a !== void 0 ? _a : new Promise((resolveToOut, rejectToOut) => {
-                    const result = {
-                        taskHash: `2::9999`,
-                        code: ACEResultCode.NotExistWaitTask,
-                        result: ACEConstantCallback[ACEConstantCallback.Failed],
-                        message: 'Not exist wait task.',
-                    };
-                    rejectToOut(result);
-                }));
-            })
-                .then(response => {
-                var _a;
-                ACELog.d(ACS._TAG, `${2}.response:`, response);
-                return ((_a = boxingPromise[3]) !== null && _a !== void 0 ? _a : new Promise((resolveToOut, rejectToOut) => {
-                    const result = {
-                        taskHash: `3::9999`,
-                        code: ACEResultCode.NotExistWaitTask,
-                        result: ACEConstantCallback[ACEConstantCallback.Failed],
-                        message: 'Not exist wait task.',
-                    };
-                    rejectToOut(result);
-                }));
-            })
-                .then(response => {
-                var _a;
-                ACELog.d(ACS._TAG, `${3}.response:`, response);
-                return ((_a = boxingPromise[4]) !== null && _a !== void 0 ? _a : new Promise((resolveToOut, rejectToOut) => {
-                    const result = {
-                        taskHash: `4::9999`,
-                        code: ACEResultCode.NotExistWaitTask,
-                        result: ACEConstantCallback[ACEConstantCallback.Failed],
-                        message: 'Not exist wait task.',
-                    };
-                    rejectToOut(result);
-                }));
-            })
-                .then(response => {
-                ACELog.d(ACS._TAG, `${4}.response:`, response);
-            })
-                .catch(err => {
-                ACELog.d(ACS._TAG, 'err:', err);
-            });
+            const callback = (error, innerResult) => {
+                if (error) {
+                    ACELog.d(ACS._TAG, 'error of waitQueue', error);
+                }
+                else if (innerResult) {
+                    ACELog.d(ACS._TAG, 'result of waitQueue', innerResult);
+                    this.emitter.emit('popWaitQueue');
+                }
+            };
+            const param = ACS.waitQueue.shift();
+            if (param)
+                ACS._send(param, callback);
         }
     }
     static _send(value, callback) {

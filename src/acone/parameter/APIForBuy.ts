@@ -4,9 +4,12 @@ import {ACENetwork} from '../../common/http/ACENetwork'
 import {AxiosResponse} from 'axios'
 import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 import {ACEResultCode, ACEConstantCallback} from '../../common/constant/ACEPublicStaticConfig'
+import ACELog from '../../common/logger/ACELog'
 
 export default class APIForBuy extends Task {
+  private static _TAG = 'APIForBuy'
   public constructor(params: ITaskParams) {
+    ACELog.d(APIForBuy._TAG, 'in constructor, params:', params)
     super(params)
   }
 

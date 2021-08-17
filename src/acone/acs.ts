@@ -8,15 +8,24 @@ import {ACEConstantCallback, ACEResultCode} from '../common/constant/ACEPublicSt
 import ACEConstantInteger from '../common/constant/ACEConstantInteger'
 import ACELog from '../common/logger/ACELog'
 import NetworkUtils from '../common/http/NetworkUtills'
+import {EventsForWorkerEmitter} from '../common/worker/EventsForWorkerEmitter'
 
 export class ACS {
   private static _TAG = 'ACS'
   private static instance: ACS
   private static _packageNameOrBundleID: string | undefined
   private static waitQueue: ACParams[]
+  private emitter: EventsForWorkerEmitter
 
   public static getInstance(): ACS {
     return this.instance || (this.instance = new this())
+  }
+
+  constructor() {
+    this.emitter = new EventsForWorkerEmitter()
+    this.emitter.on('popWaitQueue', () => {
+      this.popWaitQueue()
+    })
   }
 
   public static configure(
@@ -40,7 +49,33 @@ export class ACS {
     value: AceConfiguration,
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
-    return ACECommonStaticConfig.configure(value, callback)
+    if (callback) {
+      const callbackAtInit = (error?: object, innerResult?: ACEResponseToCaller) => {
+        if (error) {
+          callback(new Error(`0000, Can not init SDK.`))
+        } else {
+          callback(undefined, innerResult)
+          this.emitter.emit('popWaitQueue')
+        }
+      }
+
+      ACECommonStaticConfig.configure(value, callbackAtInit)
+    } else {
+      return new Promise((resolveToOut, rejectToOut) => {
+        ACECommonStaticConfig.configure(value)
+          .then(res => {
+            resolveToOut(res)
+          })
+          .then(res => {
+            ACELog.d(ACS._TAG, `0000::configure::then2: ${JSON.stringify(res, null, 2)}`)
+            this.emitter.emit('popWaitQueue')
+          })
+          .catch(err => {
+            ACELog.d(ACS._TAG, `0000::configure::catch2: ${JSON.stringify(err, null, 2)}`)
+            rejectToOut(err)
+          })
+      })
+    }
   }
 
   public static send(value: ACParams, callback: (error?: object, result?: ACEResponseToCaller) => void): void
@@ -115,7 +150,7 @@ export class ACS {
   }
 
   public static SDKVersion(): string {
-    return '0.0.204'
+    return '0.0.208'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -126,90 +161,23 @@ export class ACS {
     this._packageNameOrBundleID = packageNameOrBundleID
   }
 
-  public static popWaitQueue(): void {
-    ACELog.d(ACS._TAG, 'Start pop waitQueue')
+  private popWaitQueue(): void {
+    ACELog.d(ACS._TAG, 'try pop waitQueue')
 
     if (ACS.waitQueue && ACS.waitQueue.length > 0) {
       ACELog.d(ACS._TAG, `waitQueue: ${ACS.waitQueue.length}`)
-      const boxingPromise = ACS.waitQueue.map(param => {
-        return ACS._send(param)
-      })
 
-      // const initParam = boxingPromise[0]
-      // const remainParamArray = boxingPromise.slice(1)
-      // remainParamArray.reduce((acc, cur, index) => {
-      //   return acc.then(response => {
-      //     ACELog.d(ACS._TAG, `${index}.response:`, response)
-      //     return cur
-      //   })
-      // }, initParam)
-      boxingPromise[0]
-        .then(response => {
-          ACELog.d(ACS._TAG, `${0}.response:`, response)
-          return (
-            boxingPromise[1] ??
-            new Promise<ACEResponseToCaller>((resolveToOut, rejectToOut) => {
-              const result: ACEResponseToCaller = {
-                taskHash: `1::9999`,
-                code: ACEResultCode.NotExistWaitTask,
-                result: ACEConstantCallback[ACEConstantCallback.Failed],
-                message: 'Not exist wait task.',
-              }
-              rejectToOut(result)
-            })
-          )
-        })
-        .then(response => {
-          ACELog.d(ACS._TAG, `${1}.response:`, response)
-          return (
-            boxingPromise[2] ??
-            new Promise<ACEResponseToCaller>((resolveToOut, rejectToOut) => {
-              const result: ACEResponseToCaller = {
-                taskHash: `2::9999`,
-                code: ACEResultCode.NotExistWaitTask,
-                result: ACEConstantCallback[ACEConstantCallback.Failed],
-                message: 'Not exist wait task.',
-              }
-              rejectToOut(result)
-            })
-          )
-        })
-        .then(response => {
-          ACELog.d(ACS._TAG, `${2}.response:`, response)
-          return (
-            boxingPromise[3] ??
-            new Promise<ACEResponseToCaller>((resolveToOut, rejectToOut) => {
-              const result: ACEResponseToCaller = {
-                taskHash: `3::9999`,
-                code: ACEResultCode.NotExistWaitTask,
-                result: ACEConstantCallback[ACEConstantCallback.Failed],
-                message: 'Not exist wait task.',
-              }
-              rejectToOut(result)
-            })
-          )
-        })
-        .then(response => {
-          ACELog.d(ACS._TAG, `${3}.response:`, response)
-          return (
-            boxingPromise[4] ??
-            new Promise<ACEResponseToCaller>((resolveToOut, rejectToOut) => {
-              const result: ACEResponseToCaller = {
-                taskHash: `4::9999`,
-                code: ACEResultCode.NotExistWaitTask,
-                result: ACEConstantCallback[ACEConstantCallback.Failed],
-                message: 'Not exist wait task.',
-              }
-              rejectToOut(result)
-            })
-          )
-        })
-        .then(response => {
-          ACELog.d(ACS._TAG, `${4}.response:`, response)
-        })
-        .catch(err => {
-          ACELog.d(ACS._TAG, 'err:', err)
-        })
+      const callback = (error?: object, innerResult?: ACEResponseToCaller) => {
+        if (error) {
+          ACELog.d(ACS._TAG, 'error of waitQueue', error)
+        } else if (innerResult) {
+          ACELog.d(ACS._TAG, 'result of waitQueue', innerResult)
+          this.emitter.emit('popWaitQueue')
+        }
+      }
+
+      const param = ACS.waitQueue.shift()
+      if (param) ACS._send(param, callback)
     }
   }
 

@@ -5,17 +5,10 @@ import ACECONSTANT from '../constant/ACEConstant';
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton';
 import { ACEConstantCallback, ACEResultCode } from '../constant/ACEPublicStaticConfig';
 import ACELog from '../logger/ACELog';
-import { EventsForWorkerEmitter } from '../worker/EventsForWorkerEmitter';
 export default class ACECommonStaticConfig {
     static configure(configuration, callback) {
         ControlTowerSingleton.getInstance().setDevSDKMode();
         ControlTowerSingleton.getInstance().setHomeDevNetworkMode();
-        if (ACECommonStaticConfig.emitter) {
-            ACECommonStaticConfig.emitter = new EventsForWorkerEmitter();
-            ACECommonStaticConfig.emitter.on('popWaitQueue', () => {
-                ACS.popWaitQueue();
-            });
-        }
         ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.SDKVersion()}`);
         if (ControlTowerSingleton.isEnableByPolicy()) {
             ACELog.d(ACECommonStaticConfig._TAG, 'Already init SDK.');
