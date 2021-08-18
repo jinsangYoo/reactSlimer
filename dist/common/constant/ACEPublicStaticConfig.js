@@ -41,6 +41,7 @@ export var ACEResultCode;
     ACEResultCode[ACEResultCode["DisabledByPolicy"] = 1030] = "DisabledByPolicy";
     ACEResultCode[ACEResultCode["NotFoundPolicyInformation"] = 1031] = "NotFoundPolicyInformation";
     ACEResultCode[ACEResultCode["NotExistWaitTask"] = 1032] = "NotExistWaitTask";
+    ACEResultCode[ACEResultCode["TooBusyWillSendAfterDone"] = 1033] = "TooBusyWillSendAfterDone";
 })(ACEResultCode || (ACEResultCode = {}));
 export var ACEMaritalStatus;
 (function (ACEMaritalStatus) {

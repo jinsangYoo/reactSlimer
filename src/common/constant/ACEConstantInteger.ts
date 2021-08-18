@@ -7,6 +7,7 @@ enum ACEConstantInteger {
   OneDayMilliseconds = 24 * 60 * 60 * 1000,
   QUEUE_MAX_FAILED_LOG_COUNT = 99,
   QUEUE_MAX_WAITING_COUNT = 5,
+  QUEUE_MAX_BUFFER_COUNT = 5,
   TWO_MINUTES = 120,
 }
 

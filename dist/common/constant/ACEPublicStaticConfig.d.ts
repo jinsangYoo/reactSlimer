@@ -61,7 +61,8 @@ export declare enum ACEResultCode {
     UnknownConnectStateToTheInternet = 1029,
     DisabledByPolicy = 1030,
     NotFoundPolicyInformation = 1031,
-    NotExistWaitTask = 1032
+    NotExistWaitTask = 1032,
+    TooBusyWillSendAfterDone = 1033
 }
 export declare const enum ACEGender {
     Unknown = "",

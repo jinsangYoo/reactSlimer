@@ -71,6 +71,7 @@ export enum ACEResultCode {
   DisabledByPolicy = 1030,
   NotFoundPolicyInformation = 1031,
   NotExistWaitTask = 1032,
+  TooBusyWillSendAfterDone = 1033,
 }
 
 export const enum ACEGender {

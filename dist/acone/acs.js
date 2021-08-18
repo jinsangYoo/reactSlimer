@@ -13,6 +13,9 @@ export class ACS {
         this.emitter.on('popWaitQueue', () => {
             this.popWaitQueue();
         });
+        this.emitter.on('popBufferQueue', () => {
+            this.popBufferQueue();
+        });
     }
     static getInstance() {
         return this.instance || (this.instance = new this());
@@ -28,7 +31,7 @@ export class ACS {
                 }
                 else {
                     callback(undefined, innerResult);
-                    this.emitter.emit('popWaitQueue');
+                    this.popWaitQueueEmit();
                 }
             };
             ACECommonStaticConfig.configure(value, callbackAtInit);
@@ -41,7 +44,7 @@ export class ACS {
                 })
                     .then(res => {
                     ACELog.d(ACS._TAG, `0000::configure::then2: ${JSON.stringify(res, null, 2)}`);
-                    this.emitter.emit('popWaitQueue');
+                    this.popWaitQueueEmit();
                 })
                     .catch(err => {
                     ACELog.d(ACS._TAG, `0000::configure::catch2: ${JSON.stringify(err, null, 2)}`);
@@ -77,7 +80,7 @@ export class ACS {
                 taskHash: `${value.type}::0405`,
                 code: ACEResultCode.NotReceivePolicy,
                 result: ACEConstantCallback[ACEConstantCallback.Failed],
-                message: 'Not receive policy for SDK.',
+                message: 'Not receive policy for SDK. It will send after init.',
                 apiName: value.type,
             };
             if (callback) {
@@ -97,7 +100,26 @@ export class ACS {
                 taskHash: `${value.type}::0406`,
                 code: ACEResultCode.DisabledByPolicy,
                 result: ACEConstantCallback[ACEConstantCallback.Failed],
-                message: 'Disabled by policy of SDK.',
+                message: 'Disabled by policy of SDK. It will send after init.',
+                apiName: value.type,
+            };
+            if (callback) {
+                callback(undefined, result);
+                return;
+            }
+            else {
+                return new Promise((resolveToOut, rejectToOut) => {
+                    rejectToOut(result);
+                });
+            }
+        }
+        if (ACS.isLock()) {
+            ACS.setBufferQueue(value);
+            const result = {
+                taskHash: `${value.type}::0409`,
+                code: ACEResultCode.TooBusyWillSendAfterDone,
+                result: ACEConstantCallback[ACEConstantCallback.Failed],
+                message: 'Too busy. It will send after done.',
                 apiName: value.type,
             };
             if (callback) {
@@ -113,7 +135,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.208';
+        return '0.0.217';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -121,8 +143,11 @@ export class ACS {
     static setPackageNameOrBundleID(packageNameOrBundleID) {
         this._packageNameOrBundleID = packageNameOrBundleID;
     }
+    popWaitQueueEmit() {
+        this.emitter.emit('popWaitQueue');
+    }
     popWaitQueue() {
-        ACELog.d(ACS._TAG, 'try pop waitQueue');
+        ACELog.d(ACS._TAG, 'pop waitQueue');
         if (ACS.waitQueue && ACS.waitQueue.length > 0) {
             ACELog.d(ACS._TAG, `waitQueue: ${ACS.waitQueue.length}`);
             const callback = (error, innerResult) => {
@@ -131,7 +156,7 @@ export class ACS {
                 }
                 else if (innerResult) {
                     ACELog.d(ACS._TAG, 'result of waitQueue', innerResult);
-                    this.emitter.emit('popWaitQueue');
+                    this.popWaitQueueEmit();
                 }
             };
             const param = ACS.waitQueue.shift();
@@ -139,7 +164,28 @@ export class ACS {
                 ACS._send(param, callback);
         }
     }
+    popBufferQueueEmit() {
+        this.emitter.emit('popBufferQueue');
+    }
+    popBufferQueue() {
+        ACELog.d(ACS._TAG, 'pop bufferQueue');
+        if (ACS.bufferQueue && ACS.bufferQueue.length > 0) {
+            ACELog.d(ACS._TAG, `bufferQueue: ${ACS.bufferQueue.length}`);
+            const callback = (error, innerResult) => {
+                if (error) {
+                    ACELog.d(ACS._TAG, 'error of bufferQueue', error);
+                }
+                else if (innerResult) {
+                    ACELog.d(ACS._TAG, 'result of bufferQueue', innerResult);
+                }
+            };
+            const param = ACS.bufferQueue.shift();
+            if (param)
+                ACS._send(param, callback);
+        }
+    }
     static _send(value, callback) {
+        ACS.toggleLock();
         if (callback) {
             const callbackAtSend = (error, innerResult) => {
                 if (error) {
@@ -148,6 +194,8 @@ export class ACS {
                 else {
                     callback(undefined, innerResult);
                 }
+                ACS.toggleLock();
+                ACS.getInstance().popBufferQueueEmit();
             };
             NetworkUtils.isNetworkAvailable()
                 .then(isConnected => {
@@ -170,6 +218,8 @@ export class ACS {
                         message: 'Not connect to the internet.',
                         apiName: value.type,
                     };
+                    ACS.toggleLock();
+                    ACS.getInstance().popBufferQueueEmit();
                     callback(undefined, result);
                 }
             })
@@ -182,6 +232,8 @@ export class ACS {
                     message: 'Unknown connect state to the internet.',
                     apiName: value.type,
                 };
+                ACS.toggleLock();
+                ACS.getInstance().popBufferQueueEmit();
                 callback(undefined, result);
             });
         }
@@ -206,6 +258,8 @@ export class ACS {
                                         if (innerResult)
                                             resolveToOut(innerResult);
                                     }
+                                    ACS.toggleLock();
+                                    ACS.getInstance().popBufferQueueEmit();
                                 });
                                 break;
                             case ACParams.TYPE.EVENT:
@@ -222,6 +276,8 @@ export class ACS {
                                         if (innerResult)
                                             resolveToOut(innerResult);
                                     }
+                                    ACS.toggleLock();
+                                    ACS.getInstance().popBufferQueueEmit();
                                 });
                                 break;
                         }
@@ -235,6 +291,8 @@ export class ACS {
                             apiName: value.type,
                         };
                         rejectToOut(result);
+                        ACS.toggleLock();
+                        ACS.getInstance().popBufferQueueEmit();
                     }
                 })
                     .catch(err => {
@@ -246,6 +304,7 @@ export class ACS {
                         message: 'Unknown connect state to the internet.',
                         apiName: value.type,
                     };
+                    ACS.toggleLock();
                     rejectToOut(result);
                 });
             });
@@ -264,6 +323,26 @@ export class ACS {
             ACS.waitQueue.push(value);
         }
     }
+    static initBufferQueue() {
+        if (!ACS.bufferQueue) {
+            ACS.bufferQueue = [];
+        }
+    }
+    static setBufferQueue(value) {
+        ACS.initBufferQueue();
+        ACELog.i(ACS._TAG, `ACS.bufferQueue.length: ${ACS.bufferQueue.length}`);
+        if (ACS.bufferQueue.length < ACEConstantInteger.QUEUE_MAX_BUFFER_COUNT) {
+            ACELog.i(ACS._TAG, `ACS.bufferQueue.push: ${value.type}, >>${value.name}<<`);
+            ACS.bufferQueue.push(value);
+        }
+    }
+    static toggleLock() {
+        this.lock = !this.lock;
+    }
+    static isLock() {
+        return this.lock;
+    }
 }
 ACS._TAG = 'ACS';
+ACS.lock = false;
 //# sourceMappingURL=acs.js.map

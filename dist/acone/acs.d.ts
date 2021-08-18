@@ -6,7 +6,9 @@ export declare class ACS {
     private static instance;
     private static _packageNameOrBundleID;
     private static waitQueue;
+    private static bufferQueue;
     private emitter;
+    private static lock;
     static getInstance(): ACS;
     constructor();
     static configure(value: AceConfiguration, callback: (error?: Error, result?: ACEResponseToCaller) => void): void;
@@ -18,9 +20,16 @@ export declare class ACS {
     static SDKVersion(): string;
     static getPackageNameOrBundleID(): string | undefined;
     static setPackageNameOrBundleID(packageNameOrBundleID: string): void;
+    private popWaitQueueEmit;
     private popWaitQueue;
+    private popBufferQueueEmit;
+    private popBufferQueue;
     private static _send;
     private static initWaitQueue;
     private static setWaitQueue;
+    private static initBufferQueue;
+    private static setBufferQueue;
+    private static toggleLock;
+    private static isLock;
 }
 //# sourceMappingURL=acs.d.ts.map

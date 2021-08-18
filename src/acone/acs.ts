@@ -15,7 +15,9 @@ export class ACS {
   private static instance: ACS
   private static _packageNameOrBundleID: string | undefined
   private static waitQueue: ACParams[]
+  private static bufferQueue: ACParams[]
   private emitter: EventsForWorkerEmitter
+  private static lock = false
 
   public static getInstance(): ACS {
     return this.instance || (this.instance = new this())
@@ -25,6 +27,9 @@ export class ACS {
     this.emitter = new EventsForWorkerEmitter()
     this.emitter.on('popWaitQueue', () => {
       this.popWaitQueue()
+    })
+    this.emitter.on('popBufferQueue', () => {
+      this.popBufferQueue()
     })
   }
 
@@ -55,7 +60,7 @@ export class ACS {
           callback(new Error(`0000, Can not init SDK.`))
         } else {
           callback(undefined, innerResult)
-          this.emitter.emit('popWaitQueue')
+          this.popWaitQueueEmit()
         }
       }
 
@@ -68,7 +73,7 @@ export class ACS {
           })
           .then(res => {
             ACELog.d(ACS._TAG, `0000::configure::then2: ${JSON.stringify(res, null, 2)}`)
-            this.emitter.emit('popWaitQueue')
+            this.popWaitQueueEmit()
           })
           .catch(err => {
             ACELog.d(ACS._TAG, `0000::configure::catch2: ${JSON.stringify(err, null, 2)}`)
@@ -111,7 +116,7 @@ export class ACS {
         taskHash: `${value.type}::0405`,
         code: ACEResultCode.NotReceivePolicy,
         result: ACEConstantCallback[ACEConstantCallback.Failed],
-        message: 'Not receive policy for SDK.',
+        message: 'Not receive policy for SDK. It will send after init.',
         apiName: value.type,
       }
 
@@ -132,7 +137,7 @@ export class ACS {
         taskHash: `${value.type}::0406`,
         code: ACEResultCode.DisabledByPolicy,
         result: ACEConstantCallback[ACEConstantCallback.Failed],
-        message: 'Disabled by policy of SDK.',
+        message: 'Disabled by policy of SDK. It will send after init.',
         apiName: value.type,
       }
 
@@ -146,11 +151,30 @@ export class ACS {
       }
     }
 
+    if (ACS.isLock()) {
+      ACS.setBufferQueue(value)
+      const result: ACEResponseToCaller = {
+        taskHash: `${value.type}::0409`,
+        code: ACEResultCode.TooBusyWillSendAfterDone,
+        result: ACEConstantCallback[ACEConstantCallback.Failed],
+        message: 'Too busy. It will send after done.',
+        apiName: value.type,
+      }
+
+      if (callback) {
+        callback(undefined, result)
+        return
+      } else {
+        return new Promise((resolveToOut, rejectToOut) => {
+          rejectToOut(result)
+        })
+      }
+    }
     return ACS._send(value, callback)
   }
 
   public static SDKVersion(): string {
-    return '0.0.208'
+    return '0.0.217'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -161,9 +185,13 @@ export class ACS {
     this._packageNameOrBundleID = packageNameOrBundleID
   }
 
-  private popWaitQueue(): void {
-    ACELog.d(ACS._TAG, 'try pop waitQueue')
+  //#region pop wait queue
+  private popWaitQueueEmit(): void {
+    this.emitter.emit('popWaitQueue')
+  }
 
+  private popWaitQueue(): void {
+    ACELog.d(ACS._TAG, 'pop waitQueue')
     if (ACS.waitQueue && ACS.waitQueue.length > 0) {
       ACELog.d(ACS._TAG, `waitQueue: ${ACS.waitQueue.length}`)
 
@@ -172,7 +200,7 @@ export class ACS {
           ACELog.d(ACS._TAG, 'error of waitQueue', error)
         } else if (innerResult) {
           ACELog.d(ACS._TAG, 'result of waitQueue', innerResult)
-          this.emitter.emit('popWaitQueue')
+          this.popWaitQueueEmit()
         }
       }
 
@@ -180,6 +208,31 @@ export class ACS {
       if (param) ACS._send(param, callback)
     }
   }
+  //#endregion
+
+  //#region pop buffer queue
+  private popBufferQueueEmit(): void {
+    this.emitter.emit('popBufferQueue')
+  }
+
+  private popBufferQueue(): void {
+    ACELog.d(ACS._TAG, 'pop bufferQueue')
+    if (ACS.bufferQueue && ACS.bufferQueue.length > 0) {
+      ACELog.d(ACS._TAG, `bufferQueue: ${ACS.bufferQueue.length}`)
+
+      const callback = (error?: object, innerResult?: ACEResponseToCaller) => {
+        if (error) {
+          ACELog.d(ACS._TAG, 'error of bufferQueue', error)
+        } else if (innerResult) {
+          ACELog.d(ACS._TAG, 'result of bufferQueue', innerResult)
+        }
+      }
+
+      const param = ACS.bufferQueue.shift()
+      if (param) ACS._send(param, callback)
+    }
+  }
+  //#endregion
 
   //#region private methods
   private static _send(
@@ -191,6 +244,7 @@ export class ACS {
     value: ACParams,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
+    ACS.toggleLock()
     if (callback) {
       const callbackAtSend = (error?: object, innerResult?: ACEResponseToCaller) => {
         if (error) {
@@ -198,6 +252,8 @@ export class ACS {
         } else {
           callback(undefined, innerResult)
         }
+        ACS.toggleLock()
+        ACS.getInstance().popBufferQueueEmit()
       }
 
       NetworkUtils.isNetworkAvailable()
@@ -221,6 +277,8 @@ export class ACS {
               apiName: value.type,
             }
 
+            ACS.toggleLock()
+            ACS.getInstance().popBufferQueueEmit()
             callback(undefined, result)
           }
         })
@@ -234,6 +292,8 @@ export class ACS {
             apiName: value.type,
           }
 
+          ACS.toggleLock()
+          ACS.getInstance().popBufferQueueEmit()
           callback(undefined, result)
         })
     } else {
@@ -254,6 +314,8 @@ export class ACS {
                     } else {
                       if (innerResult) resolveToOut(innerResult)
                     }
+                    ACS.toggleLock()
+                    ACS.getInstance().popBufferQueueEmit()
                   })
                   break
                 case ACParams.TYPE.EVENT:
@@ -267,6 +329,8 @@ export class ACS {
                     } else {
                       if (innerResult) resolveToOut(innerResult)
                     }
+                    ACS.toggleLock()
+                    ACS.getInstance().popBufferQueueEmit()
                   })
                   break
               }
@@ -280,6 +344,8 @@ export class ACS {
               }
 
               rejectToOut(result)
+              ACS.toggleLock()
+              ACS.getInstance().popBufferQueueEmit()
             }
           })
           .catch(err => {
@@ -292,6 +358,7 @@ export class ACS {
               apiName: value.type,
             }
 
+            ACS.toggleLock()
             rejectToOut(result)
           })
       })
@@ -311,6 +378,29 @@ export class ACS {
       ACELog.i(ACS._TAG, `ACS.waitQueue.push: ${value.type}, >>${value.name}<<`)
       ACS.waitQueue.push(value)
     }
+  }
+
+  private static initBufferQueue(): void {
+    if (!ACS.bufferQueue) {
+      ACS.bufferQueue = []
+    }
+  }
+
+  private static setBufferQueue(value: ACParams): void {
+    ACS.initBufferQueue()
+    ACELog.i(ACS._TAG, `ACS.bufferQueue.length: ${ACS.bufferQueue.length}`)
+    if (ACS.bufferQueue.length < ACEConstantInteger.QUEUE_MAX_BUFFER_COUNT) {
+      ACELog.i(ACS._TAG, `ACS.bufferQueue.push: ${value.type}, >>${value.name}<<`)
+      ACS.bufferQueue.push(value)
+    }
+  }
+
+  private static toggleLock(): void {
+    this.lock = !this.lock
+  }
+
+  private static isLock(): boolean {
+    return this.lock
   }
   //#endregion
 }

@@ -1,1 +1,1 @@
-{"version":3,"file":"IEventForWorker.d.ts","sourceRoot":"","sources":["../../../src/common/event/IEventForWorker.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,WAAW,eAAe;IAKtC,YAAY,EAAE,MAAM,IAAI,CAAA;CACzB"}
+{"version":3,"file":"IEventForWorker.d.ts","sourceRoot":"","sources":["../../../src/common/event/IEventForWorker.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,WAAW,eAAe;IAItC,YAAY,EAAE,MAAM,IAAI,CAAA;IACxB,cAAc,EAAE,MAAM,IAAI,CAAA;CAC3B"}
