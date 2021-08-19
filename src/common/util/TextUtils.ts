@@ -43,3 +43,7 @@ export function stringToNumber(num: string, base: number) {
   }
   return parsed
 }
+
+export function encode(value: string | number | boolean) {
+  return encodeURIComponent(value)
+}

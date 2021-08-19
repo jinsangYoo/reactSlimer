@@ -135,7 +135,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.217';
+        return '0.0.218';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;

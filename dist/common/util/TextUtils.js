@@ -27,4 +27,7 @@ export function stringToNumber(num, base) {
     }
     return parsed;
 }
+export function encode(value) {
+    return encodeURIComponent(value);
+}
 //# sourceMappingURL=TextUtils.js.map

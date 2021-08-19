@@ -1,6 +1,6 @@
 declare enum ACECONSTANT {
     ACP_PUSH = "acp_push",
-    BOOKMARK = "BOOKMARK",
+    BOOKMARK = "bookmark",
     DEFAULT_ADID = "00000000-0000-0000-0000-000000000000",
     DIRECT = "Direct",
     DOMAIN_DUMMY = "www.acecounter.com",
