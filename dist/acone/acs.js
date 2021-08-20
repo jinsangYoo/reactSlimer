@@ -135,13 +135,24 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.218';
+        return '0.0.222';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
     }
     static setPackageNameOrBundleID(packageNameOrBundleID) {
         this._packageNameOrBundleID = packageNameOrBundleID;
+    }
+    static getDetail() {
+        var _a, _b;
+        return {
+            sdkVersion: ACS.SDKVersion(),
+            packageNameOrBundleID: ACS.getPackageNameOrBundleID(),
+            inner: {
+                waitQueue: Array.from((_a = ACS.waitQueue) !== null && _a !== void 0 ? _a : []),
+                bufferQueue: Array.from((_b = ACS.bufferQueue) !== null && _b !== void 0 ? _b : []),
+            },
+        };
     }
     popWaitQueueEmit() {
         this.emitter.emit('popWaitQueue');

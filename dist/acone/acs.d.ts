@@ -1,6 +1,7 @@
 import { ACParams } from './acparam';
 import { AceConfiguration } from './aceconfiguration';
 import { ACEResponseToCaller } from '..';
+import { DetailOfSDK } from '../common/constant/ACEPublicStaticConfig';
 export declare class ACS {
     private static _TAG;
     private static instance;
@@ -20,6 +21,7 @@ export declare class ACS {
     static SDKVersion(): string;
     static getPackageNameOrBundleID(): string | undefined;
     static setPackageNameOrBundleID(packageNameOrBundleID: string): void;
+    static getDetail(): DetailOfSDK;
     private popWaitQueueEmit;
     private popWaitQueue;
     private popBufferQueueEmit;

@@ -1,8 +1,17 @@
+import { ACParams } from '../../acone/acparam';
 export declare enum ACEConstantCallback {
     DefaultMessage = "done",
     Failed = "fail",
     Success = "success"
 }
+export declare type DetailOfSDK = {
+    sdkVersion: string;
+    packageNameOrBundleID: string | undefined;
+    inner: {
+        waitQueue?: ACParams[];
+        bufferQueue?: ACParams[];
+    };
+};
 export declare type ControlTowerOfSDK = {
     isCompletePolicy: boolean;
     isForceStop: boolean;

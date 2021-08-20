@@ -4,7 +4,7 @@ import ACECommonStaticConfig from '../common/config/ACECommonStaticConfig'
 import ACEReducerForOne from './parameter/ACEReducerForOne'
 import {ACEResponseToCaller} from '..'
 import ControlTowerSingleton from '../common/controltower/ControlTowerSingleton'
-import {ACEConstantCallback, ACEResultCode} from '../common/constant/ACEPublicStaticConfig'
+import {ACEConstantCallback, ACEResultCode, DetailOfSDK} from '../common/constant/ACEPublicStaticConfig'
 import ACEConstantInteger from '../common/constant/ACEConstantInteger'
 import ACELog from '../common/logger/ACELog'
 import NetworkUtils from '../common/http/NetworkUtills'
@@ -173,8 +173,9 @@ export class ACS {
     return ACS._send(value, callback)
   }
 
+  //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.218'
+    return '0.0.222'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -184,6 +185,18 @@ export class ACS {
   public static setPackageNameOrBundleID(packageNameOrBundleID: string): void {
     this._packageNameOrBundleID = packageNameOrBundleID
   }
+
+  public static getDetail(): DetailOfSDK {
+    return {
+      sdkVersion: ACS.SDKVersion(),
+      packageNameOrBundleID: ACS.getPackageNameOrBundleID(),
+      internal: {
+        waitQueue: Array.from(ACS.waitQueue ?? []),
+        bufferQueue: Array.from(ACS.bufferQueue ?? []),
+      },
+    }
+  }
+  //#endregion
 
   //#region pop wait queue
   private popWaitQueueEmit(): void {
