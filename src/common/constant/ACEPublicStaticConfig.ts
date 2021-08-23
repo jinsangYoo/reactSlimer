@@ -9,7 +9,7 @@ export enum ACEConstantCallback {
 export type DetailOfSDK = {
   sdkVersion: string
   packageNameOrBundleID: string | undefined
-  inner: {
+  internal: {
     waitQueue?: ACParams[]
     bufferQueue?: ACParams[]
   }
