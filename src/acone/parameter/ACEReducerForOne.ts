@@ -7,6 +7,7 @@ import APIForPolicy from './APIForPolicy'
 import {ACEConstantCallback, ACEResultCode, ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 import ACELog from '../../common/logger/ACELog'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
+import ACProduct from '../acproduct'
 // import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
 
 // 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
@@ -90,17 +91,33 @@ export default class ACEReducerForOne {
   public static buy(
     pageName: string,
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    orderNumber?: string,
+    payMethodName?: string,
+    products?: ACProduct[],
   ): void
-  public static buy(pageName: string): Promise<ACEResponseToCaller>
   public static buy(
     pageName: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    orderNumber?: string,
+    payMethodName?: string,
+    products?: ACProduct[],
+  ): Promise<ACEResponseToCaller>
+  public static buy(
+    pageName: string,
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    orderNumber?: string,
+    payMethodName?: string,
+    products?: ACProduct[],
   ): Promise<ACEResponseToCaller> | void {
     ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.Buy,
-        payload: {},
+        payload: {
+          orderNumber: orderNumber,
+          paymentMethod: payMethodName,
+          products: products,
+        },
         error: false,
         debugParams: {},
       },

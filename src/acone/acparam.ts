@@ -1,3 +1,5 @@
+import ACProduct from './acproduct'
+
 type ParamType = 'none' | 'event' | 'buy'
 
 export type IACParams = {
@@ -16,6 +18,8 @@ export type ACParams = {
   payMethodName?: string
   orderNumber?: string
   //#endregion
+
+  products?: ACProduct[]
 }
 
 export const ACParams: IACParams = {

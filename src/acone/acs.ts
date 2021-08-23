@@ -175,7 +175,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.222'
+    return '0.0.223'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -275,7 +275,7 @@ export class ACS {
           if (isConnected) {
             switch (value.type) {
               case ACParams.TYPE.BUY:
-                ACEReducerForOne.buy(value.name, callbackAtSend)
+                ACEReducerForOne.buy(value.name, callbackAtSend, value.orderNumber, value.payMethodName, value.products)
                 break
               case ACParams.TYPE.EVENT:
                 ACEReducerForOne.plWithPage(value.name, callbackAtSend)
@@ -317,19 +317,25 @@ export class ACS {
             if (isConnected) {
               switch (value.type) {
                 case ACParams.TYPE.BUY:
-                  ACEReducerForOne.buy(value.name, (error?: object, innerResult?: ACEResponseToCaller) => {
-                    if (error) {
-                      if (innerResult) {
-                        rejectToOut(innerResult)
+                  ACEReducerForOne.buy(
+                    value.name,
+                    (error?: object, innerResult?: ACEResponseToCaller) => {
+                      if (error) {
+                        if (innerResult) {
+                          rejectToOut(innerResult)
+                        } else {
+                          rejectToOut(new Error(`0002, Can not use ${value.type} api.`))
+                        }
                       } else {
-                        rejectToOut(new Error(`0002, Can not use ${value.type} api.`))
+                        if (innerResult) resolveToOut(innerResult)
                       }
-                    } else {
-                      if (innerResult) resolveToOut(innerResult)
-                    }
-                    ACS.toggleLock()
-                    ACS.getInstance().popBufferQueueEmit()
-                  })
+                      ACS.toggleLock()
+                      ACS.getInstance().popBufferQueueEmit()
+                    },
+                    value.orderNumber,
+                    value.payMethodName,
+                    value.products,
+                  )
                   break
                 case ACParams.TYPE.EVENT:
                   ACEReducerForOne.plWithPage(value.name, (error?: object, innerResult?: ACEResponseToCaller) => {

@@ -117,6 +117,14 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     })
   }
 
+  public getBuyMode(): string {
+    return ACEParametersForOne.getInstance().getMD()
+  }
+
+  public setBuyMode(value: string): void {
+    ACEParametersForOne.getInstance().setMD(value)
+  }
+
   public setID(value: string): void {
     if (!isEmpty(value) && this._enablePrivacyPolicy) {
       value = ACOneConstant.EnabledPrivacyPolicyUserID
@@ -125,6 +133,23 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return ACEParametersForOne.getInstance().setSTS(value)
   }
 
+  public getOrderNumber(): string {
+    return ACEParametersForOne.getInstance().getONUM()
+  }
+
+  public setOrderNumber(value: string): void {
+    ACEParametersForOne.getInstance().setONUM(value)
+  }
+
+  public getPaymentMethod(): string {
+    return ACEParametersForOne.getInstance().getPayMethod()
+  }
+
+  public setPaymentMethod(value: string): void {
+    ACEParametersForOne.getInstance().setPayMethod(value)
+  }
+
+  //#region Session
   public isFirstLog(): boolean {
     return this.getSession() == SESSION.NEW
   }
@@ -228,6 +253,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   public setKeepSession(): void {
     ACEParametersForOne.getInstance().setVK(SESSION.KEEP)
   }
+  //#endregion
 
   //#region Update ST & VT
   public updateSTnVT(willUpdateVt: ACEntityForVT): Promise<object> {

@@ -10,12 +10,10 @@ import TP from '../constant/TP'
 import ACECONSTANT from '../../common/constant/ACEConstant'
 import {ACEResultCode, ACEConstantCallback} from '../../common/constant/ACEPublicStaticConfig'
 import ACEntityForVT from './ACEntityForVT'
-import ACEntityForST from './ACEntityForVT'
 
 export default class APIForPL extends Task {
   private static _TAG = 'APIForPL'
   private _willUpdateVt?: ACEntityForVT
-  private _willUpdateSt?: ACEntityForST
   private pageName: string
 
   public constructor(params: ITaskParams) {
@@ -123,16 +121,6 @@ export default class APIForPL extends Task {
           }
         }
       })
-  }
-
-  protected assignWillUpdateSt(): ACEntityForST {
-    if (!this._willUpdateSt) {
-      const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
-      this._willUpdateSt = new ACEntityForST()
-      this._willUpdateSt.setDeepCopy(_parameterUtilForOne.getST().getMap())
-    }
-
-    return this._willUpdateSt
   }
 
   protected assignWillUpdateVt(): ACEntityForVT {
