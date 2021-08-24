@@ -175,7 +175,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.223'
+    return '0.0.229'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {

@@ -41,7 +41,7 @@ export default class TaskAdapter {
             this.didWork(resolve);
         })
             .catch(err => {
-            ACELog.d(TaskAdapter._TAG, 'run err:', err);
+            ACELog.d(TaskAdapter._TAG, 'run::err:', err);
         });
     }
 }

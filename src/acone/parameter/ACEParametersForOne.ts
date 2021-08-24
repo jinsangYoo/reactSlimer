@@ -359,7 +359,7 @@ export default class ACEParametersForOne extends ACEParameters {
     return this.md
   }
 
-  public setBuyModeToMD(value: string): void {
+  public setMD(value: string): void {
     this.md = value
   }
 

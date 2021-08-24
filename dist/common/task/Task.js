@@ -7,20 +7,20 @@ export default class Task {
         this._date = Date.now();
     }
     doWork(callback) {
-        ACELog.d(Task._pTAG, `doWork: ${ACEofAPIForOne[this._logSource]}`);
+        ACELog.d(Task._p0TAG, `doWork: ${ACEofAPIForOne[this._logSource]}`);
     }
     didWork(callback) {
-        ACELog.d(Task._pTAG, `didWork: ${ACEofAPIForOne[this._logSource]}`);
+        ACELog.d(Task._p0TAG, `didWork: ${ACEofAPIForOne[this._logSource]}`);
     }
     doneWork(callback) {
-        ACELog.d(Task._pTAG, `doneWork: ${ACEofAPIForOne[this._logSource]}`);
+        ACELog.d(Task._p0TAG, `doneWork: ${ACEofAPIForOne[this._logSource]}`);
     }
     completed(response) {
-        ACELog.d(Task._pTAG, `completed: ${ACEofAPIForOne[this._logSource]}`);
+        ACELog.d(Task._p0TAG, `completed: ${ACEofAPIForOne[this._logSource]}`);
         this._response = new ACENetworkResult(response);
     }
     failed(err) {
-        ACELog.d(Task._pTAG, `failed: ${ACEofAPIForOne[this._logSource]}`, err);
+        ACELog.d(Task._p0TAG, `failed: ${ACEofAPIForOne[this._logSource]}`, err);
         this._error = JSON.parse(JSON.stringify(err));
     }
     getLogSource() {
@@ -86,5 +86,5 @@ export default class Task {
         }
     }
 }
-Task._pTAG = 'pTask';
+Task._p0TAG = 'pTask';
 //# sourceMappingURL=Task.js.map

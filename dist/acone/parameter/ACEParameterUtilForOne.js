@@ -9,6 +9,7 @@ import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPub
 import { isEmpty, onlyLetteringAtStartIndex, stringToNumber } from '../../common/util/TextUtils';
 import ACELog from '../../common/logger/ACELog';
 import { getRandom6CharForSTVT } from '../../common/util/NumberUtil';
+import IACBuyMode from '../constant/IACBuyMode';
 export default class ACEParameterUtilForOne {
     constructor() {
         this._enablePrivacyPolicy = false;
@@ -89,11 +90,44 @@ export default class ACEParameterUtilForOne {
             });
         });
     }
+    getBuyMode() {
+        return ACEParametersForOne.getInstance().getMD();
+    }
+    setBuyMode(value) {
+        ACEParametersForOne.getInstance().setMD(value);
+    }
+    clearBuyMode() {
+        ACEParametersForOne.getInstance().setMD(IACBuyMode.Unknown);
+    }
     setID(value) {
         if (!isEmpty(value) && this._enablePrivacyPolicy) {
             value = ACOneConstant.EnabledPrivacyPolicyUserID;
         }
         return ACEParametersForOne.getInstance().setSTS(value);
+    }
+    getOrderNumber() {
+        return ACEParametersForOne.getInstance().getONUM();
+    }
+    setOrderNumber(value) {
+        ACEParametersForOne.getInstance().setONUM(value);
+    }
+    clearOrderNumber() {
+        ACEParametersForOne.getInstance().setONUM(ACECONSTANT.EMPTY);
+    }
+    getPaymentMethod() {
+        return ACEParametersForOne.getInstance().getPayMethod();
+    }
+    setPaymentMethod(value) {
+        ACEParametersForOne.getInstance().setPayMethod(value);
+    }
+    clearPayMethod() {
+        ACEParametersForOne.getInstance().setPayMethod(ACECONSTANT.EMPTY);
+    }
+    setProduct(value) {
+        ACEParametersForOne.getInstance().setLL(value);
+    }
+    clearProduct() {
+        ACEParametersForOne.getInstance().setLL(ACECONSTANT.EMPTY);
     }
     isFirstLog() {
         return this.getSession() == SESSION.NEW;
@@ -199,8 +233,8 @@ export default class ACEParameterUtilForOne {
                 this.setVisitCountAtObject(willUpdateVt, visitCount + 1);
             }
             if (this.getVT().isEmptyAtBuyTimeTS()) {
-                this.setBuyTimeTSButNotStorage(_now, _randomString);
-                this.setBuyTimeTSAtObject(willUpdateVt, _now, _randomString);
+                this.setBuyTimeTSButNotStorage(_now.valueOf().toString(), _randomString);
+                this.setBuyTimeTSAtObject(willUpdateVt, _now.valueOf().toString(), _randomString);
                 this.setBuyCountAtObject(willUpdateVt, 1);
             }
         }

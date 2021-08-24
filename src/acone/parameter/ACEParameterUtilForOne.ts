@@ -14,6 +14,7 @@ import ACELog from '../../common/logger/ACELog'
 import {getRandom6CharForSTVT} from '../../common/util/NumberUtil'
 import ParameterAfterSend from '../constant/ParameterAfterSend'
 import {ResultAfterSaveInStorage} from './ResultAfterSaveInStorage'
+import IACBuyMode from '../constant/IACBuyMode'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -125,6 +126,10 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     ACEParametersForOne.getInstance().setMD(value)
   }
 
+  public clearBuyMode(): void {
+    ACEParametersForOne.getInstance().setMD(IACBuyMode.Unknown)
+  }
+
   public setID(value: string): void {
     if (!isEmpty(value) && this._enablePrivacyPolicy) {
       value = ACOneConstant.EnabledPrivacyPolicyUserID
@@ -141,12 +146,28 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     ACEParametersForOne.getInstance().setONUM(value)
   }
 
+  public clearOrderNumber(): void {
+    ACEParametersForOne.getInstance().setONUM(ACECONSTANT.EMPTY)
+  }
+
   public getPaymentMethod(): string {
     return ACEParametersForOne.getInstance().getPayMethod()
   }
 
   public setPaymentMethod(value: string): void {
     ACEParametersForOne.getInstance().setPayMethod(value)
+  }
+
+  public clearPayMethod(): void {
+    ACEParametersForOne.getInstance().setPayMethod(ACECONSTANT.EMPTY)
+  }
+
+  public setProduct(value: string): void {
+    ACEParametersForOne.getInstance().setLL(value)
+  }
+
+  public clearProduct(): void {
+    ACEParametersForOne.getInstance().setLL(ACECONSTANT.EMPTY)
   }
 
   //#region Session
@@ -281,8 +302,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
       }
 
       if (this.getVT().isEmptyAtBuyTimeTS()) {
-        this.setBuyTimeTSButNotStorage(_now, _randomString)
-        this.setBuyTimeTSAtObject(willUpdateVt, _now, _randomString)
+        this.setBuyTimeTSButNotStorage(_now.valueOf().toString(), _randomString)
+        this.setBuyTimeTSAtObject(willUpdateVt, _now.valueOf().toString(), _randomString)
         this.setBuyCountAtObject(willUpdateVt, 1)
       }
     } else {
@@ -374,12 +395,12 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return ACEParametersForOne.getInstance().getVT().getBuyTimeTS()
   }
 
-  public setBuyTimeTSButNotStorage(value: Date, random: string): void {
+  public setBuyTimeTSButNotStorage(value: string, random: string): void {
     this.getVT().setBuyTimeTS(value)
     this.getVT().setRandom6ForBuyTimeTS(random)
   }
 
-  public setBuyTimeTSAtObject(willUpdateVt: ACEntityForVT, value: Date, random: string): void {
+  public setBuyTimeTSAtObject(willUpdateVt: ACEntityForVT, value: string, random: string): void {
     willUpdateVt.setBuyTimeTS(value)
     willUpdateVt.setRandom6ForBuyTimeTS(random)
   }

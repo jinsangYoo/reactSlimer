@@ -7,8 +7,8 @@ export default class ACProduct {
     private category: string,
     private price: string,
     private quantify: number,
-    private productId: string,
-    private optionCodeName: string,
+    private productId?: string,
+    private optionCodeName?: string,
   ) {}
 
   //#region getter
@@ -41,14 +41,14 @@ export default class ACProduct {
       this.productId = ''
     }
 
-    return this.productId
+    return this.productId ?? ''
   }
   private getOptionCodeName(): string {
     if (isEmpty(this.optionCodeName)) {
       this.optionCodeName = ''
     }
 
-    return this.optionCodeName
+    return this.optionCodeName ?? ''
   }
   //#endregion
 

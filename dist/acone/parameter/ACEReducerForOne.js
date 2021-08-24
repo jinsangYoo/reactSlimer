@@ -50,11 +50,15 @@ export default class ACEReducerForOne {
         }
         return taskAdapter.run();
     }
-    static buy(pageName, callback) {
+    static buy(pageName, callback, orderNumber, payMethodName, products) {
         ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName));
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.Buy,
-            payload: {},
+            payload: {
+                orderNumber: orderNumber,
+                paymentMethod: payMethodName,
+                products: products,
+            },
             error: false,
             debugParams: {},
         }, callback);

@@ -18,7 +18,7 @@ export default class ACEntityForVT {
     setVisitCount(value: number): void;
     isEmptyAtBuyTimeTS(): boolean;
     getBuyTimeTS(): string;
-    setBuyTimeTS(value: Date): void;
+    setBuyTimeTS(value: string): void;
     getRandom6ForBuyTimeTS(): string;
     setRandom6ForBuyTimeTS(value: string): void;
     getBuyCount(): string;

@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import ACENetworkResult from '../http/ACENetworkResult';
 import { ACEResponseToCaller, NetworkResultToResponseToCaller, NetworkErrorToResponseToCaller } from '../constant/ACEPublicStaticConfig';
 export default class Task {
-    private static _pTAG;
+    private static _p0TAG;
     protected _logSource: ACEofAPIForOne;
     protected _date: number;
     protected _response: ACENetworkResult;

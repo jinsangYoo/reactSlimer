@@ -12,25 +12,25 @@ export default class APIForPL extends Task {
     constructor(params) {
         var _a;
         super(params);
-        ACELog.d(APIForPL._TAG, 'in constructor, params:', params);
+        ACELog.d(APIForPL._p1TAG, 'in constructor, params:', params);
         this.pageName = (_a = params.payload.pageName) !== null && _a !== void 0 ? _a : ACECONSTANT.EMPTY;
     }
     doWork(callback) {
         super.doWork(callback);
-        ACELog.d(APIForPL._TAG, 'doWork');
+        ACELog.d(APIForPL._p1TAG, 'doWork');
         const _parameterUtilForOne = ACEParameterUtilForOne.getInstance();
         _parameterUtilForOne.setTP(TP.SITE);
         _parameterUtilForOne.updateUrlToRef(this.pageName);
         _parameterUtilForOne
             .loadVT()
             .then(response => {
-            ACELog.d(APIForPL._TAG, 'Done load vt.', response);
-            ACELog.d(APIForPL._TAG, 'vt after loadVT()', _parameterUtilForOne.getVT());
+            ACELog.d(APIForPL._p1TAG, 'Done load vt.', response);
+            ACELog.d(APIForPL._p1TAG, 'vt after loadVT()', _parameterUtilForOne.getVT());
             return _parameterUtilForOne.updateSTnVT(this.assignWillUpdateVt());
         })
             .then(response => {
-            ACELog.d(APIForPL._TAG, 'Done update st and vt.', response);
-            ACELog.d(APIForPL._TAG, 'vt after updateSTnVT()', _parameterUtilForOne.getVT());
+            ACELog.d(APIForPL._p1TAG, 'Done update st and vt.', response);
+            ACELog.d(APIForPL._p1TAG, 'vt after updateSTnVT()', _parameterUtilForOne.getVT());
             if (callback) {
                 const res = {
                     taskHash: `${this._logSource}::0011`,
@@ -43,7 +43,7 @@ export default class APIForPL extends Task {
             }
         })
             .catch(err => {
-            ACELog.d(APIForPL._TAG, 'Fail load st and vt.', err);
+            ACELog.d(APIForPL._p1TAG, 'Fail load st and vt.', err);
             if (callback) {
                 const res = {
                     taskHash: `${this._logSource}::0012`,
@@ -58,35 +58,35 @@ export default class APIForPL extends Task {
     }
     didWork(callback) {
         super.didWork(callback);
-        ACELog.d(APIForPL._TAG, 'didWork');
+        ACELog.d(APIForPL._p1TAG, 'didWork');
         ACENetwork.requestToLog(response => {
-            ACELog.d(APIForPL._TAG, 'in requestToLog, completed');
+            ACELog.d(APIForPL._p1TAG, 'in requestToLog, completed');
             this.completed(response);
             this.doneWork(callback);
         }, err => {
-            ACELog.d(APIForPL._TAG, 'in requestToLog, failed');
+            ACELog.d(APIForPL._p1TAG, 'in requestToLog, failed');
             this.failed(err);
             this.doneWork(callback);
         });
     }
     completed(response) {
         super.completed(response);
-        ACELog.d(APIForPL._TAG, 'completed');
+        ACELog.d(APIForPL._p1TAG, 'completed');
     }
     failed(err) {
         super.failed(err);
-        ACELog.d(APIForPL._TAG, 'failed');
+        ACELog.d(APIForPL._p1TAG, 'failed');
     }
     doneWork(callback) {
         super.doneWork(callback);
-        ACELog.d(APIForPL._TAG, 'doneWork');
+        ACELog.d(APIForPL._p1TAG, 'doneWork');
         const _parameterUtilForOne = ACEParameterUtilForOne.getInstance();
         _parameterUtilForOne
             .resetSessionAndParameterAfterSendWithParams({
             vt: this.assignWillUpdateVt(),
         })
             .then(result => {
-            ACELog.d(APIForPL._TAG, `resetSessionAndParameterAfterSendWithParams::result: ${result}`);
+            ACELog.d(APIForPL._p1TAG, `resetSessionAndParameterAfterSendWithParams::result: ${result}`);
             if (callback) {
                 if (this._error) {
                     callback(this.getNetworkError(), makeFailCallbackParams(this));
@@ -97,7 +97,7 @@ export default class APIForPL extends Task {
             }
         })
             .catch(err => {
-            ACELog.d(APIForPL._TAG, `resetSessionAndParameterAfterSendWithParams::err: ${err}`);
+            ACELog.d(APIForPL._p1TAG, `resetSessionAndParameterAfterSendWithParams::err: ${err}`);
             if (callback) {
                 if (this._error) {
                     callback(this.getNetworkError(), makeFailCallbackParams(this));
@@ -125,5 +125,5 @@ export default class APIForPL extends Task {
         return this._willUpdateVt;
     }
 }
-APIForPL._TAG = 'APIForPL';
+APIForPL._p1TAG = 'APIForPL';
 //# sourceMappingURL=APIForPL.js.map

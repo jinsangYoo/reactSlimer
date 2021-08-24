@@ -9,6 +9,7 @@ import { mapValueStringToObject } from '../util/MapUtil';
 import ACELog from '../logger/ACELog';
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton';
 import ACEParameterUtilForOne from '../../acone/parameter/ACEParameterUtilForOne';
+import ACEParameterUtil from '../parameter/ACEParameterUtil';
 export class ACENetwork {
     static networkRequestTypeToParams(requestType) {
         const currentNetworkMode = ControlTowerSingleton.getInstance().getNetworkMode();
@@ -129,7 +130,7 @@ export class ACENetwork {
     static request(networkParam, completed, failed, method = HTTP_METHOD.GET) {
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
         axios.defaults.headers.common['Content-Type'] = 'text/plain';
-        axios.defaults.headers.common['User-Agent'] = 'react-native ' + Platform.OS;
+        axios.defaults.headers.common['User-Agent'] = ACEParameterUtil.getUserAgentForSDK();
         const requestHeaders = mapValueStringToObject(networkParam.requestHeaders);
         const requestConfig = {
             url: networkParam.url,

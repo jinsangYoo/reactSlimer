@@ -1,3 +1,4 @@
+import ACProduct from './acproduct';
 declare type ParamType = 'none' | 'event' | 'buy';
 export declare type IACParams = {
     init: (type: ParamType, value: string) => ACParams;
@@ -11,6 +12,7 @@ export declare type ACParams = {
     name: string;
     payMethodName?: string;
     orderNumber?: string;
+    products?: ACProduct[];
 };
 export declare const ACParams: IACParams;
 export {};

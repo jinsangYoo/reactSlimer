@@ -135,7 +135,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.222';
+        return '0.0.229';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -148,7 +148,7 @@ export class ACS {
         return {
             sdkVersion: ACS.SDKVersion(),
             packageNameOrBundleID: ACS.getPackageNameOrBundleID(),
-            inner: {
+            internal: {
                 waitQueue: Array.from((_a = ACS.waitQueue) !== null && _a !== void 0 ? _a : []),
                 bufferQueue: Array.from((_b = ACS.bufferQueue) !== null && _b !== void 0 ? _b : []),
             },
@@ -214,7 +214,7 @@ export class ACS {
                 if (isConnected) {
                     switch (value.type) {
                         case ACParams.TYPE.BUY:
-                            ACEReducerForOne.buy(value.name, callbackAtSend);
+                            ACEReducerForOne.buy(value.name, callbackAtSend, value.orderNumber, value.payMethodName, value.products);
                             break;
                         case ACParams.TYPE.EVENT:
                             ACEReducerForOne.plWithPage(value.name, callbackAtSend);
@@ -271,7 +271,7 @@ export class ACS {
                                     }
                                     ACS.toggleLock();
                                     ACS.getInstance().popBufferQueueEmit();
-                                });
+                                }, value.orderNumber, value.payMethodName, value.products);
                                 break;
                             case ACParams.TYPE.EVENT:
                                 ACEReducerForOne.plWithPage(value.name, (error, innerResult) => {

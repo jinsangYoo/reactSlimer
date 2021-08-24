@@ -128,7 +128,7 @@ export default class ACEntityForVT {
         return (_a = this._map.get(ACOneConstantVt.KeyBuyTimeTS)) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
     }
     setBuyTimeTS(value) {
-        this._map.set(ACOneConstantVt.KeyBuyTimeTS, value.valueOf().toString());
+        this._map.set(ACOneConstantVt.KeyBuyTimeTS, value);
     }
     getRandom6ForBuyTimeTS() {
         var _a;
