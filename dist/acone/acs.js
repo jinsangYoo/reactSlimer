@@ -135,7 +135,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.229';
+        return '0.0.231';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -198,7 +198,7 @@ export class ACS {
     static _send(value, callback) {
         ACS.toggleLock();
         if (callback) {
-            const callbackAtSend = (error, innerResult) => {
+            const callbackForCB = (error, innerResult) => {
                 if (error) {
                     callback(new Error(`0001, Can not use ${value.type} api.`));
                 }
@@ -214,10 +214,14 @@ export class ACS {
                 if (isConnected) {
                     switch (value.type) {
                         case ACParams.TYPE.BUY:
-                            ACEReducerForOne.buy(value.name, callbackAtSend, value.orderNumber, value.payMethodName, value.products);
+                            ACEReducerForOne.buy(callbackForCB, value.name, value.orderNumber, value.payMethodName, value.products);
+                            break;
+                        case ACParams.TYPE.ADDCART:
+                        case ACParams.TYPE.DELCART:
+                            ACEReducerForOne.cart(value.type, callbackForCB, value.products);
                             break;
                         case ACParams.TYPE.EVENT:
-                            ACEReducerForOne.plWithPage(value.name, callbackAtSend);
+                            ACEReducerForOne.plWithPage(callbackForCB, value.name);
                             break;
                     }
                 }
@@ -250,46 +254,36 @@ export class ACS {
         }
         else {
             return new Promise((resolveToOut, rejectToOut) => {
+                const callbackForPromise = (error, innerResult) => {
+                    if (error) {
+                        if (innerResult) {
+                            rejectToOut(innerResult);
+                        }
+                        else {
+                            rejectToOut(new Error(`0002, Can not use ${value.type} api.`));
+                        }
+                    }
+                    else {
+                        if (innerResult)
+                            resolveToOut(innerResult);
+                    }
+                    ACS.toggleLock();
+                    ACS.getInstance().popBufferQueueEmit();
+                };
                 NetworkUtils.isNetworkAvailable()
                     .then(isConnected => {
                     ACELog.i(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`);
                     if (isConnected) {
                         switch (value.type) {
                             case ACParams.TYPE.BUY:
-                                ACEReducerForOne.buy(value.name, (error, innerResult) => {
-                                    if (error) {
-                                        if (innerResult) {
-                                            rejectToOut(innerResult);
-                                        }
-                                        else {
-                                            rejectToOut(new Error(`0002, Can not use ${value.type} api.`));
-                                        }
-                                    }
-                                    else {
-                                        if (innerResult)
-                                            resolveToOut(innerResult);
-                                    }
-                                    ACS.toggleLock();
-                                    ACS.getInstance().popBufferQueueEmit();
-                                }, value.orderNumber, value.payMethodName, value.products);
+                                ACEReducerForOne.buy(callbackForPromise, value.name, value.orderNumber, value.payMethodName, value.products);
+                                break;
+                            case ACParams.TYPE.ADDCART:
+                            case ACParams.TYPE.DELCART:
+                                ACEReducerForOne.cart(value.type, callbackForPromise, value.products);
                                 break;
                             case ACParams.TYPE.EVENT:
-                                ACEReducerForOne.plWithPage(value.name, (error, innerResult) => {
-                                    if (error) {
-                                        if (innerResult) {
-                                            rejectToOut(innerResult);
-                                        }
-                                        else {
-                                            rejectToOut(new Error(`0002, Can not use ${value.type} api.`));
-                                        }
-                                    }
-                                    else {
-                                        if (innerResult)
-                                            resolveToOut(innerResult);
-                                    }
-                                    ACS.toggleLock();
-                                    ACS.getInstance().popBufferQueueEmit();
-                                });
+                                ACEReducerForOne.plWithPage(callbackForPromise, value.name);
                                 break;
                         }
                     }

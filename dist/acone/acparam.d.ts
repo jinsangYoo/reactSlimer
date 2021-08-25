@@ -1,15 +1,17 @@
 import ACProduct from './acproduct';
-declare type ParamType = 'none' | 'event' | 'buy';
+declare type ParamType = 'addcart' | 'buy' | 'delcart' | 'event';
 export declare type IACParams = {
-    init: (type: ParamType, value: string) => ACParams;
+    init: (type: ParamType, value?: string) => ACParams;
     TYPE: {
-        EVENT: ParamType;
+        ADDCART: ParamType;
         BUY: ParamType;
+        DELCART: ParamType;
+        EVENT: ParamType;
     };
 };
 export declare type ACParams = {
     type: ParamType;
-    name: string;
+    name?: string;
     payMethodName?: string;
     orderNumber?: string;
     products?: ACProduct[];

@@ -1,6 +1,7 @@
 import {ITaskParams} from '../../common/task/ITaskParams'
 import APIForPL from './APIForPL'
 import APIForBuy from './APIForBuy'
+import APIForCart from './APIForCart'
 import TaskAdapter from '../../common/task/TaskAdapter'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import APIForPolicy from './APIForPolicy'
@@ -8,6 +9,7 @@ import {ACEConstantCallback, ACEResultCode, ACEResponseToCaller} from '../../com
 import ACELog from '../../common/logger/ACELog'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 import ACProduct from '../acproduct'
+import {ACParams} from '../acparam'
 // import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
 
 // 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
@@ -73,6 +75,10 @@ export default class ACEReducerForOne {
       case ACEofAPIForOne.Buy:
         taskAdapter.addTask(new APIForBuy(params), callback)
         break
+      case ACEofAPIForOne.AddInCart:
+      case ACEofAPIForOne.DeleteInCart:
+        taskAdapter.addTask(new APIForCart(params), callback)
+        break
       case ACEofAPIForOne.PlWithPage:
         // ACEReducerForOne.getEmitter().emit('onStartForAPI', params)
         taskAdapter.addTask(new APIForPL(params), callback)
@@ -89,22 +95,22 @@ export default class ACEReducerForOne {
   }
 
   public static buy(
-    pageName: string,
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
     orderNumber?: string,
     payMethodName?: string,
     products?: ACProduct[],
   ): void
   public static buy(
-    pageName: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
     orderNumber?: string,
     payMethodName?: string,
     products?: ACProduct[],
   ): Promise<ACEResponseToCaller>
   public static buy(
-    pageName: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
     orderNumber?: string,
     payMethodName?: string,
     products?: ACProduct[],
@@ -125,14 +131,45 @@ export default class ACEReducerForOne {
     )
   }
 
-  public static plWithPage(
-    pageName: string,
+  public static cart(
+    type: string,
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    products?: ACProduct[],
   ): void
-  public static plWithPage(pageName: string): Promise<ACEResponseToCaller>
-  public static plWithPage(
-    pageName: string,
+  public static cart(
+    type: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    products?: ACProduct[],
+  ): Promise<ACEResponseToCaller>
+  public static cart(
+    type: string,
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    products?: ACProduct[],
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: type == ACParams.TYPE.ADDCART ? ACEofAPIForOne.AddInCart : ACEofAPIForOne.DeleteInCart,
+        payload: {
+          products: products,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static plWithPage(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+  ): void
+  public static plWithPage(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+  ): Promise<ACEResponseToCaller>
+  public static plWithPage(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
   ): Promise<ACEResponseToCaller> | void {
     ControlTowerSingleton.getInstance().setDevSDKMode()
     ControlTowerSingleton.getInstance().setHomeDevNetworkMode()

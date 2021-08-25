@@ -34,7 +34,7 @@ export default class APIForBuy extends APIForPL {
         _parameterUtilForOne.setBuyMode(IACBuyMode.Order)
         _parameterUtilForOne.setOrderNumber(this.orderNumber)
         _parameterUtilForOne.setPaymentMethod(this.paymentMethod)
-        _parameterUtilForOne.setProduct(acproductToURLForOne(this.products, this._logSource))
+        _parameterUtilForOne.setProduct(acproductToURLForOne(this.products, this.getLogSource()))
 
         //#region BuyTimeTS
         const _st = _parameterUtilForOne.getST()

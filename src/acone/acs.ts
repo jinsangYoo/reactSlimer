@@ -175,7 +175,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.229'
+    return '0.0.231'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -258,8 +258,9 @@ export class ACS {
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
     ACS.toggleLock()
+
     if (callback) {
-      const callbackAtSend = (error?: object, innerResult?: ACEResponseToCaller) => {
+      const callbackForCB = (error?: object, innerResult?: ACEResponseToCaller) => {
         if (error) {
           callback(new Error(`0001, Can not use ${value.type} api.`))
         } else {
@@ -275,10 +276,14 @@ export class ACS {
           if (isConnected) {
             switch (value.type) {
               case ACParams.TYPE.BUY:
-                ACEReducerForOne.buy(value.name, callbackAtSend, value.orderNumber, value.payMethodName, value.products)
+                ACEReducerForOne.buy(callbackForCB, value.name, value.orderNumber, value.payMethodName, value.products)
+                break
+              case ACParams.TYPE.ADDCART:
+              case ACParams.TYPE.DELCART:
+                ACEReducerForOne.cart(value.type, callbackForCB, value.products)
                 break
               case ACParams.TYPE.EVENT:
-                ACEReducerForOne.plWithPage(value.name, callbackAtSend)
+                ACEReducerForOne.plWithPage(callbackForCB, value.name)
                 break
             }
           } else {
@@ -311,6 +316,20 @@ export class ACS {
         })
     } else {
       return new Promise((resolveToOut, rejectToOut) => {
+        const callbackForPromise = (error?: object, innerResult?: ACEResponseToCaller) => {
+          if (error) {
+            if (innerResult) {
+              rejectToOut(innerResult)
+            } else {
+              rejectToOut(new Error(`0002, Can not use ${value.type} api.`))
+            }
+          } else {
+            if (innerResult) resolveToOut(innerResult)
+          }
+          ACS.toggleLock()
+          ACS.getInstance().popBufferQueueEmit()
+        }
+
         NetworkUtils.isNetworkAvailable()
           .then(isConnected => {
             ACELog.i(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`)
@@ -318,39 +337,19 @@ export class ACS {
               switch (value.type) {
                 case ACParams.TYPE.BUY:
                   ACEReducerForOne.buy(
+                    callbackForPromise,
                     value.name,
-                    (error?: object, innerResult?: ACEResponseToCaller) => {
-                      if (error) {
-                        if (innerResult) {
-                          rejectToOut(innerResult)
-                        } else {
-                          rejectToOut(new Error(`0002, Can not use ${value.type} api.`))
-                        }
-                      } else {
-                        if (innerResult) resolveToOut(innerResult)
-                      }
-                      ACS.toggleLock()
-                      ACS.getInstance().popBufferQueueEmit()
-                    },
                     value.orderNumber,
                     value.payMethodName,
                     value.products,
                   )
                   break
+                case ACParams.TYPE.ADDCART:
+                case ACParams.TYPE.DELCART:
+                  ACEReducerForOne.cart(value.type, callbackForPromise, value.products)
+                  break
                 case ACParams.TYPE.EVENT:
-                  ACEReducerForOne.plWithPage(value.name, (error?: object, innerResult?: ACEResponseToCaller) => {
-                    if (error) {
-                      if (innerResult) {
-                        rejectToOut(innerResult)
-                      } else {
-                        rejectToOut(new Error(`0002, Can not use ${value.type} api.`))
-                      }
-                    } else {
-                      if (innerResult) resolveToOut(innerResult)
-                    }
-                    ACS.toggleLock()
-                    ACS.getInstance().popBufferQueueEmit()
-                  })
+                  ACEReducerForOne.plWithPage(callbackForPromise, value.name)
                   break
               }
             } else {

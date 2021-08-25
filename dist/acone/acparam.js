@@ -1,7 +1,9 @@
 export const ACParams = {
     TYPE: {
-        EVENT: 'event',
+        ADDCART: 'addcart',
         BUY: 'buy',
+        DELCART: 'delcart',
+        EVENT: 'event',
     },
     init(type = ACParams.TYPE.EVENT, name) {
         return { type, name };

@@ -1,11 +1,13 @@
 import APIForPL from './APIForPL';
 import APIForBuy from './APIForBuy';
+import APIForCart from './APIForCart';
 import TaskAdapter from '../../common/task/TaskAdapter';
 import ACEofAPIForOne from '../constant/ACEofAPIForOne';
 import APIForPolicy from './APIForPolicy';
 import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPublicStaticConfig';
 import ACELog from '../../common/logger/ACELog';
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton';
+import { ACParams } from '../acparam';
 export default class ACEReducerForOne {
     constructor() {
     }
@@ -38,6 +40,10 @@ export default class ACEReducerForOne {
             case ACEofAPIForOne.Buy:
                 taskAdapter.addTask(new APIForBuy(params), callback);
                 break;
+            case ACEofAPIForOne.AddInCart:
+            case ACEofAPIForOne.DeleteInCart:
+                taskAdapter.addTask(new APIForCart(params), callback);
+                break;
             case ACEofAPIForOne.PlWithPage:
                 taskAdapter.addTask(new APIForPL(params), callback);
                 break;
@@ -50,7 +56,7 @@ export default class ACEReducerForOne {
         }
         return taskAdapter.run();
     }
-    static buy(pageName, callback, orderNumber, payMethodName, products) {
+    static buy(callback, pageName, orderNumber, payMethodName, products) {
         ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName));
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.Buy,
@@ -63,7 +69,17 @@ export default class ACEReducerForOne {
             debugParams: {},
         }, callback);
     }
-    static plWithPage(pageName, callback) {
+    static cart(type, callback, products) {
+        return ACEReducerForOne.reducer({
+            type: type == ACParams.TYPE.ADDCART ? ACEofAPIForOne.AddInCart : ACEofAPIForOne.DeleteInCart,
+            payload: {
+                products: products,
+            },
+            error: false,
+            debugParams: {},
+        }, callback);
+    }
+    static plWithPage(callback, pageName) {
         ControlTowerSingleton.getInstance().setDevSDKMode();
         ControlTowerSingleton.getInstance().setHomeDevNetworkMode();
         return ACEReducerForOne.reducer({
