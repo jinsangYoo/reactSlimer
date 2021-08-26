@@ -1,11 +1,12 @@
 import ACProduct from './acproduct'
 
-type ParamType = 'addcart' | 'buy' | 'delcart' | 'event'
+type ParamType = 'addcart' | 'appearProduct' | 'buy' | 'delcart' | 'event'
 
 export type IACParams = {
   init: (type: ParamType, value?: string) => ACParams
   TYPE: {
     ADDCART: ParamType
+    APPEAR_PRODUCT: ParamType
     BUY: ParamType
     DELCART: ParamType
     EVENT: ParamType
@@ -17,8 +18,11 @@ export type ACParams = {
   name?: string
 
   //#region  BUY
-  payMethodName?: string
   orderNumber?: string
+  payMethodName?: string
+  productCategoryName?: string
+  productName?: string
+  productPrice?: string
   //#endregion
 
   products?: ACProduct[]
@@ -27,6 +31,7 @@ export type ACParams = {
 export const ACParams: IACParams = {
   TYPE: {
     ADDCART: 'addcart',
+    APPEAR_PRODUCT: 'appearProduct',
     BUY: 'buy',
     DELCART: 'delcart',
     EVENT: 'event',

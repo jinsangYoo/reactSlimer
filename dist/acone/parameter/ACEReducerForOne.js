@@ -1,6 +1,7 @@
 import APIForPL from './APIForPL';
 import APIForBuy from './APIForBuy';
 import APIForCart from './APIForCart';
+import APIForAppearProduct from './APIForAppearProduct';
 import TaskAdapter from '../../common/task/TaskAdapter';
 import ACEofAPIForOne from '../constant/ACEofAPIForOne';
 import APIForPolicy from './APIForPolicy';
@@ -37,6 +38,9 @@ export default class ACEReducerForOne {
         }
         const taskAdapter = new TaskAdapter();
         switch (params.type) {
+            case ACEofAPIForOne.AppearProduct:
+                taskAdapter.addTask(new APIForAppearProduct(params), callback);
+                break;
             case ACEofAPIForOne.Buy:
                 taskAdapter.addTask(new APIForBuy(params), callback);
                 break;
@@ -55,6 +59,19 @@ export default class ACEReducerForOne {
                 break;
         }
         return taskAdapter.run();
+    }
+    static appearProduct(callback, pageName, productName, productCategoryName, productPrice) {
+        return ACEReducerForOne.reducer({
+            type: ACEofAPIForOne.AppearProduct,
+            payload: {
+                pageName: pageName,
+                productName: productName,
+                productCategoryName: productCategoryName,
+                productPrice: productPrice,
+            },
+            error: false,
+            debugParams: {},
+        }, callback);
     }
     static buy(callback, pageName, orderNumber, payMethodName, products) {
         ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName));

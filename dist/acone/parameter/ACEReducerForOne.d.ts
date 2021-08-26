@@ -6,6 +6,8 @@ export default class ACEReducerForOne {
     static getInstance(): ACEReducerForOne;
     private constructor();
     private static reducer;
+    static appearProduct(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, productName?: string, productCategoryName?: string, productPrice?: string): void;
+    static appearProduct(callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, productName?: string, productCategoryName?: string, productPrice?: string): Promise<ACEResponseToCaller>;
     static buy(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, orderNumber?: string, payMethodName?: string, products?: ACProduct[]): void;
     static buy(callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, orderNumber?: string, payMethodName?: string, products?: ACProduct[]): Promise<ACEResponseToCaller>;
     static cart(type: string, callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, products?: ACProduct[]): void;

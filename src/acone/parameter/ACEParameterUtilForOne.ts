@@ -170,6 +170,30 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     ACEParametersForOne.getInstance().setLL(ACECONSTANT.EMPTY)
   }
 
+  public clearProductName(): void {
+    ACEParametersForOne.getInstance().setPD(ACECONSTANT.EMPTY)
+  }
+
+  public setProductName(value: string): void {
+    ACEParametersForOne.getInstance().setPD(value)
+  }
+
+  public clearProductCategoryName(): void {
+    ACEParametersForOne.getInstance().setCT(ACECONSTANT.EMPTY)
+  }
+
+  public setProductCategoryName(value: string): void {
+    ACEParametersForOne.getInstance().setCT(value)
+  }
+
+  public clearProductPrice(): void {
+    ACEParametersForOne.getInstance().setAMT(ACECONSTANT.EMPTY)
+  }
+
+  public setProductPrice(value: string): void {
+    ACEParametersForOne.getInstance().setAMT(value)
+  }
+
   //#region Session
   public isFirstLog(): boolean {
     return this.getSession() == SESSION.NEW

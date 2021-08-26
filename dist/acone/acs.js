@@ -135,7 +135,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.231';
+        return '0.0.232';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -213,6 +213,9 @@ export class ACS {
                 ACELog.i(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`);
                 if (isConnected) {
                     switch (value.type) {
+                        case ACParams.TYPE.APPEAR_PRODUCT:
+                            ACEReducerForOne.appearProduct(callbackForCB, value.name, value.productName, value.productCategoryName, value.productPrice);
+                            break;
                         case ACParams.TYPE.BUY:
                             ACEReducerForOne.buy(callbackForCB, value.name, value.orderNumber, value.payMethodName, value.products);
                             break;
@@ -275,6 +278,9 @@ export class ACS {
                     ACELog.i(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`);
                     if (isConnected) {
                         switch (value.type) {
+                            case ACParams.TYPE.APPEAR_PRODUCT:
+                                ACEReducerForOne.appearProduct(callbackForPromise, value.name, value.productName, value.productCategoryName, value.productPrice);
+                                break;
                             case ACParams.TYPE.BUY:
                                 ACEReducerForOne.buy(callbackForPromise, value.name, value.orderNumber, value.payMethodName, value.products);
                                 break;

@@ -2,6 +2,7 @@ import {ITaskParams} from '../../common/task/ITaskParams'
 import APIForPL from './APIForPL'
 import APIForBuy from './APIForBuy'
 import APIForCart from './APIForCart'
+import APIForAppearProduct from './APIForAppearProduct'
 import TaskAdapter from '../../common/task/TaskAdapter'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import APIForPolicy from './APIForPolicy'
@@ -72,6 +73,9 @@ export default class ACEReducerForOne {
     }
     const taskAdapter = new TaskAdapter()
     switch (params.type) {
+      case ACEofAPIForOne.AppearProduct:
+        taskAdapter.addTask(new APIForAppearProduct(params), callback)
+        break
       case ACEofAPIForOne.Buy:
         taskAdapter.addTask(new APIForBuy(params), callback)
         break
@@ -92,6 +96,43 @@ export default class ACEReducerForOne {
     }
 
     return taskAdapter.run()
+  }
+
+  public static appearProduct(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    productName?: string,
+    productCategoryName?: string,
+    productPrice?: string,
+  ): void
+  public static appearProduct(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    productName?: string,
+    productCategoryName?: string,
+    productPrice?: string,
+  ): Promise<ACEResponseToCaller>
+  public static appearProduct(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    productName?: string,
+    productCategoryName?: string,
+    productPrice?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.AppearProduct,
+        payload: {
+          pageName: pageName,
+          productName: productName,
+          productCategoryName: productCategoryName,
+          productPrice: productPrice,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
   }
 
   public static buy(

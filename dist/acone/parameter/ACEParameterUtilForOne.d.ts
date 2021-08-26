@@ -28,6 +28,12 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     clearPayMethod(): void;
     setProduct(value: string): void;
     clearProduct(): void;
+    clearProductName(): void;
+    setProductName(value: string): void;
+    clearProductCategoryName(): void;
+    setProductCategoryName(value: string): void;
+    clearProductPrice(): void;
+    setProductPrice(value: string): void;
     isFirstLog(): boolean;
     resetSessionAndParameterAfterSend(): void;
     resetSessionAndParameterAfterSendWithParams(params?: ParameterAfterSend): Promise<boolean>;

@@ -129,6 +129,24 @@ export default class ACEParameterUtilForOne {
     clearProduct() {
         ACEParametersForOne.getInstance().setLL(ACECONSTANT.EMPTY);
     }
+    clearProductName() {
+        ACEParametersForOne.getInstance().setPD(ACECONSTANT.EMPTY);
+    }
+    setProductName(value) {
+        ACEParametersForOne.getInstance().setPD(value);
+    }
+    clearProductCategoryName() {
+        ACEParametersForOne.getInstance().setCT(ACECONSTANT.EMPTY);
+    }
+    setProductCategoryName(value) {
+        ACEParametersForOne.getInstance().setCT(value);
+    }
+    clearProductPrice() {
+        ACEParametersForOne.getInstance().setAMT(ACECONSTANT.EMPTY);
+    }
+    setProductPrice(value) {
+        ACEParametersForOne.getInstance().setAMT(value);
+    }
     isFirstLog() {
         return this.getSession() == SESSION.NEW;
     }
