@@ -65,6 +65,12 @@ export default class ACELog {
     }
   }
 
+  public static e(tag: string, msg: string): void
+  public static e(tag: string, msg: string, debug: object, moreDebugMessage?: string): void
+  public static e(tag: string, msg: string, debug?: object, moreDebugMessage?: string): void {
+    ACELog.println(LogLevel.ERROR, tag, msg, debug, moreDebugMessage)
+  }
+
   public static d(tag: string, msg: string): void
   public static d(tag: string, msg: string, debug: object, moreDebugMessage?: string): void
   public static d(tag: string, msg: string, debug?: object, moreDebugMessage?: string): void {
@@ -75,5 +81,11 @@ export default class ACELog {
   public static i(tag: string, msg: string, info: object, moreDebugMessage?: string): void
   public static i(tag: string, msg: string, info?: object, moreDebugMessage?: string): void {
     ACELog.println(LogLevel.INFO, tag, msg, info, moreDebugMessage)
+  }
+
+  public static v(tag: string, msg: string): void
+  public static v(tag: string, msg: string, info: object, moreDebugMessage?: string): void
+  public static v(tag: string, msg: string, info?: object, moreDebugMessage?: string): void {
+    ACELog.println(LogLevel.VERBOSE, tag, msg, info, moreDebugMessage)
   }
 }

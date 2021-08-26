@@ -73,7 +73,7 @@ export class ACS {
                 });
             }
         }
-        ACELog.i(ACS._TAG, `send::getIsCompletePolicy: ${ControlTowerSingleton.getIsCompletePolicy()}`);
+        ACELog.d(ACS._TAG, `send::getIsCompletePolicy: ${ControlTowerSingleton.getIsCompletePolicy()}`);
         if (!ControlTowerSingleton.getIsCompletePolicy()) {
             ACS.setWaitQueue(value);
             const result = {
@@ -93,7 +93,7 @@ export class ACS {
                 });
             }
         }
-        ACELog.i(ACS._TAG, `send::isEnableByPolicy: ${ControlTowerSingleton.isEnableByPolicy()}`);
+        ACELog.d(ACS._TAG, `send::isEnableByPolicy: ${ControlTowerSingleton.isEnableByPolicy()}`);
         if (!ControlTowerSingleton.isEnableByPolicy()) {
             ACS.setWaitQueue(value);
             const result = {
@@ -135,7 +135,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.232';
+        return '0.0.236';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -197,6 +197,7 @@ export class ACS {
     }
     static _send(value, callback) {
         ACS.toggleLock();
+        ACELog.i(ACS._TAG, 'ACParams is ', value);
         if (callback) {
             const callbackForCB = (error, innerResult) => {
                 if (error) {
@@ -210,7 +211,7 @@ export class ACS {
             };
             NetworkUtils.isNetworkAvailable()
                 .then(isConnected => {
-                ACELog.i(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`);
+                ACELog.d(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`);
                 if (isConnected) {
                     switch (value.type) {
                         case ACParams.TYPE.APPEAR_PRODUCT:
@@ -225,6 +226,12 @@ export class ACS {
                             break;
                         case ACParams.TYPE.EVENT:
                             ACEReducerForOne.plWithPage(callbackForCB, value.name);
+                            break;
+                        case ACParams.TYPE.LINK:
+                            ACEReducerForOne.link(callbackForCB, value.name, value.linkName);
+                            break;
+                        case ACParams.TYPE.TEL:
+                            ACEReducerForOne.tel(callbackForCB, value.name, value.tel);
                             break;
                     }
                 }
@@ -242,7 +249,7 @@ export class ACS {
                 }
             })
                 .catch(err => {
-                ACELog.i(ACS._TAG, 'isNetworkAvailable::in catch::err', err);
+                ACELog.e(ACS._TAG, 'isNetworkAvailable::in catch::err', err);
                 const result = {
                     taskHash: `${value.type}::0408`,
                     code: ACEResultCode.UnknownConnectStateToTheInternet,
@@ -275,7 +282,7 @@ export class ACS {
                 };
                 NetworkUtils.isNetworkAvailable()
                     .then(isConnected => {
-                    ACELog.i(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`);
+                    ACELog.d(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`);
                     if (isConnected) {
                         switch (value.type) {
                             case ACParams.TYPE.APPEAR_PRODUCT:
@@ -290,6 +297,12 @@ export class ACS {
                                 break;
                             case ACParams.TYPE.EVENT:
                                 ACEReducerForOne.plWithPage(callbackForPromise, value.name);
+                                break;
+                            case ACParams.TYPE.LINK:
+                                ACEReducerForOne.link(callbackForPromise, value.name, value.linkName);
+                                break;
+                            case ACParams.TYPE.TEL:
+                                ACEReducerForOne.tel(callbackForPromise, value.name, value.tel);
                                 break;
                         }
                     }
@@ -307,7 +320,7 @@ export class ACS {
                     }
                 })
                     .catch(err => {
-                    ACELog.i(ACS._TAG, 'isNetworkAvailable::in catch::err', err);
+                    ACELog.e(ACS._TAG, 'isNetworkAvailable::in catch::err', err);
                     const result = {
                         taskHash: `${value.type}::0408`,
                         code: ACEResultCode.UnknownConnectStateToTheInternet,

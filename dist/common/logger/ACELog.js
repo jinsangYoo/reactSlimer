@@ -47,11 +47,17 @@ export default class ACELog {
             }
         }
     }
+    static e(tag, msg, debug, moreDebugMessage) {
+        ACELog.println(LogLevel.ERROR, tag, msg, debug, moreDebugMessage);
+    }
     static d(tag, msg, debug, moreDebugMessage) {
         ACELog.println(LogLevel.DEBUG, tag, msg, debug, moreDebugMessage);
     }
     static i(tag, msg, info, moreDebugMessage) {
         ACELog.println(LogLevel.INFO, tag, msg, info, moreDebugMessage);
+    }
+    static v(tag, msg, info, moreDebugMessage) {
+        ACELog.println(LogLevel.VERBOSE, tag, msg, info, moreDebugMessage);
     }
 }
 ACELog._logLevel = LogLevel.INFO;

@@ -5,6 +5,8 @@ export const ACParams = {
         BUY: 'buy',
         DELCART: 'delcart',
         EVENT: 'event',
+        LINK: 'link',
+        TEL: 'tel',
     },
     init(type = ACParams.TYPE.EVENT, name) {
         return { type, name };

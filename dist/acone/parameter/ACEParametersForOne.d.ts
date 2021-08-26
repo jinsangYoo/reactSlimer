@@ -87,6 +87,7 @@ export default class ACEParametersForOne extends ACEParameters {
     setPush(value: string): void;
     getRE(): number;
     setRE(value: number): void;
+    clearREF(): void;
     getREF(): string;
     setREF(value: string): void;
     getRI(): string;

@@ -410,6 +410,30 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     this.setURL(value)
   }
 
+  public clearREF(): void {
+    ACEParametersForOne.getInstance().clearREF()
+  }
+
+  public setRefWithBundleID(value: string): void {
+    if (isEmpty(value)) {
+      value = ACECONSTANT.EMPTY
+    }
+    ACELog.d(ACEParameterUtilForOne._TAG, `value: >>${value}<<`)
+    value = onlyLetteringAtStartIndex(value)
+    ACELog.d(ACEParameterUtilForOne._TAG, `>>${ACS.getPackageNameOrBundleID()}/${value}<<`)
+    ACEParametersForOne.getInstance().setREF(`${ACS.getPackageNameOrBundleID()}/${value}`)
+  }
+
+  public setRefForTel(value: string): void {
+    if (isEmpty(value)) {
+      value = ACECONSTANT.EMPTY
+    }
+    ACELog.d(ACEParameterUtilForOne._TAG, `value: >>${value}<<`)
+    value = onlyLetteringAtStartIndex(value)
+    ACELog.d(ACEParameterUtilForOne._TAG, `>>tel:${value}<<`)
+    ACEParametersForOne.getInstance().setREF(`tel:${value}`)
+  }
+
   // #region VT
   public setBuyCountAtObject(willUpdateVt: ACEntityForVT, value: number): void {
     willUpdateVt.setBuyCount(value)

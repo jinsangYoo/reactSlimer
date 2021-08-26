@@ -2,16 +2,16 @@ import APIForPL from './APIForPL';
 import APIForBuy from './APIForBuy';
 import APIForCart from './APIForCart';
 import APIForAppearProduct from './APIForAppearProduct';
+import APIForLinkTel from './APIForLinkTel';
+import APIForPolicy from './APIForPolicy';
 import TaskAdapter from '../../common/task/TaskAdapter';
 import ACEofAPIForOne from '../constant/ACEofAPIForOne';
-import APIForPolicy from './APIForPolicy';
 import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPublicStaticConfig';
 import ACELog from '../../common/logger/ACELog';
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton';
 import { ACParams } from '../acparam';
 export default class ACEReducerForOne {
-    constructor() {
-    }
+    constructor() { }
     static getInstance() {
         return this.instance || (this.instance = new this());
     }
@@ -53,6 +53,10 @@ export default class ACEReducerForOne {
                 break;
             case ACEofAPIForOne.Policy:
                 taskAdapter.addTask(new APIForPolicy(params), callback);
+                break;
+            case ACEofAPIForOne.TrackLinkEvent:
+            case ACEofAPIForOne.TrackTelEvent:
+                taskAdapter.addTask(new APIForLinkTel(params), callback);
                 break;
             default:
                 ACELog.d(ACEReducerForOne._TAG, 'not implementation Task.');
@@ -96,6 +100,17 @@ export default class ACEReducerForOne {
             debugParams: {},
         }, callback);
     }
+    static link(callback, pageName, linkName) {
+        return ACEReducerForOne.reducer({
+            type: ACEofAPIForOne.TrackLinkEvent,
+            payload: {
+                pageName: pageName,
+                linkName: linkName,
+            },
+            error: false,
+            debugParams: {},
+        }, callback);
+    }
     static plWithPage(callback, pageName) {
         ControlTowerSingleton.getInstance().setDevSDKMode();
         ControlTowerSingleton.getInstance().setHomeDevNetworkMode();
@@ -112,6 +127,17 @@ export default class ACEReducerForOne {
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.Policy,
             payload: {},
+            error: false,
+            debugParams: {},
+        }, callback);
+    }
+    static tel(callback, pageName, tel) {
+        return ACEReducerForOne.reducer({
+            type: ACEofAPIForOne.TrackTelEvent,
+            payload: {
+                pageName: pageName,
+                tel: tel,
+            },
             error: false,
             debugParams: {},
         }, callback);

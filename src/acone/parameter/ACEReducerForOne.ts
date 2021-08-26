@@ -3,45 +3,25 @@ import APIForPL from './APIForPL'
 import APIForBuy from './APIForBuy'
 import APIForCart from './APIForCart'
 import APIForAppearProduct from './APIForAppearProduct'
+import APIForLinkTel from './APIForLinkTel'
+import APIForPolicy from './APIForPolicy'
 import TaskAdapter from '../../common/task/TaskAdapter'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
-import APIForPolicy from './APIForPolicy'
 import {ACEConstantCallback, ACEResultCode, ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 import ACELog from '../../common/logger/ACELog'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 import ACProduct from '../acproduct'
 import {ACParams} from '../acparam'
-// import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
 
-// 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
 export default class ACEReducerForOne {
   private static _TAG = 'reducerForOne'
   private static instance: ACEReducerForOne
-  // private emitter: ACEWorkerEventsForWorkerEmitter
 
   public static getInstance(): ACEReducerForOne {
     return this.instance || (this.instance = new this())
   }
 
-  private constructor() {
-    //   this.emitter = new ACEWorkerEventsForWorkerEmitter()
-    //   this.emitter.on('onStartForAPI', params => {
-    //     console.log('ACEReducerForOne::emitter::onStartForAPI')
-    //     console.log(JSON.stringify(params))
-    //   })
-    //   this.emitter.on('started', () => console.log('ACEReducerForOne::emitter::started'))
-    //   this.emitter.on('onFinish', (message, logsource) => {
-    //     console.log('ACEReducerForOne::emitter::onFinish')
-    //     console.log([message, logsource])
-    //   })
-    //   this.emitter.on('onError', err => {
-    //     console.log('ACEReducerForOne::emitter::onError')
-    //     console.log(JSON.stringify(err))
-    //   })
-    // }
-    // private static getEmitter(): ACEWorkerEventsForWorkerEmitter {
-    //   return ACEReducerForOne.getInstance().emitter
-  }
+  private constructor() {}
 
   private static reducer(
     params: ITaskParams,
@@ -84,11 +64,14 @@ export default class ACEReducerForOne {
         taskAdapter.addTask(new APIForCart(params), callback)
         break
       case ACEofAPIForOne.PlWithPage:
-        // ACEReducerForOne.getEmitter().emit('onStartForAPI', params)
         taskAdapter.addTask(new APIForPL(params), callback)
         break
       case ACEofAPIForOne.Policy:
         taskAdapter.addTask(new APIForPolicy(params), callback)
+        break
+      case ACEofAPIForOne.TrackLinkEvent:
+      case ACEofAPIForOne.TrackTelEvent:
+        taskAdapter.addTask(new APIForLinkTel(params), callback)
         break
       default:
         ACELog.d(ACEReducerForOne._TAG, 'not implementation Task.')
@@ -200,6 +183,35 @@ export default class ACEReducerForOne {
     )
   }
 
+  public static link(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    linkName?: string,
+  ): void
+  public static link(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    linkName?: string,
+  ): Promise<ACEResponseToCaller>
+  public static link(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    linkName?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.TrackLinkEvent,
+        payload: {
+          pageName: pageName,
+          linkName: linkName,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
   public static plWithPage(
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
@@ -237,6 +249,35 @@ export default class ACEReducerForOne {
       {
         type: ACEofAPIForOne.Policy,
         payload: {},
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static tel(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    tel?: string,
+  ): void
+  public static tel(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    tel?: string,
+  ): Promise<ACEResponseToCaller>
+  public static tel(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    tel?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.TrackTelEvent,
+        payload: {
+          pageName: pageName,
+          tel: tel,
+        },
         error: false,
         debugParams: {},
       },

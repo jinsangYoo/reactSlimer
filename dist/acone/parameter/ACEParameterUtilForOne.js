@@ -311,6 +311,27 @@ export default class ACEParameterUtilForOne {
         _parametersForOne.setREF(_parametersForOne.getURL());
         this.setURL(value);
     }
+    clearREF() {
+        ACEParametersForOne.getInstance().clearREF();
+    }
+    setRefWithBundleID(value) {
+        if (isEmpty(value)) {
+            value = ACECONSTANT.EMPTY;
+        }
+        ACELog.d(ACEParameterUtilForOne._TAG, `value: >>${value}<<`);
+        value = onlyLetteringAtStartIndex(value);
+        ACELog.d(ACEParameterUtilForOne._TAG, `>>${ACS.getPackageNameOrBundleID()}/${value}<<`);
+        ACEParametersForOne.getInstance().setREF(`${ACS.getPackageNameOrBundleID()}/${value}`);
+    }
+    setRefForTel(value) {
+        if (isEmpty(value)) {
+            value = ACECONSTANT.EMPTY;
+        }
+        ACELog.d(ACEParameterUtilForOne._TAG, `value: >>${value}<<`);
+        value = onlyLetteringAtStartIndex(value);
+        ACELog.d(ACEParameterUtilForOne._TAG, `>>tel:${value}<<`);
+        ACEParametersForOne.getInstance().setREF(`tel:${value}`);
+    }
     setBuyCountAtObject(willUpdateVt, value) {
         willUpdateVt.setBuyCount(value);
     }

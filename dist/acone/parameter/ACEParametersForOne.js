@@ -382,6 +382,9 @@ export default class ACEParametersForOne extends ACEParameters {
         }
         this.re = value;
     }
+    clearREF() {
+        this.ref = ACECONSTANT.EMPTY;
+    }
     getREF() {
         if (isEmpty(this.ref)) {
             this.ref = ACECONSTANT.BOOKMARK;

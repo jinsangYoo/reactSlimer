@@ -55,6 +55,9 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     setTP(value: string): void;
     setURL(value: string): void;
     updateUrlToRef(value: string): void;
+    clearREF(): void;
+    setRefWithBundleID(value: string): void;
+    setRefForTel(value: string): void;
     setBuyCountAtObject(willUpdateVt: ACEntityForVT, value: number): void;
     getBuyTimeTS(): string;
     setBuyTimeTSButNotStorage(value: string, random: string): void;

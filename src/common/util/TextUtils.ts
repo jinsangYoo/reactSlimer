@@ -19,8 +19,25 @@ export function isEmpty(value: any): boolean {
   )
 }
 
-export function isLetterAtStringStartIndex(value: string): boolean {
+export function isAlphabetOrNumberAtStringStartIndex(value: string): boolean {
   const regex = /^[\w].*/
+  return regex.test(value)
+}
+
+export function onlyAlphabetOrNumberAtStringStartIndex(value: string): string {
+  if (!isEmpty(value)) {
+    while (!isAlphabetOrNumberAtStringStartIndex(value)) {
+      value = value.substring(1)
+      if (isEmpty(value)) {
+        break
+      }
+    }
+  }
+  return value
+}
+
+export function isLetterAtStringStartIndex(value: string): boolean {
+  const regex = /^[\w|ㄱ-ㅎ|ㄱ-ㅎ|가-힣].*/
   return regex.test(value)
 }
 

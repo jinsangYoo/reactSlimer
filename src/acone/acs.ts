@@ -109,7 +109,7 @@ export class ACS {
       }
     }
 
-    ACELog.i(ACS._TAG, `send::getIsCompletePolicy: ${ControlTowerSingleton.getIsCompletePolicy()}`)
+    ACELog.d(ACS._TAG, `send::getIsCompletePolicy: ${ControlTowerSingleton.getIsCompletePolicy()}`)
     if (!ControlTowerSingleton.getIsCompletePolicy()) {
       ACS.setWaitQueue(value)
       const result: ACEResponseToCaller = {
@@ -130,7 +130,7 @@ export class ACS {
       }
     }
 
-    ACELog.i(ACS._TAG, `send::isEnableByPolicy: ${ControlTowerSingleton.isEnableByPolicy()}`)
+    ACELog.d(ACS._TAG, `send::isEnableByPolicy: ${ControlTowerSingleton.isEnableByPolicy()}`)
     if (!ControlTowerSingleton.isEnableByPolicy()) {
       ACS.setWaitQueue(value)
       const result: ACEResponseToCaller = {
@@ -175,7 +175,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.232'
+    return '0.0.236'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -258,6 +258,7 @@ export class ACS {
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
     ACS.toggleLock()
+    ACELog.i(ACS._TAG, 'ACParams is ', value)
 
     if (callback) {
       const callbackForCB = (error?: object, innerResult?: ACEResponseToCaller) => {
@@ -272,7 +273,7 @@ export class ACS {
 
       NetworkUtils.isNetworkAvailable()
         .then(isConnected => {
-          ACELog.i(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`)
+          ACELog.d(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`)
           if (isConnected) {
             switch (value.type) {
               case ACParams.TYPE.APPEAR_PRODUCT:
@@ -294,6 +295,12 @@ export class ACS {
               case ACParams.TYPE.EVENT:
                 ACEReducerForOne.plWithPage(callbackForCB, value.name)
                 break
+              case ACParams.TYPE.LINK:
+                ACEReducerForOne.link(callbackForCB, value.name, value.linkName)
+                break
+              case ACParams.TYPE.TEL:
+                ACEReducerForOne.tel(callbackForCB, value.name, value.tel)
+                break
             }
           } else {
             const result: ACEResponseToCaller = {
@@ -310,7 +317,7 @@ export class ACS {
           }
         })
         .catch(err => {
-          ACELog.i(ACS._TAG, 'isNetworkAvailable::in catch::err', err)
+          ACELog.e(ACS._TAG, 'isNetworkAvailable::in catch::err', err)
           const result: ACEResponseToCaller = {
             taskHash: `${value.type}::0408`,
             code: ACEResultCode.UnknownConnectStateToTheInternet,
@@ -341,7 +348,7 @@ export class ACS {
 
         NetworkUtils.isNetworkAvailable()
           .then(isConnected => {
-            ACELog.i(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`)
+            ACELog.d(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`)
             if (isConnected) {
               switch (value.type) {
                 case ACParams.TYPE.APPEAR_PRODUCT:
@@ -369,6 +376,12 @@ export class ACS {
                 case ACParams.TYPE.EVENT:
                   ACEReducerForOne.plWithPage(callbackForPromise, value.name)
                   break
+                case ACParams.TYPE.LINK:
+                  ACEReducerForOne.link(callbackForPromise, value.name, value.linkName)
+                  break
+                case ACParams.TYPE.TEL:
+                  ACEReducerForOne.tel(callbackForPromise, value.name, value.tel)
+                  break
               }
             } else {
               const result: ACEResponseToCaller = {
@@ -385,7 +398,7 @@ export class ACS {
             }
           })
           .catch(err => {
-            ACELog.i(ACS._TAG, 'isNetworkAvailable::in catch::err', err)
+            ACELog.e(ACS._TAG, 'isNetworkAvailable::in catch::err', err)
             const result: ACEResponseToCaller = {
               taskHash: `${value.type}::0408`,
               code: ACEResultCode.UnknownConnectStateToTheInternet,
