@@ -8,13 +8,21 @@ import {ACS} from '../acs'
 import SESSION from '../../common/constant/Session'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
-import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../../common/constant/ACEPublicStaticConfig'
+import {
+  ACEResponseToCaller,
+  ACEConstantCallback,
+  ACEResultCode,
+  ACEGender,
+  ACEMaritalStatus,
+} from '../../common/constant/ACEPublicStaticConfig'
 import {isEmpty, onlyLetteringAtStartIndex, stringToNumber} from '../../common/util/TextUtils'
 import ACELog from '../../common/logger/ACELog'
 import {getRandom6CharForSTVT} from '../../common/util/NumberUtil'
 import ParameterAfterSend from '../constant/ParameterAfterSend'
 import {ResultAfterSaveInStorage} from './ResultAfterSaveInStorage'
 import IACBuyMode from '../constant/IACBuyMode'
+import JN from '../constant/JN'
+import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -130,12 +138,21 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     ACEParametersForOne.getInstance().setMD(IACBuyMode.Unknown)
   }
 
-  public setID(value: string): void {
-    if (!isEmpty(value) && this._enablePrivacyPolicy) {
-      value = ACOneConstant.EnabledPrivacyPolicyUserID
+  public setJN(value: number): void {
+    var _jn = JN.Unknown
+    switch (value) {
+      case ACEofAPIForOne.Join:
+        _jn = JN.Join
+        break
+      case ACEofAPIForOne.Leave:
+        _jn = JN.Withdraw
+        break
     }
+    ACEParametersForOne.getInstance().setJN(_jn)
+  }
 
-    return ACEParametersForOne.getInstance().setSTS(value)
+  public clearJn(): void {
+    this.setJN(-1)
   }
 
   public getOrderNumber(): string {
@@ -494,13 +511,75 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   }
   // #endregion
 
-  public setUserID(value: string): void {
+  //#region User
+  public getUserAge(): number {
+    return ACEParametersForOne.getInstance().getAG()
+  }
+
+  public setUserAge(value: number): void {
+    ACEParametersForOne.getInstance().setAG(value)
+  }
+
+  public clearUserAge(): void {
+    this.setUserAge(0)
+  }
+
+  public getUserGender(): ACEGender {
+    return ACEGender[ACEParametersForOne.getInstance().getGD()]
+  }
+
+  public setUserGender(value: ACEGender): void {
+    ACEParametersForOne.getInstance().setGD(value)
+  }
+
+  public clearUserGender(): void {
+    this.setUserGender(ACEGender.Unknown)
+  }
+
+  public getLoginUserID(): string {
+    return ACEParametersForOne.getInstance().getID()
+  }
+
+  public setLoginUserID(value: string): void {
     if (!isEmpty(value) && this._enablePrivacyPolicy) {
       value = ACOneConstant.EnabledPrivacyPolicyUserID
     }
 
-    return ACEParametersForOne.getInstance().setSTS(value)
+    ACEParametersForOne.getInstance().setID(value)
   }
+
+  public clearLoginUserID(): void {
+    ACEParametersForOne.getInstance().setID(ACECONSTANT.EMPTY)
+  }
+
+  public getJoinOrLeaveUserID(): string {
+    return ACEParametersForOne.getInstance().getUserID()
+  }
+
+  public setJoinOrLeaveUserID(value: string): void {
+    if (!isEmpty(value) && this._enablePrivacyPolicy) {
+      value = ACOneConstant.EnabledPrivacyPolicyUserID
+    }
+
+    ACEParametersForOne.getInstance().setUserID(value)
+  }
+
+  public clearJoinOrLeaveUserID(): void {
+    ACEParametersForOne.getInstance().setUserID(ACECONSTANT.EMPTY)
+  }
+
+  public getUserMaritalStatus(): ACEMaritalStatus {
+    return ACEMaritalStatus[ACEParametersForOne.getInstance().getMR()]
+  }
+
+  public setUserMaritalStatus(value: ACEMaritalStatus): void {
+    ACEParametersForOne.getInstance().setMR(value)
+  }
+
+  public clearUserMaritalStatus(): void {
+    this.setUserMaritalStatus(ACEMaritalStatus.Unknown)
+  }
+  //#endregion
 
   public setterForString(key: string, value: string): void {}
 

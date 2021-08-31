@@ -6,7 +6,7 @@ import ADID from '../../common/constant/ADID';
 import ACECONSTANT from '../../common/constant/ACEConstant';
 import ACOneConstant from '../constant/ACOneConstant';
 import IACBuyMode from '../constant/IACBuyMode';
-import { ACEMaritalStatus } from '../../common/constant/ACEPublicStaticConfig';
+import { ACEGender, ACEMaritalStatus } from '../../common/constant/ACEPublicStaticConfig';
 import ACOneConstantSt from '../constant/ACOneConstantSt';
 import ACOneConstantVt from '../constant/ACOneConstantVt';
 import SESSION from '../../common/constant/Session';
@@ -15,6 +15,7 @@ import ACELog from '../../common/logger/ACELog';
 import ACOneConstantInteger from '../constant/ACOneConstantInteger';
 import TP from '../constant/TP';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import JN from '../constant/JN';
 export default class ACEParametersForOne extends ACEParameters {
     constructor() {
         super();
@@ -115,13 +116,13 @@ export default class ACEParametersForOne extends ACEParameters {
     }
     getGD() {
         if (isEmpty(this.gd)) {
-            this.gd = ACECONSTANT.EMPTY;
+            this.gd = ACEGender.Unknown;
         }
         return this.gd;
     }
     setGD(value) {
         if (isEmpty(value)) {
-            this.gd = ACECONSTANT.EMPTY;
+            this.gd = ACEGender.Unknown;
         }
         else {
             this.gd = value;
@@ -223,13 +224,13 @@ export default class ACEParametersForOne extends ACEParameters {
     }
     getJN() {
         if (isEmpty(this.jn)) {
-            this.jn = ACECONSTANT.EMPTY;
+            this.jn = JN.Unknown;
         }
         return this.jn;
     }
     setJN(value) {
         if (isEmpty(value)) {
-            this.jn = ACECONSTANT.EMPTY;
+            this.jn = JN.Unknown;
         }
         else {
             this.jn = value;
@@ -817,6 +818,7 @@ export default class ACEParametersForOne extends ACEParameters {
             dm: this.dm,
             gd: this.gd,
             id: this._id,
+            jid: this.userId,
             jn: this.jn,
             kw: this.kw,
             lg: this.lg,
@@ -841,7 +843,6 @@ export default class ACEParametersForOne extends ACEParameters {
             udf2: this.udf2,
             udf3: this.udf3,
             url: this.url,
-            userId: this.userId,
             vk: this.vk,
             vt: this.vt.getAssembleParams(),
         };

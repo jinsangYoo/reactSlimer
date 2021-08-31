@@ -143,6 +143,7 @@ declare type ParamsForNetwork = {
     dm: string;
     gd: string;
     id: string;
+    jid: string;
     jn: string;
     kw: string;
     lg: string;
@@ -167,7 +168,6 @@ declare type ParamsForNetwork = {
     udf2: number;
     udf3: number;
     url: string;
-    userId: string;
     vk: number;
     vt: string;
 };

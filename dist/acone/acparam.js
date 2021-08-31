@@ -5,7 +5,10 @@ export const ACParams = {
         BUY: 'buy',
         DELCART: 'delcart',
         EVENT: 'event',
+        JOIN: 'join',
+        LEAVE: 'leave',
         LINK: 'link',
+        LOGIN: 'login',
         TEL: 'tel',
     },
     init(type = ACParams.TYPE.EVENT, name) {

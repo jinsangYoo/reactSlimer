@@ -85,7 +85,7 @@ export enum ACEResultCode {
   TooBusyWillSendAfterDone = 1033,
 }
 
-export const enum ACEGender {
+export enum ACEGender {
   Unknown = '',
   Man = 'man',
   Woman = 'woman',

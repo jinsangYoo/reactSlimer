@@ -135,7 +135,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.236';
+        return '0.0.239';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -224,11 +224,17 @@ export class ACS {
                         case ACParams.TYPE.DELCART:
                             ACEReducerForOne.cart(value.type, callbackForCB, value.products);
                             break;
-                        case ACParams.TYPE.EVENT:
-                            ACEReducerForOne.plWithPage(callbackForCB, value.name);
+                        case ACParams.TYPE.JOIN:
+                            ACEReducerForOne.join(callbackForCB, value.name, value.userId);
+                            break;
+                        case ACParams.TYPE.LEAVE:
+                            ACEReducerForOne.leave(callbackForCB, value.name, value.userId);
                             break;
                         case ACParams.TYPE.LINK:
                             ACEReducerForOne.link(callbackForCB, value.name, value.linkName);
+                            break;
+                        case ACParams.TYPE.LOGIN:
+                            ACEReducerForOne.login(callbackForCB, value.name, value.userAge, value.userGender, value.userId, value.userMaritalStatus);
                             break;
                         case ACParams.TYPE.TEL:
                             ACEReducerForOne.tel(callbackForCB, value.name, value.tel);
@@ -298,8 +304,17 @@ export class ACS {
                             case ACParams.TYPE.EVENT:
                                 ACEReducerForOne.plWithPage(callbackForPromise, value.name);
                                 break;
+                            case ACParams.TYPE.JOIN:
+                                ACEReducerForOne.join(callbackForPromise, value.name, value.userId);
+                                break;
+                            case ACParams.TYPE.LEAVE:
+                                ACEReducerForOne.leave(callbackForPromise, value.name, value.userId);
+                                break;
                             case ACParams.TYPE.LINK:
                                 ACEReducerForOne.link(callbackForPromise, value.name, value.linkName);
+                                break;
+                            case ACParams.TYPE.LOGIN:
+                                ACEReducerForOne.login(callbackForPromise, value.name, value.userAge, value.userGender, value.userId, value.userMaritalStatus);
                                 break;
                             case ACParams.TYPE.TEL:
                                 ACEReducerForOne.tel(callbackForPromise, value.name, value.tel);

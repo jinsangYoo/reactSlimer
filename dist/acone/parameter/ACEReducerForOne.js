@@ -3,6 +3,8 @@ import APIForBuy from './APIForBuy';
 import APIForCart from './APIForCart';
 import APIForAppearProduct from './APIForAppearProduct';
 import APIForLinkTel from './APIForLinkTel';
+import APIForLogin from './APIForLogin';
+import APIForJoinLeave from './APIForJoinLeave';
 import APIForPolicy from './APIForPolicy';
 import TaskAdapter from '../../common/task/TaskAdapter';
 import ACEofAPIForOne from '../constant/ACEofAPIForOne';
@@ -47,6 +49,13 @@ export default class ACEReducerForOne {
             case ACEofAPIForOne.AddInCart:
             case ACEofAPIForOne.DeleteInCart:
                 taskAdapter.addTask(new APIForCart(params), callback);
+                break;
+            case ACEofAPIForOne.Join:
+            case ACEofAPIForOne.Leave:
+                taskAdapter.addTask(new APIForJoinLeave(params), callback);
+                break;
+            case ACEofAPIForOne.Login:
+                taskAdapter.addTask(new APIForLogin(params), callback);
                 break;
             case ACEofAPIForOne.PlWithPage:
                 taskAdapter.addTask(new APIForPL(params), callback);
@@ -100,12 +109,48 @@ export default class ACEReducerForOne {
             debugParams: {},
         }, callback);
     }
+    static join(callback, pageName, userId) {
+        return ACEReducerForOne.reducer({
+            type: ACEofAPIForOne.Join,
+            payload: {
+                pageName: pageName,
+                userId: userId,
+            },
+            error: false,
+            debugParams: {},
+        }, callback);
+    }
+    static leave(callback, pageName, userId) {
+        return ACEReducerForOne.reducer({
+            type: ACEofAPIForOne.Leave,
+            payload: {
+                pageName: pageName,
+                userId: userId,
+            },
+            error: false,
+            debugParams: {},
+        }, callback);
+    }
     static link(callback, pageName, linkName) {
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.TrackLinkEvent,
             payload: {
                 pageName: pageName,
                 linkName: linkName,
+            },
+            error: false,
+            debugParams: {},
+        }, callback);
+    }
+    static login(callback, pageName, userAge, userGender, userId, userMaritalStatus) {
+        return ACEReducerForOne.reducer({
+            type: ACEofAPIForOne.Login,
+            payload: {
+                pageName: pageName,
+                userAge: userAge,
+                userGender: userGender,
+                userId: userId,
+                userMaritalStatus: userMaritalStatus,
             },
             error: false,
             debugParams: {},

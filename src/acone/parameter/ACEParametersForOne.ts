@@ -6,7 +6,7 @@ import ADID from '../../common/constant/ADID'
 import ACECONSTANT from '../../common/constant/ACEConstant'
 import ACOneConstant from '../constant/ACOneConstant'
 import IACBuyMode from '../constant/IACBuyMode'
-import {ACEMaritalStatus} from '../../common/constant/ACEPublicStaticConfig'
+import {ACEGender, ACEMaritalStatus} from '../../common/constant/ACEPublicStaticConfig'
 import ACOneConstantSt from '../constant/ACOneConstantSt'
 import ACOneConstantVt from '../constant/ACOneConstantVt'
 import SESSION from '../../common/constant/Session'
@@ -17,6 +17,7 @@ import TP from '../constant/TP'
 import {ResultAfterSaveInStorage} from './ResultAfterSaveInStorage'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import JN from '../constant/JN'
 
 export default class ACEParametersForOne extends ACEParameters {
   private static _TAG = 'paramForOne'
@@ -184,14 +185,14 @@ export default class ACEParametersForOne extends ACEParameters {
 
   public getGD(): string {
     if (isEmpty(this.gd)) {
-      this.gd = ACECONSTANT.EMPTY
+      this.gd = ACEGender.Unknown
     }
     return this.gd
   }
 
   public setGD(value: string): void {
     if (isEmpty(value)) {
-      this.gd = ACECONSTANT.EMPTY
+      this.gd = ACEGender.Unknown
     } else {
       this.gd = value
     }
@@ -294,14 +295,14 @@ export default class ACEParametersForOne extends ACEParameters {
 
   public getJN(): string {
     if (isEmpty(this.jn)) {
-      this.jn = ACECONSTANT.EMPTY
+      this.jn = JN.Unknown
     }
     return this.jn
   }
 
   public setJN(value: string): void {
     if (isEmpty(value)) {
-      this.jn = ACECONSTANT.EMPTY
+      this.jn = JN.Unknown
     } else {
       this.jn = value
     }
@@ -961,6 +962,7 @@ export default class ACEParametersForOne extends ACEParameters {
 
       id: this._id,
 
+      jid: this.userId,
       jn: this.jn,
 
       kw: this.kw,
@@ -995,7 +997,6 @@ export default class ACEParametersForOne extends ACEParameters {
       udf3: this.udf3,
       url: this.url,
 
-      userId: this.userId,
       vk: this.vk,
       vt: this.vt.getAssembleParams(),
     }
@@ -1024,6 +1025,7 @@ type ParamsForNetwork = {
 
   id: string
 
+  jid: string
   jn: string
 
   kw: string
@@ -1057,7 +1059,6 @@ type ParamsForNetwork = {
   udf2: number
   udf3: number
   url: string
-  userId: string
 
   vk: number
   vt: string

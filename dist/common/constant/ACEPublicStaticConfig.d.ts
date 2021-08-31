@@ -73,7 +73,7 @@ export declare enum ACEResultCode {
     NotExistWaitTask = 1032,
     TooBusyWillSendAfterDone = 1033
 }
-export declare const enum ACEGender {
+export declare enum ACEGender {
     Unknown = "",
     Man = "man",
     Woman = "woman"

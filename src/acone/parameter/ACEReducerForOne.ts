@@ -4,6 +4,8 @@ import APIForBuy from './APIForBuy'
 import APIForCart from './APIForCart'
 import APIForAppearProduct from './APIForAppearProduct'
 import APIForLinkTel from './APIForLinkTel'
+import APIForLogin from './APIForLogin'
+import APIForJoinLeave from './APIForJoinLeave'
 import APIForPolicy from './APIForPolicy'
 import TaskAdapter from '../../common/task/TaskAdapter'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
@@ -12,6 +14,7 @@ import ACELog from '../../common/logger/ACELog'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 import ACProduct from '../acproduct'
 import {ACParams} from '../acparam'
+import {ACEGender, ACEMaritalStatus} from '../../common/constant/ACEPublicStaticConfig'
 
 export default class ACEReducerForOne {
   private static _TAG = 'reducerForOne'
@@ -62,6 +65,13 @@ export default class ACEReducerForOne {
       case ACEofAPIForOne.AddInCart:
       case ACEofAPIForOne.DeleteInCart:
         taskAdapter.addTask(new APIForCart(params), callback)
+        break
+      case ACEofAPIForOne.Join:
+      case ACEofAPIForOne.Leave:
+        taskAdapter.addTask(new APIForJoinLeave(params), callback)
+        break
+      case ACEofAPIForOne.Login:
+        taskAdapter.addTask(new APIForLogin(params), callback)
         break
       case ACEofAPIForOne.PlWithPage:
         taskAdapter.addTask(new APIForPL(params), callback)
@@ -183,6 +193,64 @@ export default class ACEReducerForOne {
     )
   }
 
+  public static join(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): void
+  public static join(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): Promise<ACEResponseToCaller>
+  public static join(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Join,
+        payload: {
+          pageName: pageName,
+          userId: userId,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static leave(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): void
+  public static leave(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): Promise<ACEResponseToCaller>
+  public static leave(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Leave,
+        payload: {
+          pageName: pageName,
+          userId: userId,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
   public static link(
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
@@ -204,6 +272,47 @@ export default class ACEReducerForOne {
         payload: {
           pageName: pageName,
           linkName: linkName,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static login(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userAge?: number,
+    userGender?: ACEGender,
+    userId?: string,
+    userMaritalStatus?: ACEMaritalStatus,
+  ): void
+  public static login(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userAge?: number,
+    userGender?: ACEGender,
+    userId?: string,
+    userMaritalStatus?: ACEMaritalStatus,
+  ): Promise<ACEResponseToCaller>
+  public static login(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userAge?: number,
+    userGender?: ACEGender,
+    userId?: string,
+    userMaritalStatus?: ACEMaritalStatus,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Login,
+        payload: {
+          pageName: pageName,
+          userAge: userAge,
+          userGender: userGender,
+          userId: userId,
+          userMaritalStatus: userMaritalStatus,
         },
         error: false,
         debugParams: {},

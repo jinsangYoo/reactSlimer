@@ -43,6 +43,12 @@ export var ACEResultCode;
     ACEResultCode[ACEResultCode["NotExistWaitTask"] = 1032] = "NotExistWaitTask";
     ACEResultCode[ACEResultCode["TooBusyWillSendAfterDone"] = 1033] = "TooBusyWillSendAfterDone";
 })(ACEResultCode || (ACEResultCode = {}));
+export var ACEGender;
+(function (ACEGender) {
+    ACEGender["Unknown"] = "";
+    ACEGender["Man"] = "man";
+    ACEGender["Woman"] = "woman";
+})(ACEGender || (ACEGender = {}));
 export var ACEMaritalStatus;
 (function (ACEMaritalStatus) {
     ACEMaritalStatus["Unknown"] = "";

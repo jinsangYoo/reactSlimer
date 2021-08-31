@@ -68,7 +68,7 @@ export default class APIForBuy extends APIForPL {
     super.doneWork(callback)
     ACELog.d(APIForBuy._TAG, 'doneWork')
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
-    //#region Buy
+    //#region clear
     _parameterUtilForOne.clearBuyMode()
     _parameterUtilForOne.clearPayMethod()
     _parameterUtilForOne.clearOrderNumber()

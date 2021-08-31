@@ -61,7 +61,7 @@ export default class APIForLinkTel extends APIForPL {
     super.doneWork(callback)
     ACELog.d(APIForLinkTel._TAG, 'doneWork')
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
-    //#region AppearProduct
+    //#region clear
     _parameterUtilForOne.clearREF()
     //#endregion
   }

@@ -5,11 +5,13 @@ import ACOneConstantInteger from '../constant/ACOneConstantInteger';
 import ACOneConstant from '../constant/ACOneConstant';
 import { ACS } from '../acs';
 import SESSION from '../../common/constant/Session';
-import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPublicStaticConfig';
+import { ACEConstantCallback, ACEResultCode, ACEGender, ACEMaritalStatus, } from '../../common/constant/ACEPublicStaticConfig';
 import { isEmpty, onlyLetteringAtStartIndex, stringToNumber } from '../../common/util/TextUtils';
 import ACELog from '../../common/logger/ACELog';
 import { getRandom6CharForSTVT } from '../../common/util/NumberUtil';
 import IACBuyMode from '../constant/IACBuyMode';
+import JN from '../constant/JN';
+import ACEofAPIForOne from '../constant/ACEofAPIForOne';
 export default class ACEParameterUtilForOne {
     constructor() {
         this._enablePrivacyPolicy = false;
@@ -99,11 +101,20 @@ export default class ACEParameterUtilForOne {
     clearBuyMode() {
         ACEParametersForOne.getInstance().setMD(IACBuyMode.Unknown);
     }
-    setID(value) {
-        if (!isEmpty(value) && this._enablePrivacyPolicy) {
-            value = ACOneConstant.EnabledPrivacyPolicyUserID;
+    setJN(value) {
+        var _jn = JN.Unknown;
+        switch (value) {
+            case ACEofAPIForOne.Join:
+                _jn = JN.Join;
+                break;
+            case ACEofAPIForOne.Leave:
+                _jn = JN.Withdraw;
+                break;
         }
-        return ACEParametersForOne.getInstance().setSTS(value);
+        ACEParametersForOne.getInstance().setJN(_jn);
+    }
+    clearJn() {
+        this.setJN(-1);
     }
     getOrderNumber() {
         return ACEParametersForOne.getInstance().getONUM();
@@ -369,11 +380,56 @@ export default class ACEParameterUtilForOne {
     saveVT_toInStorage(vt, callback) {
         return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback);
     }
-    setUserID(value) {
+    getUserAge() {
+        return ACEParametersForOne.getInstance().getAG();
+    }
+    setUserAge(value) {
+        ACEParametersForOne.getInstance().setAG(value);
+    }
+    clearUserAge() {
+        this.setUserAge(0);
+    }
+    getUserGender() {
+        return ACEGender[ACEParametersForOne.getInstance().getGD()];
+    }
+    setUserGender(value) {
+        ACEParametersForOne.getInstance().setGD(value);
+    }
+    clearUserGender() {
+        this.setUserGender(ACEGender.Unknown);
+    }
+    getLoginUserID() {
+        return ACEParametersForOne.getInstance().getID();
+    }
+    setLoginUserID(value) {
         if (!isEmpty(value) && this._enablePrivacyPolicy) {
             value = ACOneConstant.EnabledPrivacyPolicyUserID;
         }
-        return ACEParametersForOne.getInstance().setSTS(value);
+        ACEParametersForOne.getInstance().setID(value);
+    }
+    clearLoginUserID() {
+        ACEParametersForOne.getInstance().setID(ACECONSTANT.EMPTY);
+    }
+    getJoinOrLeaveUserID() {
+        return ACEParametersForOne.getInstance().getUserID();
+    }
+    setJoinOrLeaveUserID(value) {
+        if (!isEmpty(value) && this._enablePrivacyPolicy) {
+            value = ACOneConstant.EnabledPrivacyPolicyUserID;
+        }
+        ACEParametersForOne.getInstance().setUserID(value);
+    }
+    clearJoinOrLeaveUserID() {
+        ACEParametersForOne.getInstance().setUserID(ACECONSTANT.EMPTY);
+    }
+    getUserMaritalStatus() {
+        return ACEMaritalStatus[ACEParametersForOne.getInstance().getMR()];
+    }
+    setUserMaritalStatus(value) {
+        ACEParametersForOne.getInstance().setMR(value);
+    }
+    clearUserMaritalStatus() {
+        this.setUserMaritalStatus(ACEMaritalStatus.Unknown);
     }
     setterForString(key, value) { }
     getParamsToObjectForLogSend() {

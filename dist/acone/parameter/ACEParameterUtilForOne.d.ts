@@ -1,7 +1,7 @@
 import IACEParameterUtil from '../../common/parameter/IACEParameterUtil';
 import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
-import { ACEResponseToCaller } from '../../common/constant/ACEPublicStaticConfig';
+import { ACEResponseToCaller, ACEGender, ACEMaritalStatus } from '../../common/constant/ACEPublicStaticConfig';
 import ParameterAfterSend from '../constant/ParameterAfterSend';
 import { ResultAfterSaveInStorage } from './ResultAfterSaveInStorage';
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
@@ -19,7 +19,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     getBuyMode(): string;
     setBuyMode(value: string): void;
     clearBuyMode(): void;
-    setID(value: string): void;
+    setJN(value: number): void;
+    clearJn(): void;
     getOrderNumber(): string;
     setOrderNumber(value: string): void;
     clearOrderNumber(): void;
@@ -71,7 +72,21 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     setVTSAtObject(willUpdateVt: ACEntityForVT, value: Date, random: string): void;
     saveVT_toInStorage(vt: ACEntityForVT, callback: (error?: Error, result?: ResultAfterSaveInStorage) => void): void;
     saveVT_toInStorage(vt: ACEntityForVT): Promise<ResultAfterSaveInStorage>;
-    setUserID(value: string): void;
+    getUserAge(): number;
+    setUserAge(value: number): void;
+    clearUserAge(): void;
+    getUserGender(): ACEGender;
+    setUserGender(value: ACEGender): void;
+    clearUserGender(): void;
+    getLoginUserID(): string;
+    setLoginUserID(value: string): void;
+    clearLoginUserID(): void;
+    getJoinOrLeaveUserID(): string;
+    setJoinOrLeaveUserID(value: string): void;
+    clearJoinOrLeaveUserID(): void;
+    getUserMaritalStatus(): ACEMaritalStatus;
+    setUserMaritalStatus(value: ACEMaritalStatus): void;
+    clearUserMaritalStatus(): void;
     setterForString(key: string, value: string): void;
     getParamsToObjectForLogSend(): object;
 }
