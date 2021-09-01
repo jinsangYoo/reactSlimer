@@ -138,6 +138,14 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     ACEParametersForOne.getInstance().setMD(IACBuyMode.Unknown)
   }
 
+  public setKeyword(value: string): void {
+    ACEParametersForOne.getInstance().setSKEY(value)
+  }
+
+  public clearKeyword(): void {
+    this.setKeyword(ACECONSTANT.EMPTY)
+  }
+
   public setJN(value: number): void {
     var _jn = JN.Unknown
     switch (value) {
@@ -364,6 +372,16 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     const _parametersForOne = ACEParametersForOne.getInstance()
     _parametersForOne.getST().setGetTS(value)
     _parametersForOne.getST().setRandom6ForGetTS(random6Value)
+  }
+
+  public makeInsenginetTS(): void {
+    this.setInsenginetTS(new Date(), getRandom6CharForSTVT())
+  }
+
+  public setInsenginetTS(value: Date, random6Value: string): void {
+    const _parametersForOne = ACEParametersForOne.getInstance()
+    _parametersForOne.getST().setInsenginetTS(value)
+    _parametersForOne.getST().setRandom6ForInsenginetTS(random6Value)
   }
 
   public saveST_toInStorage(

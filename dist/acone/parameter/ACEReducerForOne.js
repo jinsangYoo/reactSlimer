@@ -2,6 +2,7 @@ import APIForPL from './APIForPL';
 import APIForBuy from './APIForBuy';
 import APIForCart from './APIForCart';
 import APIForAppearProduct from './APIForAppearProduct';
+import APIForSearch from './APIForSearch';
 import APIForLinkTel from './APIForLinkTel';
 import APIForLogin from './APIForLogin';
 import APIForJoinLeave from './APIForJoinLeave';
@@ -49,6 +50,9 @@ export default class ACEReducerForOne {
             case ACEofAPIForOne.AddInCart:
             case ACEofAPIForOne.DeleteInCart:
                 taskAdapter.addTask(new APIForCart(params), callback);
+                break;
+            case ACEofAPIForOne.Search:
+                taskAdapter.addTask(new APIForSearch(params), callback);
                 break;
             case ACEofAPIForOne.Join:
             case ACEofAPIForOne.Leave:
@@ -172,6 +176,17 @@ export default class ACEReducerForOne {
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.Policy,
             payload: {},
+            error: false,
+            debugParams: {},
+        }, callback);
+    }
+    static search(callback, pageName, keyword) {
+        return ACEReducerForOne.reducer({
+            type: ACEofAPIForOne.Search,
+            payload: {
+                pageName: pageName,
+                keyword: keyword,
+            },
             error: false,
             debugParams: {},
         }, callback);

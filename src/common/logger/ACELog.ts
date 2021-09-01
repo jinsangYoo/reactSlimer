@@ -28,14 +28,31 @@ export default class ACELog {
     return LogLevel.INFO > this._logLevel
   }
 
+  private static logLevelToIdentity(priority: LogLevel): string {
+    switch (priority) {
+      case LogLevel.ASSERT:
+        return 'A'
+      case LogLevel.ERROR:
+        return 'E'
+      case LogLevel.WARN:
+        return 'W'
+      case LogLevel.INFO:
+        return 'I'
+      case LogLevel.DEBUG:
+        return 'D'
+      case LogLevel.VERBOSE:
+        return 'V'
+    }
+  }
+
   private static println(priority: LogLevel, tag: string, msg: string, info?: object, moreDebugMessage?: string): void {
     if (!this.isLoggable(priority)) {
       return
     }
 
-    var _location
+    var _location: string
     if (priority >= this._logLevel) {
-      _location = ' [' + tag + '] '
+      _location = ' [' + tag + ']'
     } else {
       _location = '::'
     }
@@ -43,24 +60,34 @@ export default class ACELog {
     if (ACELog.isLoggable(priority)) {
       if (info) {
         console.log(
-          `${ACECONSTANT.OFFICIAL_LOG_TAG}${_location}[SDK] message: ${msg}, debug: >>${
-            moreDebugMessage ?? ACECONSTANT.EMPTY
-          }<<, info: ${JSON.stringify(info, null, 2)}`,
+          `${ACECONSTANT.OFFICIAL_LOG_TAG} [SDK] [${new Date().toJSON()}] [${ACELog.logLevelToIdentity(
+            priority,
+          )}]${_location}: ${msg}, debug: >>${moreDebugMessage ?? ACECONSTANT.EMPTY}<<, info: ${JSON.stringify(
+            info,
+            null,
+            2,
+          )}`,
         )
       } else {
         console.log(
-          `${ACECONSTANT.OFFICIAL_LOG_TAG}${_location}[SDK] message: ${msg}, debug: >>${
-            moreDebugMessage ?? ACECONSTANT.EMPTY
-          }<<`,
+          `${ACECONSTANT.OFFICIAL_LOG_TAG} [SDK] [${new Date().toJSON()}] [${ACELog.logLevelToIdentity(
+            priority,
+          )}]${_location}: ${msg}, debug: >>${moreDebugMessage ?? ACECONSTANT.EMPTY}<<`,
         )
       }
     } else {
       if (info) {
         console.log(
-          `${ACECONSTANT.OFFICIAL_LOG_TAG}${_location}[SDK] message: ${msg}, info: ${JSON.stringify(info, null, 2)}`,
+          `${ACECONSTANT.OFFICIAL_LOG_TAG} [SDK] [${new Date().toJSON()}] [${ACELog.logLevelToIdentity(
+            priority,
+          )}]${_location}: ${msg}, info: ${JSON.stringify(info, null, 2)}`,
         )
       } else {
-        console.log(`${ACECONSTANT.OFFICIAL_LOG_TAG}${_location}[SDK] message: ${msg}`)
+        console.log(
+          `${ACECONSTANT.OFFICIAL_LOG_TAG} [SDK] [${new Date().toJSON()}] [${ACELog.logLevelToIdentity(
+            priority,
+          )}]${_location}: ${msg}`,
+        )
       }
     }
   }

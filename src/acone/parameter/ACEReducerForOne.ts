@@ -3,6 +3,7 @@ import APIForPL from './APIForPL'
 import APIForBuy from './APIForBuy'
 import APIForCart from './APIForCart'
 import APIForAppearProduct from './APIForAppearProduct'
+import APIForSearch from './APIForSearch'
 import APIForLinkTel from './APIForLinkTel'
 import APIForLogin from './APIForLogin'
 import APIForJoinLeave from './APIForJoinLeave'
@@ -65,6 +66,9 @@ export default class ACEReducerForOne {
       case ACEofAPIForOne.AddInCart:
       case ACEofAPIForOne.DeleteInCart:
         taskAdapter.addTask(new APIForCart(params), callback)
+        break
+      case ACEofAPIForOne.Search:
+        taskAdapter.addTask(new APIForSearch(params), callback)
         break
       case ACEofAPIForOne.Join:
       case ACEofAPIForOne.Leave:
@@ -358,6 +362,35 @@ export default class ACEReducerForOne {
       {
         type: ACEofAPIForOne.Policy,
         payload: {},
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static search(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    keyword?: string,
+  ): void
+  public static search(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller>
+  public static search(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Search,
+        payload: {
+          pageName: pageName,
+          keyword: keyword,
+        },
         error: false,
         debugParams: {},
       },

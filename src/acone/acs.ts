@@ -175,7 +175,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.239'
+    return '0.0.243'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -292,6 +292,9 @@ export class ACS {
               case ACParams.TYPE.DELCART:
                 ACEReducerForOne.cart(value.type, callbackForCB, value.products)
                 break
+              case ACParams.TYPE.EVENT:
+                ACEReducerForOne.plWithPage(callbackForCB, value.name)
+                break
               case ACParams.TYPE.JOIN:
                 ACEReducerForOne.join(callbackForCB, value.name, value.userId)
                 break
@@ -310,6 +313,9 @@ export class ACS {
                   value.userId,
                   value.userMaritalStatus,
                 )
+                break
+              case ACParams.TYPE.SEARCH:
+                ACEReducerForOne.search(callbackForCB, value.name, value.keyword)
                 break
               case ACParams.TYPE.TEL:
                 ACEReducerForOne.tel(callbackForCB, value.name, value.tel)
@@ -407,6 +413,9 @@ export class ACS {
                     value.userId,
                     value.userMaritalStatus,
                   )
+                  break
+                case ACParams.TYPE.SEARCH:
+                  ACEReducerForOne.search(callbackForPromise, value.name, value.keyword)
                   break
                 case ACParams.TYPE.TEL:
                   ACEReducerForOne.tel(callbackForPromise, value.name, value.tel)

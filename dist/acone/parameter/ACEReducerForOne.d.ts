@@ -25,6 +25,8 @@ export default class ACEReducerForOne {
     static plWithPage(callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string): Promise<ACEResponseToCaller>;
     static policy(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void;
     static policy(): Promise<ACEResponseToCaller>;
+    static search(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, keyword?: string): void;
+    static search(callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, keyword?: string): Promise<ACEResponseToCaller>;
     static tel(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, tel?: string): void;
     static tel(callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, tel?: string): Promise<ACEResponseToCaller>;
 }

@@ -19,6 +19,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     getBuyMode(): string;
     setBuyMode(value: string): void;
     clearBuyMode(): void;
+    setKeyword(value: string): void;
+    clearKeyword(): void;
     setJN(value: number): void;
     clearJn(): void;
     getOrderNumber(): string;
@@ -44,6 +46,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     updateSTnVT(willUpdateVt: ACEntityForVT): Promise<object>;
     getST(): ACEntityForST;
     setGetTS(value: Date, random6Value: string): void;
+    makeInsenginetTS(): void;
+    setInsenginetTS(value: Date, random6Value: string): void;
     saveST_toInStorage(st: ACEntityForST, callback: (error?: Error, result?: ResultAfterSaveInStorage) => void): void;
     saveST_toInStorage(st: ACEntityForST): Promise<ResultAfterSaveInStorage>;
     setStartTS(value: Date, random6Value: string): void;

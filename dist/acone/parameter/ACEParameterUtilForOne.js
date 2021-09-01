@@ -101,6 +101,12 @@ export default class ACEParameterUtilForOne {
     clearBuyMode() {
         ACEParametersForOne.getInstance().setMD(IACBuyMode.Unknown);
     }
+    setKeyword(value) {
+        ACEParametersForOne.getInstance().setSKEY(value);
+    }
+    clearKeyword() {
+        this.setKeyword(ACECONSTANT.EMPTY);
+    }
     setJN(value) {
         var _jn = JN.Unknown;
         switch (value) {
@@ -280,6 +286,14 @@ export default class ACEParameterUtilForOne {
         const _parametersForOne = ACEParametersForOne.getInstance();
         _parametersForOne.getST().setGetTS(value);
         _parametersForOne.getST().setRandom6ForGetTS(random6Value);
+    }
+    makeInsenginetTS() {
+        this.setInsenginetTS(new Date(), getRandom6CharForSTVT());
+    }
+    setInsenginetTS(value, random6Value) {
+        const _parametersForOne = ACEParametersForOne.getInstance();
+        _parametersForOne.getST().setInsenginetTS(value);
+        _parametersForOne.getST().setRandom6ForInsenginetTS(random6Value);
     }
     saveST_toInStorage(st, callback) {
         return ACEParametersForOne.getInstance().saveST_toInStorage(st, callback);

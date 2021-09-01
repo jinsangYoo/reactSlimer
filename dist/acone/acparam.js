@@ -9,6 +9,7 @@ export const ACParams = {
         LEAVE: 'leave',
         LINK: 'link',
         LOGIN: 'login',
+        SEARCH: 'search',
         TEL: 'tel',
     },
     init(type = ACParams.TYPE.EVENT, name) {

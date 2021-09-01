@@ -1,7 +1,18 @@
 import ACProduct from './acproduct'
 import {ACEGender, ACEMaritalStatus} from '../common/constant/ACEPublicStaticConfig'
 
-type ParamType = 'addcart' | 'appearProduct' | 'buy' | 'delcart' | 'event' | 'join' | 'leave' | 'link' | 'login' | 'tel'
+type ParamType =
+  | 'addcart'
+  | 'appearProduct'
+  | 'buy'
+  | 'delcart'
+  | 'event'
+  | 'join'
+  | 'leave'
+  | 'link'
+  | 'login'
+  | 'search'
+  | 'tel'
 
 export type IACParams = {
   init: (type: ParamType, value?: string) => ACParams
@@ -15,6 +26,7 @@ export type IACParams = {
     LEAVE: ParamType
     LINK: ParamType
     LOGIN: ParamType
+    SEARCH: ParamType
     TEL: ParamType
   }
 }
@@ -23,6 +35,7 @@ export type ACParams = {
   type: ParamType
   name?: string
 
+  keyword?: string
   linkName?: string
   orderNumber?: string
   payMethodName?: string
@@ -49,6 +62,7 @@ export const ACParams: IACParams = {
     LEAVE: 'leave',
     LINK: 'link',
     LOGIN: 'login',
+    SEARCH: 'search',
     TEL: 'tel',
   },
   init(type = ACParams.TYPE.EVENT, name?: string): ACParams {
