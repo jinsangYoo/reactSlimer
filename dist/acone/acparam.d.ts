@@ -1,6 +1,6 @@
 import ACProduct from './acproduct';
 import { ACEGender, ACEMaritalStatus } from '../common/constant/ACEPublicStaticConfig';
-declare type ParamType = 'addcart' | 'appearProduct' | 'buy' | 'delcart' | 'event' | 'join' | 'leave' | 'link' | 'login' | 'search' | 'tel';
+declare type ParamType = 'addcart' | 'appearProduct' | 'buy' | 'delcart' | 'event' | 'join' | 'leave' | 'link' | 'login' | 'push' | 'search' | 'tel';
 export declare type IACParams = {
     init: (type: ParamType, value?: string) => ACParams;
     TYPE: {
@@ -13,6 +13,7 @@ export declare type IACParams = {
         LEAVE: ParamType;
         LINK: ParamType;
         LOGIN: ParamType;
+        PUSH: ParamType;
         SEARCH: ParamType;
         TEL: ParamType;
     };
@@ -20,6 +21,9 @@ export declare type IACParams = {
 export declare type ACParams = {
     type: ParamType;
     name?: string;
+    data?: {
+        [key: string]: string;
+    };
     keyword?: string;
     linkName?: string;
     orderNumber?: string;
@@ -27,6 +31,7 @@ export declare type ACParams = {
     productCategoryName?: string;
     productName?: string;
     productPrice?: string;
+    push?: string;
     tel?: string;
     userAge?: number;
     userGender?: ACEGender;

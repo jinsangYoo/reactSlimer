@@ -7,12 +7,15 @@ import APIForLinkTel from './APIForLinkTel';
 import APIForLogin from './APIForLogin';
 import APIForJoinLeave from './APIForJoinLeave';
 import APIForPolicy from './APIForPolicy';
+import APIForPushReferrerDeeplink from './APIForPushReferrerDeeplink';
 import TaskAdapter from '../../common/task/TaskAdapter';
 import ACEofAPIForOne from '../constant/ACEofAPIForOne';
 import { ACEConstantCallback, ACEResultCode } from '../../common/constant/ACEPublicStaticConfig';
 import ACELog from '../../common/logger/ACELog';
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton';
 import { ACParams } from '../acparam';
+import { isEmpty } from '../../common/util/TextUtils';
+import ACOneConstant from '../constant/ACOneConstant';
 export default class ACEReducerForOne {
     constructor() { }
     static getInstance() {
@@ -66,6 +69,9 @@ export default class ACEReducerForOne {
                 break;
             case ACEofAPIForOne.Policy:
                 taskAdapter.addTask(new APIForPolicy(params), callback);
+                break;
+            case ACEofAPIForOne.Push:
+                taskAdapter.addTask(new APIForPushReferrerDeeplink(params), callback);
                 break;
             case ACEofAPIForOne.TrackLinkEvent:
             case ACEofAPIForOne.TrackTelEvent:
@@ -176,6 +182,22 @@ export default class ACEReducerForOne {
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.Policy,
             payload: {},
+            error: false,
+            debugParams: {},
+        }, callback);
+    }
+    static push(callback, data, push) {
+        var _push = push;
+        if (isEmpty(_push)) {
+            if (data) {
+                _push = data[ACOneConstant.PushKeyName];
+            }
+        }
+        return ACEReducerForOne.reducer({
+            type: ACEofAPIForOne.Push,
+            payload: {
+                push: _push,
+            },
             error: false,
             debugParams: {},
         }, callback);

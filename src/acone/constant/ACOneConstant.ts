@@ -7,6 +7,7 @@ enum ACOneConstant {
   EnabledPrivacyPolicyUserID = 'undefined_member',
   JavascriptSuccessCallbackName = 'callbackSuccessCommon',
   JavascriptFailCallbackName = 'callbackFailCommon',
+  PushKeyName = 'kw',
 }
 
 export default ACOneConstant

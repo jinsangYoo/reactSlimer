@@ -18,6 +18,8 @@ enum ACEofAPIForOne {
   Search = 190,
 
   Policy = 1000,
+
+  Push = 3210,
 }
 
 export default ACEofAPIForOne

@@ -135,7 +135,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.243';
+        return '0.0.244';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -239,6 +239,9 @@ export class ACS {
                         case ACParams.TYPE.LOGIN:
                             ACEReducerForOne.login(callbackForCB, value.name, value.userAge, value.userGender, value.userId, value.userMaritalStatus);
                             break;
+                        case ACParams.TYPE.PUSH:
+                            ACEReducerForOne.push(callbackForCB, value.data, value.push);
+                            break;
                         case ACParams.TYPE.SEARCH:
                             ACEReducerForOne.search(callbackForCB, value.name, value.keyword);
                             break;
@@ -321,6 +324,9 @@ export class ACS {
                                 break;
                             case ACParams.TYPE.LOGIN:
                                 ACEReducerForOne.login(callbackForPromise, value.name, value.userAge, value.userGender, value.userId, value.userMaritalStatus);
+                                break;
+                            case ACParams.TYPE.PUSH:
+                                ACEReducerForOne.push(callbackForPromise, value.data, value.push);
                                 break;
                             case ACParams.TYPE.SEARCH:
                                 ACEReducerForOne.search(callbackForPromise, value.name, value.keyword);

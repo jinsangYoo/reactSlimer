@@ -6,7 +6,8 @@ declare enum ACOneConstant {
     DefaultServiceCode = "ACA",
     EnabledPrivacyPolicyUserID = "undefined_member",
     JavascriptSuccessCallbackName = "callbackSuccessCommon",
-    JavascriptFailCallbackName = "callbackFailCommon"
+    JavascriptFailCallbackName = "callbackFailCommon",
+    PushKeyName = "kw"
 }
 export default ACOneConstant;
 //# sourceMappingURL=ACOneConstant.d.ts.map

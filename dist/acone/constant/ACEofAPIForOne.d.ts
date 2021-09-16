@@ -12,7 +12,8 @@ declare enum ACEofAPIForOne {
     Join = 151,
     Login = 152,
     Search = 190,
-    Policy = 1000
+    Policy = 1000,
+    Push = 3210
 }
 export default ACEofAPIForOne;
 //# sourceMappingURL=ACEofAPIForOne.d.ts.map

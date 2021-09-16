@@ -146,6 +146,18 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     this.setKeyword(ACECONSTANT.EMPTY)
   }
 
+  public getKW(): string {
+    return ACEParametersForOne.getInstance().getKW()
+  }
+
+  public setKW(value: string): void {
+    ACEParametersForOne.getInstance().setKW(value)
+  }
+
+  public clearKW(): void {
+    ACEParametersForOne.getInstance().setKW(ACECONSTANT.EMPTY)
+  }
+
   public setJN(value: number): void {
     var _jn = JN.Unknown
     switch (value) {
@@ -322,6 +334,20 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   public setKeepSession(): void {
     ACEParametersForOne.getInstance().setVK(SESSION.KEEP)
+  }
+  //#endregion
+
+  //#region src
+  public clearSRC(): void {
+    ACEParametersForOne.getInstance().setSRC(ACECONSTANT.EMPTY)
+  }
+
+  public getSRC(): string {
+    return ACEParametersForOne.getInstance().getSRC()
+  }
+
+  public setSRC(value: string): void {
+    ACEParametersForOne.getInstance().setSRC(value)
   }
   //#endregion
 

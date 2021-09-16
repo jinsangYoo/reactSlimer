@@ -21,6 +21,9 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     clearBuyMode(): void;
     setKeyword(value: string): void;
     clearKeyword(): void;
+    getKW(): string;
+    setKW(value: string): void;
+    clearKW(): void;
     setJN(value: number): void;
     clearJn(): void;
     getOrderNumber(): string;
@@ -43,6 +46,9 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     setNewSession(): void;
     getSession(): number;
     setKeepSession(): void;
+    clearSRC(): void;
+    getSRC(): string;
+    setSRC(value: string): void;
     updateSTnVT(willUpdateVt: ACEntityForVT): Promise<object>;
     getST(): ACEntityForST;
     setGetTS(value: Date, random6Value: string): void;

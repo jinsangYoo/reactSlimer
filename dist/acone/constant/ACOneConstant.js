@@ -8,6 +8,7 @@ var ACOneConstant;
     ACOneConstant["EnabledPrivacyPolicyUserID"] = "undefined_member";
     ACOneConstant["JavascriptSuccessCallbackName"] = "callbackSuccessCommon";
     ACOneConstant["JavascriptFailCallbackName"] = "callbackFailCommon";
+    ACOneConstant["PushKeyName"] = "kw";
 })(ACOneConstant || (ACOneConstant = {}));
 export default ACOneConstant;
 //# sourceMappingURL=ACOneConstant.js.map

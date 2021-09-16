@@ -175,7 +175,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.243'
+    return '0.0.244'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -314,6 +314,9 @@ export class ACS {
                   value.userMaritalStatus,
                 )
                 break
+              case ACParams.TYPE.PUSH:
+                ACEReducerForOne.push(callbackForCB, value.data, value.push)
+                break
               case ACParams.TYPE.SEARCH:
                 ACEReducerForOne.search(callbackForCB, value.name, value.keyword)
                 break
@@ -413,6 +416,9 @@ export class ACS {
                     value.userId,
                     value.userMaritalStatus,
                   )
+                  break
+                case ACParams.TYPE.PUSH:
+                  ACEReducerForOne.push(callbackForPromise, value.data, value.push)
                   break
                 case ACParams.TYPE.SEARCH:
                   ACEReducerForOne.search(callbackForPromise, value.name, value.keyword)

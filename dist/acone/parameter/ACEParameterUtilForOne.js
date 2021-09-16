@@ -107,6 +107,15 @@ export default class ACEParameterUtilForOne {
     clearKeyword() {
         this.setKeyword(ACECONSTANT.EMPTY);
     }
+    getKW() {
+        return ACEParametersForOne.getInstance().getKW();
+    }
+    setKW(value) {
+        ACEParametersForOne.getInstance().setKW(value);
+    }
+    clearKW() {
+        ACEParametersForOne.getInstance().setKW(ACECONSTANT.EMPTY);
+    }
     setJN(value) {
         var _jn = JN.Unknown;
         switch (value) {
@@ -243,6 +252,15 @@ export default class ACEParameterUtilForOne {
     }
     setKeepSession() {
         ACEParametersForOne.getInstance().setVK(SESSION.KEEP);
+    }
+    clearSRC() {
+        ACEParametersForOne.getInstance().setSRC(ACECONSTANT.EMPTY);
+    }
+    getSRC() {
+        return ACEParametersForOne.getInstance().getSRC();
+    }
+    setSRC(value) {
+        ACEParametersForOne.getInstance().setSRC(value);
     }
     updateSTnVT(willUpdateVt) {
         const _now = new Date();

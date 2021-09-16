@@ -11,6 +11,7 @@ type ParamType =
   | 'leave'
   | 'link'
   | 'login'
+  | 'push'
   | 'search'
   | 'tel'
 
@@ -26,6 +27,7 @@ export type IACParams = {
     LEAVE: ParamType
     LINK: ParamType
     LOGIN: ParamType
+    PUSH: ParamType
     SEARCH: ParamType
     TEL: ParamType
   }
@@ -35,6 +37,7 @@ export type ACParams = {
   type: ParamType
   name?: string
 
+  data?: {[key: string]: string}
   keyword?: string
   linkName?: string
   orderNumber?: string
@@ -42,6 +45,7 @@ export type ACParams = {
   productCategoryName?: string
   productName?: string
   productPrice?: string
+  push?: string
   tel?: string
   userAge?: number
   userGender?: ACEGender
@@ -62,6 +66,7 @@ export const ACParams: IACParams = {
     LEAVE: 'leave',
     LINK: 'link',
     LOGIN: 'login',
+    PUSH: 'push',
     SEARCH: 'search',
     TEL: 'tel',
   },

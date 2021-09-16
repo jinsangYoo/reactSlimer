@@ -12,6 +12,7 @@ export declare type IPayload = {
     productCategoryName?: string;
     productPrice?: string;
     products?: ACProduct[];
+    push?: string;
     userAge?: number;
     userGender?: ACEGender;
     userId?: string;

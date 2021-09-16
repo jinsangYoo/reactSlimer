@@ -9,6 +9,7 @@ export const ACParams = {
         LEAVE: 'leave',
         LINK: 'link',
         LOGIN: 'login',
+        PUSH: 'push',
         SEARCH: 'search',
         TEL: 'tel',
     },
