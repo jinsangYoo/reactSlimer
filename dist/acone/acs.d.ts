@@ -33,5 +33,6 @@ export declare class ACS {
     private static setBufferQueue;
     private static toggleLock;
     private static isLock;
+    static setAdvertisingIdentifier(advertisingIdentifier: string): void;
 }
 //# sourceMappingURL=acs.d.ts.map

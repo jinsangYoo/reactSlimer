@@ -135,7 +135,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.244';
+        return '0.0.248';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -395,6 +395,9 @@ export class ACS {
     }
     static isLock() {
         return this.lock;
+    }
+    static setAdvertisingIdentifier(advertisingIdentifier) {
+        ACECommonStaticConfig.setAdvertisingIdentifier(advertisingIdentifier);
     }
 }
 ACS._TAG = 'ACS';

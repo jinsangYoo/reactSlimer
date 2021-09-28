@@ -31,6 +31,9 @@ export default class ACEParameterUtilForOne {
     getSdkDetails(json) {
         throw new Error('Method not implemented.');
     }
+    setAdvertisingIdentifier(advertisingIdentifier) {
+        ACEParametersForOne.getInstance().setADID(advertisingIdentifier);
+    }
     initParameters(key, enablePrivacyPolicy, callback) {
         this._enablePrivacyPolicy = enablePrivacyPolicy;
         const _parametersForOne = ACEParametersForOne.getInstance();
@@ -48,7 +51,7 @@ export default class ACEParameterUtilForOne {
         _parametersForOne.getUDF3();
         this.setSTS(ACECONSTANT.ZERO);
         _parametersForOne.setADELD(false);
-        _parametersForOne.setADID(ACECONSTANT.DEFAULT_ADID);
+        _parametersForOne.setADID(ACEParameterUtil.getUniqueId());
         ACELog.d(ACEParameterUtilForOne._TAG, `tz: ${_parametersForOne.getTZ()}`);
         this.setNewSession();
         ACS.setPackageNameOrBundleID(ACEParameterUtil.getPackageNameOrBundleID());

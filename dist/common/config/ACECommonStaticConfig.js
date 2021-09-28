@@ -151,6 +151,12 @@ export default class ACECommonStaticConfig {
         }
         return undefined;
     }
+    static setAdvertisingIdentifier(advertisingIdentifier) {
+        const _parameterUtil = ACECommonStaticConfig.getParameterUtil();
+        if (_parameterUtil) {
+            _parameterUtil.setAdvertisingIdentifier(advertisingIdentifier);
+        }
+    }
 }
 ACECommonStaticConfig._TAG = 'comInit';
 //# sourceMappingURL=ACECommonStaticConfig.js.map

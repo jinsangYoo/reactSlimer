@@ -175,7 +175,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.244'
+    return '0.0.248'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -494,6 +494,12 @@ export class ACS {
 
   private static isLock(): boolean {
     return this.lock
+  }
+  //#endregion
+
+  //#region AdvertisingIdentifier
+  public static setAdvertisingIdentifier(advertisingIdentifier: string): void {
+    ACECommonStaticConfig.setAdvertisingIdentifier(advertisingIdentifier)
   }
   //#endregion
 }

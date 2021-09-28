@@ -49,6 +49,10 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     throw new Error('Method not implemented.')
   }
 
+  setAdvertisingIdentifier(advertisingIdentifier: string): void {
+    ACEParametersForOne.getInstance().setADID(advertisingIdentifier)
+  }
+
   public initParameters(
     key: string,
     enablePrivacyPolicy: boolean,
@@ -77,7 +81,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
     this.setSTS(ACECONSTANT.ZERO)
     _parametersForOne.setADELD(false)
-    _parametersForOne.setADID(ACECONSTANT.DEFAULT_ADID)
+    _parametersForOne.setADID(ACEParameterUtil.getUniqueId())
 
     ACELog.d(ACEParameterUtilForOne._TAG, `tz: ${_parametersForOne.getTZ()}`)
 

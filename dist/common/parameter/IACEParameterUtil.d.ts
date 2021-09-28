@@ -7,5 +7,6 @@ export default interface IACEParameterUtil {
     setNewSession(): void;
     setterForString(key: string, value: string): void;
     getSdkDetails(json: JSON): void;
+    setAdvertisingIdentifier(advertisingIdentifier: string): void;
 }
 //# sourceMappingURL=IACEParameterUtil.d.ts.map

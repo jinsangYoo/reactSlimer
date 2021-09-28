@@ -11,5 +11,6 @@ export default class ACECommonStaticConfig {
     static getEnablePrivacyPolicy(): boolean;
     static getKey(): string;
     static getParameterUtil(): IACEParameterUtil | undefined;
+    static setAdvertisingIdentifier(advertisingIdentifier: string): void;
 }
 //# sourceMappingURL=ACECommonStaticConfig.d.ts.map

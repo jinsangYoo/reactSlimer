@@ -174,4 +174,13 @@ export default class ACECommonStaticConfig {
 
     return undefined
   }
+
+  //#region AdvertisingIdentifier
+  public static setAdvertisingIdentifier(advertisingIdentifier: string): void {
+    const _parameterUtil = ACECommonStaticConfig.getParameterUtil()
+    if (_parameterUtil) {
+      _parameterUtil.setAdvertisingIdentifier(advertisingIdentifier)
+    }
+  }
+  //#endregion
 }

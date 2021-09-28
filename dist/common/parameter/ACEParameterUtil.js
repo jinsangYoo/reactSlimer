@@ -16,6 +16,9 @@ export default class ACEParameterUtil {
     static getSystemVersion() {
         return DeviceInfo.getSystemVersion();
     }
+    static getUniqueId() {
+        return DeviceInfo.getUniqueId();
+    }
     static getUserAgentForSDK() {
         return `${ACEParameterUtil.getSystemName()} ${ACEParameterUtil.getSystemVersion()} ${ACEParameterUtil.getModel()} on react-native`;
     }

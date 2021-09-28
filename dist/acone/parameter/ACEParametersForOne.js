@@ -41,8 +41,10 @@ export default class ACEParametersForOne extends ACEParameters {
     setADID(value) {
         if (isEmpty(value)) {
             this.adid = ADID.defaultADID;
+            this.setADELD(false);
         }
         else {
+            this.setADELD(true);
             this.adid = value;
         }
     }

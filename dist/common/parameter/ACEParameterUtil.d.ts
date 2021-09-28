@@ -4,6 +4,7 @@ export default class ACEParameterUtil {
     static getModel(): string;
     static getSystemName(): string;
     static getSystemVersion(): string;
+    static getUniqueId(): string;
     static getUserAgentForSDK(): string;
 }
 //# sourceMappingURL=ACEParameterUtil.d.ts.map
