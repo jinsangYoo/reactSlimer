@@ -16,6 +16,8 @@ import ControlTowerSingleton from '../../common/controltower/ControlTowerSinglet
 import { ACParams } from '../acparam';
 import { isEmpty } from '../../common/util/TextUtils';
 import ACOneConstant from '../constant/ACOneConstant';
+import ACEParameterUtilForOne from './ACEParameterUtilForOne';
+import ACECONSTANT from '../../common/constant/ACEConstant';
 export default class ACEReducerForOne {
     constructor() { }
     static getInstance() {
@@ -70,6 +72,7 @@ export default class ACEReducerForOne {
             case ACEofAPIForOne.Policy:
                 taskAdapter.addTask(new APIForPolicy(params), callback);
                 break;
+            case ACEofAPIForOne.InstallReferrer:
             case ACEofAPIForOne.Push:
                 taskAdapter.addTask(new APIForPushReferrerDeeplink(params), callback);
                 break;
@@ -81,7 +84,7 @@ export default class ACEReducerForOne {
                 ACELog.d(ACEReducerForOne._TAG, 'not implementation Task.');
                 break;
         }
-        return taskAdapter.run();
+        taskAdapter.run();
     }
     static appearProduct(callback, pageName, productName, productCategoryName, productPrice) {
         return ACEReducerForOne.reducer({
@@ -196,11 +199,29 @@ export default class ACEReducerForOne {
         return ACEReducerForOne.reducer({
             type: ACEofAPIForOne.Push,
             payload: {
-                push: _push,
+                keyword: _push,
             },
             error: false,
             debugParams: {},
         }, callback);
+    }
+    static referrer(callback, keyword) {
+        const _keyword = keyword !== null && keyword !== void 0 ? keyword : ACECONSTANT.EMPTY;
+        ACEParameterUtilForOne.getInstance()
+            .isDuplicateInstallReferrer(_keyword)
+            .then(result => {
+            ACELog.d(ACECONSTANT.OFFICIAL_LOG_TAG, 'Already stored referrer.');
+        })
+            .catch(err => {
+            return ACEReducerForOne.reducer({
+                type: ACEofAPIForOne.InstallReferrer,
+                payload: {
+                    keyword: _keyword,
+                },
+                error: false,
+                debugParams: {},
+            }, callback);
+        });
     }
     static search(callback, pageName, keyword) {
         return ACEReducerForOne.reducer({

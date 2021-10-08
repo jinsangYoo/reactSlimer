@@ -14,6 +14,7 @@ var ACEofAPIForOne;
     ACEofAPIForOne[ACEofAPIForOne["Login"] = 152] = "Login";
     ACEofAPIForOne[ACEofAPIForOne["Search"] = 190] = "Search";
     ACEofAPIForOne[ACEofAPIForOne["Policy"] = 1000] = "Policy";
+    ACEofAPIForOne[ACEofAPIForOne["InstallReferrer"] = 3300] = "InstallReferrer";
     ACEofAPIForOne[ACEofAPIForOne["Push"] = 3210] = "Push";
 })(ACEofAPIForOne || (ACEofAPIForOne = {}));
 export default ACEofAPIForOne;

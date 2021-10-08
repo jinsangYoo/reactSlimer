@@ -83,6 +83,7 @@ export enum ACEResultCode {
   NotFoundPolicyInformation = 1031,
   NotExistWaitTask = 1032,
   TooBusyWillSendAfterDone = 1033,
+  InvalidACParamValues = 1034,
 }
 
 export enum ACEGender {

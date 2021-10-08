@@ -2,6 +2,7 @@ import ACEParameters from '../../common/parameter/ACEParameters';
 import ACEntityForST from './ACEntityForST';
 import ACEntityForVT from './ACEntityForVT';
 import { ResultAfterSaveInStorage } from './ResultAfterSaveInStorage';
+import { ResultOfStorage } from '../../common/constant/ResultOfStorage';
 export default class ACEParametersForOne extends ACEParameters {
     private static _TAG;
     private static instance;
@@ -61,8 +62,10 @@ export default class ACEParametersForOne extends ACEParameters {
     setGD(value: string): void;
     getID(): string;
     setID(value: string): void;
-    getInstallReferrer(callback?: (error?: Error, result?: object) => void): Promise<object> | void;
-    setInstallReferrer(value: string, callback?: (error?: Error, result?: object) => void): Promise<object> | void;
+    getInstallReferrer(callback: (error?: Error, result?: ResultOfStorage) => void): void;
+    getInstallReferrer(): Promise<ResultOfStorage>;
+    setInstallReferrer(value: string, callback: (error?: Error, result?: ResultOfStorage) => void): void;
+    setInstallReferrer(value: string): Promise<ResultOfStorage>;
     getJN(): string;
     setJN(value: string): void;
     getKW(): string;

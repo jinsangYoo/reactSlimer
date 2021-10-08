@@ -12,6 +12,7 @@ type ParamType =
   | 'link'
   | 'login'
   | 'push'
+  | 'referrer'
   | 'search'
   | 'tel'
 
@@ -28,6 +29,7 @@ export type IACParams = {
     LINK: ParamType
     LOGIN: ParamType
     PUSH: ParamType
+    REFERRER: ParamType
     SEARCH: ParamType
     TEL: ParamType
   }
@@ -67,6 +69,7 @@ export const ACParams: IACParams = {
     LINK: 'link',
     LOGIN: 'login',
     PUSH: 'push',
+    REFERRER: 'referrer',
     SEARCH: 'search',
     TEL: 'tel',
   },

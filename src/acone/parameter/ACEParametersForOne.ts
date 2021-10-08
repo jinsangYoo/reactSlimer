@@ -17,6 +17,7 @@ import TP from '../constant/TP'
 import {ResultAfterSaveInStorage} from './ResultAfterSaveInStorage'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {ResultOfStorage} from '../../common/constant/ResultOfStorage'
 import JN from '../constant/JN'
 
 export default class ACEParametersForOne extends ACEParameters {
@@ -215,7 +216,11 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public getInstallReferrer(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
+  public getInstallReferrer(callback: (error?: Error, result?: ResultOfStorage) => void): void
+  public getInstallReferrer(): Promise<ResultOfStorage>
+  public getInstallReferrer(
+    callback?: (error?: Error, result?: ResultOfStorage) => void,
+  ): Promise<ResultOfStorage> | void {
     if (!global.Promise) {
       ACELog.d(ACEParametersForOne._TAG, 'getInstallReferrer not support promise.')
       AsyncStorage.getItem(ACECONSTANT.InstallReferrer, (err, result) => {
@@ -252,10 +257,12 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
+  public setInstallReferrer(value: string, callback: (error?: Error, result?: ResultOfStorage) => void): void
+  public setInstallReferrer(value: string): Promise<ResultOfStorage>
   public setInstallReferrer(
     value: string,
-    callback?: (error?: Error, result?: object) => void,
-  ): Promise<object> | void {
+    callback?: (error?: Error, result?: ResultOfStorage) => void,
+  ): Promise<ResultOfStorage> | void {
     if (isEmpty(value)) {
       value = ACECONSTANT.EMPTY
     }

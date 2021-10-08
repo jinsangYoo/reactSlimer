@@ -10,6 +10,7 @@ export const ACParams = {
         LINK: 'link',
         LOGIN: 'login',
         PUSH: 'push',
+        REFERRER: 'referrer',
         SEARCH: 'search',
         TEL: 'tel',
     },

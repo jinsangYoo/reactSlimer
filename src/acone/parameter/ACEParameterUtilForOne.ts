@@ -53,6 +53,30 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     ACEParametersForOne.getInstance().setADID(advertisingIdentifier)
   }
 
+  isDuplicateInstallReferrer(value: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      ACEParametersForOne.getInstance()
+        .getInstallReferrer()
+        .then(result => {
+          ACELog.d(ACEParameterUtilForOne._TAG, `result: ${JSON.stringify(result)}, new referrer: ${value}`)
+          if (!isEmpty(result.getValue)) {
+            ACELog.d(ACEParameterUtilForOne._TAG, 'Already stored referrer.')
+            if (result.getValue == value) {
+              ACELog.d(ACEParameterUtilForOne._TAG, 'Same referrer')
+            } else {
+              resolve(true)
+              return
+            }
+          }
+          reject(false)
+        })
+        .catch(err => {
+          ACELog.d(ACEParameterUtilForOne._TAG, `err: ${JSON.stringify(err)}`)
+          reject(false)
+        })
+    })
+  }
+
   public initParameters(
     key: string,
     enablePrivacyPolicy: boolean,

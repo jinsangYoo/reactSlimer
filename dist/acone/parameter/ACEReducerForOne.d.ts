@@ -31,6 +31,8 @@ export default class ACEReducerForOne {
     static push(callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, data?: {
         [key: string]: string;
     }, push?: string): Promise<ACEResponseToCaller>;
+    static referrer(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, keyword?: string): void;
+    static referrer(callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, keyword?: string): Promise<ACEResponseToCaller>;
     static search(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, keyword?: string): void;
     static search(callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, keyword?: string): Promise<ACEResponseToCaller>;
     static tel(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined, pageName?: string, tel?: string): void;

@@ -19,6 +19,7 @@ enum ACEofAPIForOne {
 
   Policy = 1000,
 
+  InstallReferrer = 3300,
   Push = 3210,
 }
 

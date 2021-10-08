@@ -23,7 +23,7 @@ export default class APIForPushReferrerDeeplink extends Task {
   public constructor(params: ITaskParams) {
     super(params)
     ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'in constructor, params:', params)
-    this._kw = params.payload.push ?? ACECONSTANT.EMPTY
+    this._kw = params.payload.keyword ?? ACECONSTANT.EMPTY
   }
 
   public doWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
@@ -34,6 +34,10 @@ export default class APIForPushReferrerDeeplink extends Task {
     _parameterUtilForOne.setTP(TP.MCLICK)
     _parameterUtilForOne.updateUrlToRef(ACECONSTANT.EMPTY)
     switch (this.getLogSource()) {
+      case ACEofAPIForOne.InstallReferrer:
+        _parameterUtilForOne.setSRC(SRC.InstallReferrer)
+        _parameterUtilForOne.setKW(this._kw)
+        break
       case ACEofAPIForOne.Push:
         _parameterUtilForOne.setSRC(SRC.Push)
         _parameterUtilForOne.setKW(this._kw)

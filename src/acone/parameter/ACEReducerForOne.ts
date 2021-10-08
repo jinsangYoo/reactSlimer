@@ -19,6 +19,8 @@ import {ACParams} from '../acparam'
 import {ACEGender, ACEMaritalStatus} from '../../common/constant/ACEPublicStaticConfig'
 import {isEmpty} from '../../common/util/TextUtils'
 import ACOneConstant from '../constant/ACOneConstant'
+import ACEParameterUtilForOne from './ACEParameterUtilForOne'
+import ACECONSTANT from '../../common/constant/ACEConstant'
 
 export default class ACEReducerForOne {
   private static _TAG = 'reducerForOne'
@@ -86,6 +88,7 @@ export default class ACEReducerForOne {
       case ACEofAPIForOne.Policy:
         taskAdapter.addTask(new APIForPolicy(params), callback)
         break
+      case ACEofAPIForOne.InstallReferrer:
       case ACEofAPIForOne.Push:
         taskAdapter.addTask(new APIForPushReferrerDeeplink(params), callback)
         break
@@ -98,7 +101,7 @@ export default class ACEReducerForOne {
         break
     }
 
-    return taskAdapter.run()
+    taskAdapter.run()
   }
 
   public static appearProduct(
@@ -401,13 +404,47 @@ export default class ACEReducerForOne {
       {
         type: ACEofAPIForOne.Push,
         payload: {
-          push: _push,
+          keyword: _push,
         },
         error: false,
         debugParams: {},
       },
       callback,
     )
+  }
+
+  public static referrer(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    keyword?: string,
+  ): void
+  public static referrer(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller>
+  public static referrer(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    const _keyword = keyword ?? ACECONSTANT.EMPTY
+
+    ACEParameterUtilForOne.getInstance()
+      .isDuplicateInstallReferrer(_keyword)
+      .then(result => {
+        ACELog.i(ACECONSTANT.OFFICIAL_LOG_TAG, 'Already stored referrer.')
+      })
+      .catch(err => {
+        return ACEReducerForOne.reducer(
+          {
+            type: ACEofAPIForOne.InstallReferrer,
+            payload: {
+              keyword: _keyword,
+            },
+            error: false,
+            debugParams: {},
+          },
+          callback,
+        )
+      })
   }
 
   public static search(

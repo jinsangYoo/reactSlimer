@@ -8,5 +8,6 @@ export default interface IACEParameterUtil {
     setterForString(key: string, value: string): void;
     getSdkDetails(json: JSON): void;
     setAdvertisingIdentifier(advertisingIdentifier: string): void;
+    isDuplicateInstallReferrer(value: string): Promise<boolean>;
 }
 //# sourceMappingURL=IACEParameterUtil.d.ts.map
