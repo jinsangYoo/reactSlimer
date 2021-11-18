@@ -210,7 +210,7 @@ export default class ACEReducerForOne {
         ACEParameterUtilForOne.getInstance()
             .isDuplicateInstallReferrer(_keyword)
             .then(result => {
-            ACELog.d(ACECONSTANT.OFFICIAL_LOG_TAG, 'Already stored referrer.');
+            ACELog.i(ACECONSTANT.OFFICIAL_LOG_TAG, 'Already stored referrer.');
         })
             .catch(err => {
             return ACEReducerForOne.reducer({

@@ -7,8 +7,9 @@ import { ACEConstantCallback, ACEResultCode } from '../constant/ACEPublicStaticC
 import ACELog from '../logger/ACELog';
 export default class ACECommonStaticConfig {
     static configure(configuration, callback) {
-        ControlTowerSingleton.getInstance().setDevSDKMode();
-        ControlTowerSingleton.getInstance().setHomeDevNetworkMode();
+        ControlTowerSingleton.setDevSDKMode();
+        ControlTowerSingleton.setDefaultNetworkMode();
+        ACELog.i(ACECommonStaticConfig._TAG, `SDK mode: ${ControlTowerSingleton.getCurrentSDKkModeName()}, network mode: ${ControlTowerSingleton.getCurrentNetworkModeName()}`);
         ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.SDKVersion()}`);
         if (ControlTowerSingleton.isEnableByPolicy()) {
             ACELog.d(ACECommonStaticConfig._TAG, 'Already init SDK.');
@@ -33,8 +34,8 @@ export default class ACECommonStaticConfig {
             if (this._staticConfigImpl) {
                 ACELog.i(ACECommonStaticConfig._TAG, 'Reinit SDK.');
                 ControlTowerSingleton.reset();
-                ControlTowerSingleton.getInstance().setDevSDKMode();
-                ControlTowerSingleton.getInstance().setHomeDevNetworkMode();
+                ControlTowerSingleton.setDevSDKMode();
+                ControlTowerSingleton.setDefaultNetworkMode();
             }
             else {
                 ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.');

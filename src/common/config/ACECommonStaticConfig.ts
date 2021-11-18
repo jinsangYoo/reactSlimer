@@ -23,9 +23,15 @@ export default class ACECommonStaticConfig {
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
     // ************************************************ development mode [S]
-    ControlTowerSingleton.getInstance().setDevSDKMode()
-    ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+    ControlTowerSingleton.setDevSDKMode()
+    // ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+    ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
     // ************************************************ development mode [E]
+
+    ACELog.i(
+      ACECommonStaticConfig._TAG,
+      `SDK mode: ${ControlTowerSingleton.getCurrentSDKkModeName()}, network mode: ${ControlTowerSingleton.getCurrentNetworkModeName()}`,
+    )
 
     ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.SDKVersion()}`)
 
@@ -52,8 +58,9 @@ export default class ACECommonStaticConfig {
         ACELog.i(ACECommonStaticConfig._TAG, 'Reinit SDK.')
         ControlTowerSingleton.reset()
         // ************************************************ development mode [S]
-        ControlTowerSingleton.getInstance().setDevSDKMode()
-        ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+        ControlTowerSingleton.setDevSDKMode()
+        // ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+        ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
         // ************************************************ development mode [E]
       } else {
         ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.')

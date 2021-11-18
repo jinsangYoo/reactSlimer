@@ -109,8 +109,24 @@ export default class ControlTowerSingleton {
   }
 
   //#region static
+  public static getCurrentSDKkModeName(): string {
+    return SDKMode[ControlTowerSingleton.getInstance().getSDKMode()]
+  }
+
+  public static getCurrentNetworkModeName(): string {
+    return NetworkMode[ControlTowerSingleton.getInstance().getNetworkMode()]
+  }
+
   public static getDefaultNetworkMode(): NetworkMode {
     return ControlTower.getDefaultNetworkMode()
+  }
+
+  public static setDefaultNetworkMode(): void {
+    ControlTowerSingleton.getInstance().setNetworkMode(ControlTowerSingleton.getDefaultNetworkMode())
+  }
+
+  public static setDevSDKMode(): void {
+    ControlTowerSingleton.getInstance().setDevSDKMode()
   }
 
   public static getIsCompletePolicy(): boolean {

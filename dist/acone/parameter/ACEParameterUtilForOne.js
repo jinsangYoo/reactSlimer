@@ -41,7 +41,7 @@ export default class ACEParameterUtilForOne {
                 .then(result => {
                 ACELog.d(ACEParameterUtilForOne._TAG, `result: ${JSON.stringify(result)}, new referrer: ${value}`);
                 if (!isEmpty(result.getValue)) {
-                    ACELog.d(ACEParameterUtilForOne._TAG, 'Already stored referrer,');
+                    ACELog.d(ACEParameterUtilForOne._TAG, 'Already stored referrer.');
                     if (result.getValue == value) {
                         ACELog.d(ACEParameterUtilForOne._TAG, 'Same referrer');
                     }

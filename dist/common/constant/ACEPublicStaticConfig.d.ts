@@ -71,7 +71,8 @@ export declare enum ACEResultCode {
     DisabledByPolicy = 1030,
     NotFoundPolicyInformation = 1031,
     NotExistWaitTask = 1032,
-    TooBusyWillSendAfterDone = 1033
+    TooBusyWillSendAfterDone = 1033,
+    InvalidACParamValues = 1034
 }
 export declare enum ACEGender {
     Unknown = "",

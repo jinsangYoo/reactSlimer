@@ -13,7 +13,7 @@ export default class ControlTower {
     reset() {
         ACELog.d(ControlTower._pTAG, 'Reset policy information of SDK.');
         this._sdk_mode = SDKMode.production;
-        this._network_mode = NetworkMode.COMPANY_dev;
+        this._network_mode = NetworkMode.Pro;
         this._isCompletePolicy = false;
         this._isInstallReferrerDone = false;
         this._isSDKForceStop = false;
@@ -89,7 +89,7 @@ export default class ControlTower {
         ACELog.setProductionMode();
     }
     static getDefaultNetworkMode() {
-        return NetworkMode.COMPANY_dev;
+        return NetworkMode.Pro;
     }
 }
 ControlTower._pTAG = 'pTower';

@@ -42,6 +42,7 @@ export var ACEResultCode;
     ACEResultCode[ACEResultCode["NotFoundPolicyInformation"] = 1031] = "NotFoundPolicyInformation";
     ACEResultCode[ACEResultCode["NotExistWaitTask"] = 1032] = "NotExistWaitTask";
     ACEResultCode[ACEResultCode["TooBusyWillSendAfterDone"] = 1033] = "TooBusyWillSendAfterDone";
+    ACEResultCode[ACEResultCode["InvalidACParamValues"] = 1034] = "InvalidACParamValues";
 })(ACEResultCode || (ACEResultCode = {}));
 export var ACEGender;
 (function (ACEGender) {

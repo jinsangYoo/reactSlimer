@@ -7,6 +7,8 @@ import ACEConstantInteger from '../common/constant/ACEConstantInteger';
 import ACELog from '../common/logger/ACELog';
 import NetworkUtils from '../common/http/NetworkUtills';
 import { EventsForWorkerEmitter } from '../common/worker/EventsForWorkerEmitter';
+import { decode, getQueryForKey, isEmpty } from '../common/util/TextUtils';
+import ACECONSTANT from '../common/constant/ACEConstant';
 export class ACS {
     constructor() {
         this.emitter = new EventsForWorkerEmitter();
@@ -135,7 +137,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.249';
+        return '0.0.257';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -211,6 +213,7 @@ export class ACS {
             };
             NetworkUtils.isNetworkAvailable()
                 .then(isConnected => {
+                var _a;
                 ACELog.d(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`);
                 if (isConnected) {
                     switch (value.type) {
@@ -243,6 +246,20 @@ export class ACS {
                             ACEReducerForOne.push(callbackForCB, value.data, value.push);
                             break;
                         case ACParams.TYPE.REFERRER:
+                            const _keyword = getQueryForKey(decode((_a = value.keyword) !== null && _a !== void 0 ? _a : ACECONSTANT.EMPTY), ACECONSTANT.ReferrerKeyName);
+                            if (isEmpty(_keyword)) {
+                                const result = {
+                                    taskHash: `${value.type}::0410`,
+                                    code: ACEResultCode.InvalidACParamValues,
+                                    result: ACEConstantCallback[ACEConstantCallback.Failed],
+                                    message: 'Invalid value in ACParam object.',
+                                    apiName: value.type,
+                                };
+                                ACS.toggleLock();
+                                ACS.getInstance().popBufferQueueEmit();
+                                callback(undefined, result);
+                                return;
+                            }
                             ACEReducerForOne.referrer(callbackForCB, value.keyword);
                             break;
                         case ACParams.TYPE.SEARCH:
@@ -300,6 +317,7 @@ export class ACS {
                 };
                 NetworkUtils.isNetworkAvailable()
                     .then(isConnected => {
+                    var _a;
                     ACELog.d(ACS._TAG, `isNetworkAvailable::in then::isConnected: ${isConnected}`);
                     if (isConnected) {
                         switch (value.type) {
@@ -332,6 +350,20 @@ export class ACS {
                                 ACEReducerForOne.push(callbackForPromise, value.data, value.push);
                                 break;
                             case ACParams.TYPE.REFERRER:
+                                const _keyword = getQueryForKey(decode((_a = value.keyword) !== null && _a !== void 0 ? _a : ACECONSTANT.EMPTY), ACECONSTANT.ReferrerKeyName);
+                                if (isEmpty(_keyword)) {
+                                    const result = {
+                                        taskHash: `${value.type}::0410`,
+                                        code: ACEResultCode.InvalidACParamValues,
+                                        result: ACEConstantCallback[ACEConstantCallback.Failed],
+                                        message: 'Invalid value in ACParam object.',
+                                        apiName: value.type,
+                                    };
+                                    ACS.toggleLock();
+                                    ACS.getInstance().popBufferQueueEmit();
+                                    rejectToOut(result);
+                                    return;
+                                }
                                 ACEReducerForOne.referrer(callbackForPromise, value.keyword);
                                 break;
                             case ACParams.TYPE.SEARCH:

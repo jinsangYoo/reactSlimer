@@ -24,7 +24,11 @@ export default class ControlTowerSingleton {
     succeedRequestPolicy(): void;
     failedRequestPolicy(): void;
     reset(): void;
+    static getCurrentSDKkModeName(): string;
+    static getCurrentNetworkModeName(): string;
     static getDefaultNetworkMode(): NetworkMode;
+    static setDefaultNetworkMode(): void;
+    static setDevSDKMode(): void;
     static getIsCompletePolicy(): boolean;
     static isEnableByPolicy(): boolean;
     static reset(): void;

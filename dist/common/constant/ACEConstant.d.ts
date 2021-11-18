@@ -1,5 +1,4 @@
 declare enum ACECONSTANT {
-    ACP_PUSH = "acp_push",
     BOOKMARK = "bookmark",
     DEFAULT_ADID = "00000000-0000-0000-0000-000000000000",
     DIRECT = "Direct",
@@ -12,6 +11,7 @@ declare enum ACECONSTANT {
     LNC_LOG_VERSION = "v2",
     OFFICIAL_LOG_TAG = "[ACE]",
     PATCH = "rev01",
+    ReferrerKeyName = "kw",
     SDK_PATCH = "patch",
     SDK_VERSION = "version",
     TASK_CREATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS",
