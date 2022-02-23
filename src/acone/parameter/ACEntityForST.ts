@@ -175,4 +175,16 @@ export default class ACEntityForST {
       ac1_random6StartTS: this.getRandom6ForStartTS(),
     }
   }
+
+  public getObjectForTS(): object {
+    return {
+      getts: this.getGetTSGoldMaster(),
+
+      insenginets: this.getInsenginetTSGoldMaster(),
+
+      referts: this.getRTSGoldMaster(),
+
+      startts: this.getStartTSGoldMaster(),
+    }
+  }
 }

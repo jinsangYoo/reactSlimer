@@ -132,5 +132,13 @@ export default class ACEntityForST {
             ac1_random6StartTS: this.getRandom6ForStartTS(),
         };
     }
+    getObjectForTS() {
+        return {
+            getts: this.getGetTSGoldMaster(),
+            insenginets: this.getInsenginetTSGoldMaster(),
+            referts: this.getRTSGoldMaster(),
+            startts: this.getStartTSGoldMaster(),
+        };
+    }
 }
 //# sourceMappingURL=ACEntityForST.js.map

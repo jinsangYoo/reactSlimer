@@ -11,6 +11,7 @@ import NetworkUtils from '../common/http/NetworkUtills'
 import {EventsForWorkerEmitter} from '../common/worker/EventsForWorkerEmitter'
 import {decode, getQueryForKey, isEmpty} from '../common/util/TextUtils'
 import ACECONSTANT from '../common/constant/ACEConstant'
+import ACEParameterUtil from '../common/parameter/ACEParameterUtil'
 
 export class ACS {
   private static _TAG = 'ACS'
@@ -177,7 +178,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.257'
+    return '0.0.258'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -541,6 +542,21 @@ export class ACS {
   //#region AdvertisingIdentifier
   public static setAdvertisingIdentifier(advertisingIdentifier: string): void {
     ACECommonStaticConfig.setAdvertisingIdentifier(advertisingIdentifier)
+  }
+  //#endregion
+
+  //#region AceWebViewInterface
+  public static getKey(): string {
+    return ACECommonStaticConfig.getKey()
+  }
+
+  public static getDevice(): string {
+    return ACEParameterUtil.getModel()
+  }
+
+  public static getTS(): string {
+    const parameterUtil = ACECommonStaticConfig.getParameterUtil()
+    return parameterUtil ? parameterUtil.getTS() : '{}'
   }
   //#endregion
 }

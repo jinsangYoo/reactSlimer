@@ -58,6 +58,9 @@ export default class ACEParameterUtilForOne {
             });
         });
     }
+    getTS() {
+        return JSON.stringify({ st: this.getST().getObjectForTS(), vt: this.getVT().getObjectForTS() });
+    }
     initParameters(key, enablePrivacyPolicy, callback) {
         this._enablePrivacyPolicy = enablePrivacyPolicy;
         const _parametersForOne = ACEParametersForOne.getInstance();

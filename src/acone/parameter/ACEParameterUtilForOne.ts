@@ -77,6 +77,10 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     })
   }
 
+  getTS(): string {
+    return JSON.stringify({st: this.getST().getObjectForTS(), vt: this.getVT().getObjectForTS()})
+  }
+
   public initParameters(
     key: string,
     enablePrivacyPolicy: boolean,

@@ -230,4 +230,17 @@ export default class ACEntityForVT {
       ac1_random6pcStamp: this.getRandom6ForPcStamp(),
     }
   }
+
+  public getObjectForTS(): object {
+    return {
+      vts: this.getVTSGoldMaster(),
+      visitCount: this.getVisitCount(),
+
+      buyTimeTS: this.getBuyTimeTSGoldMaster(),
+
+      buyCount: this.getBuyCount(),
+
+      pcStamp: this.getPcStampGoldMaster(),
+    }
+  }
 }

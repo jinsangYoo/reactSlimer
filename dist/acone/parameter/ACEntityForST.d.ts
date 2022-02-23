@@ -25,5 +25,6 @@ export default class ACEntityForST {
     getRandom6ForStartTS(): string;
     setRandom6ForStartTS(value: string): void;
     toJSON(): object;
+    getObjectForTS(): object;
 }
 //# sourceMappingURL=ACEntityForST.d.ts.map

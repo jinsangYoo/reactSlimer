@@ -16,6 +16,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     getSdkDetails(json: JSON): void;
     setAdvertisingIdentifier(advertisingIdentifier: string): void;
     isDuplicateInstallReferrer(value: string): Promise<boolean>;
+    getTS(): string;
     initParameters(key: string, enablePrivacyPolicy: boolean, callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined): void;
     initParameters(key: string, enablePrivacyPolicy: boolean): Promise<ACEResponseToCaller>;
     getBuyMode(): string;

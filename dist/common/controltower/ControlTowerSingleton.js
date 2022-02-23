@@ -1,7 +1,7 @@
 import { SDKMode, NetworkMode } from '../constant/SDKMode';
 import { AceConfiguration } from '../../acone/aceconfiguration';
 import ControlTower from './ControlTower';
-import ACEControlTowerForOne from '../../acone/controltower.ts/ACEControlTowerForOne';
+import ACEControlTowerForOne from '../../acone/controltower/ACEControlTowerForOne';
 import ACELog from '../logger/ACELog';
 export default class ControlTowerSingleton {
     constructor(platform = AceConfiguration.PLATFORM.DEFAULT) {

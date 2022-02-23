@@ -9,6 +9,7 @@ import NetworkUtils from '../common/http/NetworkUtills';
 import { EventsForWorkerEmitter } from '../common/worker/EventsForWorkerEmitter';
 import { decode, getQueryForKey, isEmpty } from '../common/util/TextUtils';
 import ACECONSTANT from '../common/constant/ACEConstant';
+import ACEParameterUtil from '../common/parameter/ACEParameterUtil';
 export class ACS {
     constructor() {
         this.emitter = new EventsForWorkerEmitter();
@@ -137,7 +138,7 @@ export class ACS {
         return ACS._send(value, callback);
     }
     static SDKVersion() {
-        return '0.0.257';
+        return '0.0.258';
     }
     static getPackageNameOrBundleID() {
         return this._packageNameOrBundleID;
@@ -436,6 +437,16 @@ export class ACS {
     }
     static setAdvertisingIdentifier(advertisingIdentifier) {
         ACECommonStaticConfig.setAdvertisingIdentifier(advertisingIdentifier);
+    }
+    static getKey() {
+        return ACECommonStaticConfig.getKey();
+    }
+    static getDevice() {
+        return ACEParameterUtil.getModel();
+    }
+    static getTS() {
+        const parameterUtil = ACECommonStaticConfig.getParameterUtil();
+        return parameterUtil ? parameterUtil.getTS() : '{}';
     }
 }
 ACS._TAG = 'ACS';

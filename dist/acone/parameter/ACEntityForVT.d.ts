@@ -29,5 +29,6 @@ export default class ACEntityForVT {
     setRandom6ForPcStamp(value: string): void;
     setPcStampWhenNotStored(): void;
     toJSON(): object;
+    getObjectForTS(): object;
 }
 //# sourceMappingURL=ACEntityForVT.d.ts.map

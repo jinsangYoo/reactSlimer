@@ -181,6 +181,15 @@ export default class ACEntityForVT {
             ac1_random6pcStamp: this.getRandom6ForPcStamp(),
         };
     }
+    getObjectForTS() {
+        return {
+            vts: this.getVTSGoldMaster(),
+            visitCount: this.getVisitCount(),
+            buyTimeTS: this.getBuyTimeTSGoldMaster(),
+            buyCount: this.getBuyCount(),
+            pcStamp: this.getPcStampGoldMaster(),
+        };
+    }
 }
 ACEntityForVT._TAG = 'vt';
 //# sourceMappingURL=ACEntityForVT.js.map
