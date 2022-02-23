@@ -10,17 +10,17 @@ export default class ACEntityForVT {
   public constructor() {
     this._map = new Map<string, string>()
     this._map.set(ACOneConstantVt.KeyVTS, ACOneConstantVt.DefaultTS)
-    this._map.set(ACOneConstantVt.KeyRandom6ForVTS, ACECONSTANT.ZERO6)
+    this._map.set(ACOneConstantVt.KeyRandom6ForVTS, ACECONSTANT.EMPTY)
 
     this._map.set(ACOneConstantVt.KeyVisitCount, ACECONSTANT.ZERO)
 
     this._map.set(ACOneConstantVt.KeyBuyTimeTS, ACOneConstantVt.DefaultTS)
-    this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, ACECONSTANT.ZERO6)
+    this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, ACECONSTANT.EMPTY)
 
     this._map.set(ACOneConstantVt.KeyBuyCount, ACECONSTANT.ZERO)
 
     this._map.set(ACOneConstantVt.KeyPcStamp, ACOneConstantVt.DefaultTS)
-    this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, ACECONSTANT.ZERO6)
+    this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, ACECONSTANT.EMPTY)
   }
 
   public getMap(): Map<string, string> {
@@ -33,7 +33,7 @@ export default class ACEntityForVT {
     }
     const _vts = value.get(ACOneConstantVt.KeyVTS) ?? ACOneConstantVt.DefaultTS
     this._map.set(ACOneConstantVt.KeyVTS, _vts)
-    const _vtsRandom = value.get(ACOneConstantVt.KeyRandom6ForVTS) ?? ACECONSTANT.ZERO6
+    const _vtsRandom = value.get(ACOneConstantVt.KeyRandom6ForVTS) ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantVt.KeyRandom6ForVTS, _vtsRandom)
 
     const _visitCount = value.get(ACOneConstantVt.KeyVisitCount) ?? ACECONSTANT.ZERO
@@ -41,7 +41,7 @@ export default class ACEntityForVT {
 
     const _buyTimeTS = value.get(ACOneConstantVt.KeyBuyTimeTS) ?? ACOneConstantVt.DefaultTS
     this._map.set(ACOneConstantVt.KeyBuyTimeTS, _buyTimeTS)
-    const _buyTimeTSRandom = value.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS) ?? ACECONSTANT.ZERO6
+    const _buyTimeTSRandom = value.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS) ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, _buyTimeTSRandom)
 
     const _buyCount = value.get(ACOneConstantVt.KeyBuyCount) ?? ACECONSTANT.ZERO
@@ -49,7 +49,7 @@ export default class ACEntityForVT {
 
     const _pcStamp = value.get(ACOneConstantVt.KeyPcStamp) ?? ACOneConstantVt.DefaultTS
     this._map.set(ACOneConstantVt.KeyPcStamp, _pcStamp)
-    const _pcStampRandom = value.get(ACOneConstantVt.KeyRandom6ForPcStamp) ?? ACECONSTANT.ZERO6
+    const _pcStampRandom = value.get(ACOneConstantVt.KeyRandom6ForPcStamp) ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, _pcStampRandom)
   }
 
@@ -59,7 +59,7 @@ export default class ACEntityForVT {
     }
     const _vts = value[ACOneConstantVt.KeyVTS] ?? ACOneConstantVt.DefaultTS
     this._map.set(ACOneConstantVt.KeyVTS, _vts)
-    const _vtsRandom = value[ACOneConstantVt.KeyRandom6ForVTS] ?? ACECONSTANT.ZERO6
+    const _vtsRandom = value[ACOneConstantVt.KeyRandom6ForVTS] ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantVt.KeyRandom6ForVTS, _vtsRandom)
 
     const _visitCount = value[ACOneConstantVt.KeyVisitCount] ?? ACECONSTANT.ZERO
@@ -67,7 +67,7 @@ export default class ACEntityForVT {
 
     const _buyTimeTS = value[ACOneConstantVt.KeyBuyTimeTS] ?? ACOneConstantVt.DefaultTS
     this._map.set(ACOneConstantVt.KeyBuyTimeTS, _buyTimeTS)
-    const _buyTimeTSRandom = value[ACOneConstantVt.KeyRandom6ForBuyTimeTS] ?? ACECONSTANT.ZERO6
+    const _buyTimeTSRandom = value[ACOneConstantVt.KeyRandom6ForBuyTimeTS] ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, _buyTimeTSRandom)
 
     const _buyCount = value[ACOneConstantVt.KeyBuyCount] ?? ACECONSTANT.ZERO
@@ -75,7 +75,7 @@ export default class ACEntityForVT {
 
     const _pcStamp = value[ACOneConstantVt.KeyPcStamp] ?? ACOneConstantVt.DefaultTS
     this._map.set(ACOneConstantVt.KeyPcStamp, _pcStamp)
-    const _pcStampRandom = value[ACOneConstantVt.KeyRandom6ForPcStamp] ?? ACECONSTANT.ZERO6
+    const _pcStampRandom = value[ACOneConstantVt.KeyRandom6ForPcStamp] ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, _pcStampRandom)
   }
 
@@ -130,7 +130,7 @@ export default class ACEntityForVT {
   }
 
   public getRandom6ForVTS(): string {
-    return this._map.get(ACOneConstantVt.KeyRandom6ForVTS) ?? ACECONSTANT.ZERO6
+    return this._map.get(ACOneConstantVt.KeyRandom6ForVTS) ?? ACECONSTANT.ZERO
   }
 
   public setRandom6ForVTS(value: string): void {
@@ -167,7 +167,7 @@ export default class ACEntityForVT {
   }
 
   public getRandom6ForBuyTimeTS(): string {
-    return this._map.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS) ?? ACECONSTANT.ZERO6
+    return this._map.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS) ?? ACECONSTANT.ZERO
   }
 
   public setRandom6ForBuyTimeTS(value: string): void {
@@ -195,7 +195,7 @@ export default class ACEntityForVT {
   }
 
   public getRandom6ForPcStamp(): string {
-    return this._map.get(ACOneConstantVt.KeyRandom6ForPcStamp) ?? ACECONSTANT.ZERO6
+    return this._map.get(ACOneConstantVt.KeyRandom6ForPcStamp) ?? ACECONSTANT.ZERO
   }
 
   public setRandom6ForPcStamp(value: string): void {

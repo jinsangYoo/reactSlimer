@@ -18,7 +18,6 @@ var ACECONSTANT;
     ACECONSTANT["TASK_CREATE_TIME_FORMAT"] = "yyyy-MM-dd HH:mm:ss.SSS";
     ACECONSTANT["InstallReferrer"] = "_ACE.Received.InstallReferrer";
     ACECONSTANT["ZERO"] = "0";
-    ACECONSTANT["ZERO6"] = "000000";
 })(ACECONSTANT || (ACECONSTANT = {}));
 export default ACECONSTANT;
 //# sourceMappingURL=ACEConstant.js.map

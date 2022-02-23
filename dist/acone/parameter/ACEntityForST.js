@@ -4,13 +4,13 @@ export default class ACEntityForST {
     constructor() {
         this._map = new Map();
         this._map.set(ACOneConstantSt.KeyGetTS, ACOneConstantSt.DefaultTS);
-        this._map.set(ACOneConstantSt.KeyRandom6ForGetTS, ACECONSTANT.ZERO6);
+        this._map.set(ACOneConstantSt.KeyRandom6ForGetTS, ACECONSTANT.EMPTY);
         this._map.set(ACOneConstantSt.KeyInsenginetTS, ACOneConstantSt.DefaultTS);
-        this._map.set(ACOneConstantSt.KeyRandom6ForInsenginetTS, ACECONSTANT.ZERO6);
+        this._map.set(ACOneConstantSt.KeyRandom6ForInsenginetTS, ACECONSTANT.EMPTY);
         this._map.set(ACOneConstantSt.KeyRTS, ACOneConstantSt.DefaultTS);
         this._map.set(ACOneConstantSt.KeyRandom6ForRTS, ACECONSTANT.EMPTY);
         this._map.set(ACOneConstantSt.KeyStartTS, ACOneConstantSt.DefaultTS);
-        this._map.set(ACOneConstantSt.KeyRandom6ForStartTS, ACECONSTANT.ZERO6);
+        this._map.set(ACOneConstantSt.KeyRandom6ForStartTS, ACECONSTANT.EMPTY);
     }
     getMap() {
         return this._map;
@@ -22,19 +22,19 @@ export default class ACEntityForST {
         }
         const _getTS = (_a = value.get(ACOneConstantSt.KeyGetTS)) !== null && _a !== void 0 ? _a : ACOneConstantSt.DefaultTS;
         this._map.set(ACOneConstantSt.KeyGetTS, _getTS);
-        const _getTSRandom = (_b = value.get(ACOneConstantSt.KeyRandom6ForGetTS)) !== null && _b !== void 0 ? _b : ACECONSTANT.ZERO6;
+        const _getTSRandom = (_b = value.get(ACOneConstantSt.KeyRandom6ForGetTS)) !== null && _b !== void 0 ? _b : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantSt.KeyRandom6ForGetTS, _getTSRandom);
         const _insenginetTS = (_c = value.get(ACOneConstantSt.KeyInsenginetTS)) !== null && _c !== void 0 ? _c : ACOneConstantSt.DefaultTS;
         this._map.set(ACOneConstantSt.KeyInsenginetTS, _insenginetTS);
-        const _insenginetTSRandom = (_d = value.get(ACOneConstantSt.KeyRandom6ForInsenginetTS)) !== null && _d !== void 0 ? _d : ACECONSTANT.ZERO6;
+        const _insenginetTSRandom = (_d = value.get(ACOneConstantSt.KeyRandom6ForInsenginetTS)) !== null && _d !== void 0 ? _d : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantSt.KeyRandom6ForInsenginetTS, _insenginetTSRandom);
         const _rTS = (_e = value.get(ACOneConstantSt.KeyRTS)) !== null && _e !== void 0 ? _e : ACOneConstantSt.DefaultTS;
         this._map.set(ACOneConstantSt.KeyRTS, _rTS);
-        const _rTSRandom = (_f = value.get(ACOneConstantSt.KeyRandom6ForRTS)) !== null && _f !== void 0 ? _f : ACECONSTANT.ZERO6;
+        const _rTSRandom = (_f = value.get(ACOneConstantSt.KeyRandom6ForRTS)) !== null && _f !== void 0 ? _f : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantSt.KeyRandom6ForRTS, _rTSRandom);
         const _startTS = (_g = value.get(ACOneConstantSt.KeyStartTS)) !== null && _g !== void 0 ? _g : ACOneConstantSt.DefaultTS;
         this._map.set(ACOneConstantSt.KeyStartTS, _startTS);
-        const _startTSRandom = (_h = value.get(ACOneConstantSt.KeyRandom6ForStartTS)) !== null && _h !== void 0 ? _h : ACECONSTANT.ZERO6;
+        const _startTSRandom = (_h = value.get(ACOneConstantSt.KeyRandom6ForStartTS)) !== null && _h !== void 0 ? _h : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantSt.KeyRandom6ForStartTS, _startTSRandom);
     }
     getAssembleParams() {
@@ -73,7 +73,7 @@ export default class ACEntityForST {
     }
     getRandom6ForGetTS() {
         var _a;
-        return (_a = this._map.get(ACOneConstantSt.KeyRandom6ForGetTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
+        return (_a = this._map.get(ACOneConstantSt.KeyRandom6ForGetTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.EMPTY;
     }
     setRandom6ForGetTS(value) {
         this._map.set(ACOneConstantSt.KeyRandom6ForGetTS, value);
@@ -87,7 +87,7 @@ export default class ACEntityForST {
     }
     getRandom6ForInsenginetTS() {
         var _a;
-        return (_a = this._map.get(ACOneConstantSt.KeyRandom6ForInsenginetTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
+        return (_a = this._map.get(ACOneConstantSt.KeyRandom6ForInsenginetTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.EMPTY;
     }
     setRandom6ForInsenginetTS(value) {
         this._map.set(ACOneConstantSt.KeyRandom6ForInsenginetTS, value);
@@ -115,7 +115,7 @@ export default class ACEntityForST {
     }
     getRandom6ForStartTS() {
         var _a;
-        return (_a = this._map.get(ACOneConstantSt.KeyRandom6ForStartTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
+        return (_a = this._map.get(ACOneConstantSt.KeyRandom6ForStartTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.EMPTY;
     }
     setRandom6ForStartTS(value) {
         this._map.set(ACOneConstantSt.KeyRandom6ForStartTS, value);

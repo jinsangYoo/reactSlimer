@@ -9,16 +9,16 @@ export default class ACEntityForST {
   public constructor() {
     this._map = new Map<string, string>()
     this._map.set(ACOneConstantSt.KeyGetTS, ACOneConstantSt.DefaultTS)
-    this._map.set(ACOneConstantSt.KeyRandom6ForGetTS, ACECONSTANT.ZERO6)
+    this._map.set(ACOneConstantSt.KeyRandom6ForGetTS, ACECONSTANT.EMPTY)
 
     this._map.set(ACOneConstantSt.KeyInsenginetTS, ACOneConstantSt.DefaultTS)
-    this._map.set(ACOneConstantSt.KeyRandom6ForInsenginetTS, ACECONSTANT.ZERO6)
+    this._map.set(ACOneConstantSt.KeyRandom6ForInsenginetTS, ACECONSTANT.EMPTY)
 
     this._map.set(ACOneConstantSt.KeyRTS, ACOneConstantSt.DefaultTS)
     this._map.set(ACOneConstantSt.KeyRandom6ForRTS, ACECONSTANT.EMPTY)
 
     this._map.set(ACOneConstantSt.KeyStartTS, ACOneConstantSt.DefaultTS)
-    this._map.set(ACOneConstantSt.KeyRandom6ForStartTS, ACECONSTANT.ZERO6)
+    this._map.set(ACOneConstantSt.KeyRandom6ForStartTS, ACECONSTANT.EMPTY)
   }
 
   public getMap(): Map<string, string> {
@@ -31,22 +31,22 @@ export default class ACEntityForST {
     }
     const _getTS = value.get(ACOneConstantSt.KeyGetTS) ?? ACOneConstantSt.DefaultTS
     this._map.set(ACOneConstantSt.KeyGetTS, _getTS)
-    const _getTSRandom = value.get(ACOneConstantSt.KeyRandom6ForGetTS) ?? ACECONSTANT.ZERO6
+    const _getTSRandom = value.get(ACOneConstantSt.KeyRandom6ForGetTS) ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantSt.KeyRandom6ForGetTS, _getTSRandom)
 
     const _insenginetTS = value.get(ACOneConstantSt.KeyInsenginetTS) ?? ACOneConstantSt.DefaultTS
     this._map.set(ACOneConstantSt.KeyInsenginetTS, _insenginetTS)
-    const _insenginetTSRandom = value.get(ACOneConstantSt.KeyRandom6ForInsenginetTS) ?? ACECONSTANT.ZERO6
+    const _insenginetTSRandom = value.get(ACOneConstantSt.KeyRandom6ForInsenginetTS) ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantSt.KeyRandom6ForInsenginetTS, _insenginetTSRandom)
 
     const _rTS = value.get(ACOneConstantSt.KeyRTS) ?? ACOneConstantSt.DefaultTS
     this._map.set(ACOneConstantSt.KeyRTS, _rTS)
-    const _rTSRandom = value.get(ACOneConstantSt.KeyRandom6ForRTS) ?? ACECONSTANT.ZERO6
+    const _rTSRandom = value.get(ACOneConstantSt.KeyRandom6ForRTS) ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantSt.KeyRandom6ForRTS, _rTSRandom)
 
     const _startTS = value.get(ACOneConstantSt.KeyStartTS) ?? ACOneConstantSt.DefaultTS
     this._map.set(ACOneConstantSt.KeyStartTS, _startTS)
-    const _startTSRandom = value.get(ACOneConstantSt.KeyRandom6ForStartTS) ?? ACECONSTANT.ZERO6
+    const _startTSRandom = value.get(ACOneConstantSt.KeyRandom6ForStartTS) ?? ACECONSTANT.EMPTY
     this._map.set(ACOneConstantSt.KeyRandom6ForStartTS, _startTSRandom)
   }
 
@@ -98,7 +98,7 @@ export default class ACEntityForST {
   }
 
   public getRandom6ForGetTS(): string {
-    return this._map.get(ACOneConstantSt.KeyRandom6ForGetTS) ?? ACECONSTANT.ZERO6
+    return this._map.get(ACOneConstantSt.KeyRandom6ForGetTS) ?? ACECONSTANT.EMPTY
   }
 
   public setRandom6ForGetTS(value: string): void {
@@ -116,7 +116,7 @@ export default class ACEntityForST {
   }
 
   public getRandom6ForInsenginetTS(): string {
-    return this._map.get(ACOneConstantSt.KeyRandom6ForInsenginetTS) ?? ACECONSTANT.ZERO6
+    return this._map.get(ACOneConstantSt.KeyRandom6ForInsenginetTS) ?? ACECONSTANT.EMPTY
   }
 
   public setRandom6ForInsenginetTS(value: string): void {
@@ -152,7 +152,7 @@ export default class ACEntityForST {
   }
 
   public getRandom6ForStartTS(): string {
-    return this._map.get(ACOneConstantSt.KeyRandom6ForStartTS) ?? ACECONSTANT.ZERO6
+    return this._map.get(ACOneConstantSt.KeyRandom6ForStartTS) ?? ACECONSTANT.EMPTY
   }
 
   public setRandom6ForStartTS(value: string): void {

@@ -17,7 +17,6 @@ enum ACECONSTANT {
   TASK_CREATE_TIME_FORMAT = 'yyyy-MM-dd HH:mm:ss.SSS',
   InstallReferrer = '_ACE.Received.InstallReferrer',
   ZERO = '0',
-  ZERO6 = '000000',
 }
 
 export default ACECONSTANT

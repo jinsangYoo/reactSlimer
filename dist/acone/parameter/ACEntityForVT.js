@@ -6,13 +6,13 @@ export default class ACEntityForVT {
     constructor() {
         this._map = new Map();
         this._map.set(ACOneConstantVt.KeyVTS, ACOneConstantVt.DefaultTS);
-        this._map.set(ACOneConstantVt.KeyRandom6ForVTS, ACECONSTANT.ZERO6);
+        this._map.set(ACOneConstantVt.KeyRandom6ForVTS, ACECONSTANT.EMPTY);
         this._map.set(ACOneConstantVt.KeyVisitCount, ACECONSTANT.ZERO);
         this._map.set(ACOneConstantVt.KeyBuyTimeTS, ACOneConstantVt.DefaultTS);
-        this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, ACECONSTANT.ZERO6);
+        this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, ACECONSTANT.EMPTY);
         this._map.set(ACOneConstantVt.KeyBuyCount, ACECONSTANT.ZERO);
         this._map.set(ACOneConstantVt.KeyPcStamp, ACOneConstantVt.DefaultTS);
-        this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, ACECONSTANT.ZERO6);
+        this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, ACECONSTANT.EMPTY);
     }
     getMap() {
         return this._map;
@@ -24,19 +24,19 @@ export default class ACEntityForVT {
         }
         const _vts = (_a = value.get(ACOneConstantVt.KeyVTS)) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
         this._map.set(ACOneConstantVt.KeyVTS, _vts);
-        const _vtsRandom = (_b = value.get(ACOneConstantVt.KeyRandom6ForVTS)) !== null && _b !== void 0 ? _b : ACECONSTANT.ZERO6;
+        const _vtsRandom = (_b = value.get(ACOneConstantVt.KeyRandom6ForVTS)) !== null && _b !== void 0 ? _b : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantVt.KeyRandom6ForVTS, _vtsRandom);
         const _visitCount = (_c = value.get(ACOneConstantVt.KeyVisitCount)) !== null && _c !== void 0 ? _c : ACECONSTANT.ZERO;
         this._map.set(ACOneConstantVt.KeyVisitCount, _visitCount);
         const _buyTimeTS = (_d = value.get(ACOneConstantVt.KeyBuyTimeTS)) !== null && _d !== void 0 ? _d : ACOneConstantVt.DefaultTS;
         this._map.set(ACOneConstantVt.KeyBuyTimeTS, _buyTimeTS);
-        const _buyTimeTSRandom = (_e = value.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS)) !== null && _e !== void 0 ? _e : ACECONSTANT.ZERO6;
+        const _buyTimeTSRandom = (_e = value.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS)) !== null && _e !== void 0 ? _e : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, _buyTimeTSRandom);
         const _buyCount = (_f = value.get(ACOneConstantVt.KeyBuyCount)) !== null && _f !== void 0 ? _f : ACECONSTANT.ZERO;
         this._map.set(ACOneConstantVt.KeyBuyCount, _buyCount);
         const _pcStamp = (_g = value.get(ACOneConstantVt.KeyPcStamp)) !== null && _g !== void 0 ? _g : ACOneConstantVt.DefaultTS;
         this._map.set(ACOneConstantVt.KeyPcStamp, _pcStamp);
-        const _pcStampRandom = (_h = value.get(ACOneConstantVt.KeyRandom6ForPcStamp)) !== null && _h !== void 0 ? _h : ACECONSTANT.ZERO6;
+        const _pcStampRandom = (_h = value.get(ACOneConstantVt.KeyRandom6ForPcStamp)) !== null && _h !== void 0 ? _h : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, _pcStampRandom);
     }
     setDeepCopyForJSON(value) {
@@ -46,19 +46,19 @@ export default class ACEntityForVT {
         }
         const _vts = (_a = value[ACOneConstantVt.KeyVTS]) !== null && _a !== void 0 ? _a : ACOneConstantVt.DefaultTS;
         this._map.set(ACOneConstantVt.KeyVTS, _vts);
-        const _vtsRandom = (_b = value[ACOneConstantVt.KeyRandom6ForVTS]) !== null && _b !== void 0 ? _b : ACECONSTANT.ZERO6;
+        const _vtsRandom = (_b = value[ACOneConstantVt.KeyRandom6ForVTS]) !== null && _b !== void 0 ? _b : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantVt.KeyRandom6ForVTS, _vtsRandom);
         const _visitCount = (_c = value[ACOneConstantVt.KeyVisitCount]) !== null && _c !== void 0 ? _c : ACECONSTANT.ZERO;
         this._map.set(ACOneConstantVt.KeyVisitCount, _visitCount);
         const _buyTimeTS = (_d = value[ACOneConstantVt.KeyBuyTimeTS]) !== null && _d !== void 0 ? _d : ACOneConstantVt.DefaultTS;
         this._map.set(ACOneConstantVt.KeyBuyTimeTS, _buyTimeTS);
-        const _buyTimeTSRandom = (_e = value[ACOneConstantVt.KeyRandom6ForBuyTimeTS]) !== null && _e !== void 0 ? _e : ACECONSTANT.ZERO6;
+        const _buyTimeTSRandom = (_e = value[ACOneConstantVt.KeyRandom6ForBuyTimeTS]) !== null && _e !== void 0 ? _e : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, _buyTimeTSRandom);
         const _buyCount = (_f = value[ACOneConstantVt.KeyBuyCount]) !== null && _f !== void 0 ? _f : ACECONSTANT.ZERO;
         this._map.set(ACOneConstantVt.KeyBuyCount, _buyCount);
         const _pcStamp = (_g = value[ACOneConstantVt.KeyPcStamp]) !== null && _g !== void 0 ? _g : ACOneConstantVt.DefaultTS;
         this._map.set(ACOneConstantVt.KeyPcStamp, _pcStamp);
-        const _pcStampRandom = (_h = value[ACOneConstantVt.KeyRandom6ForPcStamp]) !== null && _h !== void 0 ? _h : ACECONSTANT.ZERO6;
+        const _pcStampRandom = (_h = value[ACOneConstantVt.KeyRandom6ForPcStamp]) !== null && _h !== void 0 ? _h : ACECONSTANT.EMPTY;
         this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, _pcStampRandom);
     }
     getAssembleParams() {
@@ -102,7 +102,7 @@ export default class ACEntityForVT {
     }
     getRandom6ForVTS() {
         var _a;
-        return (_a = this._map.get(ACOneConstantVt.KeyRandom6ForVTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
+        return (_a = this._map.get(ACOneConstantVt.KeyRandom6ForVTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO;
     }
     setRandom6ForVTS(value) {
         this._map.set(ACOneConstantVt.KeyRandom6ForVTS, value);
@@ -132,7 +132,7 @@ export default class ACEntityForVT {
     }
     getRandom6ForBuyTimeTS() {
         var _a;
-        return (_a = this._map.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
+        return (_a = this._map.get(ACOneConstantVt.KeyRandom6ForBuyTimeTS)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO;
     }
     setRandom6ForBuyTimeTS(value) {
         this._map.set(ACOneConstantVt.KeyRandom6ForBuyTimeTS, value);
@@ -153,7 +153,7 @@ export default class ACEntityForVT {
     }
     getRandom6ForPcStamp() {
         var _a;
-        return (_a = this._map.get(ACOneConstantVt.KeyRandom6ForPcStamp)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO6;
+        return (_a = this._map.get(ACOneConstantVt.KeyRandom6ForPcStamp)) !== null && _a !== void 0 ? _a : ACECONSTANT.ZERO;
     }
     setRandom6ForPcStamp(value) {
         this._map.set(ACOneConstantVt.KeyRandom6ForPcStamp, value);

@@ -16,8 +16,7 @@ declare enum ACECONSTANT {
     SDK_VERSION = "version",
     TASK_CREATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS",
     InstallReferrer = "_ACE.Received.InstallReferrer",
-    ZERO = "0",
-    ZERO6 = "000000"
+    ZERO = "0"
 }
 export default ACECONSTANT;
 //# sourceMappingURL=ACEConstant.d.ts.map
