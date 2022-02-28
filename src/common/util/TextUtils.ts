@@ -71,7 +71,7 @@ export function decode(value: string) {
 
 export function getQueryVar(source: string): object {
   var query = {}
-  var pairs = (source[0] === '?' ? source.substr(1) : source).split('&')
+  var pairs = (source[0] === '?' ? source.substring(1) : source).split('&')
   for (var i = 0; i < pairs.length; i++) {
     var pair = pairs[i].split('=')
     query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '')

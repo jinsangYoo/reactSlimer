@@ -34,6 +34,7 @@ export declare class ACS {
     private static toggleLock;
     private static isLock;
     static setAdvertisingIdentifier(advertisingIdentifier: string): void;
+    static setReferrer(referrer: string): void;
     static getKey(): string;
     static getDevice(): string;
     static getTS(): string;

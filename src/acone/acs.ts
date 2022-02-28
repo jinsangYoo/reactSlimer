@@ -36,6 +36,7 @@ export class ACS {
     })
   }
 
+  //#region configure of SDK
   public static configure(
     value: AceConfiguration,
     callback: (error?: Error, result?: ACEResponseToCaller) => void,
@@ -85,7 +86,9 @@ export class ACS {
       })
     }
   }
+  //#endregion
 
+  //#region send of public
   public static send(value: ACParams, callback: (error?: object, result?: ACEResponseToCaller) => void): void
   public static send(value: ACParams): Promise<ACEResponseToCaller>
   public static send(
@@ -175,10 +178,11 @@ export class ACS {
     }
     return ACS._send(value, callback)
   }
+  //#endregion
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.261'
+    return '0.0.263'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
