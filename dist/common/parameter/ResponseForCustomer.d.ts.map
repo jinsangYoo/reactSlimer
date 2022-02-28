@@ -1,1 +1,0 @@
-{"version":3,"file":"ResponseForCustomer.d.ts","sourceRoot":"","sources":["../../../src/common/parameter/ResponseForCustomer.ts"],"names":[],"mappings":"AAAA,oBAAY,mBAAmB,GAAG;IAChC,YAAY,EAAE;QACZ,gBAAgB,EAAE,OAAO,CAAA;QACzB,WAAW,EAAE,OAAO,CAAA;QACpB,YAAY,EAAE,OAAO,CAAA;KACtB,CAAA;CACF,CAAA"}
