@@ -182,7 +182,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.263'
+    return '0.0.264'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -340,7 +340,7 @@ export class ACS {
                   callback(undefined, result)
                   return
                 }
-                ACEReducerForOne.referrer(callbackForCB, value.keyword)
+                ACEReducerForOne.referrer(callbackForCB, _keyword)
                 break
               case ACParams.TYPE.SEARCH:
                 ACEReducerForOne.search(callbackForCB, value.name, value.keyword)
@@ -464,7 +464,7 @@ export class ACS {
                     rejectToOut(result)
                     return
                   }
-                  ACEReducerForOne.referrer(callbackForPromise, value.keyword)
+                  ACEReducerForOne.referrer(callbackForPromise, _keyword)
                   break
                 case ACParams.TYPE.SEARCH:
                   ACEReducerForOne.search(callbackForPromise, value.name, value.keyword)
