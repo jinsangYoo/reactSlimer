@@ -182,7 +182,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.264'
+    return '0.0.265'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -287,17 +287,26 @@ export class ACS {
                 ACEReducerForOne.appearProduct(
                   callbackForCB,
                   value.name,
+                  value.memberKey,
+                  value.productId,
                   value.productName,
                   value.productCategoryName,
                   value.productPrice,
                 )
                 break
               case ACParams.TYPE.BUY:
-                ACEReducerForOne.buy(callbackForCB, value.name, value.orderNumber, value.payMethodName, value.products)
+                ACEReducerForOne.buy(
+                  callbackForCB,
+                  value.name,
+                  value.memberKey,
+                  value.orderNumber,
+                  value.payMethodName,
+                  value.products,
+                )
                 break
               case ACParams.TYPE.ADDCART:
               case ACParams.TYPE.DELCART:
-                ACEReducerForOne.cart(value.type, callbackForCB, value.products)
+                ACEReducerForOne.cart(value.type, callbackForCB, value.memberKey, value.products)
                 break
               case ACParams.TYPE.EVENT:
                 ACEReducerForOne.plWithPage(callbackForCB, value.name)
@@ -309,7 +318,7 @@ export class ACS {
                 ACEReducerForOne.leave(callbackForCB, value.name, value.userId)
                 break
               case ACParams.TYPE.LINK:
-                ACEReducerForOne.link(callbackForCB, value.name, value.linkName)
+                ACEReducerForOne.link(callbackForCB, value.name, value.linkName, value.memberKey)
                 break
               case ACParams.TYPE.LOGIN:
                 ACEReducerForOne.login(
@@ -346,7 +355,7 @@ export class ACS {
                 ACEReducerForOne.search(callbackForCB, value.name, value.keyword)
                 break
               case ACParams.TYPE.TEL:
-                ACEReducerForOne.tel(callbackForCB, value.name, value.tel)
+                ACEReducerForOne.tel(callbackForCB, value.name, value.memberKey, value.tel)
                 break
             }
           } else {
@@ -402,6 +411,8 @@ export class ACS {
                   ACEReducerForOne.appearProduct(
                     callbackForPromise,
                     value.name,
+                    value.memberKey,
+                    value.productId,
                     value.productName,
                     value.productCategoryName,
                     value.productPrice,
@@ -411,6 +422,7 @@ export class ACS {
                   ACEReducerForOne.buy(
                     callbackForPromise,
                     value.name,
+                    value.memberKey,
                     value.orderNumber,
                     value.payMethodName,
                     value.products,
@@ -418,7 +430,7 @@ export class ACS {
                   break
                 case ACParams.TYPE.ADDCART:
                 case ACParams.TYPE.DELCART:
-                  ACEReducerForOne.cart(value.type, callbackForPromise, value.products)
+                  ACEReducerForOne.cart(value.type, callbackForPromise, value.memberKey, value.products)
                   break
                 case ACParams.TYPE.EVENT:
                   ACEReducerForOne.plWithPage(callbackForPromise, value.name)
@@ -430,7 +442,7 @@ export class ACS {
                   ACEReducerForOne.leave(callbackForPromise, value.name, value.userId)
                   break
                 case ACParams.TYPE.LINK:
-                  ACEReducerForOne.link(callbackForPromise, value.name, value.linkName)
+                  ACEReducerForOne.link(callbackForPromise, value.name, value.linkName, value.memberKey)
                   break
                 case ACParams.TYPE.LOGIN:
                   ACEReducerForOne.login(
@@ -470,7 +482,7 @@ export class ACS {
                   ACEReducerForOne.search(callbackForPromise, value.name, value.keyword)
                   break
                 case ACParams.TYPE.TEL:
-                  ACEReducerForOne.tel(callbackForPromise, value.name, value.tel)
+                  ACEReducerForOne.tel(callbackForPromise, value.name, value.memberKey, value.tel)
                   break
               }
             } else {

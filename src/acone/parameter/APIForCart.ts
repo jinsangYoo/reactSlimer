@@ -13,15 +13,18 @@ import ACProduct from '../acproduct'
 import {acproductToURLForOne} from '../../common/util/ACProductUtil'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import IACBuyMode from '../constant/IACBuyMode'
+import ACECONSTANT from '../../common/constant/ACEConstant'
 
 export default class APIForCart extends Task {
   private static _TAG = 'APIForCart'
 
   protected _willUpdateVt?: ACEntityForVT
+  private memberKey: string
   private products: ACProduct[]
   public constructor(params: ITaskParams) {
     super(params)
     ACELog.d(APIForCart._TAG, 'in constructor, params:', params)
+    this.memberKey = params.payload.memberKey ?? ACECONSTANT.EMPTY
     this.products = Array.from(params.payload.products ?? [])
   }
 
@@ -30,6 +33,7 @@ export default class APIForCart extends Task {
     ACELog.d(APIForCart._TAG, 'doWork')
 
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
+    _parameterUtilForOne.setMemberKey(this.memberKey)
     _parameterUtilForOne.setTP(TP.CART)
     switch (this.getLogSource()) {
       case ACEofAPIForOne.AddInCart:
@@ -117,6 +121,7 @@ export default class APIForCart extends Task {
         //#region clear
         const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
         _parameterUtilForOne.clearBuyMode()
+        _parameterUtilForOne.clearMemberKey()
         _parameterUtilForOne.clearProduct()
         //#endregion
 

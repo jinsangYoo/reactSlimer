@@ -47,6 +47,7 @@ export default class ACEParametersForOne extends ACEParameters {
   private ll: string
 
   private md: string
+  private memberKey: string
   private mid: string
   private mr: string
 
@@ -54,6 +55,7 @@ export default class ACEParametersForOne extends ACEParameters {
 
   private payMethod: string
   private pd: string
+  private productId: string
 
   private re: number
   private ref: string
@@ -373,6 +375,21 @@ export default class ACEParametersForOne extends ACEParameters {
     this.md = value
   }
 
+  public getMemberKey(): string {
+    if (isEmpty(this.memberKey)) {
+      this.memberKey = ACECONSTANT.EMPTY
+    }
+    return this.memberKey
+  }
+
+  public setMemberKey(value: string): void {
+    if (isEmpty(value)) {
+      this.memberKey = ACECONSTANT.EMPTY
+    } else {
+      this.memberKey = value
+    }
+  }
+
   public getMID(): string {
     if (isEmpty(this.mid)) {
       this.mid = ACECONSTANT.EMPTY
@@ -445,6 +462,21 @@ export default class ACEParametersForOne extends ACEParameters {
       this.pd = ACECONSTANT.EMPTY
     } else {
       this.pd = value
+    }
+  }
+
+  public getProductId(): string {
+    if (isEmpty(this.productId)) {
+      this.productId = ACECONSTANT.EMPTY
+    }
+    return this.productId
+  }
+
+  public setProductId(value: string): void {
+    if (isEmpty(value)) {
+      this.productId = ACECONSTANT.EMPTY
+    } else {
+      this.productId = value
     }
   }
 
@@ -980,6 +1012,7 @@ export default class ACEParametersForOne extends ACEParameters {
       ll: this.ll,
 
       md: this.md,
+      member_key: this.memberKey,
       mid: this.mid,
       mr: this.mr,
 
@@ -987,6 +1020,7 @@ export default class ACEParametersForOne extends ACEParameters {
 
       pay: this.payMethod,
       pd: this.pd,
+      pdid: this.productId,
 
       re: this.re,
       ref: this.ref,
@@ -1043,6 +1077,7 @@ type ParamsForNetwork = {
   ll: string
 
   md: string
+  member_key: string
   mid: string
   mr: string
 
@@ -1050,6 +1085,7 @@ type ParamsForNetwork = {
 
   pay: string
   pd: string
+  pdid: string
 
   re: number
   ref: string

@@ -207,6 +207,14 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     this.setJN(-1)
   }
 
+  public clearMemberKey(): void {
+    ACEParametersForOne.getInstance().setMemberKey(ACECONSTANT.EMPTY)
+  }
+
+  public setMemberKey(value: string): void {
+    ACEParametersForOne.getInstance().setMemberKey(value)
+  }
+
   public getOrderNumber(): string {
     return ACEParametersForOne.getInstance().getONUM()
   }
@@ -237,6 +245,14 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   public clearProduct(): void {
     ACEParametersForOne.getInstance().setLL(ACECONSTANT.EMPTY)
+  }
+
+  public clearProductId(): void {
+    ACEParametersForOne.getInstance().setProductId(ACECONSTANT.EMPTY)
+  }
+
+  public setProductId(value: string): void {
+    ACEParametersForOne.getInstance().setProductId(value)
   }
 
   public clearProductName(): void {

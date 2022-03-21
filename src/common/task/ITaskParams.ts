@@ -7,9 +7,11 @@ export type IDebugParams = {}
 export type IPayload = {
   keyword?: string
   linkName?: string
+  memberKey?: string
   orderNumber?: string
   pageName?: string
   paymentMethod?: string
+  productId?: string
   productName?: string
   productCategoryName?: string
   productPrice?: string

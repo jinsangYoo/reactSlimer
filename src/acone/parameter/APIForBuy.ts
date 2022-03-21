@@ -13,12 +13,14 @@ import {stringToNumber} from '../../common/util/TextUtils'
 export default class APIForBuy extends APIForPL {
   private static _TAG = 'APIForBuy'
 
+  private memberKey: string
   private orderNumber: string
   private paymentMethod: string
   private products: ACProduct[]
   public constructor(params: ITaskParams) {
     ACELog.d(APIForBuy._TAG, 'in constructor')
     super(params)
+    this.memberKey = params.payload.memberKey ?? ACECONSTANT.EMPTY
     this.orderNumber = params.payload.orderNumber ?? ACECONSTANT.EMPTY
     this.paymentMethod = params.payload.paymentMethod ?? ACECONSTANT.EMPTY
     this.products = Array.from(params.payload.products ?? [])
@@ -32,6 +34,7 @@ export default class APIForBuy extends APIForPL {
       } else if (callback) {
         const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
         _parameterUtilForOne.setBuyMode(IACBuyMode.Order)
+        _parameterUtilForOne.setMemberKey(this.memberKey)
         _parameterUtilForOne.setOrderNumber(this.orderNumber)
         _parameterUtilForOne.setPaymentMethod(this.paymentMethod)
         _parameterUtilForOne.setProduct(acproductToURLForOne(this.products, this.getLogSource()))
@@ -70,6 +73,7 @@ export default class APIForBuy extends APIForPL {
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
     //#region clear
     _parameterUtilForOne.clearBuyMode()
+    _parameterUtilForOne.clearMemberKey()
     _parameterUtilForOne.clearPayMethod()
     _parameterUtilForOne.clearOrderNumber()
     _parameterUtilForOne.clearProduct()

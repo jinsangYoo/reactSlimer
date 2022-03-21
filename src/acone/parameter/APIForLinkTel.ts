@@ -12,11 +12,13 @@ export default class APIForLinkTel extends APIForPL {
   private static _TAG = 'APIForLinkTel'
 
   private linkName: string
+  private memberKey: string
   private tel: string
   public constructor(params: ITaskParams) {
     ACELog.d(APIForLinkTel._TAG, 'in constructor')
     super(params)
     this.linkName = params.payload.linkName ?? ACECONSTANT.EMPTY
+    this.memberKey = params.payload.memberKey ?? ACECONSTANT.EMPTY
     this.tel = params.payload.tel ?? ACECONSTANT.EMPTY
   }
 
@@ -27,6 +29,7 @@ export default class APIForLinkTel extends APIForPL {
         callback(error, innerResult)
       } else if (callback) {
         const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
+        _parameterUtilForOne.setMemberKey(this.memberKey)
         switch (this.getLogSource()) {
           case ACEofAPIForOne.TrackLinkEvent:
             _parameterUtilForOne.setTP(TP.LINK)
@@ -62,6 +65,7 @@ export default class APIForLinkTel extends APIForPL {
     ACELog.d(APIForLinkTel._TAG, 'doneWork')
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
     //#region clear
+    _parameterUtilForOne.clearMemberKey()
     _parameterUtilForOne.clearREF()
     //#endregion
   }

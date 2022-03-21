@@ -107,6 +107,8 @@ export default class ACEReducerForOne {
   public static appearProduct(
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
+    memberKey?: string,
+    productId?: string,
     productName?: string,
     productCategoryName?: string,
     productPrice?: string,
@@ -114,6 +116,8 @@ export default class ACEReducerForOne {
   public static appearProduct(
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
+    memberKey?: string,
+    productId?: string,
     productName?: string,
     productCategoryName?: string,
     productPrice?: string,
@@ -121,6 +125,8 @@ export default class ACEReducerForOne {
   public static appearProduct(
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
+    memberKey?: string,
+    productId?: string,
     productName?: string,
     productCategoryName?: string,
     productPrice?: string,
@@ -129,7 +135,9 @@ export default class ACEReducerForOne {
       {
         type: ACEofAPIForOne.AppearProduct,
         payload: {
+          memberKey: memberKey,
           pageName: pageName,
+          productId: productId,
           productName: productName,
           productCategoryName: productCategoryName,
           productPrice: productPrice,
@@ -144,6 +152,7 @@ export default class ACEReducerForOne {
   public static buy(
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
+    memberKey?: string,
     orderNumber?: string,
     payMethodName?: string,
     products?: ACProduct[],
@@ -151,6 +160,7 @@ export default class ACEReducerForOne {
   public static buy(
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
+    memberKey?: string,
     orderNumber?: string,
     payMethodName?: string,
     products?: ACProduct[],
@@ -158,6 +168,7 @@ export default class ACEReducerForOne {
   public static buy(
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
+    memberKey?: string,
     orderNumber?: string,
     payMethodName?: string,
     products?: ACProduct[],
@@ -181,16 +192,19 @@ export default class ACEReducerForOne {
   public static cart(
     type: string,
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    memberKey?: string,
     products?: ACProduct[],
   ): void
   public static cart(
     type: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    memberKey?: string,
     products?: ACProduct[],
   ): Promise<ACEResponseToCaller>
   public static cart(
     type: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    memberKey?: string,
     products?: ACProduct[],
   ): Promise<ACEResponseToCaller> | void {
     return ACEReducerForOne.reducer(
@@ -268,16 +282,19 @@ export default class ACEReducerForOne {
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
     linkName?: string,
+    memberKey?: string,
   ): void
   public static link(
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
     linkName?: string,
+    memberKey?: string,
   ): Promise<ACEResponseToCaller>
   public static link(
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
     linkName?: string,
+    memberKey?: string,
   ): Promise<ACEResponseToCaller> | void {
     return ACEReducerForOne.reducer(
       {
@@ -479,16 +496,19 @@ export default class ACEReducerForOne {
   public static tel(
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
+    memberKey?: string,
     tel?: string,
   ): void
   public static tel(
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
+    memberKey?: string,
     tel?: string,
   ): Promise<ACEResponseToCaller>
   public static tel(
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
+    memberKey?: string,
     tel?: string,
   ): Promise<ACEResponseToCaller> | void {
     return ACEReducerForOne.reducer(
