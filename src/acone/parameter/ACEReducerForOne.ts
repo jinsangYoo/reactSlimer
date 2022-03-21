@@ -135,8 +135,8 @@ export default class ACEReducerForOne {
       {
         type: ACEofAPIForOne.AppearProduct,
         payload: {
-          memberKey: memberKey,
           pageName: pageName,
+          memberKey: memberKey,
           productId: productId,
           productName: productName,
           productCategoryName: productCategoryName,
@@ -178,6 +178,7 @@ export default class ACEReducerForOne {
       {
         type: ACEofAPIForOne.Buy,
         payload: {
+          memberKey: memberKey,
           orderNumber: orderNumber,
           paymentMethod: payMethodName,
           products: products,
@@ -211,6 +212,7 @@ export default class ACEReducerForOne {
       {
         type: type == ACParams.TYPE.ADDCART ? ACEofAPIForOne.AddInCart : ACEofAPIForOne.DeleteInCart,
         payload: {
+          memberKey: memberKey,
           products: products,
         },
         error: false,
@@ -301,6 +303,7 @@ export default class ACEReducerForOne {
         type: ACEofAPIForOne.TrackLinkEvent,
         payload: {
           pageName: pageName,
+          memberKey: memberKey,
           linkName: linkName,
         },
         error: false,
@@ -516,6 +519,7 @@ export default class ACEReducerForOne {
         type: ACEofAPIForOne.TrackTelEvent,
         payload: {
           pageName: pageName,
+          memberKey: memberKey,
           tel: tel,
         },
         error: false,
