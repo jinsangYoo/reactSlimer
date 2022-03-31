@@ -7,6 +7,7 @@ import IACEParameterUtil from '../parameter/IACEParameterUtil'
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../constant/ACEPublicStaticConfig'
 import ACELog from '../logger/ACELog'
+import {isEmpty, isStartIndexAkAtGCodeString} from '../util'
 
 export default class ACECommonStaticConfig {
   private static _TAG = 'comInit'
@@ -68,6 +69,26 @@ export default class ACECommonStaticConfig {
     }
 
     ACELog.d(ACECommonStaticConfig._TAG, 'AceConfiguration information:', configuration)
+
+    if (!ACECommonStaticConfig.validateForAceConfiguration(configuration)) {
+      ACELog.d(ACECommonStaticConfig._TAG, 'Initialization SDK failed.')
+
+      const response: ACEResponseToCaller = {
+        taskHash: '0000',
+        code: ACEResultCode.NeedToCheckAceConfiguration,
+        result: ACEConstantCallback[ACEConstantCallback.Failed],
+        message: 'Please check the configuration.',
+        apiName: 'init',
+      }
+      if (callback) {
+        callback(new Error('Initialization SDK failed.'), response)
+        return
+      } else {
+        return new Promise((resolveToOut, rejectToOut) => {
+          rejectToOut(response)
+        })
+      }
+    }
 
     if (configuration.platform) {
       this._platform = configuration.platform
@@ -148,6 +169,14 @@ export default class ACECommonStaticConfig {
           })
       })
     }
+  }
+
+  private static validateForAceConfiguration(config: AceConfiguration): boolean {
+    if (isEmpty(config.key) || !isStartIndexAkAtGCodeString(config.key)) {
+      return false
+    }
+
+    return true
   }
 
   public static isDebug(): boolean {
