@@ -1,4 +1,4 @@
-import {isEmpty} from '../../common/util/TextUtils'
+import {isEmpty} from '../util/TextUtils'
 import ACECONSTANT from '../../common/constant/ACEConstant'
 
 export default class ACEParameters {

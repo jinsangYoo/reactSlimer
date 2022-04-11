@@ -7,7 +7,7 @@ import IACEParameterUtil from '../parameter/IACEParameterUtil'
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../constant/ACEPublicStaticConfig'
 import ACELog from '../logger/ACELog'
-import {isEmpty, isStartIndexAkAtGCodeString} from '../util'
+import {isEmpty, isStartIndexAkAtGCodeString} from '../util/TextUtils'
 
 export default class ACECommonStaticConfig {
   private static _TAG = 'comInit'
