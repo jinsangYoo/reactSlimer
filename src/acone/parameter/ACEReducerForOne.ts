@@ -1,43 +1,36 @@
 import {ITaskParams} from '../../common/task/ITaskParams'
 import APIForPL from './APIForPL'
 import APIForBuy from './APIForBuy'
+import APIForCart from './APIForCart'
+import APIForAppearProduct from './APIForAppearProduct'
+import APIForSearch from './APIForSearch'
+import APIForLinkTel from './APIForLinkTel'
+import APIForLogin from './APIForLogin'
+import APIForJoinLeave from './APIForJoinLeave'
+import APIForPolicy from './APIForPolicy'
+import APIForPushReferrerDeeplink from './APIForPushReferrerDeeplink'
 import TaskAdapter from '../../common/task/TaskAdapter'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
-import APIForPolicy from './APIForPolicy'
-import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
+import {ACEConstantCallback, ACEResultCode, ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 import ACELog from '../../common/logger/ACELog'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
-// import {ACEWorkerEventsForWorkerEmitter} from '../worker/ACEWorkerEventsForWorkerEmitter'
+import ACProduct from '../acproduct'
+import {ACParams} from '../acparam'
+import {ACEGender, ACEMaritalStatus} from '../../common/constant/ACEPublicStaticConfig'
+import {isEmpty} from '../../common/util/TextUtils'
+import ACOneConstant from '../constant/ACOneConstant'
+import ACEParameterUtilForOne from './ACEParameterUtilForOne'
+import ACECONSTANT from '../../common/constant/ACEConstant'
 
-// 이벤트는 컨트롤타워 와 같은 제어에서만 이벤트 사용 나머지는 프라미스와 콜백으로 하자
 export default class ACEReducerForOne {
   private static _TAG = 'reducerForOne'
   private static instance: ACEReducerForOne
-  // private emitter: ACEWorkerEventsForWorkerEmitter
 
   public static getInstance(): ACEReducerForOne {
     return this.instance || (this.instance = new this())
   }
 
-  private constructor() {
-    //   this.emitter = new ACEWorkerEventsForWorkerEmitter()
-    //   this.emitter.on('onStartForAPI', params => {
-    //     console.log('ACEReducerForOne::emitter::onStartForAPI')
-    //     console.log(JSON.stringify(params))
-    //   })
-    //   this.emitter.on('started', () => console.log('ACEReducerForOne::emitter::started'))
-    //   this.emitter.on('onFinish', (message, logsource) => {
-    //     console.log('ACEReducerForOne::emitter::onFinish')
-    //     console.log([message, logsource])
-    //   })
-    //   this.emitter.on('onError', err => {
-    //     console.log('ACEReducerForOne::emitter::onError')
-    //     console.log(JSON.stringify(err))
-    //   })
-    // }
-    // private static getEmitter(): ACEWorkerEventsForWorkerEmitter {
-    //   return ACEReducerForOne.getInstance().emitter
-  }
+  private constructor() {}
 
   private static reducer(
     params: ITaskParams,
@@ -48,40 +41,312 @@ export default class ACEReducerForOne {
     params: ITaskParams,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
+    if (params.type !== ACEofAPIForOne.Policy) {
+      if (!ControlTowerSingleton.isEnableByPolicy()) {
+        const result: ACEResponseToCaller = {
+          taskHash: `${params.type}::0006`,
+          code: ACEResultCode.NotFoundPolicyInformation,
+          result: ACEConstantCallback[ACEConstantCallback.Failed],
+          message: 'Not found policy information.',
+          apiName: ACEofAPIForOne[params.type],
+        }
+        if (callback) {
+          callback(new Error('0006, Not found policy information.'), result)
+          return
+        } else {
+          return new Promise((resolveToOut, rejectToOut) => {
+            rejectToOut(result)
+          })
+        }
+      }
+    }
     const taskAdapter = new TaskAdapter()
     switch (params.type) {
+      case ACEofAPIForOne.AppearProduct:
+        taskAdapter.addTask(new APIForAppearProduct(params), callback)
+        break
       case ACEofAPIForOne.Buy:
         taskAdapter.addTask(new APIForBuy(params), callback)
         break
+      case ACEofAPIForOne.AddInCart:
+      case ACEofAPIForOne.DeleteInCart:
+        taskAdapter.addTask(new APIForCart(params), callback)
+        break
+      case ACEofAPIForOne.Search:
+        taskAdapter.addTask(new APIForSearch(params), callback)
+        break
+      case ACEofAPIForOne.Join:
+      case ACEofAPIForOne.Leave:
+        taskAdapter.addTask(new APIForJoinLeave(params), callback)
+        break
+      case ACEofAPIForOne.Login:
+        taskAdapter.addTask(new APIForLogin(params), callback)
+        break
       case ACEofAPIForOne.PlWithPage:
-        // ACEReducerForOne.getEmitter().emit('onStartForAPI', params)
         taskAdapter.addTask(new APIForPL(params), callback)
         break
       case ACEofAPIForOne.Policy:
         taskAdapter.addTask(new APIForPolicy(params), callback)
+        break
+      case ACEofAPIForOne.InstallReferrer:
+      case ACEofAPIForOne.Push:
+        taskAdapter.addTask(new APIForPushReferrerDeeplink(params), callback)
+        break
+      case ACEofAPIForOne.TrackLinkEvent:
+      case ACEofAPIForOne.TrackTelEvent:
+        taskAdapter.addTask(new APIForLinkTel(params), callback)
         break
       default:
         ACELog.d(ACEReducerForOne._TAG, 'not implementation Task.')
         break
     }
 
-    return taskAdapter.run()
+    taskAdapter.run()
+  }
+
+  public static appearProduct(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    memberKey?: string,
+    productId?: string,
+    productName?: string,
+    productCategoryName?: string,
+    productPrice?: string,
+  ): void
+  public static appearProduct(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    memberKey?: string,
+    productId?: string,
+    productName?: string,
+    productCategoryName?: string,
+    productPrice?: string,
+  ): Promise<ACEResponseToCaller>
+  public static appearProduct(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    memberKey?: string,
+    productId?: string,
+    productName?: string,
+    productCategoryName?: string,
+    productPrice?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.AppearProduct,
+        payload: {
+          pageName: pageName,
+          memberKey: memberKey,
+          productId: productId,
+          productName: productName,
+          productCategoryName: productCategoryName,
+          productPrice: productPrice,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
   }
 
   public static buy(
-    pageName: string,
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    memberKey?: string,
+    orderNumber?: string,
+    payMethodName?: string,
+    products?: ACProduct[],
   ): void
-  public static buy(pageName: string): Promise<ACEResponseToCaller>
   public static buy(
-    pageName: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    memberKey?: string,
+    orderNumber?: string,
+    payMethodName?: string,
+    products?: ACProduct[],
+  ): Promise<ACEResponseToCaller>
+  public static buy(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    memberKey?: string,
+    orderNumber?: string,
+    payMethodName?: string,
+    products?: ACProduct[],
   ): Promise<ACEResponseToCaller> | void {
     ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.Buy,
-        payload: {},
+        payload: {
+          memberKey: memberKey,
+          orderNumber: orderNumber,
+          paymentMethod: payMethodName,
+          products: products,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static cart(
+    type: string,
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    memberKey?: string,
+    products?: ACProduct[],
+  ): void
+  public static cart(
+    type: string,
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    memberKey?: string,
+    products?: ACProduct[],
+  ): Promise<ACEResponseToCaller>
+  public static cart(
+    type: string,
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    memberKey?: string,
+    products?: ACProduct[],
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: type == ACParams.TYPE.ADDCART ? ACEofAPIForOne.AddInCart : ACEofAPIForOne.DeleteInCart,
+        payload: {
+          memberKey: memberKey,
+          products: products,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static join(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): void
+  public static join(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): Promise<ACEResponseToCaller>
+  public static join(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Join,
+        payload: {
+          pageName: pageName,
+          userId: userId,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static leave(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): void
+  public static leave(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): Promise<ACEResponseToCaller>
+  public static leave(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userId?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Leave,
+        payload: {
+          pageName: pageName,
+          userId: userId,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static link(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    linkName?: string,
+    memberKey?: string,
+  ): void
+  public static link(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    linkName?: string,
+    memberKey?: string,
+  ): Promise<ACEResponseToCaller>
+  public static link(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    linkName?: string,
+    memberKey?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.TrackLinkEvent,
+        payload: {
+          pageName: pageName,
+          memberKey: memberKey,
+          linkName: linkName,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static login(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userAge?: number,
+    userGender?: ACEGender,
+    userId?: string,
+    userMaritalStatus?: ACEMaritalStatus,
+  ): void
+  public static login(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userAge?: number,
+    userGender?: ACEGender,
+    userId?: string,
+    userMaritalStatus?: ACEMaritalStatus,
+  ): Promise<ACEResponseToCaller>
+  public static login(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    userAge?: number,
+    userGender?: ACEGender,
+    userId?: string,
+    userMaritalStatus?: ACEMaritalStatus,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Login,
+        payload: {
+          pageName: pageName,
+          userAge: userAge,
+          userGender: userGender,
+          userId: userId,
+          userMaritalStatus: userMaritalStatus,
+        },
         error: false,
         debugParams: {},
       },
@@ -90,13 +355,16 @@ export default class ACEReducerForOne {
   }
 
   public static plWithPage(
-    pageName: string,
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
   ): void
-  public static plWithPage(pageName: string): Promise<ACEResponseToCaller>
   public static plWithPage(
-    pageName: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+  ): Promise<ACEResponseToCaller>
+  public static plWithPage(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
   ): Promise<ACEResponseToCaller> | void {
     ControlTowerSingleton.getInstance().setDevSDKMode()
     ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
@@ -123,6 +391,137 @@ export default class ACEReducerForOne {
       {
         type: ACEofAPIForOne.Policy,
         payload: {},
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static push(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    data?: {[key: string]: string},
+    push?: string,
+  ): void
+  public static push(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    data?: {[key: string]: string},
+    push?: string,
+  ): Promise<ACEResponseToCaller>
+  public static push(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    data?: {[key: string]: string},
+    push?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    var _push = push
+    if (isEmpty(_push)) {
+      if (data) {
+        _push = data[ACOneConstant.PushKeyName]
+      }
+    }
+
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Push,
+        payload: {
+          keyword: _push,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static referrer(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    keyword?: string,
+  ): void
+  public static referrer(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller>
+  public static referrer(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    const _keyword = keyword ?? ACECONSTANT.EMPTY
+
+    ACEParameterUtilForOne.getInstance()
+      .isDuplicateInstallReferrer(_keyword)
+      .then(result => {
+        ACELog.i(ACECONSTANT.OFFICIAL_LOG_TAG, 'Already stored referrer.')
+      })
+      .catch(err => {
+        return ACEReducerForOne.reducer(
+          {
+            type: ACEofAPIForOne.InstallReferrer,
+            payload: {
+              keyword: _keyword,
+            },
+            error: false,
+            debugParams: {},
+          },
+          callback,
+        )
+      })
+  }
+
+  public static search(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    keyword?: string,
+  ): void
+  public static search(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller>
+  public static search(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.Search,
+        payload: {
+          pageName: pageName,
+          keyword: keyword,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static tel(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    memberKey?: string,
+    tel?: string,
+  ): void
+  public static tel(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    memberKey?: string,
+    tel?: string,
+  ): Promise<ACEResponseToCaller>
+  public static tel(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    pageName?: string,
+    memberKey?: string,
+    tel?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.TrackTelEvent,
+        payload: {
+          pageName: pageName,
+          memberKey: memberKey,
+          tel: tel,
+        },
         error: false,
         debugParams: {},
       },

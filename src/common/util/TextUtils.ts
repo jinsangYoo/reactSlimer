@@ -19,8 +19,30 @@ export function isEmpty(value: any): boolean {
   )
 }
 
-export function isLetterAtStringStartIndex(value: string): boolean {
+export function isStartIndexAkAtGCodeString(value: string): boolean {
+  const regex = /^AK.*/
+  return regex.test(value)
+}
+
+export function isAlphabetOrNumberAtStringStartIndex(value: string): boolean {
   const regex = /^[\w].*/
+  return regex.test(value)
+}
+
+export function onlyAlphabetOrNumberAtStringStartIndex(value: string): string {
+  if (!isEmpty(value)) {
+    while (!isAlphabetOrNumberAtStringStartIndex(value)) {
+      value = value.substring(1)
+      if (isEmpty(value)) {
+        break
+      }
+    }
+  }
+  return value
+}
+
+export function isLetterAtStringStartIndex(value: string): boolean {
+  const regex = /^[\w|ㄱ-ㅎ|ㄱ-ㅎ|가-힣].*/
   return regex.test(value)
 }
 
@@ -41,5 +63,27 @@ export function stringToNumber(num: string, base: number) {
   if (isNaN(parsed)) {
     return 0
   }
-  return parsed * 100
+  return parsed
+}
+
+export function encode(value: string | number | boolean) {
+  return encodeURIComponent(value)
+}
+
+export function decode(value: string) {
+  return decodeURIComponent(value)
+}
+
+export function getQueryVar(source: string): object {
+  var query = {}
+  var pairs = (source[0] === '?' ? source.substring(1) : source).split('&')
+  for (var i = 0; i < pairs.length; i++) {
+    var pair = pairs[i].split('=')
+    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '')
+  }
+  return query
+}
+
+export function getQueryForKey(source: string, value: string): string | undefined {
+  return getQueryVar(source)[value]
 }

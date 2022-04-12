@@ -10,6 +10,7 @@ import ACELog from '../logger/ACELog'
 
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import ACEParameterUtilForOne from '../../acone/parameter/ACEParameterUtilForOne'
+import ACEParameterUtil from '../parameter/ACEParameterUtil'
 
 export class ACENetwork {
   private static _TAG = 'Net'
@@ -166,7 +167,7 @@ export class ACENetwork {
   ): void {
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
     axios.defaults.headers.common['Content-Type'] = 'text/plain'
-    axios.defaults.headers.common['User-Agent'] = 'react-native ' + Platform.OS
+    axios.defaults.headers.common['User-Agent'] = ACEParameterUtil.getUserAgentForSDK()
 
     const requestHeaders = mapValueStringToObject(networkParam.requestHeaders)
     // ACELog.d(ACENetwork._TAG, 'request requestHeaders:', requestHeaders)

@@ -6,16 +6,19 @@ import ADID from '../../common/constant/ADID'
 import ACECONSTANT from '../../common/constant/ACEConstant'
 import ACOneConstant from '../constant/ACOneConstant'
 import IACBuyMode from '../constant/IACBuyMode'
-import {ACEMaritalStatus} from '../../common/constant/ACEPublicStaticConfig'
+import {ACEGender, ACEMaritalStatus} from '../../common/constant/ACEPublicStaticConfig'
 import ACOneConstantSt from '../constant/ACOneConstantSt'
 import ACOneConstantVt from '../constant/ACOneConstantVt'
 import SESSION from '../../common/constant/Session'
 import {ACEInnerCBResultKey} from '../../common/constant/ACEInnerCBResultKey'
 import ACELog from '../../common/logger/ACELog'
 import ACOneConstantInteger from '../constant/ACOneConstantInteger'
+import TP from '../constant/TP'
+import {ResultAfterSaveInStorage} from './ResultAfterSaveInStorage'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import TP from '../constant/TP'
+import {ResultOfStorage} from '../../common/constant/ResultOfStorage'
+import JN from '../constant/JN'
 
 export default class ACEParametersForOne extends ACEParameters {
   private static _TAG = 'paramForOne'
@@ -44,6 +47,7 @@ export default class ACEParametersForOne extends ACEParameters {
   private ll: string
 
   private md: string
+  private memberKey: string
   private mid: string
   private mr: string
 
@@ -51,6 +55,7 @@ export default class ACEParametersForOne extends ACEParameters {
 
   private payMethod: string
   private pd: string
+  private productId: string
 
   private re: number
   private ref: string
@@ -102,7 +107,9 @@ export default class ACEParametersForOne extends ACEParameters {
   public setADID(value: string): void {
     if (isEmpty(value)) {
       this.adid = ADID.defaultADID
+      this.setADELD(false)
     } else {
+      this.setADELD(true)
       this.adid = value
     }
   }
@@ -183,14 +190,14 @@ export default class ACEParametersForOne extends ACEParameters {
 
   public getGD(): string {
     if (isEmpty(this.gd)) {
-      this.gd = ACECONSTANT.EMPTY
+      this.gd = ACEGender.Unknown
     }
     return this.gd
   }
 
   public setGD(value: string): void {
     if (isEmpty(value)) {
-      this.gd = ACECONSTANT.EMPTY
+      this.gd = ACEGender.Unknown
     } else {
       this.gd = value
     }
@@ -211,7 +218,11 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public getInstallReferrer(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
+  public getInstallReferrer(callback: (error?: Error, result?: ResultOfStorage) => void): void
+  public getInstallReferrer(): Promise<ResultOfStorage>
+  public getInstallReferrer(
+    callback?: (error?: Error, result?: ResultOfStorage) => void,
+  ): Promise<ResultOfStorage> | void {
     if (!global.Promise) {
       ACELog.d(ACEParametersForOne._TAG, 'getInstallReferrer not support promise.')
       AsyncStorage.getItem(ACECONSTANT.InstallReferrer, (err, result) => {
@@ -248,10 +259,12 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
+  public setInstallReferrer(value: string, callback: (error?: Error, result?: ResultOfStorage) => void): void
+  public setInstallReferrer(value: string): Promise<ResultOfStorage>
   public setInstallReferrer(
     value: string,
-    callback?: (error?: Error, result?: object) => void,
-  ): Promise<object> | void {
+    callback?: (error?: Error, result?: ResultOfStorage) => void,
+  ): Promise<ResultOfStorage> | void {
     if (isEmpty(value)) {
       value = ACECONSTANT.EMPTY
     }
@@ -293,14 +306,14 @@ export default class ACEParametersForOne extends ACEParameters {
 
   public getJN(): string {
     if (isEmpty(this.jn)) {
-      this.jn = ACECONSTANT.EMPTY
+      this.jn = JN.Unknown
     }
     return this.jn
   }
 
   public setJN(value: string): void {
     if (isEmpty(value)) {
-      this.jn = ACECONSTANT.EMPTY
+      this.jn = JN.Unknown
     } else {
       this.jn = value
     }
@@ -360,6 +373,21 @@ export default class ACEParametersForOne extends ACEParameters {
 
   public setMD(value: string): void {
     this.md = value
+  }
+
+  public getMemberKey(): string {
+    if (isEmpty(this.memberKey)) {
+      this.memberKey = ACECONSTANT.EMPTY
+    }
+    return this.memberKey
+  }
+
+  public setMemberKey(value: string): void {
+    if (isEmpty(value)) {
+      this.memberKey = ACECONSTANT.EMPTY
+    } else {
+      this.memberKey = value
+    }
   }
 
   public getMID(): string {
@@ -437,6 +465,21 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
+  public getProductId(): string {
+    if (isEmpty(this.productId)) {
+      this.productId = ACECONSTANT.EMPTY
+    }
+    return this.productId
+  }
+
+  public setProductId(value: string): void {
+    if (isEmpty(value)) {
+      this.productId = ACECONSTANT.EMPTY
+    } else {
+      this.productId = value
+    }
+  }
+
   public getPush(): string {
     if (isEmpty(this.push)) {
       this.push = ACECONSTANT.EMPTY
@@ -464,6 +507,10 @@ export default class ACEParametersForOne extends ACEParameters {
       value = 0
     }
     this.re = value
+  }
+
+  public clearREF(): void {
+    this.ref = ACECONSTANT.EMPTY
   }
 
   public getREF(): string {
@@ -594,18 +641,19 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public saveST_toInStorage(st: ACEntityForST, callback: ((error?: Error, result?: object) => void) | undefined): void
-  public saveST_toInStorage(st: ACEntityForST): Promise<object>
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
+    callback: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined,
+  ): void
+  public saveST_toInStorage(st: ACEntityForST): Promise<ResultAfterSaveInStorage>
+  public saveST_toInStorage(
+    st: ACEntityForST,
+    callback?: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined,
+  ): Promise<ResultAfterSaveInStorage> | void {
     const _json = JSON.stringify(st)
     if (!global.Promise) {
-      ACELog.d(ACEParametersForOne._TAG, 'saveST_toInStorage not support promise.')
-
       AsyncStorage.setItem(ACOneConstantSt.KeyInStorage, _json, err => {
-        ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
+        // ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
         if (callback) {
           callback(err, {
             getKey: ACOneConstantSt.KeyInStorage,
@@ -614,11 +662,9 @@ export default class ACEParametersForOne extends ACEParameters {
         }
       })
     } else {
-      ACELog.d(ACEParametersForOne._TAG, 'saveST_toInStorage support promise.')
-
       return new Promise((resolve, reject) => {
         AsyncStorage.setItem(ACOneConstantSt.KeyInStorage, _json, err => {
-          ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
+          // ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
           if (callback) {
             callback(err, {
               getKey: ACOneConstantSt.KeyInStorage,
@@ -895,17 +941,19 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public saveVT_toInStorage(vt: ACEntityForVT, callback: ((error?: Error, result?: object) => void) | undefined): void
-  public saveVT_toInStorage(vt: ACEntityForVT): Promise<object>
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback?: ((error?: Error, result?: object) => void) | undefined,
-  ): Promise<object> | void {
+    callback: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined,
+  ): void
+  public saveVT_toInStorage(vt: ACEntityForVT): Promise<ResultAfterSaveInStorage>
+  public saveVT_toInStorage(
+    vt: ACEntityForVT,
+    callback?: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined,
+  ): Promise<ResultAfterSaveInStorage> | void {
     const _json = JSON.stringify(vt)
-    // ACELog.d(ACEParametersForOne._TAG, 'in saveVT_toInStorage will save to', vt)
     if (!global.Promise) {
       AsyncStorage.setItem(ACOneConstantVt.KeyInStorage, _json, err => {
-        ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
+        // ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
         if (callback) {
           callback(err, {
             getKey: ACOneConstantVt.KeyInStorage,
@@ -916,7 +964,7 @@ export default class ACEParametersForOne extends ACEParameters {
     } else {
       return new Promise((resolve, reject) => {
         AsyncStorage.setItem(ACOneConstantVt.KeyInStorage, _json, err => {
-          ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
+          // ACELog.d(ACEParametersForOne._TAG, `${ACOneConstantSt.KeyInStorage}: ${_json}`)
           if (callback) {
             callback(err, {
               getKey: ACOneConstantVt.KeyInStorage,
@@ -955,6 +1003,7 @@ export default class ACEParametersForOne extends ACEParameters {
 
       id: this._id,
 
+      jid: this.userId,
       jn: this.jn,
 
       kw: this.kw,
@@ -963,6 +1012,7 @@ export default class ACEParametersForOne extends ACEParameters {
       ll: this.ll,
 
       md: this.md,
+      member_key: this.memberKey,
       mid: this.mid,
       mr: this.mr,
 
@@ -970,6 +1020,7 @@ export default class ACEParametersForOne extends ACEParameters {
 
       pay: this.payMethod,
       pd: this.pd,
+      pdid: this.productId,
 
       re: this.re,
       ref: this.ref,
@@ -989,7 +1040,6 @@ export default class ACEParametersForOne extends ACEParameters {
       udf3: this.udf3,
       url: this.url,
 
-      userId: this.userId,
       vk: this.vk,
       vt: this.vt.getAssembleParams(),
     }
@@ -1018,6 +1068,7 @@ type ParamsForNetwork = {
 
   id: string
 
+  jid: string
   jn: string
 
   kw: string
@@ -1026,6 +1077,7 @@ type ParamsForNetwork = {
   ll: string
 
   md: string
+  member_key: string
   mid: string
   mr: string
 
@@ -1033,6 +1085,7 @@ type ParamsForNetwork = {
 
   pay: string
   pd: string
+  pdid: string
 
   re: number
   ref: string
@@ -1051,7 +1104,6 @@ type ParamsForNetwork = {
   udf2: number
   udf3: number
   url: string
-  userId: string
 
   vk: number
   vt: string

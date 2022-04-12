@@ -7,6 +7,7 @@ import IACEParameterUtil from '../parameter/IACEParameterUtil'
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../constant/ACEPublicStaticConfig'
 import ACELog from '../logger/ACELog'
+import {isEmpty, isStartIndexAkAtGCodeString} from '../util/TextUtils'
 
 export default class ACECommonStaticConfig {
   private static _TAG = 'comInit'
@@ -22,12 +23,20 @@ export default class ACECommonStaticConfig {
     configuration: AceConfiguration,
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
-    ControlTowerSingleton.getInstance().setDevSDKMode()
-    ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+    // ************************************************ development mode [S]
+    ControlTowerSingleton.setDevSDKMode()
+    // ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+    ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
+    // ************************************************ development mode [E]
+
+    ACELog.i(
+      ACECommonStaticConfig._TAG,
+      `SDK mode: ${ControlTowerSingleton.getCurrentSDKkModeName()}, network mode: ${ControlTowerSingleton.getCurrentNetworkModeName()}`,
+    )
 
     ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.SDKVersion()}`)
 
-    if (this._staticConfigImpl) {
+    if (ControlTowerSingleton.isEnableByPolicy()) {
       ACELog.d(ACECommonStaticConfig._TAG, 'Already init SDK.')
 
       const response: ACEResponseToCaller = {
@@ -46,10 +55,40 @@ export default class ACECommonStaticConfig {
         })
       }
     } else {
-      ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.')
+      if (this._staticConfigImpl) {
+        ACELog.i(ACECommonStaticConfig._TAG, 'Reinit SDK.')
+        ControlTowerSingleton.reset()
+        // ************************************************ development mode [S]
+        ControlTowerSingleton.setDevSDKMode()
+        // ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+        ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
+        // ************************************************ development mode [E]
+      } else {
+        ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.')
+      }
     }
 
     ACELog.d(ACECommonStaticConfig._TAG, 'AceConfiguration information:', configuration)
+
+    if (!ACECommonStaticConfig.validateForAceConfiguration(configuration)) {
+      ACELog.d(ACECommonStaticConfig._TAG, 'Initialization SDK failed.')
+
+      const response: ACEResponseToCaller = {
+        taskHash: '0000',
+        code: ACEResultCode.NeedToCheckAceConfiguration,
+        result: ACEConstantCallback[ACEConstantCallback.Failed],
+        message: 'Please check the configuration.',
+        apiName: 'init',
+      }
+      if (callback) {
+        callback(new Error('Initialization SDK failed.'), response)
+        return
+      } else {
+        return new Promise((resolveToOut, rejectToOut) => {
+          rejectToOut(response)
+        })
+      }
+    }
 
     if (configuration.platform) {
       this._platform = configuration.platform
@@ -132,12 +171,12 @@ export default class ACECommonStaticConfig {
     }
   }
 
-  public static isConfigure(): boolean {
-    if (this._staticConfigImpl) {
-      return true
+  private static validateForAceConfiguration(config: AceConfiguration): boolean {
+    if (isEmpty(config.key) || !isStartIndexAkAtGCodeString(config.key)) {
+      return false
     }
 
-    return false
+    return true
   }
 
   public static isDebug(): boolean {
@@ -171,4 +210,13 @@ export default class ACECommonStaticConfig {
 
     return undefined
   }
+
+  //#region AdvertisingIdentifier
+  public static setAdvertisingIdentifier(advertisingIdentifier: string): void {
+    const _parameterUtil = ACECommonStaticConfig.getParameterUtil()
+    if (_parameterUtil) {
+      _parameterUtil.setAdvertisingIdentifier(advertisingIdentifier)
+    }
+  }
+  //#endregion
 }

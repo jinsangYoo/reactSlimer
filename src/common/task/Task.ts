@@ -10,7 +10,7 @@ import {
 import ACELog from '../logger/ACELog'
 
 export default class Task {
-  private static _pTAG = 'pTask'
+  private static _p0TAG = 'pTask'
   protected _logSource: ACEofAPIForOne
   protected _date: number
   protected _response: ACENetworkResult
@@ -22,24 +22,24 @@ export default class Task {
   }
 
   public doWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
-    ACELog.d(Task._pTAG, `doWork: ${ACEofAPIForOne[this._logSource]}`)
+    ACELog.d(Task._p0TAG, `doWork: ${ACEofAPIForOne[this._logSource]}`)
   }
 
   public didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {
-    ACELog.d(Task._pTAG, `didWork: ${ACEofAPIForOne[this._logSource]}`)
+    ACELog.d(Task._p0TAG, `didWork: ${ACEofAPIForOne[this._logSource]}`)
   }
 
   public doneWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
-    ACELog.d(Task._pTAG, `doneWork: ${ACEofAPIForOne[this._logSource]}`)
+    ACELog.d(Task._p0TAG, `doneWork: ${ACEofAPIForOne[this._logSource]}`)
   }
 
   protected completed(response: AxiosResponse) {
-    ACELog.d(Task._pTAG, `completed: ${ACEofAPIForOne[this._logSource]}`)
+    ACELog.d(Task._p0TAG, `completed: ${ACEofAPIForOne[this._logSource]}`)
     this._response = new ACENetworkResult(response)
   }
 
   protected failed(err: any) {
-    ACELog.d(Task._pTAG, `failed: ${ACEofAPIForOne[this._logSource]}`, err)
+    ACELog.d(Task._p0TAG, `failed: ${ACEofAPIForOne[this._logSource]}`, err)
     this._error = JSON.parse(JSON.stringify(err))
   }
 

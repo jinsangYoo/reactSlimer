@@ -11,36 +11,49 @@ import ACECONSTANT from '../../common/constant/ACEConstant'
 import {ACEResultCode, ACEConstantCallback} from '../../common/constant/ACEPublicStaticConfig'
 import ACEntityForVT from './ACEntityForVT'
 import ACEntityForST from './ACEntityForVT'
+import ACEofAPIForOne from '../constant/ACEofAPIForOne'
+import SRC from '../../common/constant/SRC'
 
-export default class APIForPL extends Task {
-  private static _p1TAG = 'APIForPL'
+export default class APIForPushReferrerDeeplink extends Task {
+  private static _p1TAG = 'APIForPushReferrerDeeplink'
   protected _willUpdateVt?: ACEntityForVT
   protected _willUpdateSt?: ACEntityForST
-  protected pageName: string
+  protected _kw: string
 
   public constructor(params: ITaskParams) {
     super(params)
-    ACELog.d(APIForPL._p1TAG, 'in constructor, params:', params)
-    this.pageName = params.payload.pageName ?? ACECONSTANT.EMPTY
+    ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'in constructor, params:', params)
+    this._kw = params.payload.keyword ?? ACECONSTANT.EMPTY
   }
 
   public doWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
     super.doWork(callback)
-    ACELog.d(APIForPL._p1TAG, 'doWork')
+    ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'doWork')
 
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
-    _parameterUtilForOne.setTP(TP.SITE)
-    _parameterUtilForOne.updateUrlToRef(this.pageName)
+    _parameterUtilForOne.setTP(TP.MCLICK)
+    _parameterUtilForOne.updateUrlToRef(ACECONSTANT.EMPTY)
+    switch (this.getLogSource()) {
+      case ACEofAPIForOne.InstallReferrer:
+        _parameterUtilForOne.setSRC(SRC.InstallReferrer)
+        _parameterUtilForOne.setKW(this._kw)
+        break
+      case ACEofAPIForOne.Push:
+        _parameterUtilForOne.setSRC(SRC.Push)
+        _parameterUtilForOne.setKW(this._kw)
+        break
+    }
+
     _parameterUtilForOne
       .loadVT()
       .then(response => {
-        ACELog.d(APIForPL._p1TAG, 'Done load vt.', response)
-        ACELog.d(APIForPL._p1TAG, 'vt after loadVT()', _parameterUtilForOne.getVT())
+        ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'Done load vt.', response)
+        ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'vt after loadVT()', _parameterUtilForOne.getVT())
         return _parameterUtilForOne.updateSTnVT(this.assignWillUpdateVt())
       })
       .then(response => {
-        ACELog.d(APIForPL._p1TAG, 'Done update st and vt.', response)
-        ACELog.d(APIForPL._p1TAG, 'vt after updateSTnVT()', _parameterUtilForOne.getVT())
+        ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'Done update st and vt.', response)
+        ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'vt after updateSTnVT()', _parameterUtilForOne.getVT())
         if (callback) {
           const res: ACEResponseToCaller = {
             taskHash: `${this._logSource}::0011`,
@@ -53,7 +66,7 @@ export default class APIForPL extends Task {
         }
       })
       .catch(err => {
-        ACELog.d(APIForPL._p1TAG, 'Fail load st and vt.', err)
+        ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'Fail load st and vt.', err)
         if (callback) {
           const res: ACEResponseToCaller = {
             taskHash: `${this._logSource}::0012`,
@@ -69,16 +82,16 @@ export default class APIForPL extends Task {
 
   public didWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined): void {
     super.didWork(callback)
-    ACELog.d(APIForPL._p1TAG, 'didWork')
+    ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'didWork')
 
     ACENetwork.requestToLog(
       response => {
-        ACELog.d(APIForPL._p1TAG, 'in requestToLog, completed')
+        ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'in requestToLog, completed')
         this.completed(response)
         this.doneWork(callback)
       },
       err => {
-        ACELog.d(APIForPL._p1TAG, 'in requestToLog, failed')
+        ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'in requestToLog, failed')
         this.failed(err)
         this.doneWork(callback)
       },
@@ -87,24 +100,30 @@ export default class APIForPL extends Task {
 
   public completed(response: AxiosResponse) {
     super.completed(response)
-    ACELog.d(APIForPL._p1TAG, 'completed')
+    ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'completed')
   }
 
   public failed(err: any) {
     super.failed(err)
-    ACELog.d(APIForPL._p1TAG, 'failed')
+    ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'failed')
   }
 
   public doneWork(callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined) {
     super.doneWork(callback)
-    ACELog.d(APIForPL._p1TAG, 'doneWork')
+    ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'doneWork')
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
     _parameterUtilForOne
       .resetSessionAndParameterAfterSendWithParams({
         vt: this.assignWillUpdateVt(),
       })
       .then(result => {
-        ACELog.d(APIForPL._p1TAG, `resetSessionAndParameterAfterSendWithParams::result: ${result}`)
+        ACELog.d(APIForPushReferrerDeeplink._p1TAG, `resetSessionAndParameterAfterSendWithParams::result: ${result}`)
+        //#region clear
+        const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
+        _parameterUtilForOne.clearSRC()
+        _parameterUtilForOne.clearKW()
+        //#endregion
+
         if (callback) {
           if (this._error) {
             callback(this.getNetworkError(), makeFailCallbackParams(this))
@@ -114,7 +133,7 @@ export default class APIForPL extends Task {
         }
       })
       .catch(err => {
-        ACELog.d(APIForPL._p1TAG, `resetSessionAndParameterAfterSendWithParams::err: ${err}`)
+        ACELog.d(APIForPushReferrerDeeplink._p1TAG, `resetSessionAndParameterAfterSendWithParams::err: ${err}`)
         if (callback) {
           if (this._error) {
             callback(this.getNetworkError(), makeFailCallbackParams(this))

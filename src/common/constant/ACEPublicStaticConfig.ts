@@ -1,7 +1,18 @@
+import {ACParams} from '../../acone/acparam'
+
 export enum ACEConstantCallback {
   DefaultMessage = 'done',
   Failed = 'fail',
   Success = 'success',
+}
+
+export type DetailOfSDK = {
+  sdkVersion: string
+  packageNameOrBundleID: string | undefined
+  internal: {
+    waitQueue?: ACParams[]
+    bufferQueue?: ACParams[]
+  }
 }
 
 export type ControlTowerOfSDK = {
@@ -69,9 +80,13 @@ export enum ACEResultCode {
   NotReceivePolicy = 1028,
   UnknownConnectStateToTheInternet = 1029,
   DisabledByPolicy = 1030,
+  NotFoundPolicyInformation = 1031,
+  NotExistWaitTask = 1032,
+  TooBusyWillSendAfterDone = 1033,
+  InvalidACParamValues = 1034,
 }
 
-export const enum ACEGender {
+export enum ACEGender {
   Unknown = '',
   Man = 'man',
   Woman = 'woman',

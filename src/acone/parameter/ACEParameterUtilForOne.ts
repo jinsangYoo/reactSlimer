@@ -8,11 +8,21 @@ import {ACS} from '../acs'
 import SESSION from '../../common/constant/Session'
 import ACEntityForST from './ACEntityForST'
 import ACEntityForVT from './ACEntityForVT'
-import {ACEResponseToCaller, ACEConstantCallback, ACEResultCode} from '../../common/constant/ACEPublicStaticConfig'
+import {
+  ACEResponseToCaller,
+  ACEConstantCallback,
+  ACEResultCode,
+  ACEGender,
+  ACEMaritalStatus,
+} from '../../common/constant/ACEPublicStaticConfig'
 import {isEmpty, onlyLetteringAtStartIndex, stringToNumber} from '../../common/util/TextUtils'
 import ACELog from '../../common/logger/ACELog'
 import {getRandom6CharForSTVT} from '../../common/util/NumberUtil'
 import ParameterAfterSend from '../constant/ParameterAfterSend'
+import {ResultAfterSaveInStorage} from './ResultAfterSaveInStorage'
+import IACBuyMode from '../constant/IACBuyMode'
+import JN from '../constant/JN'
+import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -37,6 +47,38 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   }
   getSdkDetails(json: JSON): void {
     throw new Error('Method not implemented.')
+  }
+
+  setAdvertisingIdentifier(advertisingIdentifier: string): void {
+    ACEParametersForOne.getInstance().setADID(advertisingIdentifier)
+  }
+
+  isDuplicateInstallReferrer(value: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      ACEParametersForOne.getInstance()
+        .getInstallReferrer()
+        .then(result => {
+          ACELog.d(ACEParameterUtilForOne._TAG, `result: ${JSON.stringify(result)}, new referrer: ${value}`)
+          if (!isEmpty(result.getValue)) {
+            ACELog.d(ACEParameterUtilForOne._TAG, 'Already stored referrer.')
+            if (result.getValue == value) {
+              ACELog.d(ACEParameterUtilForOne._TAG, 'Same referrer')
+            } else {
+              resolve(true)
+              return
+            }
+          }
+          reject(false)
+        })
+        .catch(err => {
+          ACELog.d(ACEParameterUtilForOne._TAG, `err: ${JSON.stringify(err)}`)
+          reject(false)
+        })
+    })
+  }
+
+  getTS(): string {
+    return JSON.stringify({st: this.getST().getObjectForTS(), vt: this.getVT().getObjectForTS()})
   }
 
   public initParameters(
@@ -67,7 +109,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
     this.setSTS(ACECONSTANT.ZERO)
     _parametersForOne.setADELD(false)
-    _parametersForOne.setADID(ACECONSTANT.DEFAULT_ADID)
+    _parametersForOne.setADID(ACEParameterUtil.getUniqueId())
 
     ACELog.d(ACEParameterUtilForOne._TAG, `tz: ${_parametersForOne.getTZ()}`)
 
@@ -116,14 +158,128 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     })
   }
 
-  public setID(value: string): void {
-    if (!isEmpty(value) && this._enablePrivacyPolicy) {
-      value = ACOneConstant.EnabledPrivacyPolicyUserID
-    }
-
-    return ACEParametersForOne.getInstance().setSTS(value)
+  public getBuyMode(): string {
+    return ACEParametersForOne.getInstance().getMD()
   }
 
+  public setBuyMode(value: string): void {
+    ACEParametersForOne.getInstance().setMD(value)
+  }
+
+  public clearBuyMode(): void {
+    ACEParametersForOne.getInstance().setMD(IACBuyMode.Unknown)
+  }
+
+  public setKeyword(value: string): void {
+    ACEParametersForOne.getInstance().setSKEY(value)
+  }
+
+  public clearKeyword(): void {
+    this.setKeyword(ACECONSTANT.EMPTY)
+  }
+
+  public getKW(): string {
+    return ACEParametersForOne.getInstance().getKW()
+  }
+
+  public setKW(value: string): void {
+    ACEParametersForOne.getInstance().setKW(value)
+  }
+
+  public clearKW(): void {
+    ACEParametersForOne.getInstance().setKW(ACECONSTANT.EMPTY)
+  }
+
+  public setJN(value: number): void {
+    var _jn = JN.Unknown
+    switch (value) {
+      case ACEofAPIForOne.Join:
+        _jn = JN.Join
+        break
+      case ACEofAPIForOne.Leave:
+        _jn = JN.Withdraw
+        break
+    }
+    ACEParametersForOne.getInstance().setJN(_jn)
+  }
+
+  public clearJn(): void {
+    this.setJN(-1)
+  }
+
+  public clearMemberKey(): void {
+    ACEParametersForOne.getInstance().setMemberKey(ACECONSTANT.EMPTY)
+  }
+
+  public setMemberKey(value: string): void {
+    ACEParametersForOne.getInstance().setMemberKey(value)
+  }
+
+  public getOrderNumber(): string {
+    return ACEParametersForOne.getInstance().getONUM()
+  }
+
+  public setOrderNumber(value: string): void {
+    ACEParametersForOne.getInstance().setONUM(value)
+  }
+
+  public clearOrderNumber(): void {
+    ACEParametersForOne.getInstance().setONUM(ACECONSTANT.EMPTY)
+  }
+
+  public getPaymentMethod(): string {
+    return ACEParametersForOne.getInstance().getPayMethod()
+  }
+
+  public setPaymentMethod(value: string): void {
+    ACEParametersForOne.getInstance().setPayMethod(value)
+  }
+
+  public clearPayMethod(): void {
+    ACEParametersForOne.getInstance().setPayMethod(ACECONSTANT.EMPTY)
+  }
+
+  public setProduct(value: string): void {
+    ACEParametersForOne.getInstance().setLL(value)
+  }
+
+  public clearProduct(): void {
+    ACEParametersForOne.getInstance().setLL(ACECONSTANT.EMPTY)
+  }
+
+  public clearProductId(): void {
+    ACEParametersForOne.getInstance().setProductId(ACECONSTANT.EMPTY)
+  }
+
+  public setProductId(value: string): void {
+    ACEParametersForOne.getInstance().setProductId(value)
+  }
+
+  public clearProductName(): void {
+    ACEParametersForOne.getInstance().setPD(ACECONSTANT.EMPTY)
+  }
+
+  public setProductName(value: string): void {
+    ACEParametersForOne.getInstance().setPD(value)
+  }
+
+  public clearProductCategoryName(): void {
+    ACEParametersForOne.getInstance().setCT(ACECONSTANT.EMPTY)
+  }
+
+  public setProductCategoryName(value: string): void {
+    ACEParametersForOne.getInstance().setCT(value)
+  }
+
+  public clearProductPrice(): void {
+    ACEParametersForOne.getInstance().setAMT(ACECONSTANT.EMPTY)
+  }
+
+  public setProductPrice(value: string): void {
+    ACEParametersForOne.getInstance().setAMT(value)
+  }
+
+  //#region Session
   public isFirstLog(): boolean {
     return this.getSession() == SESSION.NEW
   }
@@ -146,12 +302,20 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
             this.saveST_toInStorage(_st)
               .then(result => {
                 ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St')
-                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result)
+                ACELog.d(
+                  ACEParameterUtilForOne._TAG,
+                  `resetSession::result: ${result.getKey}`,
+                  JSON.parse(result.getValue),
+                )
                 return this.saveVT_toInStorage(_vt)
               })
               .then(result => {
                 ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt')
-                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result)
+                ACELog.d(
+                  ACEParameterUtilForOne._TAG,
+                  `resetSession::result: ${result.getKey}`,
+                  JSON.parse(result.getValue),
+                )
                 resolve(true)
               })
               .catch(err => {
@@ -165,7 +329,11 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
             this.saveST_toInStorage(_st)
               .then(result => {
                 ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate St')
-                ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveST_toInStorage result:', result)
+                ACELog.d(
+                  ACEParameterUtilForOne._TAG,
+                  `resetSession::result: ${result.getKey}`,
+                  JSON.parse(result.getValue),
+                )
                 resolve(true)
               })
               .catch(err => {
@@ -182,7 +350,11 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           this.saveVT_toInStorage(_vt)
             .then(result => {
               ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::save willUpdate Vt')
-              ACELog.d(ACEParameterUtilForOne._TAG, 'resetSession::saveVT_toInStorage result:', result)
+              ACELog.d(
+                ACEParameterUtilForOne._TAG,
+                `resetSession::result: ${result.getKey}`,
+                JSON.parse(result.getValue),
+              )
               resolve(true)
             })
             .catch(err => {
@@ -211,6 +383,21 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   public setKeepSession(): void {
     ACEParametersForOne.getInstance().setVK(SESSION.KEEP)
   }
+  //#endregion
+
+  //#region src
+  public clearSRC(): void {
+    ACEParametersForOne.getInstance().setSRC(ACECONSTANT.EMPTY)
+  }
+
+  public getSRC(): string {
+    return ACEParametersForOne.getInstance().getSRC()
+  }
+
+  public setSRC(value: string): void {
+    ACEParametersForOne.getInstance().setSRC(value)
+  }
+  //#endregion
 
   //#region Update ST & VT
   public updateSTnVT(willUpdateVt: ACEntityForVT): Promise<object> {
@@ -238,8 +425,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
       }
 
       if (this.getVT().isEmptyAtBuyTimeTS()) {
-        this.setBuyTimeTSButNotStorage(_now, _randomString)
-        this.setBuyTimeTSAtObject(willUpdateVt, _now, _randomString)
+        this.setBuyTimeTSButNotStorage(_now.valueOf().toString(), _randomString)
+        this.setBuyTimeTSAtObject(willUpdateVt, _now.valueOf().toString(), _randomString)
         this.setBuyCountAtObject(willUpdateVt, 1)
       }
     } else {
@@ -261,12 +448,25 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     _parametersForOne.getST().setRandom6ForGetTS(random6Value)
   }
 
-  public saveST_toInStorage(st: ACEntityForST, callback: (error?: Error, result?: object) => void): void
-  public saveST_toInStorage(st: ACEntityForST): Promise<object>
+  public makeInsenginetTS(): void {
+    this.setInsenginetTS(new Date(), getRandom6CharForSTVT())
+  }
+
+  public setInsenginetTS(value: Date, random6Value: string): void {
+    const _parametersForOne = ACEParametersForOne.getInstance()
+    _parametersForOne.getST().setInsenginetTS(value)
+    _parametersForOne.getST().setRandom6ForInsenginetTS(random6Value)
+  }
+
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback?: (error?: Error, result?: object) => void,
-  ): Promise<object> | void {
+    callback: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+  ): void
+  public saveST_toInStorage(st: ACEntityForST): Promise<ResultAfterSaveInStorage>
+  public saveST_toInStorage(
+    st: ACEntityForST,
+    callback?: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+  ): Promise<ResultAfterSaveInStorage> | void {
     return ACEParametersForOne.getInstance().saveST_toInStorage(st, callback)
   }
 
@@ -319,6 +519,30 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     this.setURL(value)
   }
 
+  public clearREF(): void {
+    ACEParametersForOne.getInstance().clearREF()
+  }
+
+  public setRefWithBundleID(value: string): void {
+    if (isEmpty(value)) {
+      value = ACECONSTANT.EMPTY
+    }
+    ACELog.d(ACEParameterUtilForOne._TAG, `value: >>${value}<<`)
+    value = onlyLetteringAtStartIndex(value)
+    ACELog.d(ACEParameterUtilForOne._TAG, `>>${ACS.getPackageNameOrBundleID()}/${value}<<`)
+    ACEParametersForOne.getInstance().setREF(`${ACS.getPackageNameOrBundleID()}/${value}`)
+  }
+
+  public setRefForTel(value: string): void {
+    if (isEmpty(value)) {
+      value = ACECONSTANT.EMPTY
+    }
+    ACELog.d(ACEParameterUtilForOne._TAG, `value: >>${value}<<`)
+    value = onlyLetteringAtStartIndex(value)
+    ACELog.d(ACEParameterUtilForOne._TAG, `>>tel:${value}<<`)
+    ACEParametersForOne.getInstance().setREF(`tel:${value}`)
+  }
+
   // #region VT
   public setBuyCountAtObject(willUpdateVt: ACEntityForVT, value: number): void {
     willUpdateVt.setBuyCount(value)
@@ -328,12 +552,12 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return ACEParametersForOne.getInstance().getVT().getBuyTimeTS()
   }
 
-  public setBuyTimeTSButNotStorage(value: Date, random: string): void {
+  public setBuyTimeTSButNotStorage(value: string, random: string): void {
     this.getVT().setBuyTimeTS(value)
     this.getVT().setRandom6ForBuyTimeTS(random)
   }
 
-  public setBuyTimeTSAtObject(willUpdateVt: ACEntityForVT, value: Date, random: string): void {
+  public setBuyTimeTSAtObject(willUpdateVt: ACEntityForVT, value: string, random: string): void {
     willUpdateVt.setBuyTimeTS(value)
     willUpdateVt.setRandom6ForBuyTimeTS(random)
   }
@@ -366,23 +590,88 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     willUpdateVt.setRandom6ForVTS(random)
   }
 
-  public saveVT_toInStorage(vt: ACEntityForVT, callback: (error?: Error, result?: object) => void): void
-  public saveVT_toInStorage(vt: ACEntityForVT): Promise<object>
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback?: (error?: Error, result?: object) => void,
-  ): Promise<object> | void {
+    callback: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+  ): void
+  public saveVT_toInStorage(vt: ACEntityForVT): Promise<ResultAfterSaveInStorage>
+  public saveVT_toInStorage(
+    vt: ACEntityForVT,
+    callback?: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+  ): Promise<ResultAfterSaveInStorage> | void {
     return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback)
   }
   // #endregion
 
-  public setUserID(value: string): void {
+  //#region User
+  public getUserAge(): number {
+    return ACEParametersForOne.getInstance().getAG()
+  }
+
+  public setUserAge(value: number): void {
+    ACEParametersForOne.getInstance().setAG(value)
+  }
+
+  public clearUserAge(): void {
+    this.setUserAge(0)
+  }
+
+  public getUserGender(): ACEGender {
+    return ACEGender[ACEParametersForOne.getInstance().getGD()]
+  }
+
+  public setUserGender(value: ACEGender): void {
+    ACEParametersForOne.getInstance().setGD(value)
+  }
+
+  public clearUserGender(): void {
+    this.setUserGender(ACEGender.Unknown)
+  }
+
+  public getLoginUserID(): string {
+    return ACEParametersForOne.getInstance().getID()
+  }
+
+  public setLoginUserID(value: string): void {
     if (!isEmpty(value) && this._enablePrivacyPolicy) {
       value = ACOneConstant.EnabledPrivacyPolicyUserID
     }
 
-    return ACEParametersForOne.getInstance().setSTS(value)
+    ACEParametersForOne.getInstance().setID(value)
   }
+
+  public clearLoginUserID(): void {
+    ACEParametersForOne.getInstance().setID(ACECONSTANT.EMPTY)
+  }
+
+  public getJoinOrLeaveUserID(): string {
+    return ACEParametersForOne.getInstance().getUserID()
+  }
+
+  public setJoinOrLeaveUserID(value: string): void {
+    if (!isEmpty(value) && this._enablePrivacyPolicy) {
+      value = ACOneConstant.EnabledPrivacyPolicyUserID
+    }
+
+    ACEParametersForOne.getInstance().setUserID(value)
+  }
+
+  public clearJoinOrLeaveUserID(): void {
+    ACEParametersForOne.getInstance().setUserID(ACECONSTANT.EMPTY)
+  }
+
+  public getUserMaritalStatus(): ACEMaritalStatus {
+    return ACEMaritalStatus[ACEParametersForOne.getInstance().getMR()]
+  }
+
+  public setUserMaritalStatus(value: ACEMaritalStatus): void {
+    ACEParametersForOne.getInstance().setMR(value)
+  }
+
+  public clearUserMaritalStatus(): void {
+    this.setUserMaritalStatus(ACEMaritalStatus.Unknown)
+  }
+  //#endregion
 
   public setterForString(key: string, value: string): void {}
 

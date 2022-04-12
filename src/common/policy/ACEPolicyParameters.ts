@@ -1,4 +1,4 @@
-import {isEmpty} from '../../common/util/TextUtils'
+import {isEmpty} from '../util/TextUtils'
 import ACECONSTANT from '../constant/ACEConstant'
 
 export default class ACEPolicyParameters {

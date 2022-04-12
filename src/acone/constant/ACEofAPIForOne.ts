@@ -18,6 +18,9 @@ enum ACEofAPIForOne {
   Search = 190,
 
   Policy = 1000,
+
+  InstallReferrer = 3300,
+  Push = 3210,
 }
 
 export default ACEofAPIForOne

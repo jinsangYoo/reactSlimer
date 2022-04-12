@@ -1,7 +1,7 @@
 import {SDKMode, NetworkMode} from '../constant/SDKMode'
 import {ACEPlatform, AceConfiguration} from '../../acone/aceconfiguration'
 import ControlTower from './ControlTower'
-import ACEControlTowerForOne from '../../acone/controltower.ts/ACEControlTowerForOne'
+import ACEControlTowerForOne from '../../acone/controltower/ACEControlTowerForOne'
 import ACELog from '../logger/ACELog'
 
 export default class ControlTowerSingleton {
@@ -104,9 +104,29 @@ export default class ControlTowerSingleton {
     this._controlTower.setIsCompletePolicy(true, false)
   }
 
+  public reset(): void {
+    return this._controlTower.reset()
+  }
+
   //#region static
+  public static getCurrentSDKkModeName(): string {
+    return SDKMode[ControlTowerSingleton.getInstance().getSDKMode()]
+  }
+
+  public static getCurrentNetworkModeName(): string {
+    return NetworkMode[ControlTowerSingleton.getInstance().getNetworkMode()]
+  }
+
   public static getDefaultNetworkMode(): NetworkMode {
     return ControlTower.getDefaultNetworkMode()
+  }
+
+  public static setDefaultNetworkMode(): void {
+    ControlTowerSingleton.getInstance().setNetworkMode(ControlTowerSingleton.getDefaultNetworkMode())
+  }
+
+  public static setDevSDKMode(): void {
+    ControlTowerSingleton.getInstance().setDevSDKMode()
   }
 
   public static getIsCompletePolicy(): boolean {
@@ -115,6 +135,10 @@ export default class ControlTowerSingleton {
 
   public static isEnableByPolicy(): boolean {
     return ControlTowerSingleton.getInstance().isEnableByPolicy()
+  }
+
+  public static reset(): void {
+    return ControlTowerSingleton.getInstance().reset()
   }
   //#endregion
 }
