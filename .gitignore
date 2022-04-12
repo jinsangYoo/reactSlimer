@@ -1,6 +1,7 @@
 # reactslimer
 #
 dist/
+*.tgz
 
 # OSX
 #
