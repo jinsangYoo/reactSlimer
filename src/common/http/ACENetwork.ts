@@ -84,7 +84,7 @@ export class ACENetwork {
         _map.set(POLICY.REQUEST_APPLICATION_ID, ACS.getPackageNameOrBundleID() ?? 'no packageName')
 
         _map.set(POLICY.REQUEST_CID, ACECommonStaticConfig.getKey())
-        _map.set(POLICY.REQUEST_PLATFORM, Platform.OS)
+        _map.set(POLICY.REQUEST_PLATFORM, `${Platform.OS} with react-native`)
         _map.set(POLICY.REQUEST_SERVICE_ID, ACECommonStaticConfig.getKey())
         _map.set(POLICY.REQUEST_TIME, Date.now().toString())
         _map.set(POLICY.REQUEST_VERSION, ACS.SDKVersion())
