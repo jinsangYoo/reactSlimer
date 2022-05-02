@@ -366,9 +366,6 @@ export default class ACEReducerForOne {
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
   ): Promise<ACEResponseToCaller> | void {
-    ControlTowerSingleton.getInstance().setDevSDKMode()
-    ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
-
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.PlWithPage,

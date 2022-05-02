@@ -10,6 +10,7 @@ import ACELog from '../logger/ACELog'
 
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import ACEParameterUtilForOne from '../../acone/parameter/ACEParameterUtilForOne'
+import ACEPolicyParameters from '../policy/ACEPolicyParameters'
 
 export class ACENetwork {
   private static _TAG = 'Net'
@@ -36,7 +37,7 @@ export class ACENetwork {
       case NetworkMode.HOME_dev:
         return BASE_URL.HOME_LOCAL_LOG
       case NetworkMode.Pro:
-        return BASE_URL.PRO_LOG
+        return ACEPolicyParameters.getInstance().getCpDomain()
     }
   }
 
