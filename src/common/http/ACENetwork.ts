@@ -10,7 +10,6 @@ import ACELog from '../logger/ACELog'
 
 import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import ACEParameterUtilForOne from '../../acone/parameter/ACEParameterUtilForOne'
-import ACEParameterUtil from '../parameter/ACEParameterUtil'
 
 export class ACENetwork {
   private static _TAG = 'Net'
@@ -85,7 +84,7 @@ export class ACENetwork {
         _map.set(POLICY.REQUEST_APPLICATION_ID, ACS.getPackageNameOrBundleID() ?? 'no packageName')
 
         _map.set(POLICY.REQUEST_CID, ACECommonStaticConfig.getKey())
-        _map.set(POLICY.REQUEST_PLATFORM, Platform.OS)
+        _map.set(POLICY.REQUEST_PLATFORM, `${Platform.OS} with react-native`)
         _map.set(POLICY.REQUEST_SERVICE_ID, ACECommonStaticConfig.getKey())
         _map.set(POLICY.REQUEST_TIME, Date.now().toString())
         _map.set(POLICY.REQUEST_VERSION, ACS.SDKVersion())
@@ -166,8 +165,7 @@ export class ACENetwork {
     method: HTTP_METHOD = HTTP_METHOD.GET,
   ): void {
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
-    axios.defaults.headers.common['Content-Type'] = 'text/plain'
-    axios.defaults.headers.common['User-Agent'] = ACEParameterUtil.getUserAgentForSDK()
+    axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8'
 
     const requestHeaders = mapValueStringToObject(networkParam.requestHeaders)
     // ACELog.d(ACENetwork._TAG, 'request requestHeaders:', requestHeaders)
