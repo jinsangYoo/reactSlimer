@@ -182,7 +182,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.278'
+    return '0.0.279'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
