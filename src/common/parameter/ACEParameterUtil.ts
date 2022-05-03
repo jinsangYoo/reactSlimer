@@ -1,3 +1,4 @@
+import {Platform} from 'react-native'
 import {Dimensions} from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 
@@ -26,7 +27,21 @@ export default class ACEParameterUtil {
     return DeviceInfo.getUniqueId()
   }
 
+  public static getPlatformName(): string {
+    if (Platform.OS === 'ios' && !Platform.isPad) {
+      return ACEParameterUtil.replace_iOS_To_iPhone_OS(ACEParameterUtil.getSystemName())
+    } else {
+      return ACEParameterUtil.getSystemName()
+    }
+  }
+
   public static getUserAgentForSDK(): string {
-    return `${ACEParameterUtil.getSystemName()} ${ACEParameterUtil.getSystemVersion()} ${ACEParameterUtil.getModel()} on react-native`
+    return `${ACEParameterUtil.getPlatformName()} ${ACEParameterUtil.getSystemVersion()} ${ACEParameterUtil.getModel()} on react-native`
+  }
+
+  private static replace_iOS_To_iPhone_OS(source: string): string {
+    const re = /iOS/gi
+
+    return source.replace(re, 'iPhone OS')
   }
 }
