@@ -21,6 +21,7 @@ export class ACS {
   private static bufferQueue: ACParams[]
   private emitter: EventsForWorkerEmitter
   private static lock = false
+  private _configuration?: AceConfiguration
 
   public static getInstance(): ACS {
     return this.instance || (this.instance = new this())
@@ -34,6 +35,10 @@ export class ACS {
     this.emitter.on('popBufferQueue', () => {
       this.popBufferQueue()
     })
+  }
+
+  private storeConfigurationOfUser(value: AceConfiguration): void {
+    this._configuration = value
   }
 
   //#region configure of SDK
@@ -58,6 +63,7 @@ export class ACS {
     value: AceConfiguration,
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
+    this.storeConfigurationOfUser({...value})
     if (callback) {
       const callbackAtInit = (error?: object, innerResult?: ACEResponseToCaller) => {
         if (error) {
@@ -182,7 +188,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.286'
+    return '0.0.288'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -194,13 +200,18 @@ export class ACS {
   }
 
   public static getDetail(): DetailOfSDK {
+    const _parameterUtil = ACECommonStaticConfig.getParameterUtil()
+    if (_parameterUtil) {
+      return _parameterUtil.getSdkDetails(
+        ACS.getInstance()._configuration ?? {
+          key: 'not has configuration',
+        },
+      )
+    }
+
     return {
-      sdkVersion: ACS.SDKVersion(),
-      packageNameOrBundleID: ACS.getPackageNameOrBundleID(),
-      internal: {
-        waitQueue: Array.from(ACS.waitQueue ?? []),
-        bufferQueue: Array.from(ACS.bufferQueue ?? []),
-      },
+      result: ACEConstantCallback[ACEConstantCallback.Failed],
+      message: `SDK is maybe that don't initialize.`,
     }
   }
   //#endregion

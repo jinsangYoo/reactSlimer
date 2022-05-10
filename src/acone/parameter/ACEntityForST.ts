@@ -1,4 +1,5 @@
 import ACECONSTANT from '../../common/constant/ACEConstant'
+import {objectForST} from '../../common/constant/ACEPublicStaticConfig'
 import ACOneConstantSt from '../constant/ACOneConstantSt'
 // import ACELog from '../../common/logger/ACELog'
 
@@ -176,7 +177,7 @@ export default class ACEntityForST {
     }
   }
 
-  public getObjectForTS(): object {
+  public getObjectForTS(): objectForST {
     return {
       getts: this.getGetTSGoldMaster(),
 

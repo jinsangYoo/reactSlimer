@@ -1,3 +1,6 @@
+import {AceConfiguration} from '../../acone/aceconfiguration'
+import {DetailOfSDK} from '../constant/ACEPublicStaticConfig'
+
 export default interface IACEParameterUtil {
   loadUniqueKeyForSDK(): void
   setFirstLogParameters(): void
@@ -9,7 +12,7 @@ export default interface IACEParameterUtil {
 
   setterForString(key: string, value: string): void
 
-  getSdkDetails(json: JSON): void
+  getSdkDetails(value: AceConfiguration): DetailOfSDK
 
   setAdvertisingIdentifier(advertisingIdentifier: string): void
 

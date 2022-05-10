@@ -84,6 +84,10 @@ export default class ControlTowerSingleton {
     this._controlTower.enableForceStop()
   }
 
+  public isEnableForceStop(): boolean {
+    return this._controlTower.isEnableForceStop()
+  }
+
   public setDevSDKMode(): void {
     this._controlTower.setDevSDKMode()
   }
@@ -135,6 +139,10 @@ export default class ControlTowerSingleton {
 
   public static isEnableByPolicy(): boolean {
     return ControlTowerSingleton.getInstance().isEnableByPolicy()
+  }
+
+  public static isEnableForceStop(): boolean {
+    return ControlTowerSingleton.getInstance().isEnableForceStop()
   }
 
   public static reset(): void {

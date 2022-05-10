@@ -1,6 +1,9 @@
 import {Platform} from 'react-native'
 import {Dimensions} from 'react-native'
 import DeviceInfo from 'react-native-device-info'
+import {ACS} from '../../acone/acs'
+import ACECONSTANT from '../constant/ACEConstant'
+import {VersionWithPatch} from '../constant/ACEPublicStaticConfig'
 
 export default class ACEParameterUtil {
   public static getResolution(): string {
@@ -43,5 +46,12 @@ export default class ACEParameterUtil {
     const re = /iOS/gi
 
     return source.replace(re, 'iPhone OS')
+  }
+
+  public static getSdkVersionWithPatch(): VersionWithPatch {
+    return {
+      version: ACS.SDKVersion(),
+      patch: ACECONSTANT.PATCH,
+    }
   }
 }

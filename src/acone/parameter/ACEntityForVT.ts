@@ -2,6 +2,7 @@ import ACECONSTANT from '../../common/constant/ACEConstant'
 import ACOneConstantVt from '../constant/ACOneConstantVt'
 import {getRandom6CharForSTVT} from '../../common/util/NumberUtil'
 import ACELog from '../../common/logger/ACELog'
+import {objectForVT} from '../../common/constant/ACEPublicStaticConfig'
 
 export default class ACEntityForVT {
   private static _TAG = 'vt'
@@ -231,7 +232,7 @@ export default class ACEntityForVT {
     }
   }
 
-  public getObjectForTS(): object {
+  public getObjectForTS(): objectForVT {
     return {
       vts: this.getVTSGoldMaster(),
       visitCount: this.getVisitCount(),

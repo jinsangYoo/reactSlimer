@@ -14,6 +14,7 @@ import {
   ACEResultCode,
   ACEGender,
   ACEMaritalStatus,
+  DetailOfSDK,
 } from '../../common/constant/ACEPublicStaticConfig'
 import {isEmpty, onlyLetteringAtStartIndex, stringToNumber} from '../../common/util/TextUtils'
 import ACELog from '../../common/logger/ACELog'
@@ -23,6 +24,8 @@ import {ResultAfterSaveInStorage} from './ResultAfterSaveInStorage'
 import IACBuyMode from '../constant/IACBuyMode'
 import JN from '../constant/JN'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
+import {AceConfiguration} from '../aceconfiguration'
+import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -45,8 +48,29 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   setLogSource(value: number): void {
     throw new Error('Method not implemented.')
   }
-  getSdkDetails(json: JSON): void {
-    throw new Error('Method not implemented.')
+  getSdkDetails(value: AceConfiguration): DetailOfSDK {
+    const _parametersForOne = ACEParametersForOne.getInstance()
+    const _controlTowerSingleton = ControlTowerSingleton.getInstance()
+    return {
+      statuses: {
+        configuration: {
+          ...value,
+        },
+        controlTower: {
+          isCompletePolicy: _controlTowerSingleton.getIsCompletePolicy(),
+          isForceStop: _controlTowerSingleton.isEnableForceStop(),
+          isInstallReferrerWaitDone: false,
+          isSDKEnabled: _controlTowerSingleton.isEnableByPolicy(),
+        },
+      },
+      internal: {
+        adeld: _parametersForOne.getADELD(),
+        adid: _parametersForOne.getADID(),
+        vt: this.getVT().getObjectForTS(),
+        versions: ACEParameterUtil.getSdkVersionWithPatch(),
+      },
+      result: ACEConstantCallback[ACEConstantCallback.Success],
+    }
   }
 
   setAdvertisingIdentifier(advertisingIdentifier: string): void {

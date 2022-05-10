@@ -1,6 +1,6 @@
 {
   "name": "reactslimer",
-  "version": "0.0.286",
+  "version": "0.0.288",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
