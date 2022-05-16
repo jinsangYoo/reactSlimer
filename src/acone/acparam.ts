@@ -4,7 +4,8 @@ import {ACEGender, ACEMaritalStatus} from '../common/constant/ACEPublicStaticCon
 type ParamType =
   | 'addcart'
   | 'appearProduct'
-  | 'buy'
+  | 'buyCancel'
+  | 'buyDone'
   | 'delcart'
   | 'event'
   | 'join'
@@ -21,7 +22,8 @@ export type IACParams = {
   TYPE: {
     ADDCART: ParamType
     APPEAR_PRODUCT: ParamType
-    BUY: ParamType
+    BUY_CANCEL: ParamType
+    BUY_DONE: ParamType
     DELCART: ParamType
     EVENT: ParamType
     JOIN: ParamType
@@ -63,7 +65,8 @@ export const ACParams: IACParams = {
   TYPE: {
     ADDCART: 'addcart',
     APPEAR_PRODUCT: 'appearProduct',
-    BUY: 'buy',
+    BUY_CANCEL: 'buyCancel',
+    BUY_DONE: 'buyDone',
     DELCART: 'delcart',
     EVENT: 'event',
     JOIN: 'join',

@@ -23,12 +23,6 @@ export default class ACECommonStaticConfig {
     configuration: AceConfiguration,
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
-    // ************************************************ development mode [S]
-    ControlTowerSingleton.setDevSDKMode()
-    // ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
-    ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
-    // ************************************************ development mode [E]
-
     ACELog.i(
       ACECommonStaticConfig._TAG,
       `SDK mode: ${ControlTowerSingleton.getCurrentSDKkModeName()}, network mode: ${ControlTowerSingleton.getCurrentNetworkModeName()}`,
@@ -58,14 +52,15 @@ export default class ACECommonStaticConfig {
       if (this._staticConfigImpl) {
         ACELog.i(ACECommonStaticConfig._TAG, 'Reinit SDK.')
         ControlTowerSingleton.reset()
-        // ************************************************ development mode [S]
-        ControlTowerSingleton.setDevSDKMode()
-        // ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
-        ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
-        // ************************************************ development mode [E]
       } else {
         ACELog.i(ACECommonStaticConfig._TAG, 'Start init SDK.')
       }
+
+      // ************************************************ development mode [S]
+      ControlTowerSingleton.setDevSDKMode()
+      // ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
+      ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
+      // ************************************************ development mode [E]
     }
 
     ACELog.d(ACECommonStaticConfig._TAG, 'AceConfiguration information:', configuration)

@@ -116,7 +116,13 @@ export default class ControlTower {
     this._network_mode = value
   }
 
-  public enableForceStop(): void {}
+  public enableForceStop(): void {
+    this._isSDKForceStop = true
+  }
+
+  public isEnableForceStop(): boolean {
+    return this._isSDKForceStop
+  }
 
   public setDevSDKMode(): void {
     this.setSDKMode(SDKMode.development)

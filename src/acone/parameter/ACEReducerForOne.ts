@@ -65,7 +65,8 @@ export default class ACEReducerForOne {
       case ACEofAPIForOne.AppearProduct:
         taskAdapter.addTask(new APIForAppearProduct(params), callback)
         break
-      case ACEofAPIForOne.Buy:
+      case ACEofAPIForOne.BuyCancel:
+      case ACEofAPIForOne.BuyDone:
         taskAdapter.addTask(new APIForBuy(params), callback)
         break
       case ACEofAPIForOne.AddInCart:
@@ -150,6 +151,7 @@ export default class ACEReducerForOne {
   }
 
   public static buy(
+    type: string,
     callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
     memberKey?: string,
@@ -158,6 +160,7 @@ export default class ACEReducerForOne {
     products?: ACProduct[],
   ): void
   public static buy(
+    type: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
     memberKey?: string,
@@ -166,6 +169,7 @@ export default class ACEReducerForOne {
     products?: ACProduct[],
   ): Promise<ACEResponseToCaller>
   public static buy(
+    type: string,
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
     memberKey?: string,
@@ -176,7 +180,7 @@ export default class ACEReducerForOne {
     ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
-        type: ACEofAPIForOne.Buy,
+        type: type == ACParams.TYPE.BUY_DONE ? ACEofAPIForOne.BuyDone : ACEofAPIForOne.BuyCancel,
         payload: {
           memberKey: memberKey,
           orderNumber: orderNumber,
@@ -366,9 +370,6 @@ export default class ACEReducerForOne {
     callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
     pageName?: string,
   ): Promise<ACEResponseToCaller> | void {
-    ControlTowerSingleton.getInstance().setDevSDKMode()
-    ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
-
     return ACEReducerForOne.reducer(
       {
         type: ACEofAPIForOne.PlWithPage,

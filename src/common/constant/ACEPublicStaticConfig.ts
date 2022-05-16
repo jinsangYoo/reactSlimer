@@ -1,4 +1,4 @@
-import {ACParams} from '../../acone/acparam'
+import {AceConfiguration} from '../../acone/aceconfiguration'
 
 export enum ACEConstantCallback {
   DefaultMessage = 'done',
@@ -7,18 +7,50 @@ export enum ACEConstantCallback {
 }
 
 export type DetailOfSDK = {
-  sdkVersion: string
-  packageNameOrBundleID: string | undefined
-  internal: {
-    waitQueue?: ACParams[]
-    bufferQueue?: ACParams[]
+  statuses?: {
+    configuration?: AceConfiguration
+    controlTower?: ControlTowerOfSDK
   }
+  internal?: {
+    adeld?: string
+    adid?: string
+    vt?: objectForVT
+    versions?: VersionWithPatch
+  }
+  result: string
+  message?: string
+}
+
+export type VersionWithPatch = {
+  version: string
+  patch: string
+}
+
+export type objectForST = {
+  getts: string
+
+  insenginets: string
+
+  referts: string
+
+  startts: string
+}
+
+export type objectForVT = {
+  vts: string
+  visitCount: string
+
+  buyTimeTS: string
+
+  buyCount: string
+
+  pcStamp: string
 }
 
 export type ControlTowerOfSDK = {
   isCompletePolicy: boolean
   isForceStop: boolean
-  isInstallReferrerWaitDone: boolean
+  isInstallReferrerWaitDone?: boolean
   isSDKEnabled: boolean
 }
 

@@ -9,6 +9,7 @@ import ACEParameterUtilForOne from './ACEParameterUtilForOne'
 import IACBuyMode from '../constant/IACBuyMode'
 import {acproductToURLForOne} from '../../common/util/ACProductUtil'
 import {stringToNumber} from '../../common/util/TextUtils'
+import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 
 export default class APIForBuy extends APIForPL {
   private static _TAG = 'APIForBuy'
@@ -33,11 +34,21 @@ export default class APIForBuy extends APIForPL {
         callback(error, innerResult)
       } else if (callback) {
         const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
-        _parameterUtilForOne.setBuyMode(IACBuyMode.Order)
         _parameterUtilForOne.setMemberKey(this.memberKey)
         _parameterUtilForOne.setOrderNumber(this.orderNumber)
         _parameterUtilForOne.setPaymentMethod(this.paymentMethod)
         _parameterUtilForOne.setProduct(acproductToURLForOne(this.products, this.getLogSource()))
+
+        switch (this._logSource) {
+          case ACEofAPIForOne.BuyDone: {
+            _parameterUtilForOne.setBuyMode(IACBuyMode.Order)
+            break
+          }
+          case ACEofAPIForOne.BuyCancel: {
+            _parameterUtilForOne.setBuyMode(IACBuyMode.Cancel)
+            break
+          }
+        }
 
         //#region BuyTimeTS
         const _st = _parameterUtilForOne.getST()
