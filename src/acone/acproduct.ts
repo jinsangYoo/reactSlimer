@@ -71,7 +71,7 @@ export default class ACProduct {
   //#endregion
 
   public toStringForOne(logSource: number): string {
-    if (logSource == ACEofAPIForOne.Buy) {
+    if (logSource == ACEofAPIForOne.BuyCancel || logSource == ACEofAPIForOne.BuyDone) {
       return `${this.encodedCategory()}@${this.encodedName()}@${this.encodedPrice()}@${this.getQuantify()}@${this.encodedProductId()}@${this.encodedOptionCodeName()}`
     } else {
       return `${this.encodedCategory()}@${this.encodedName()}@${this.encodedPrice()}@${this.getQuantify()}`

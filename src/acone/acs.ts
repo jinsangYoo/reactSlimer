@@ -188,7 +188,7 @@ export class ACS {
 
   //#region detail of SDK
   public static SDKVersion(): string {
-    return '0.0.288'
+    return '0.0.289'
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -305,8 +305,10 @@ export class ACS {
                   value.productPrice,
                 )
                 break
-              case ACParams.TYPE.BUY:
+              case ACParams.TYPE.BUY_CANCEL:
+              case ACParams.TYPE.BUY_DONE:
                 ACEReducerForOne.buy(
+                  value.type,
                   callbackForCB,
                   value.name,
                   value.memberKey,
@@ -429,8 +431,10 @@ export class ACS {
                     value.productPrice,
                   )
                   break
-                case ACParams.TYPE.BUY:
+                case ACParams.TYPE.BUY_CANCEL:
+                case ACParams.TYPE.BUY_DONE:
                   ACEReducerForOne.buy(
+                    value.type,
                     callbackForPromise,
                     value.name,
                     value.memberKey,

@@ -9,7 +9,8 @@ enum ACEofAPIForOne {
   PairsWithProduct = 171,
   PlWithPage = 100,
   AppearProduct = 101,
-  Buy = 102,
+  BuyDone = 102,
+  BuyCancel = 103,
 
   Leave = 150,
   Join = 151,
