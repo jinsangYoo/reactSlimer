@@ -218,10 +218,10 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public getInstallReferrer(callback: (error?: Error, result?: ResultOfStorage) => void): void
+  public getInstallReferrer(callback: (error?: Error | null, result?: ResultOfStorage) => void): void
   public getInstallReferrer(): Promise<ResultOfStorage>
   public getInstallReferrer(
-    callback?: (error?: Error, result?: ResultOfStorage) => void,
+    callback?: (error?: Error | null, result?: ResultOfStorage) => void,
   ): Promise<ResultOfStorage> | void {
     if (!global.Promise) {
       ACELog.d(ACEParametersForOne._TAG, 'getInstallReferrer not support promise.')
@@ -259,11 +259,11 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public setInstallReferrer(value: string, callback: (error?: Error, result?: ResultOfStorage) => void): void
+  public setInstallReferrer(value: string, callback: (error?: Error | null, result?: ResultOfStorage) => void): void
   public setInstallReferrer(value: string): Promise<ResultOfStorage>
   public setInstallReferrer(
     value: string,
-    callback?: (error?: Error, result?: ResultOfStorage) => void,
+    callback?: (error?: Error | null, result?: ResultOfStorage) => void,
   ): Promise<ResultOfStorage> | void {
     if (isEmpty(value)) {
       value = ACECONSTANT.EMPTY
@@ -588,9 +588,9 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public loadST(callback: ((error?: Error, result?: object) => void) | undefined): void
+  public loadST(callback: ((error?: Error | null, result?: object) => void) | undefined): void
   public loadST(): Promise<object>
-  public loadST(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
+  public loadST(callback?: ((error?: Error | null, result?: object) => void) | undefined): Promise<object> | void {
     if (!global.Promise) {
       ACELog.d(ACEParametersForOne._TAG, 'loadST not support promise.')
 
@@ -643,12 +643,12 @@ export default class ACEParametersForOne extends ACEParameters {
 
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined,
+    callback: ((error?: Error | null, result?: ResultAfterSaveInStorage) => void) | undefined,
   ): void
   public saveST_toInStorage(st: ACEntityForST): Promise<ResultAfterSaveInStorage>
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback?: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined,
+    callback?: ((error?: Error | null, result?: ResultAfterSaveInStorage) => void) | undefined,
   ): Promise<ResultAfterSaveInStorage> | void {
     const _json = JSON.stringify(st)
     if (!global.Promise) {
@@ -862,9 +862,9 @@ export default class ACEParametersForOne extends ACEParameters {
     }
   }
 
-  public loadVT(callback: ((error?: Error, result?: object) => void) | undefined): void
+  public loadVT(callback: ((error?: Error | null, result?: object) => void) | undefined): void
   public loadVT(): Promise<object>
-  public loadVT(callback?: ((error?: Error, result?: object) => void) | undefined): Promise<object> | void {
+  public loadVT(callback?: ((error?: Error | null, result?: object) => void) | undefined): Promise<object> | void {
     if (!global.Promise) {
       AsyncStorage.getItem(ACOneConstantVt.KeyInStorage, (err, result) => {
         ACELog.d(ACEParametersForOne._TAG, 'in loadVT::in cb::result', JSON.parse(result ?? '{"result":"undefined"}'))
@@ -943,12 +943,12 @@ export default class ACEParametersForOne extends ACEParameters {
 
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined,
+    callback: ((error?: Error | null, result?: ResultAfterSaveInStorage) => void) | undefined,
   ): void
   public saveVT_toInStorage(vt: ACEntityForVT): Promise<ResultAfterSaveInStorage>
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback?: ((error?: Error, result?: ResultAfterSaveInStorage) => void) | undefined,
+    callback?: ((error?: Error | null, result?: ResultAfterSaveInStorage) => void) | undefined,
   ): Promise<ResultAfterSaveInStorage> | void {
     const _json = JSON.stringify(vt)
     if (!global.Promise) {
