@@ -67,7 +67,7 @@ export class ACS {
     if (callback) {
       const callbackAtInit = (error?: object, innerResult?: ACEResponseToCaller) => {
         if (error) {
-          callback(new Error(`0000, Can not init SDK.`))
+          callback(new Error(`0000, Can not init SDK.`), innerResult)
         } else {
           callback(undefined, innerResult)
           this.popWaitQueueEmit()

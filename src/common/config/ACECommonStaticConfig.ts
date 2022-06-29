@@ -105,6 +105,7 @@ export default class ACECommonStaticConfig {
           if (_commonAPI) {
             _commonAPI.requestPolicy((error?: object, innerResult?: ACEResponseToCaller) => {
               if (error) {
+                ACELog.d(ACECommonStaticConfig._TAG, JSON.stringify(error, null, 2))
                 callback(new Error('0001, Can not request policy.'), innerResult)
               } else {
                 callback(undefined, innerResult)
