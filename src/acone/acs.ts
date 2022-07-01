@@ -187,8 +187,12 @@ export class ACS {
   //#endregion
 
   //#region detail of SDK
-  public static SDKVersion(): string {
-    return '0.0.289'
+  public static isEnableSDK(): boolean {
+    return ControlTowerSingleton.getIsSDKEnabled()
+  }
+
+  public static getSdkVersion(): string {
+    return JSON.stringify(ACEParameterUtil.getSdkVersionWithPatch())
   }
 
   public static getPackageNameOrBundleID(): string | undefined {
@@ -199,7 +203,7 @@ export class ACS {
     this._packageNameOrBundleID = packageNameOrBundleID
   }
 
-  public static getDetail(): DetailOfSDK {
+  public static getSdkDetails(): DetailOfSDK {
     const _parameterUtil = ACECommonStaticConfig.getParameterUtil()
     if (_parameterUtil) {
       return _parameterUtil.getSdkDetails(

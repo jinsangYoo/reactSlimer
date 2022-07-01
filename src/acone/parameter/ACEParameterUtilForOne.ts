@@ -523,7 +523,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   }
 
   public makeSV(): string {
-    return `${ACOneConstant.DefaultServiceCode}${ACS.SDKVersion()}${ACOneConstant.DefaultNotCustomSDKForCustomer}`
+    return `${ACOneConstant.DefaultServiceCode}${ACECONSTANT.VERSION}${ACOneConstant.DefaultNotCustomSDKForCustomer}`
   }
 
   public setTP(value: string): void {
