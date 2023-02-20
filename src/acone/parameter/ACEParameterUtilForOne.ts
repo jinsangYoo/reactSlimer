@@ -86,7 +86,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           ACELog.d(ACEParameterUtilForOne._TAG, `result: ${JSON.stringify(result)}, new referrer: ${value}`)
           if (!isEmpty(result.getValue)) {
             ACELog.d(ACEParameterUtilForOne._TAG, 'Already stored referrer.')
-            if (result.getValue == value) {
+            if (result.getValue === value) {
               ACELog.d(ACEParameterUtilForOne._TAG, 'Same referrer')
             } else {
               resolve(true)
@@ -306,7 +306,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   //#region Session
   public isFirstLog(): boolean {
-    return this.getSession() == SESSION.NEW
+    return this.getSession() === SESSION.NEW
   }
 
   public resetSessionAndParameterAfterSend(): void {
@@ -442,7 +442,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
       const visitCount = this.getVisitCount()
       ACELog.d(ACEParameterUtilForOne._TAG, `visitCount is >>${visitCount}<<`)
-      if (visitCount == 0) {
+      if (visitCount === 0) {
         ACELog.d(ACEParameterUtilForOne._TAG, 'visitCount is 0')
         this.setVisitCountAtObject(willUpdateVt, 2)
       } else {

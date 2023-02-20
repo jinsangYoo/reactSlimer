@@ -37,7 +37,9 @@ export default class ACEPolicyParameters {
     if (isEmpty(value)) {
       this.cpAllow = ACECONSTANT.EMPTY
     } else {
-      if (value) this.cpAllow = value
+      if (value) {
+        this.cpAllow = value
+      }
     }
   }
 
@@ -60,7 +62,9 @@ export default class ACEPolicyParameters {
     if (isEmpty(value)) {
       this.cpCid = ACECONSTANT.EMPTY
     } else {
-      if (value) this.cpCid = value
+      if (value) {
+        this.cpCid = value
+      }
     }
   }
 
@@ -72,7 +76,9 @@ export default class ACEPolicyParameters {
     if (isEmpty(value)) {
       this.cpDebug = ACECONSTANT.EMPTY
     } else {
-      if (value) this.cpDebug = value
+      if (value) {
+        this.cpDebug = value
+      }
     }
   }
 
@@ -84,7 +90,9 @@ export default class ACEPolicyParameters {
     if (isEmpty(value)) {
       this.cpDomain = ACECONSTANT.EMPTY
     } else {
-      if (value) this.cpDomain = value
+      if (value) {
+        this.cpDomain = value
+      }
     }
   }
 
@@ -96,7 +104,9 @@ export default class ACEPolicyParameters {
     if (isEmpty(value)) {
       this.cpPrivate = ACECONSTANT.EMPTY
     } else {
-      if (value) this.cpPrivate = value
+      if (value) {
+        this.cpPrivate = value
+      }
     }
   }
 
@@ -108,7 +118,9 @@ export default class ACEPolicyParameters {
     if (isEmpty(value)) {
       this.cpSourceIP = ACECONSTANT.EMPTY
     } else {
-      if (value) this.cpSourceIP = value
+      if (value) {
+        this.cpSourceIP = value
+      }
     }
   }
 
@@ -120,7 +132,9 @@ export default class ACEPolicyParameters {
     if (isEmpty(value)) {
       this.cpCrashDomain = ACECONSTANT.EMPTY
     } else {
-      if (value) this.cpCrashDomain = value
+      if (value) {
+        this.cpCrashDomain = value
+      }
     }
   }
 
@@ -132,7 +146,9 @@ export default class ACEPolicyParameters {
     if (isEmpty(value)) {
       this.toastAppKey = ACECONSTANT.EMPTY
     } else {
-      if (value) this.toastAppKey = value
+      if (value) {
+        this.toastAppKey = value
+      }
     }
   }
 }

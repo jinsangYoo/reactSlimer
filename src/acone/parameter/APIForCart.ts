@@ -119,10 +119,10 @@ export default class APIForCart extends Task {
       .then(result => {
         ACELog.d(APIForCart._TAG, `resetSessionAndParameterAfterSendWithParams::result: ${result}`)
         //#region clear
-        const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
-        _parameterUtilForOne.clearBuyMode()
-        _parameterUtilForOne.clearMemberKey()
-        _parameterUtilForOne.clearProduct()
+        const __parameterUtilForOne = ACEParameterUtilForOne.getInstance()
+        __parameterUtilForOne.clearBuyMode()
+        __parameterUtilForOne.clearMemberKey()
+        __parameterUtilForOne.clearProduct()
         //#endregion
 
         if (callback) {

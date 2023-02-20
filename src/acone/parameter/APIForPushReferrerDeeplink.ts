@@ -119,9 +119,9 @@ export default class APIForPushReferrerDeeplink extends Task {
       .then(result => {
         ACELog.d(APIForPushReferrerDeeplink._p1TAG, `resetSessionAndParameterAfterSendWithParams::result: ${result}`)
         //#region clear
-        const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
-        _parameterUtilForOne.clearSRC()
-        _parameterUtilForOne.clearKW()
+        const __parameterUtilForOne = ACEParameterUtilForOne.getInstance()
+        __parameterUtilForOne.clearSRC()
+        __parameterUtilForOne.clearKW()
         //#endregion
 
         if (callback) {

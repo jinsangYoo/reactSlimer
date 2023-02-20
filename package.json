@@ -30,15 +30,18 @@
     "url": "https://github.com/jinsangYoo/reactSlimer"
   },
   "devDependencies": {
+    "@react-native-community/eslint-config": "^3.2.0",
     "@types/babel__core": "^7.1.15",
     "@types/react": "^17.0.16",
     "@types/react-native": "^0.64.12",
+    "eslint": "^8.34.0",
     "husky": "^7.0.1",
     "lint-staged": "^11.1.2",
+    "lodash": "^4.17.21",
+    "prettier": "^2.8.4",
     "react": "^17.0.2",
     "react-native": "^0.68.2",
-    "typescript": "^4.3.5",
-    "lodash": "^4.17.21"
+    "typescript": "^4.3.5"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.5",

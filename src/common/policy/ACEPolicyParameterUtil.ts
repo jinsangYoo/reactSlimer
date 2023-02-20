@@ -23,7 +23,7 @@ export default class ACEPolicyParameterUtil {
   }
 
   public savePolicy(result: ACENetworkResult): void {
-    if (result.getCode() != HttpURLConnection.HTTP_OK) {
+    if (result.getCode() !== HttpURLConnection.HTTP_OK) {
       ACELog.d(ACEPolicyParameterUtil._TAG, `http response code not ok: ${result.getCode()}`)
       return
     }
@@ -110,7 +110,7 @@ export default class ACEPolicyParameterUtil {
       var interval = ACEPolicyParameterUtil.REPEAT_PULLING_INTERVAL_SECOND
       const _value = _policy_interval
       if (_value && !isEmpty(_value)) {
-        interval = parseInt(_value)
+        interval = parseInt(_value, 10)
         if (interval < ACEConstantInteger.TWO_MINUTES) {
           interval = ACEConstantInteger.TWO_MINUTES
         }

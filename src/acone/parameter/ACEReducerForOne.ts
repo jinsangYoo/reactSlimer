@@ -180,7 +180,7 @@ export default class ACEReducerForOne {
     ACELog.d(ACEReducerForOne._TAG, 'buy: ' + JSON.stringify(pageName))
     return ACEReducerForOne.reducer(
       {
-        type: type == ACParams.TYPE.BUY_DONE ? ACEofAPIForOne.BuyDone : ACEofAPIForOne.BuyCancel,
+        type: type === ACParams.TYPE.BUY_DONE ? ACEofAPIForOne.BuyDone : ACEofAPIForOne.BuyCancel,
         payload: {
           pageName: pageName,
           memberKey: memberKey,
@@ -215,7 +215,7 @@ export default class ACEReducerForOne {
   ): Promise<ACEResponseToCaller> | void {
     return ACEReducerForOne.reducer(
       {
-        type: type == ACParams.TYPE.ADDCART ? ACEofAPIForOne.AddInCart : ACEofAPIForOne.DeleteInCart,
+        type: type === ACParams.TYPE.ADDCART ? ACEofAPIForOne.AddInCart : ACEofAPIForOne.DeleteInCart,
         payload: {
           memberKey: memberKey,
           products: products,
@@ -455,6 +455,7 @@ export default class ACEReducerForOne {
         ACELog.i(ACECONSTANT.OFFICIAL_LOG_TAG, 'Already stored referrer.')
       })
       .catch(err => {
+        ACELog.d(ACEReducerForOne._TAG, `err: ${JSON.stringify(err)}`)
         return ACEReducerForOne.reducer(
           {
             type: ACEofAPIForOne.InstallReferrer,

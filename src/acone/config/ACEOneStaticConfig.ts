@@ -29,8 +29,12 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
     this._key = configuration.key
-    if (configuration.enablePrivacyPolicy) this._enablePrivacyPolicy = configuration.enablePrivacyPolicy
-    if (configuration.debug) this._debug = configuration.debug
+    if (configuration.enablePrivacyPolicy) {
+      this._enablePrivacyPolicy = configuration.enablePrivacyPolicy
+    }
+    if (configuration.debug) {
+      this._debug = configuration.debug
+    }
 
     return ACEParameterUtilForOne.getInstance().initParameters(this._key, this._enablePrivacyPolicy, callback)
   }

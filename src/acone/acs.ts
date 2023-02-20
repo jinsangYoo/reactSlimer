@@ -67,7 +67,7 @@ export class ACS {
     if (callback) {
       const callbackAtInit = (error?: object, innerResult?: ACEResponseToCaller) => {
         if (error) {
-          callback(new Error(`0000, Can not init SDK.`), innerResult)
+          callback(new Error('0000, Can not init SDK.'), innerResult)
         } else {
           callback(undefined, innerResult)
           this.popWaitQueueEmit()
@@ -215,7 +215,7 @@ export class ACS {
 
     return {
       result: ACEConstantCallback[ACEConstantCallback.Failed],
-      message: `SDK is maybe that don't initialize.`,
+      message: "SDK is maybe that don't initialize.",
     }
   }
   //#endregion
@@ -240,7 +240,9 @@ export class ACS {
       }
 
       const param = ACS.waitQueue.shift()
-      if (param) ACS._send(param, callback)
+      if (param) {
+        ACS._send(param, callback)
+      }
     }
   }
   //#endregion
@@ -264,7 +266,9 @@ export class ACS {
       }
 
       const param = ACS.bufferQueue.shift()
-      if (param) ACS._send(param, callback)
+      if (param) {
+        ACS._send(param, callback)
+      }
     }
   }
   //#endregion
@@ -413,7 +417,9 @@ export class ACS {
               rejectToOut(new Error(`0002, Can not use ${value.type} api.`))
             }
           } else {
-            if (innerResult) resolveToOut(innerResult)
+            if (innerResult) {
+              resolveToOut(innerResult)
+            }
           }
           ACS.toggleLock()
           ACS.getInstance().popBufferQueueEmit()
