@@ -12,7 +12,7 @@ import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import ACEParameterUtilForOne from '../../acone/parameter/ACEParameterUtilForOne'
 import ACEPolicyParameters from '../policy/ACEPolicyParameters'
 import ACEParameterUtil from '../parameter/ACEParameterUtil'
-import ACECONSTANT from '../constant/ACEConstant'
+import {LIB_VERSION} from '../../version'
 
 export class ACENetwork {
   private static _TAG = 'Net'
@@ -90,7 +90,7 @@ export class ACENetwork {
         _map.set(POLICY.REQUEST_PLATFORM, `${Platform.OS} with react-native`)
         _map.set(POLICY.REQUEST_SERVICE_ID, ACECommonStaticConfig.getKey())
         _map.set(POLICY.REQUEST_TIME, Date.now().toString())
-        _map.set(POLICY.REQUEST_VERSION, ACECONSTANT.VERSION)
+        _map.set(POLICY.REQUEST_VERSION, LIB_VERSION)
         break
     }
 
