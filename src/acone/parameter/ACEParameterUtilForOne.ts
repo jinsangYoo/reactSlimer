@@ -485,12 +485,12 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+    callback: (error?: Error | null, result?: ResultAfterSaveInStorage) => void,
   ): void
   public saveST_toInStorage(st: ACEntityForST): Promise<ResultAfterSaveInStorage>
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback?: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+    callback?: (error?: Error | null, result?: ResultAfterSaveInStorage) => void,
   ): Promise<ResultAfterSaveInStorage> | void {
     return ACEParametersForOne.getInstance().saveST_toInStorage(st, callback)
   }
@@ -599,9 +599,9 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return ACEParametersForOne.getInstance().getVT()
   }
 
-  public loadVT(callback: (error?: Error, result?: object) => void): void
+  public loadVT(callback: (error?: Error | null, result?: object) => void): void
   public loadVT(): Promise<object>
-  public loadVT(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
+  public loadVT(callback?: (error?: Error | null, result?: object) => void): Promise<object> | void {
     return ACEParametersForOne.getInstance().loadVT(callback)
   }
 
@@ -617,12 +617,12 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+    callback: (error?: Error | null, result?: ResultAfterSaveInStorage) => void,
   ): void
   public saveVT_toInStorage(vt: ACEntityForVT): Promise<ResultAfterSaveInStorage>
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback?: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+    callback?: (error?: Error | null, result?: ResultAfterSaveInStorage) => void,
   ): Promise<ResultAfterSaveInStorage> | void {
     return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback)
   }
