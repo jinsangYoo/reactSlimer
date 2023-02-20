@@ -28,7 +28,7 @@ export default class ACECommonStaticConfig {
       `SDK mode: ${ControlTowerSingleton.getCurrentSDKkModeName()}, network mode: ${ControlTowerSingleton.getCurrentNetworkModeName()}`,
     )
 
-    ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.SDKVersion()}`)
+    ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.getSdkVersion()}`)
 
     if (ControlTowerSingleton.isEnableByPolicy()) {
       ACELog.d(ACECommonStaticConfig._TAG, 'Already init SDK.')
@@ -57,9 +57,9 @@ export default class ACECommonStaticConfig {
       }
 
       // ************************************************ development mode [S]
-      ControlTowerSingleton.setDevSDKMode()
+      // ControlTowerSingleton.setDevSDKMode()
       // ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
-      ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
+      // ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
       // ************************************************ development mode [E]
     }
 
@@ -105,6 +105,7 @@ export default class ACECommonStaticConfig {
           if (_commonAPI) {
             _commonAPI.requestPolicy((error?: object, innerResult?: ACEResponseToCaller) => {
               if (error) {
+                ACELog.d(ACECommonStaticConfig._TAG, JSON.stringify(error, null, 2))
                 callback(new Error('0001, Can not request policy.'), innerResult)
               } else {
                 callback(undefined, innerResult)

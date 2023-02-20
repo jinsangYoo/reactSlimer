@@ -113,6 +113,10 @@ export default class ControlTowerSingleton {
   }
 
   //#region static
+  public static getIsSDKEnabled(): boolean {
+    return ControlTowerSingleton.getInstance().getIsSDKEnabled()
+  }
+
   public static getCurrentSDKkModeName(): string {
     return SDKMode[ControlTowerSingleton.getInstance().getSDKMode()]
   }
