@@ -133,19 +133,21 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     _parametersForOne.getUDF3()
 
     this.setSTS(ACECONSTANT.ZERO)
-    _parametersForOne.setADELD(false)
-    _parametersForOne.setADID(ACEParameterUtil.getUniqueId())
 
     ACELog.d(ACEParameterUtilForOne._TAG, `tz: ${_parametersForOne.getTZ()}`)
 
     this.setNewSession()
     ACS.setPackageNameOrBundleID(ACEParameterUtil.getPackageNameOrBundleID())
 
+    _parametersForOne.setADELD(false)
+    const promiseWorkUniqueId = ACEParameterUtil.getUniqueId()
     const promiseWorkLoadVT = this.loadVT()
     return new Promise((resolve, reject) => {
-      Promise.all([promiseWorkLoadVT])
-        .then(res => {
-          ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all res:', res)
+      Promise.all([promiseWorkLoadVT, promiseWorkUniqueId])
+        .then(responses => {
+          ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all responses[0]:', responses[0])
+          ACELog.d(ACEParameterUtilForOne._TAG, `Promise.all responses[1]: ${responses[1]}`)
+          ACEParametersForOne.getInstance().setADID(responses[1])
 
           this.getVT()
           this.loadUniqueKeyForSDK()
