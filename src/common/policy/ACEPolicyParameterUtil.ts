@@ -29,7 +29,7 @@ export default class ACEPolicyParameterUtil {
     }
 
     ACELog.d(ACEPolicyParameterUtil._TAG, 'Receive policy.')
-    ACELog.d(ACEPolicyParameterUtil._TAG, `ACEPolicyParameterUtil::savePolicy::_response: ${JSON.stringify(result)}`)
+    // ACELog.d(ACEPolicyParameterUtil._TAG, `ACEPolicyParameterUtil::savePolicy::_response: ${JSON.stringify(result)}`)
 
     const _policyParameters = ACEPolicyParameters.getInstance()
     const responseHeaders = result.getHeaders()
