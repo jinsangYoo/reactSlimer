@@ -145,7 +145,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return new Promise((resolve, reject) => {
       Promise.all([promiseWorkLoadVT])
         .then(responses => {
-          if (responses && responses.length > 1) {
+          if (responses && responses.length > 0) {
             ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all responses[0]:', responses[0])
           }
 
