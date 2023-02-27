@@ -26,7 +26,7 @@ export default class ACEParameterUtil {
     return DeviceInfo.getSystemVersion()
   }
 
-  public static getUniqueId(): Promise<string> {
+  public static getUniqueId(): string {
     return DeviceInfo.getUniqueId()
   }
 
