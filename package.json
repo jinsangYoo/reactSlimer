@@ -23,7 +23,10 @@
   "license": "MIT",
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@react-native-async-storage/async-storage": "1.x",
+    "@react-native-community/netinfo": "9.x",
+    "react-native-device-info": ">=8.4.9"
   },
   "repository": {
     "type": "git",
