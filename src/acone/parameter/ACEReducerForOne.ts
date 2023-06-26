@@ -452,10 +452,6 @@ export default class ACEReducerForOne {
     ACEParameterUtilForOne.getInstance()
       .isDuplicateInstallReferrer(_keyword)
       .then(result => {
-        ACELog.i(ACECONSTANT.OFFICIAL_LOG_TAG, 'Already stored referrer.')
-      })
-      .catch(err => {
-        ACELog.d(ACEReducerForOne._TAG, `err: ${JSON.stringify(err)}`)
         return ACEReducerForOne.reducer(
           {
             type: ACEofAPIForOne.InstallReferrer,
@@ -467,6 +463,10 @@ export default class ACEReducerForOne {
           },
           callback,
         )
+      })
+      .catch(err => {
+        ACELog.d(ACEReducerForOne._TAG, `err: ${JSON.stringify(err)}`)
+        ACELog.i(ACECONSTANT.OFFICIAL_LOG_TAG, 'Already stored referrer.')
       })
   }
 

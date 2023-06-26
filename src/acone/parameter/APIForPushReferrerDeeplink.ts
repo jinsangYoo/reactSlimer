@@ -54,12 +54,15 @@ export default class APIForPushReferrerDeeplink extends Task {
       .then(response => {
         ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'Done update st and vt.', response)
         ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'vt after updateSTnVT()', _parameterUtilForOne.getVT())
+      })
+      .then(() => {
+        _parameterUtilForOne.setInstallReferrer(this._kw)
         if (callback) {
           const res: ACEResponseToCaller = {
             taskHash: `${this._logSource}::0011`,
             code: ACEResultCode.Success,
             result: ACEConstantCallback[ACEConstantCallback.Success],
-            message: 'Done update st and vt.',
+            message: 'Done update st, vt and set referrer.',
             apiName: this.getDescription(),
           }
           callback(undefined, res)

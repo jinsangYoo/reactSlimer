@@ -102,6 +102,21 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     })
   }
 
+  setInstallReferrer(value: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      ACEParametersForOne.getInstance()
+        .setInstallReferrer(value)
+        .then(result => {
+          ACELog.d(ACEParameterUtilForOne._TAG, `result: ${JSON.stringify(result)}, set referrer: ${value}`)
+          resolve(true)
+        })
+        .catch(err => {
+          ACELog.d(ACEParameterUtilForOne._TAG, `err: ${JSON.stringify(err)}`)
+          reject(false)
+        })
+    })
+  }
+
   getTS(): string {
     return JSON.stringify({st: this.getST().getObjectForTS(), vt: this.getVT().getObjectForTS()})
   }

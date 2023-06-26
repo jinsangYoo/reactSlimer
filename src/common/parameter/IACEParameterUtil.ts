@@ -17,6 +17,7 @@ export default interface IACEParameterUtil {
   setAdvertisingIdentifier(advertisingIdentifier: string): void
 
   isDuplicateInstallReferrer(value: string): Promise<boolean>
+  setInstallReferrer(value: string): Promise<boolean>
 
   getTS(): string
 }
