@@ -12,7 +12,7 @@ import ControlTowerSingleton from '../controltower/ControlTowerSingleton'
 import ACEParameterUtilForOne from '../../acone/parameter/ACEParameterUtilForOne'
 import ACEPolicyParameters from '../policy/ACEPolicyParameters'
 import ACEParameterUtil from '../parameter/ACEParameterUtil'
-import ACECONSTANT from '../constant/ACEConstant'
+import {LIB_VERSION} from '../../version'
 
 export class ACENetwork {
   private static _TAG = 'Net'
@@ -90,7 +90,7 @@ export class ACENetwork {
         _map.set(POLICY.REQUEST_PLATFORM, `${Platform.OS} with react-native`)
         _map.set(POLICY.REQUEST_SERVICE_ID, ACECommonStaticConfig.getKey())
         _map.set(POLICY.REQUEST_TIME, Date.now().toString())
-        _map.set(POLICY.REQUEST_VERSION, ACECONSTANT.VERSION)
+        _map.set(POLICY.REQUEST_VERSION, LIB_VERSION)
         break
     }
 
@@ -172,6 +172,7 @@ export class ACENetwork {
     axios.defaults.headers.common['User-Agent'] = ACEParameterUtil.getUserAgentForSDK()
 
     const requestHeaders = mapValueStringToObject(networkParam.requestHeaders)
+    ACELog.d(ACENetwork._TAG, `ACEParameterUtil.getUserAgentForSDK(): ${ACEParameterUtil.getUserAgentForSDK()}`)
     // ACELog.d(ACENetwork._TAG, 'request requestHeaders:', requestHeaders)
     const requestConfig: AxiosRequestConfig = {
       url: networkParam.url,
@@ -181,43 +182,6 @@ export class ACENetwork {
       timeout: 1000,
       params: networkParam.params,
     }
-
-    // let collectorConfig: AxiosRequestConfig = {
-    //   url: "mac",
-    //   method: "get",
-    //   baseURL: "https://gmb.acecounter.com",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Origin": "*",
-    //   },
-    //   params: {
-    //     tp: "site",
-    //     re: 0,
-    //     adeld: 1,
-    //     st: "1620722629634435895%7C1620722629634435895%7C0%7C0",
-    //     dm: "375*812",
-    //     url: "com.acecounter.aceappplus/LoginAceCounterViewController",
-    //     logsource: 100,
-    //     ri: 1,
-    //     sv: "ACA02.02.030",
-    //     sts: "1620722629634435895",
-    //     ag: 0,
-    //     vt:
-    //       "1620722508087038827%7C4%7C1619540480760523362%7C1%7C1619540480427865497",
-    //     ce: 1,
-    //     patch: "rev01",
-    //     adid: "00000000-0000-0000-0000-000000000000",
-    //     lg: "en",
-    //     tz: 20,
-    //     ref: "bookmark",
-    //     mid: "AK3A79964",
-    //     vk: 1,
-    //     udf1: 0,
-    //     udf2: 0,
-    //     udf3: 0,
-    //   },
-    //   timeout: 1000,
-    // };
 
     ACELog.d(ACENetwork._TAG, 'requestConfig', requestConfig)
     axios

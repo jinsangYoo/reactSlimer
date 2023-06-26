@@ -1,6 +1,7 @@
 import {Platform} from 'react-native'
 import {Dimensions} from 'react-native'
 import DeviceInfo from 'react-native-device-info'
+import {LIB_VERSION} from '../../version'
 import ACECONSTANT from '../constant/ACEConstant'
 import {VersionWithPatch} from '../constant/ACEPublicStaticConfig'
 
@@ -49,7 +50,7 @@ export default class ACEParameterUtil {
 
   public static getSdkVersionWithPatch(): VersionWithPatch {
     return {
-      version: ACECONSTANT.VERSION,
+      version: LIB_VERSION,
       patch: ACECONSTANT.PATCH,
     }
   }

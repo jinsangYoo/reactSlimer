@@ -145,7 +145,9 @@ export default class ACECommonStaticConfig {
                     rejectToOut(new Error('0002, Can not request policy.'))
                   }
                 } else {
-                  if (innerResult) resolveToOut(innerResult)
+                  if (innerResult) {
+                    resolveToOut(innerResult)
+                  }
                 }
               })
             } else {

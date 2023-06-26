@@ -75,7 +75,7 @@ export default class ControlTower {
       // console.log(
       //   `isEnableByPolicy::>>${result}<< == >>${POLICY.FLAG_SDK_ENABLE}<<: >>${result == POLICY.FLAG_SDK_ENABLE}<<`,
       // )
-      return result == POLICY.FLAG_SDK_ENABLE
+      return result === POLICY.FLAG_SDK_ENABLE
     }
   }
 
@@ -103,8 +103,10 @@ export default class ControlTower {
     switch (value) {
       case SDKMode.production:
         this._network_mode = NetworkMode.Pro
+        break
       case SDKMode.development:
         this._network_mode = NetworkMode.COMPANY_dev
+        break
     }
   }
 

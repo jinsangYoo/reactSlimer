@@ -732,7 +732,9 @@ export default class ACEParametersForOne extends ACEParameters {
 
   public getTZ(): string {
     var _timezoneOffset = new Date().getTimezoneOffset() / 60 + ACOneConstantInteger.TimezoneArrayIndexAtAceServer
-    if (_timezoneOffset > 24) _timezoneOffset -= 24
+    if (_timezoneOffset > 24) {
+      _timezoneOffset -= 24
+    }
 
     return _timezoneOffset.toString()
   }

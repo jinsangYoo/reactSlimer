@@ -26,6 +26,7 @@ import JN from '../constant/JN'
 import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import {AceConfiguration} from '../aceconfiguration'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
+import {LIB_VERSION} from '../../version'
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -85,7 +86,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           ACELog.d(ACEParameterUtilForOne._TAG, `result: ${JSON.stringify(result)}, new referrer: ${value}`)
           if (!isEmpty(result.getValue)) {
             ACELog.d(ACEParameterUtilForOne._TAG, 'Already stored referrer.')
-            if (result.getValue == value) {
+            if (result.getValue === value) {
               ACELog.d(ACEParameterUtilForOne._TAG, 'Same referrer')
             } else {
               resolve(true)
@@ -132,19 +133,21 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     _parametersForOne.getUDF3()
 
     this.setSTS(ACECONSTANT.ZERO)
-    _parametersForOne.setADELD(false)
-    _parametersForOne.setADID(ACEParameterUtil.getUniqueId())
 
     ACELog.d(ACEParameterUtilForOne._TAG, `tz: ${_parametersForOne.getTZ()}`)
 
     this.setNewSession()
     ACS.setPackageNameOrBundleID(ACEParameterUtil.getPackageNameOrBundleID())
 
+    _parametersForOne.setADELD(false)
+    ACEParametersForOne.getInstance().setADID(ACEParameterUtil.getUniqueId())
     const promiseWorkLoadVT = this.loadVT()
     return new Promise((resolve, reject) => {
       Promise.all([promiseWorkLoadVT])
-        .then(res => {
-          ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all res:', res)
+        .then(responses => {
+          if (responses && responses.length > 0) {
+            ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all responses[0]:', responses[0])
+          }
 
           this.getVT()
           this.loadUniqueKeyForSDK()
@@ -305,7 +308,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   //#region Session
   public isFirstLog(): boolean {
-    return this.getSession() == SESSION.NEW
+    return this.getSession() === SESSION.NEW
   }
 
   public resetSessionAndParameterAfterSend(): void {
@@ -441,7 +444,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
       const visitCount = this.getVisitCount()
       ACELog.d(ACEParameterUtilForOne._TAG, `visitCount is >>${visitCount}<<`)
-      if (visitCount == 0) {
+      if (visitCount === 0) {
         ACELog.d(ACEParameterUtilForOne._TAG, 'visitCount is 0')
         this.setVisitCountAtObject(willUpdateVt, 2)
       } else {
@@ -484,12 +487,12 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+    callback: (error?: Error | null, result?: ResultAfterSaveInStorage) => void,
   ): void
   public saveST_toInStorage(st: ACEntityForST): Promise<ResultAfterSaveInStorage>
   public saveST_toInStorage(
     st: ACEntityForST,
-    callback?: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+    callback?: (error?: Error | null, result?: ResultAfterSaveInStorage) => void,
   ): Promise<ResultAfterSaveInStorage> | void {
     return ACEParametersForOne.getInstance().saveST_toInStorage(st, callback)
   }
@@ -523,7 +526,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   }
 
   public makeSV(): string {
-    return `${ACOneConstant.DefaultServiceCode}${ACECONSTANT.VERSION}${ACOneConstant.DefaultNotCustomSDKForCustomer}`
+    return `${ACOneConstant.DefaultServiceCode}${LIB_VERSION}${ACOneConstant.DefaultNotCustomSDKForCustomer}`
   }
 
   public setTP(value: string): void {
@@ -598,9 +601,9 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     return ACEParametersForOne.getInstance().getVT()
   }
 
-  public loadVT(callback: (error?: Error, result?: object) => void): void
+  public loadVT(callback: (error?: Error | null, result?: object) => void): void
   public loadVT(): Promise<object>
-  public loadVT(callback?: (error?: Error, result?: object) => void): Promise<object> | void {
+  public loadVT(callback?: (error?: Error | null, result?: object) => void): Promise<object> | void {
     return ACEParametersForOne.getInstance().loadVT(callback)
   }
 
@@ -616,12 +619,12 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+    callback: (error?: Error | null, result?: ResultAfterSaveInStorage) => void,
   ): void
   public saveVT_toInStorage(vt: ACEntityForVT): Promise<ResultAfterSaveInStorage>
   public saveVT_toInStorage(
     vt: ACEntityForVT,
-    callback?: (error?: Error, result?: ResultAfterSaveInStorage) => void,
+    callback?: (error?: Error | null, result?: ResultAfterSaveInStorage) => void,
   ): Promise<ResultAfterSaveInStorage> | void {
     return ACEParametersForOne.getInstance().saveVT_toInStorage(vt, callback)
   }

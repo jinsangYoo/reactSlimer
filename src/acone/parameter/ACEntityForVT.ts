@@ -3,6 +3,7 @@ import ACOneConstantVt from '../constant/ACOneConstantVt'
 import {getRandom6CharForSTVT} from '../../common/util/NumberUtil'
 import ACELog from '../../common/logger/ACELog'
 import {objectForVT} from '../../common/constant/ACEPublicStaticConfig'
+import ACOneConstantInteger from '../constant/ACOneConstantInteger'
 
 export default class ACEntityForVT {
   private static _TAG = 'vt'
@@ -115,7 +116,7 @@ export default class ACEntityForVT {
   // #region vts
   public isEmptyAtVTS(): boolean {
     const _vts = this.getVTS()
-    if (_vts == ACOneConstantVt.DefaultTS) {
+    if (_vts === ACOneConstantVt.DefaultTS) {
       return true
     } else {
       return false
@@ -145,6 +146,7 @@ export default class ACEntityForVT {
   }
 
   public setVisitCount(value: number): void {
+    value = value > ACOneConstantInteger.VtVisitCountMax ? ACOneConstantInteger.VtVisitCountMax : value
     this._map.set(ACOneConstantVt.KeyVisitCount, value.toString())
   }
   // #endregion
@@ -152,7 +154,7 @@ export default class ACEntityForVT {
   // #region BuyTimeTS
   public isEmptyAtBuyTimeTS(): boolean {
     const _buyTimeTS = this.getBuyTimeTS()
-    if (_buyTimeTS == ACOneConstantVt.DefaultTS) {
+    if (_buyTimeTS === ACOneConstantVt.DefaultTS) {
       return true
     } else {
       return false
@@ -205,7 +207,7 @@ export default class ACEntityForVT {
 
   public setPcStampWhenNotStored() {
     const _pcStamp = this.getPcStamp()
-    if (_pcStamp == ACOneConstantVt.DefaultTS) {
+    if (_pcStamp === ACOneConstantVt.DefaultTS) {
       this.setPcStamp(Date.now())
       this.setRandom6ForPcStamp(getRandom6CharForSTVT())
       ACELog.d(ACEntityForVT._TAG, `maked pcStamp: ${this.getPcStampGoldMaster()}`)
