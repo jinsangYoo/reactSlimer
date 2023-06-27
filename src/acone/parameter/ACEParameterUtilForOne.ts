@@ -85,13 +85,16 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
         .then(result => {
           ACELog.d(ACEParameterUtilForOne._TAG, `result: ${JSON.stringify(result)}, new referrer: ${value}`)
           if (!isEmpty(result.getValue)) {
-            ACELog.d(ACEParameterUtilForOne._TAG, 'Already stored referrer.')
             if (result.getValue === value) {
+              ACELog.d(ACEParameterUtilForOne._TAG, 'Already stored referrer.')
               ACELog.d(ACEParameterUtilForOne._TAG, 'Same referrer')
             } else {
+              ACELog.d(ACEParameterUtilForOne._TAG, 'Not stored referrer.')
               resolve(true)
               return
             }
+          } else {
+            resolve(true)
           }
           reject(false)
         })
