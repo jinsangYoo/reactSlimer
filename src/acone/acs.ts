@@ -289,7 +289,11 @@ export class ACS {
     if (callback) {
       const callbackForCB = (error?: object, innerResult?: ACEResponseToCaller) => {
         if (error) {
-          callback(new Error(`0001, Can not use ${value.type} api.`))
+          if (innerResult) {
+            callback(new Error(`0001, Can not use ${value.type} api.`), innerResult)
+          } else {
+            callback(new Error(`0001, Can not use ${value.type} api.`))
+          }
         } else {
           callback(undefined, innerResult)
         }

@@ -466,7 +466,15 @@ export default class ACEReducerForOne {
       })
       .catch(err => {
         ACELog.d(ACEReducerForOne._TAG, `err: ${JSON.stringify(err)}`)
-        ACELog.i(ACECONSTANT.OFFICIAL_LOG_TAG, 'Already stored referrer.')
+        if (callback) {
+          callback(new Error('0007, Already stored referrer.'), {
+            taskHash: '0007',
+            code: 7,
+            result: 'no problem.',
+            message: 'Already stored referrer.',
+            apiName: 'InstallReferrer',
+          })
+        }
       })
   }
 
