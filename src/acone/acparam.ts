@@ -6,6 +6,7 @@ type ParamType =
   | 'appearProduct'
   | 'buyCancel'
   | 'buyDone'
+  | 'deeplink'
   | 'delcart'
   | 'event'
   | 'join'
@@ -24,6 +25,7 @@ export type IACParams = {
     APPEAR_PRODUCT: ParamType
     BUY_CANCEL: ParamType
     BUY_DONE: ParamType
+    DEEPLINK: ParamType
     DELCART: ParamType
     EVENT: ParamType
     JOIN: ParamType
@@ -67,6 +69,7 @@ export const ACParams: IACParams = {
     APPEAR_PRODUCT: 'appearProduct',
     BUY_CANCEL: 'buyCancel',
     BUY_DONE: 'buyDone',
+    DEEPLINK: 'deeplink',
     DELCART: 'delcart',
     EVENT: 'event',
     JOIN: 'join',

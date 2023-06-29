@@ -20,6 +20,7 @@ enum ACEofAPIForOne {
 
   Policy = 1000,
 
+  DeepLink = 3001,
   InstallReferrer = 3300,
   Push = 3210,
 }

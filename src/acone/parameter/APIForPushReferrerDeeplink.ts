@@ -33,14 +33,16 @@ export default class APIForPushReferrerDeeplink extends Task {
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
     _parameterUtilForOne.setTP(TP.MCLICK)
     _parameterUtilForOne.updateUrlToRef(ACECONSTANT.EMPTY)
+    _parameterUtilForOne.setKW(this._kw)
     switch (this.getLogSource()) {
+      case ACEofAPIForOne.DeepLink:
+        _parameterUtilForOne.setSRC(SRC.Deeplink)
+        break
       case ACEofAPIForOne.InstallReferrer:
         _parameterUtilForOne.setSRC(SRC.InstallReferrer)
-        _parameterUtilForOne.setKW(this._kw)
         break
       case ACEofAPIForOne.Push:
         _parameterUtilForOne.setSRC(SRC.Push)
-        _parameterUtilForOne.setKW(this._kw)
         break
     }
 

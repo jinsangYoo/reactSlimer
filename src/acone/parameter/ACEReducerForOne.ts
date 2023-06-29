@@ -89,6 +89,7 @@ export default class ACEReducerForOne {
       case ACEofAPIForOne.Policy:
         taskAdapter.addTask(new APIForPolicy(params), callback)
         break
+      case ACEofAPIForOne.DeepLink:
       case ACEofAPIForOne.InstallReferrer:
       case ACEofAPIForOne.Push:
         taskAdapter.addTask(new APIForPushReferrerDeeplink(params), callback)
@@ -219,6 +220,32 @@ export default class ACEReducerForOne {
         payload: {
           memberKey: memberKey,
           products: products,
+        },
+        error: false,
+        debugParams: {},
+      },
+      callback,
+    )
+  }
+
+  public static deeplink(
+    callback: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    keyword?: string,
+  ): void
+  public static deeplink(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller>
+  public static deeplink(
+    callback?: ((error?: object, result?: ACEResponseToCaller) => void) | undefined,
+    keyword?: string,
+  ): Promise<ACEResponseToCaller> | void {
+    const _keyword = keyword ?? ACECONSTANT.EMPTY
+    return ACEReducerForOne.reducer(
+      {
+        type: ACEofAPIForOne.DeepLink,
+        payload: {
+          keyword: _keyword,
         },
         error: false,
         debugParams: {},
