@@ -88,15 +88,14 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
             if (result.getValue === value) {
               ACELog.w(ACEParameterUtilForOne._TAG, 'Already stored referrer.')
               ACELog.d(ACEParameterUtilForOne._TAG, 'Same referrer')
+              reject(false)
             } else {
               ACELog.d(ACEParameterUtilForOne._TAG, 'Not stored referrer.')
               resolve(true)
-              return
             }
           } else {
             resolve(true)
           }
-          reject(false)
         })
         .catch(err => {
           ACELog.d(ACEParameterUtilForOne._TAG, `err: ${JSON.stringify(err)}`)

@@ -58,7 +58,12 @@ export default class APIForPushReferrerDeeplink extends Task {
         ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'vt after updateSTnVT()', _parameterUtilForOne.getVT())
       })
       .then(() => {
-        _parameterUtilForOne.setInstallReferrer(this._kw)
+        if (this.getLogSource() === ACEofAPIForOne.InstallReferrer) {
+          ACELog.d(APIForPushReferrerDeeplink._p1TAG, `SDK will update install referrer to: ${this._kw}`)
+          _parameterUtilForOne.setInstallReferrer(this._kw)
+        }
+      })
+      .then(() => {
         if (callback) {
           const res: ACEResponseToCaller = {
             taskHash: `${this._logSource}::0011`,
