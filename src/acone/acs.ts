@@ -634,8 +634,14 @@ export class ACS {
   //#endregion
 
   //#region AdvertisingIdentifier
-  public static setAdvertisingIdentifier(isAdvertisingTrackingEnabled: boolean, advertisingIdentifier: string): void {
-    ACECommonStaticConfig.setAdvertisingIdentifier(isAdvertisingTrackingEnabled, advertisingIdentifier)
+  public static setAdvertisingIdentifier(
+    isAdvertisingTrackingEnabled: boolean,
+    advertisingIdentifier: string | null,
+  ): void {
+    ACECommonStaticConfig.setAdvertisingIdentifier(
+      isAdvertisingTrackingEnabled,
+      advertisingIdentifier ?? ACECONSTANT.DEFAULT_ADID,
+    )
   }
   //#endregion
 
