@@ -157,8 +157,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     this.setNewSession()
     ACS.setPackageNameOrBundleID(ACEParameterUtil.getPackageNameOrBundleID())
 
-    _parametersForOne.setADELD(false)
-    ACEParametersForOne.getInstance().setADID(ACEParameterUtil.getUniqueId())
+    // _parametersForOne.setADELD(false)
+    // ACEParametersForOne.getInstance().setADID(ACEParameterUtil.getUniqueId())
     const promiseWorkLoadVT = this.loadVT()
     return new Promise((resolve, reject) => {
       Promise.all([promiseWorkLoadVT])
