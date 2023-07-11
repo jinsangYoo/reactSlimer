@@ -74,7 +74,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     }
   }
 
-  setAdvertisingIdentifier(advertisingIdentifier: string): void {
+  setAdvertisingIdentifier(isAdvertisingTrackingEnabled: boolean, advertisingIdentifier: string): void {
+    ACEParametersForOne.getInstance().setADELD(isAdvertisingTrackingEnabled)
     ACEParametersForOne.getInstance().setADID(advertisingIdentifier)
   }
 
