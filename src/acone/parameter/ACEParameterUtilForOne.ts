@@ -27,6 +27,10 @@ import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import {AceConfiguration} from '../aceconfiguration'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 import {LIB_VERSION} from '../../version'
+import ReactNativeIdfaAaid, {AdvertisingInfoResponse} from '@sparkfabrik/react-native-idfa-aaid'
+import ADID from '../../common/constant/ADID'
+
+type resultPromiseTypes = [Promise<object>, Promise<AdvertisingInfoResponse>]
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -157,19 +161,33 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     this.setNewSession()
     ACS.setPackageNameOrBundleID(ACEParameterUtil.getPackageNameOrBundleID())
 
-    // _parametersForOne.setADELD(false)
-    // ACEParametersForOne.getInstance().setADID(ACEParameterUtil.getUniqueId())
     const promiseWorkLoadVT = this.loadVT()
+    let promiseDynamicWorkAdvertisingId = ReactNativeIdfaAaid.getAdvertisingInfo()
+    if (enablePrivacyPolicy) {
+      promiseDynamicWorkAdvertisingId = new Promise<AdvertisingInfoResponse>((resolve, notUseReject) => {
+        resolve({
+          id: ADID.defaultADID,
+          isAdTrackingLimited: false,
+        })
+      })
+    }
+    const promiseWorks: resultPromiseTypes = [promiseWorkLoadVT, promiseDynamicWorkAdvertisingId]
     return new Promise((resolve, reject) => {
-      Promise.all([promiseWorkLoadVT])
+      Promise.all<resultPromiseTypes>(promiseWorks)
         .then(responses => {
-          if (responses && responses.length > 0) {
-            ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all responses[0]:', responses[0])
+          for (let index = 0; index < responses.length; index++) {
+            ACELog.d(ACEParameterUtilForOne._TAG, `Promise.all response[${index}]:`, responses[index])
           }
 
           this.getVT()
           this.loadUniqueKeyForSDK()
           ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all vt:', this.getVT())
+
+          if (responses[1]) {
+            const adid = responses[1]
+            _parametersForOne.setADELD(!adid.isAdTrackingLimited)
+            ACEParametersForOne.getInstance().setADID(adid.id || ADID.defaultADID)
+          }
 
           const response: ACEResponseToCaller = {
             taskHash: '0003',
@@ -186,6 +204,9 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
         })
         .catch(err => {
           ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all err:', err)
+
+          _parametersForOne.setADELD(false)
+          ACEParametersForOne.getInstance().setADID(ADID.defaultADID)
 
           const response: ACEResponseToCaller = {
             taskHash: '0004',

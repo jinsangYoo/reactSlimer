@@ -26,10 +26,6 @@ export default class ACEParameterUtil {
     return DeviceInfo.getSystemVersion()
   }
 
-  public static getUniqueId(): string {
-    return DeviceInfo.getUniqueId()
-  }
-
   public static getPlatformName(): string {
     if (Platform.OS === 'ios' && !Platform.isPad) {
       return ACEParameterUtil.replace_iOS_To_iPhone_OS(ACEParameterUtil.getSystemName())

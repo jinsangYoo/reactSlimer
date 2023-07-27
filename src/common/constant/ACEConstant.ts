@@ -11,7 +11,7 @@ enum ACECONSTANT {
   INTENT_REFERRER_NAME = 'referrer',
   LNC_LOG_VERSION = 'v2',
   OFFICIAL_LOG_TAG = '[ACE]',
-  PATCH = 'rev03',
+  PATCH = 'rev01',
   ReferrerKeyName = 'kw',
   SDK_PATCH = 'patch',
   SDK_VERSION = 'version',
