@@ -131,12 +131,18 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   public initParameters(
     key: string,
     enablePrivacyPolicy: boolean,
+    disableToCollectAdvertisingIdentifier: boolean,
     callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): void
-  public initParameters(key: string, enablePrivacyPolicy: boolean): Promise<ACEResponseToCaller>
   public initParameters(
     key: string,
     enablePrivacyPolicy: boolean,
+    disableToCollectAdvertisingIdentifier: boolean,
+  ): Promise<ACEResponseToCaller>
+  public initParameters(
+    key: string,
+    enablePrivacyPolicy: boolean,
+    disableToCollectAdvertisingIdentifier: boolean,
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
     this._enablePrivacyPolicy = enablePrivacyPolicy
@@ -163,7 +169,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
 
     const promiseWorkLoadVT = this.loadVT()
     let promiseDynamicWorkAdvertisingId: Promise<AdvertisingInfoResponse>
-    if (enablePrivacyPolicy) {
+    if (disableToCollectAdvertisingIdentifier) {
       promiseDynamicWorkAdvertisingId = new Promise<AdvertisingInfoResponse>((resolve, notUseReject) => {
         resolve({
           id: ADID.defaultADID,

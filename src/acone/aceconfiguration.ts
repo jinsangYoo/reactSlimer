@@ -1,7 +1,13 @@
 export type ACEPlatform = 'ACONE'
 
 export type IAceConfiguration = {
-  init: (key: string, type?: ACEPlatform, debug?: boolean, enablePrivacyPolicy?: boolean) => AceConfiguration
+  init: (
+    key: string,
+    type?: ACEPlatform,
+    debug?: boolean,
+    enablePrivacyPolicy?: boolean,
+    disableToCollectAdvertisingIdentifier?: boolean,
+  ) => AceConfiguration
   PLATFORM: {
     DEFAULT: ACEPlatform
   }
@@ -13,6 +19,7 @@ export type AceConfiguration = {
   platform?: ACEPlatform
   debug?: boolean
   enablePrivacyPolicy?: boolean
+  disableToCollectAdvertisingIdentifier?: boolean
 }
 
 export const AceConfiguration: IAceConfiguration = {
@@ -24,8 +31,9 @@ export const AceConfiguration: IAceConfiguration = {
     platform = AceConfiguration.PLATFORM.DEFAULT,
     debug = true,
     enablePrivacyPolicy = false,
+    disableToCollectAdvertisingIdentifier = false,
   ): AceConfiguration {
-    return {platform, key, debug, enablePrivacyPolicy}
+    return {platform, key, debug, enablePrivacyPolicy, disableToCollectAdvertisingIdentifier}
   },
   toJSONString(): string {
     return JSON.stringify(this)

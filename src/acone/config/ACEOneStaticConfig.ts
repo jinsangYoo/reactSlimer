@@ -9,6 +9,7 @@ import {ACEResponseToCaller} from '../../common/constant/ACEPublicStaticConfig'
 export default class ACEOneStaticConfig implements ACEStaticConfig {
   _debug: boolean
   _key: string
+  _disableToCollectAdvertisingIdentifier: boolean
   _commonAPI: IACECommonAPI
   private _enablePrivacyPolicy: boolean
 
@@ -16,6 +17,7 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
     this._enablePrivacyPolicy = false
     this._debug = true
     this._key = 'empty'
+    this._disableToCollectAdvertisingIdentifier = false
     this._commonAPI = new ACEInternalAPIForOne()
   }
 
@@ -32,11 +34,19 @@ export default class ACEOneStaticConfig implements ACEStaticConfig {
     if (configuration.enablePrivacyPolicy) {
       this._enablePrivacyPolicy = configuration.enablePrivacyPolicy
     }
+    if (configuration.disableToCollectAdvertisingIdentifier) {
+      this._disableToCollectAdvertisingIdentifier = configuration.disableToCollectAdvertisingIdentifier
+    }
     if (configuration.debug) {
       this._debug = configuration.debug
     }
 
-    return ACEParameterUtilForOne.getInstance().initParameters(this._key, this._enablePrivacyPolicy, callback)
+    return ACEParameterUtilForOne.getInstance().initParameters(
+      this._key,
+      this._enablePrivacyPolicy,
+      this._disableToCollectAdvertisingIdentifier,
+      callback,
+    )
   }
   isDebug(): boolean {
     return this._debug

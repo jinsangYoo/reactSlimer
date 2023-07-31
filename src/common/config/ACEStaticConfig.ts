@@ -6,6 +6,7 @@ import {ACEResponseToCaller} from '../constant/ACEPublicStaticConfig'
 export default interface ACEStaticConfig {
   _debug: boolean
   _key: string
+  _disableToCollectAdvertisingIdentifier: boolean
   // ACEQueueManagerFactory _queueManagerFactory;
   _commonAPI: IACECommonAPI
 
