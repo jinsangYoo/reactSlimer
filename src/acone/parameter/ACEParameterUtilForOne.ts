@@ -162,14 +162,16 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     ACS.setPackageNameOrBundleID(ACEParameterUtil.getPackageNameOrBundleID())
 
     const promiseWorkLoadVT = this.loadVT()
-    let promiseDynamicWorkAdvertisingId = ReactNativeIdfaAaid.getAdvertisingInfo()
+    let promiseDynamicWorkAdvertisingId: Promise<AdvertisingInfoResponse>
     if (enablePrivacyPolicy) {
       promiseDynamicWorkAdvertisingId = new Promise<AdvertisingInfoResponse>((resolve, notUseReject) => {
         resolve({
           id: ADID.defaultADID,
-          isAdTrackingLimited: false,
+          isAdTrackingLimited: true,
         })
       })
+    } else {
+      promiseDynamicWorkAdvertisingId = ReactNativeIdfaAaid.getAdvertisingInfo()
     }
     const promiseWorks: resultPromiseTypes = [promiseWorkLoadVT, promiseDynamicWorkAdvertisingId]
     return new Promise((resolve, reject) => {
