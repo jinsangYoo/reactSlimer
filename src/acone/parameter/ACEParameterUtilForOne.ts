@@ -191,10 +191,13 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
           this.loadUniqueKeyForSDK()
           ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all vt:', this.getVT())
 
-          if (responses[1]) {
-            const adid = responses[1]
-            _parametersForOne.setADELD(!adid.isAdTrackingLimited)
-            ACEParametersForOne.getInstance().setADID(adid.id || ADID.defaultADID)
+          if (responses.length > 1 && responses[1]) {
+            const result = ACEParameterUtil.validateAdvertisingIdentifier(
+              !responses[1].isAdTrackingLimited,
+              responses[1].id,
+            )
+            ACEParametersForOne.getInstance().setADELD(result.isAdEnabled)
+            ACEParametersForOne.getInstance().setADID(result.adid)
           }
 
           const response: ACEResponseToCaller = {
@@ -213,7 +216,7 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
         .catch(err => {
           ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all err:', err)
 
-          _parametersForOne.setADELD(false)
+          ACEParametersForOne.getInstance().setADELD(false)
           ACEParametersForOne.getInstance().setADID(ADID.defaultADID)
 
           const response: ACEResponseToCaller = {

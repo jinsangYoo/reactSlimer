@@ -638,10 +638,9 @@ export class ACS {
     isAdvertisingTrackingEnabled: boolean,
     advertisingIdentifier: string | null,
   ): void {
-    ACECommonStaticConfig.setAdvertisingIdentifier(
-      isAdvertisingTrackingEnabled,
-      advertisingIdentifier ?? ACECONSTANT.DEFAULT_ADID,
-    )
+    const result = ACEParameterUtil.validateAdvertisingIdentifier(isAdvertisingTrackingEnabled, advertisingIdentifier)
+
+    ACECommonStaticConfig.setAdvertisingIdentifier(result.isAdEnabled, result.adid)
   }
   //#endregion
 
