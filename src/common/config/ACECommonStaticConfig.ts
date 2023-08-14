@@ -23,11 +23,6 @@ export default class ACECommonStaticConfig {
     configuration: AceConfiguration,
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
-    ACELog.i(
-      ACECommonStaticConfig._TAG,
-      `SDK mode: ${ControlTowerSingleton.getCurrentSDKkModeName()}, network mode: ${ControlTowerSingleton.getCurrentNetworkModeName()}`,
-    )
-
     ACELog.i(ACECommonStaticConfig._TAG, `NHN DATA SDK version: ${ACS.getSdkVersion()}`)
 
     if (ControlTowerSingleton.isEnableByPolicy()) {
@@ -61,6 +56,11 @@ export default class ACECommonStaticConfig {
       // ControlTowerSingleton.getInstance().setHomeDevNetworkMode()
       // ControlTowerSingleton.setDefaultNetworkMode() // 공개 정책 서버를 쓰도록
       // ************************************************ development mode [E]
+
+      ACELog.i(
+        ACECommonStaticConfig._TAG,
+        `SDK mode: ${ControlTowerSingleton.getCurrentSDKkModeName()}, network mode: ${ControlTowerSingleton.getCurrentNetworkModeName()}`,
+      )
     }
 
     ACELog.d(ACECommonStaticConfig._TAG, 'AceConfiguration information:', configuration)
