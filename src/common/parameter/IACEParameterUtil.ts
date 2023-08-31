@@ -14,9 +14,10 @@ export default interface IACEParameterUtil {
 
   getSdkDetails(value: AceConfiguration): DetailOfSDK
 
-  setAdvertisingIdentifier(advertisingIdentifier: string): void
+  setAdvertisingIdentifier(isAdvertisingTrackingEnabled: boolean, advertisingIdentifier: string): void
 
   isDuplicateInstallReferrer(value: string): Promise<boolean>
+  setInstallReferrer(value: string): Promise<boolean>
 
   getTS(): string
 }

@@ -9,7 +9,7 @@ import ACEConstantInteger from '../common/constant/ACEConstantInteger'
 import ACELog from '../common/logger/ACELog'
 import NetworkUtils from '../common/http/NetworkUtills'
 import {EventsForWorkerEmitter} from '../common/worker/EventsForWorkerEmitter'
-import {decode, getQueryForKey, isEmpty} from '../common/util/TextUtils'
+import {decode, getQueryForKey, isEmpty, getDeeplinkKeyInURI} from '../common/util/TextUtils'
 import ACECONSTANT from '../common/constant/ACEConstant'
 import ACEParameterUtil from '../common/parameter/ACEParameterUtil'
 
@@ -232,11 +232,15 @@ export class ACS {
 
       const callback = (error?: object, innerResult?: ACEResponseToCaller) => {
         if (error) {
-          ACELog.d(ACS._TAG, 'error of waitQueue', error)
+          if (innerResult) {
+            ACELog.d(ACS._TAG, 'error of waitQueue', innerResult)
+          } else {
+            ACELog.d(ACS._TAG, 'error of waitQueue', error)
+          }
         } else if (innerResult) {
           ACELog.d(ACS._TAG, 'result of waitQueue', innerResult)
-          this.popWaitQueueEmit()
         }
+        this.popWaitQueueEmit()
       }
 
       const param = ACS.waitQueue.shift()
@@ -289,7 +293,11 @@ export class ACS {
     if (callback) {
       const callbackForCB = (error?: object, innerResult?: ACEResponseToCaller) => {
         if (error) {
-          callback(new Error(`0001, Can not use ${value.type} api.`))
+          if (innerResult) {
+            callback(new Error(`0001, Can not use ${value.type} api.`), innerResult)
+          } else {
+            callback(new Error(`0001, Can not use ${value.type} api.`))
+          }
         } else {
           callback(undefined, innerResult)
         }
@@ -354,9 +362,12 @@ export class ACS {
               case ACParams.TYPE.PUSH:
                 ACEReducerForOne.push(callbackForCB, value.data, value.push)
                 break
-              case ACParams.TYPE.REFERRER:
-                const _keyword = getQueryForKey(decode(value.keyword ?? ACECONSTANT.EMPTY), ACECONSTANT.ReferrerKeyName)
-                if (isEmpty(_keyword)) {
+              case ACParams.TYPE.DEEPLINK:
+                const _deeplink_kw = getDeeplinkKeyInURI(
+                  decode(value.keyword ?? ACECONSTANT.EMPTY),
+                  ACECONSTANT.DeeplinkKeyName,
+                )
+                if (isEmpty(_deeplink_kw)) {
                   const result: ACEResponseToCaller = {
                     taskHash: `${value.type}::0410`,
                     code: ACEResultCode.InvalidACParamValues,
@@ -370,7 +381,28 @@ export class ACS {
                   callback(undefined, result)
                   return
                 }
-                ACEReducerForOne.referrer(callbackForCB, _keyword)
+                ACEReducerForOne.deeplink(callbackForCB, _deeplink_kw)
+                break
+              case ACParams.TYPE.REFERRER:
+                const _referrer_kw = getQueryForKey(
+                  decode(value.keyword ?? ACECONSTANT.EMPTY),
+                  ACECONSTANT.ReferrerKeyName,
+                )
+                if (isEmpty(_referrer_kw)) {
+                  const result: ACEResponseToCaller = {
+                    taskHash: `${value.type}::0410`,
+                    code: ACEResultCode.InvalidACParamValues,
+                    result: ACEConstantCallback[ACEConstantCallback.Failed],
+                    message: 'Invalid value in ACParam object.',
+                    apiName: value.type,
+                  }
+
+                  ACS.toggleLock()
+                  ACS.getInstance().popBufferQueueEmit()
+                  callback(undefined, result)
+                  return
+                }
+                ACEReducerForOne.referrer(callbackForCB, _referrer_kw)
                 break
               case ACParams.TYPE.SEARCH:
                 ACEReducerForOne.search(callbackForCB, value.name, value.keyword)
@@ -482,12 +514,12 @@ export class ACS {
                 case ACParams.TYPE.PUSH:
                   ACEReducerForOne.push(callbackForPromise, value.data, value.push)
                   break
-                case ACParams.TYPE.REFERRER:
-                  const _keyword = getQueryForKey(
+                case ACParams.TYPE.DEEPLINK:
+                  const _deeplink_kw = getDeeplinkKeyInURI(
                     decode(value.keyword ?? ACECONSTANT.EMPTY),
-                    ACECONSTANT.ReferrerKeyName,
+                    ACECONSTANT.DeeplinkKeyName,
                   )
-                  if (isEmpty(_keyword)) {
+                  if (isEmpty(_deeplink_kw)) {
                     const result: ACEResponseToCaller = {
                       taskHash: `${value.type}::0410`,
                       code: ACEResultCode.InvalidACParamValues,
@@ -501,7 +533,28 @@ export class ACS {
                     rejectToOut(result)
                     return
                   }
-                  ACEReducerForOne.referrer(callbackForPromise, _keyword)
+                  ACEReducerForOne.deeplink(callbackForPromise, _deeplink_kw)
+                  break
+                case ACParams.TYPE.REFERRER:
+                  const _referrer_kw = getQueryForKey(
+                    decode(value.keyword ?? ACECONSTANT.EMPTY),
+                    ACECONSTANT.ReferrerKeyName,
+                  )
+                  if (isEmpty(_referrer_kw)) {
+                    const result: ACEResponseToCaller = {
+                      taskHash: `${value.type}::0410`,
+                      code: ACEResultCode.InvalidACParamValues,
+                      result: ACEConstantCallback[ACEConstantCallback.Failed],
+                      message: 'Invalid value in ACParam object.',
+                      apiName: value.type,
+                    }
+
+                    ACS.toggleLock()
+                    ACS.getInstance().popBufferQueueEmit()
+                    rejectToOut(result)
+                    return
+                  }
+                  ACEReducerForOne.referrer(callbackForPromise, _referrer_kw)
                   break
                 case ACParams.TYPE.SEARCH:
                   ACEReducerForOne.search(callbackForPromise, value.name, value.keyword)
@@ -581,8 +634,13 @@ export class ACS {
   //#endregion
 
   //#region AdvertisingIdentifier
-  public static setAdvertisingIdentifier(advertisingIdentifier: string): void {
-    ACECommonStaticConfig.setAdvertisingIdentifier(advertisingIdentifier)
+  public static setAdvertisingIdentifier(
+    isAdvertisingTrackingEnabled: boolean,
+    advertisingIdentifier: string | null,
+  ): void {
+    const result = ACEParameterUtil.validateAdvertisingIdentifier(isAdvertisingTrackingEnabled, advertisingIdentifier)
+
+    ACECommonStaticConfig.setAdvertisingIdentifier(result.isAdEnabled, result.adid)
   }
   //#endregion
 

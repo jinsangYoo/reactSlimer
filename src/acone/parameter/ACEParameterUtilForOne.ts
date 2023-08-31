@@ -27,6 +27,10 @@ import ACEofAPIForOne from '../constant/ACEofAPIForOne'
 import {AceConfiguration} from '../aceconfiguration'
 import ControlTowerSingleton from '../../common/controltower/ControlTowerSingleton'
 import {LIB_VERSION} from '../../version'
+import ReactNativeIdfaAaid, {AdvertisingInfoResponse} from '@sparkfabrik/react-native-idfa-aaid'
+import ADID from '../../common/constant/ADID'
+
+type resultPromiseTypes = [Promise<object>, Promise<AdvertisingInfoResponse>]
 
 export default class ACEParameterUtilForOne implements IACEParameterUtil {
   private static _TAG = 'paramUtilForOne'
@@ -74,7 +78,8 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     }
   }
 
-  setAdvertisingIdentifier(advertisingIdentifier: string): void {
+  setAdvertisingIdentifier(isAdvertisingTrackingEnabled: boolean, advertisingIdentifier: string): void {
+    ACEParametersForOne.getInstance().setADELD(isAdvertisingTrackingEnabled)
     ACEParametersForOne.getInstance().setADID(advertisingIdentifier)
   }
 
@@ -85,15 +90,32 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
         .then(result => {
           ACELog.d(ACEParameterUtilForOne._TAG, `result: ${JSON.stringify(result)}, new referrer: ${value}`)
           if (!isEmpty(result.getValue)) {
-            ACELog.d(ACEParameterUtilForOne._TAG, 'Already stored referrer.')
             if (result.getValue === value) {
+              ACELog.w(ACEParameterUtilForOne._TAG, 'Already stored referrer.')
               ACELog.d(ACEParameterUtilForOne._TAG, 'Same referrer')
+              reject(false)
             } else {
+              ACELog.d(ACEParameterUtilForOne._TAG, 'Not stored referrer.')
               resolve(true)
-              return
             }
+          } else {
+            resolve(true)
           }
+        })
+        .catch(err => {
+          ACELog.d(ACEParameterUtilForOne._TAG, `err: ${JSON.stringify(err)}`)
           reject(false)
+        })
+    })
+  }
+
+  setInstallReferrer(value: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      ACEParametersForOne.getInstance()
+        .setInstallReferrer(value)
+        .then(result => {
+          ACELog.d(ACEParameterUtilForOne._TAG, `result: ${JSON.stringify(result)}, set referrer: ${value}`)
+          resolve(true)
         })
         .catch(err => {
           ACELog.d(ACEParameterUtilForOne._TAG, `err: ${JSON.stringify(err)}`)
@@ -109,12 +131,18 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
   public initParameters(
     key: string,
     enablePrivacyPolicy: boolean,
+    disableToCollectAdvertisingIdentifier: boolean,
     callback: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): void
-  public initParameters(key: string, enablePrivacyPolicy: boolean): Promise<ACEResponseToCaller>
   public initParameters(
     key: string,
     enablePrivacyPolicy: boolean,
+    disableToCollectAdvertisingIdentifier: boolean,
+  ): Promise<ACEResponseToCaller>
+  public initParameters(
+    key: string,
+    enablePrivacyPolicy: boolean,
+    disableToCollectAdvertisingIdentifier: boolean,
     callback?: ((error?: Error, result?: ACEResponseToCaller) => void) | undefined,
   ): Promise<ACEResponseToCaller> | void {
     this._enablePrivacyPolicy = enablePrivacyPolicy
@@ -139,19 +167,38 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
     this.setNewSession()
     ACS.setPackageNameOrBundleID(ACEParameterUtil.getPackageNameOrBundleID())
 
-    _parametersForOne.setADELD(false)
-    ACEParametersForOne.getInstance().setADID(ACEParameterUtil.getUniqueId())
     const promiseWorkLoadVT = this.loadVT()
+    let promiseDynamicWorkAdvertisingId: Promise<AdvertisingInfoResponse>
+    if (disableToCollectAdvertisingIdentifier) {
+      promiseDynamicWorkAdvertisingId = new Promise<AdvertisingInfoResponse>((resolve, notUseReject) => {
+        resolve({
+          id: ADID.defaultADID,
+          isAdTrackingLimited: true,
+        })
+      })
+    } else {
+      promiseDynamicWorkAdvertisingId = ReactNativeIdfaAaid.getAdvertisingInfo()
+    }
+    const promiseWorks: resultPromiseTypes = [promiseWorkLoadVT, promiseDynamicWorkAdvertisingId]
     return new Promise((resolve, reject) => {
-      Promise.all([promiseWorkLoadVT])
+      Promise.all<resultPromiseTypes>(promiseWorks)
         .then(responses => {
-          if (responses && responses.length > 0) {
-            ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all responses[0]:', responses[0])
+          for (let index = 0; index < responses.length; index++) {
+            ACELog.d(ACEParameterUtilForOne._TAG, `Promise.all response[${index}]:`, responses[index])
           }
 
           this.getVT()
           this.loadUniqueKeyForSDK()
           ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all vt:', this.getVT())
+
+          if (responses.length > 1 && responses[1]) {
+            const result = ACEParameterUtil.validateAdvertisingIdentifier(
+              !responses[1].isAdTrackingLimited,
+              responses[1].id,
+            )
+            ACEParametersForOne.getInstance().setADELD(result.isAdEnabled)
+            ACEParametersForOne.getInstance().setADID(result.adid)
+          }
 
           const response: ACEResponseToCaller = {
             taskHash: '0003',
@@ -168,6 +215,9 @@ export default class ACEParameterUtilForOne implements IACEParameterUtil {
         })
         .catch(err => {
           ACELog.d(ACEParameterUtilForOne._TAG, 'Promise.all err:', err)
+
+          ACEParametersForOne.getInstance().setADELD(false)
+          ACEParametersForOne.getInstance().setADID(ADID.defaultADID)
 
           const response: ACEResponseToCaller = {
             taskHash: '0004',

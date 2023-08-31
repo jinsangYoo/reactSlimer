@@ -87,3 +87,14 @@ export function getQueryVar(source: string): object {
 export function getQueryForKey(source: string, value: string): string | undefined {
   return getQueryVar(source)[value]
 }
+
+export function getDeeplinkKeyInURI(source: string, value: string): string | undefined {
+  var regex = /[?&]([^=#]+)=([^&#]*)/g
+  var params: {[key: string]: string} = {}
+  var match: Array<string> | null
+  while ((match = regex.exec(source))) {
+    // console.log(`match[1]: >>${match[1]}<<, match[2]: >>${match[2]}<<`)
+    params[match[1]] = match[2]
+  }
+  return params[value]
+}

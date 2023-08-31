@@ -33,14 +33,16 @@ export default class APIForPushReferrerDeeplink extends Task {
     const _parameterUtilForOne = ACEParameterUtilForOne.getInstance()
     _parameterUtilForOne.setTP(TP.MCLICK)
     _parameterUtilForOne.updateUrlToRef(ACECONSTANT.EMPTY)
+    _parameterUtilForOne.setKW(this._kw)
     switch (this.getLogSource()) {
+      case ACEofAPIForOne.DeepLink:
+        _parameterUtilForOne.setSRC(SRC.Deeplink)
+        break
       case ACEofAPIForOne.InstallReferrer:
         _parameterUtilForOne.setSRC(SRC.InstallReferrer)
-        _parameterUtilForOne.setKW(this._kw)
         break
       case ACEofAPIForOne.Push:
         _parameterUtilForOne.setSRC(SRC.Push)
-        _parameterUtilForOne.setKW(this._kw)
         break
     }
 
@@ -54,12 +56,20 @@ export default class APIForPushReferrerDeeplink extends Task {
       .then(response => {
         ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'Done update st and vt.', response)
         ACELog.d(APIForPushReferrerDeeplink._p1TAG, 'vt after updateSTnVT()', _parameterUtilForOne.getVT())
+      })
+      .then(() => {
+        if (this.getLogSource() === ACEofAPIForOne.InstallReferrer) {
+          ACELog.d(APIForPushReferrerDeeplink._p1TAG, `SDK will update install referrer to: ${this._kw}`)
+          _parameterUtilForOne.setInstallReferrer(this._kw)
+        }
+      })
+      .then(() => {
         if (callback) {
           const res: ACEResponseToCaller = {
             taskHash: `${this._logSource}::0011`,
             code: ACEResultCode.Success,
             result: ACEConstantCallback[ACEConstantCallback.Success],
-            message: 'Done update st and vt.',
+            message: 'Done update st, vt and set referrer.',
             apiName: this.getDescription(),
           }
           callback(undefined, res)
